@@ -1,0 +1,41 @@
+name: dev
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check previous deploy
+        run: |
+          status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy)
+          while [[ "$status_code" -ne 204 ]]; do echo "Previous deploy in progress. Waiting 5sec..." && sleep 5 && status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy); done
+        shell: bash
+      - name: Create deploy.pid for run job after deploy
+        working-directory: ./
+        run: |
+          touch ./deploy.pid
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEPLOY_KEY }}
+          name: id_rsa
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Remove .git
+        working-directory: ./
+        run: |
+          rm -rf .git
+      - name: Check outputs
+        working-directory: ./
+        run: echo ${{ steps.vars.outputs.sha_short }} > version.md
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_HOST }}  >> ~/.ssh/known_hosts
+      - name: Run rsync
+        working-directory: ./
+        run: |
+          rsync -avzr -e 'ssh -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} -i ~/.ssh/id_rsa'  ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}
