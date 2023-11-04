@@ -1,0 +1,36 @@
+name: dev
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check previous deploy
+        run: |
+          status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy)
+          while [[ "$status_code" -ne 204 ]]; do echo "Previous deploy in progress. Waiting 20sec..." && sleep 20 && status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy); done
+        shell: bash
+      - name: Remove .git
+        run: |
+          rm -rf .git
+      - name: Create deploy.pid for run job after deploy
+        run: |
+          touch ./deploy.pid
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -avzr
+          path: ./
+          remote_path: ${{ secrets.DEPLOY_PATH }}
+          remote_host: ${{ secrets.DEPLOY_HOST }}
+          remote_port: ${{ secrets.DEPLOY_PORT }}
+          remote_user: ${{ secrets.DEPLOY_USER }}
+          remote_key: ${{ secrets.DEPLOY_KEY }}
+          remote_key_pass: ${{ secrets.DEPLOY_KEY_PASS }}
+
