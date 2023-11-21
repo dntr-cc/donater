@@ -14,6 +14,10 @@ Makefile: ;              # skip prerequisite discovery
 up:
 	docker-compose up -d
 
+.PHONY: env
+env:
+	cp .env.example .env
+
 .PHONY: ps
 ps:
 	docker-compose ps
