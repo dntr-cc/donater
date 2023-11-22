@@ -1,6 +1,6 @@
 @php /** @var \Illuminate\Support\Collection|\App\Models\User[] $users */ @endphp
 
-@forelse($users->all()->filter() as $it => $user)
+@forelse($users->filter()->all() as $it => $user)
     @if(1 === (1 + $it) % 3)
         <div class="col-lg-12">
             <div class="row">`
