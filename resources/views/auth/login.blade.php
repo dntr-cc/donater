@@ -37,10 +37,11 @@
                 url: "{{ route('login') }}",
                 type: "POST",
                 data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
                     loginHash: $('#loginCode').val(),
                 },
-                success: function () {
-                    window.location.assign('{{ route('my') }}');
+                success: function (data) {
+                    window.location.assign(data.url ?? '{{ route('my') }}');
                 },
             });
         }, 1000);

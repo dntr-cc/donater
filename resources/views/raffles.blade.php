@@ -3,21 +3,20 @@
 @section('page_description', 'Всі збори з розіграшами - donater.com.ua')
 
 @section('content')
-    <div class="container px-4 py-5" id="custom-cards">
+    <div class="container px-4 py-5" >
         <h2 class="pb-2 border-bottom">
             Всі збори з розіграшами та призами
         </h2>
         <p class="lead">
-            Для участі в розіграші треба зробити донат з кодом. Код ви можете знайти на
-            <a href="{{ route('my') }}">своїй сторінці</a>
-            , в розділі Благодійні внески натиснути
-            <button class="btn btn-sm btn-outline-success">
+            Для участі в розіграші треба зробити донат з кодом. Код ви можете знайти натиснувши
+            <a href="{{route('donate')}}" class="btn btn-sm btn-outline-success">
                 <i class="bi bi-plus-circle-fill"></i>
-            </button>
+                Задонатити
+            </a>
         </p>
     </div>
     @foreach($volunteers->all() as $it => $volunteer)
-        <div class="container px-4 py-5" id="custom-cards">
+        <div class="container px-4 py-5" >
             <h3 class="pb-2 border-bottom">
                 {{ $volunteer->getName() }}
             </h3>

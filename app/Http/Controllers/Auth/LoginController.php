@@ -15,31 +15,10 @@ use Illuminate\View\View;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    public const RETURN_AFTER_LOGIN = 'RETURN_AFTER_LOGIN';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
@@ -52,6 +31,8 @@ class LoginController extends Controller
      */
     public function showLoginForm(): View
     {
+        session()->put(self::RETURN_AFTER_LOGIN, url()->previous());
+
         return view('auth.login', ['loginHash' => app(LoginService::class)->getNewLoginHash()]);
     }
 
@@ -67,7 +48,7 @@ class LoginController extends Controller
     {
         if ('http://localhost' === config('app.url')) {
             $this->fakeLogin();
-            return response([], Response::HTTP_ACCEPTED);
+            return new JsonResponse(['url' => session()->get(self::RETURN_AFTER_LOGIN, route('my'))], Response::HTTP_ACCEPTED);
         }
 
         $this->validateLogin($request);
@@ -78,7 +59,7 @@ class LoginController extends Controller
         }
         $this->guard()->login($service->getOrCreateUser($data));
 
-        return response([], Response::HTTP_ACCEPTED);
+        return new JsonResponse(['url' => session()->get(self::RETURN_AFTER_LOGIN, route('my'))], Response::HTTP_ACCEPTED);
     }
 
     /**

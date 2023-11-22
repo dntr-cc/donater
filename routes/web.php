@@ -48,7 +48,8 @@ Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
-Route::post('/donate', [App\Http\Controllers\DonateController::class, 'store'])->name('donate');
+Route::get('/donate', [App\Http\Controllers\DonateController::class, 'create'])->name('donate');
+Route::post('/donate', [App\Http\Controllers\DonateController::class, 'store']);
 Route::get('/zvit', fn() => view('zvit', ['volunteers' => Volunteer::where('is_enabled', '=', true)->get()]))->name('zvit');
 Route::get('/zvit/{volunteer}', [App\Http\Controllers\VolunteerController::class, 'show'])->name('zvit.volunteer');
 Route::post('/user/link', [App\Http\Controllers\UserLinkController::class, 'store'])->name('user.link');

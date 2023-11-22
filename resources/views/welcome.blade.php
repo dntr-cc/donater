@@ -53,10 +53,11 @@
                         <ol class="mt-3 mb-4">
                             <li class="mt-4">
                                 <span class="flex">
-                                    Поруч з написом <b>Благодійні внески</b> натискаєте на кнопку
-                                    <button class="btn btn-sm btn-outline-success">
+                                    Натискаєте на кнопку "Задонатити"
+                                    <a href="{{route('donate')}}" class="btn btn-sm btn-outline-success">
                                         <i class="bi bi-plus-circle-fill"></i>
-                                    </button>
+                                        Задонатити
+                                    </a>
                                 </span>
                             </li>
                             <li class="mt-4">

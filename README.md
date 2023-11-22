@@ -10,6 +10,7 @@
 ```bash
 make env
 make up
+make folders
 make install
 make migrate
 ```

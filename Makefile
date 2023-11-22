@@ -40,6 +40,11 @@ bash:
 front:
 	docker-compose exec laravel npm run build
 
+.PHONY: folders
+folders:
+	docker-compose exec laravel chmod -R 777 /var/www/html/storage && echo "Make writeable storage..."
+	docker-compose exec laravel chmod -R 777 /var/www/html/bootstrap && echo "Make writeable bootstrap..."
+
 .PHONY: logs
 logs:
 	docker-compose logs -f
@@ -65,7 +70,7 @@ clear:
 	docker-compose exec laravel php artisan route:clear
 	docker-compose exec laravel php artisan queue:clear
 	docker-compose exec laravel php artisan schedule:clear-cache
-	docker-compose exec laravel optimize:clear
+	docker-compose exec laravel php artisan optimize:clear
 
 .PHONY: install-all
 install-all:
@@ -113,20 +118,25 @@ migrate-dev:
 
 .PHONY: clear-dev
 clear-dev:
-	docker-compose -f ./docker-compose.dev.yml exec laravel  php artisan cache:clear
-	docker-compose -f ./docker-compose.dev.yml exec laravel  php artisan config:clear
-	docker-compose -f ./docker-compose.dev.yml exec laravel  php artisan event:clear
-	docker-compose -f ./docker-compose.dev.yml exec laravel  php artisan route:clear
-	docker-compose -f ./docker-compose.dev.yml exec laravel  php artisan route:clear
-	docker-compose -f ./docker-compose.dev.yml exec laravel  php artisan queue:clear
-	docker-compose -f ./docker-compose.dev.yml exec laravel  php artisan schedule:clear-cache
-	docker-compose -f ./docker-compose.dev.yml exec laravel  optimize:clear
+	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan cache:clear
+	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan config:clear
+	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan event:clear
+	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan route:clear
+	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan route:clear
+	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan queue:clear
+	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan schedule:clear-cache
+	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan optimize:clear
 
 .PHONY: install-all-dev
 install-all-dev:
 	docker-compose -f ./docker-compose.dev.yml exec laravel composer install
 	docker-compose -f ./docker-compose.dev.yml exec laravel npm install
 	docker-compose -f ./docker-compose.dev.yml exec laravel npm run build
+
+.PHONY: folders-dev
+folders-dev:
+	docker-compose -f ./docker-compose.dev.yml exec laravel chmod -R 777 /var/www/html/storage && echo "Make writeable storage..."
+	docker-compose -f ./docker-compose.dev.yml exec laravel chmod -R 777 /var/www/html/bootstrap && echo "Make writeable bootstrap..."
 
 .PHONY: default
 default: up

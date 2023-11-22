@@ -21,8 +21,6 @@ class VerifyCsrfToken extends Middleware
     {
         $this->except[] = '/' . config('app.dev_hash');
         $this->except[] = '/deploy';
-        $this->except[] = '/login';
-        $this->except[] = '/donate/code';
 
         return parent::inExceptArray($request);
     }

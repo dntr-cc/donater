@@ -2,8 +2,6 @@
 @php use App\Models\User; @endphp
 @php use App\Models\UserLink; @endphp
 @php use App\Models\Volunteer; @endphp
-@php use App\Services\DonateService; @endphp
-@php $uniqueCode = app(DonateService::class)->getNewUniqueHash(); @endphp
 @php /** @var User $user */ @endphp
 @php /** @var Donate $donate */ @endphp
 @php /** @var Volunteer $volunteer */ @endphp
@@ -136,10 +134,10 @@
                                             <h4>Благодійні внески</h4>
                                         </div>
                                         @if (auth()?->user()?->getId() === $user->getId())
-                                            <button data-bs-toggle="modal" data-bs-target="#createDonateModal"
-                                                    id="addDonation" class="btn btn-outline-success">
+                                            <a href="{{route('donate')}}" class="btn btn-outline-success">
                                                 <i class="bi bi-plus-circle-fill"></i>
-                                            </button>
+                                                Задонатити
+                                            </a>
                                         @endif
                                     </li>
                                     @foreach($user->getDonates() as $it => $donate)
@@ -174,65 +172,6 @@
         </div>
     </div>
     @auth
-    <div class="modal fade" id="createDonateModal" tabindex="-1" aria-labelledby="createDonateModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="createDonateModalLabel">Новий благодійний внесок</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <div class="form-floating input-group">
-                                <input type="text" class="form-control" id="donateCode"
-                                       value="{{ $uniqueCode }}" disabled>
-                                <label for="donateCode">
-                                    Унікальний код
-                                </label>
-                                <button id="copyDonateHash" class="btn btn-outline-secondary"
-                                        onclick="return false;">
-                                    <i class="bi bi-copy"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form">
-                                @csrf
-                                <select id="chooseVolunteer" class="form-select form-select-lg mb-3"
-                                        aria-label="Оберіть збір">
-                                    <option value="0" selected>Оберіть збір</option>
-                                    @foreach(Volunteer::getActual()->all() as $volunteer)
-                                        <option data-url="{{ $volunteer->getLink() }}"
-                                                value="{{ $volunteer->getId() }}">
-                                            {{ $volunteer->getName() }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <br>
-                            <div class="m-3 lead d-flex justify-content-center text-center">
-                                <a id="jarLink" target="_blank" href=""></a>
-                            </div>
-                            <div class="mt-3 d-flex justify-content-center">
-                                <img id="commentImg" class="col-md" style="width: 70%; display: none;"
-                                     src="{{ url('/images/donat.png') }}" alt="">
-                            </div>
-                            <div class="mt-3 lead d-flex justify-content-center text-center"
-                                 id="acceptDonate"></div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-secondary justify-content-evenly" data-bs-dismiss="modal">
-                        Закрити
-                    </button>
-                    <button id="createDonate" type="button" class="btn btn-primary" disabled>Зберігти</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="modal fade" id="createLinkModal" tabindex="-1" aria-labelledby="createLinkModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -355,54 +294,7 @@
         });
         toast('Посилання скопійовано', copyLink);
 
-        let copyDonateHash = $('#copyDonateHash');
-        copyDonateHash.on('click', function (e) {
-            e.preventDefault();
-            copyContent($('#donateCode').val());
-            return false;
-        });
-        toast('Код скопійовано', copyDonateHash);
-
         @auth
-        $('#createDonate').on('click', function (e) {
-            e.preventDefault();
-            $.ajax({
-                url: '{{ route('donate') }}',
-                type: "POST",
-                data: {
-                    _token: $(`[name="_token"]`).val(),
-                    uniq_hash: $('#donateCode').val(),
-                    user_id: <?= auth()?->user()?->getId() ?>,
-                    volunteer_id: $('#chooseVolunteer option:selected').val(),
-                },
-                success: function () {
-                    location.reload();
-                },
-            });
-            return false;
-        });
-
-        $('#jarLink').click(() => {
-            $('#createDonate').attr('disabled', false);
-        });
-        document.querySelector('#chooseVolunteer').addEventListener('change', () => {
-            let selected = $('#chooseVolunteer option:selected');
-            if (selected.val() > 0) {
-                $('#jarLink').attr('href', selected.data('url')).text(
-                    'Відкрийте банку по посиланню, зробіть донат, обов\'язково код в коментарі'
-                );
-                $('#commentImg').show();
-                let volunteer = selected.text().trim();
-                let donateCode = $('#donateCode').val();
-                const text = 'Після донату з кодом "code" в банку volunteer треба натиснути "Зберігти". Без цього внесок не буде зараховано!'
-                $('#acceptDonate').text(text.replace('code', donateCode).replace('volunteer', volunteer));
-            } else {
-                $('#commentImg').hide();
-                $('#jarLink').attr('href', '').text('');
-                $('#acceptDonate').text('');
-                $('#createDonate').attr('disabled', true);
-            }
-        });
         $('#linkIcon').click(() => {
             $('#icon-preview').attr('class', $('#linkIcon option:selected').val());
         });

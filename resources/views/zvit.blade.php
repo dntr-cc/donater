@@ -3,7 +3,7 @@
 @section('page_description', 'Вся звітність по Фондам та актуальним зборам коштів - donater.com.ua')
 
 @section('content')
-    <div class="container px-4 py-5" id="custom-cards">
+    <div class="container px-4 py-5" >
         <h2 class="pb-2 border-bottom">Звітність по Фондам та Зборам</h2>
         @foreach($volunteers->all() as $it => $volunteer)
             @if(1 === (1 + $it) % 3)

@@ -3,7 +3,7 @@
 @section('page_description', strtr('Звітність по :volunteer - donater.com.ua', [':volunteer' => $volunteer->getName()]))
 
 @section('content')
-    <div class="container px-4 py-5" id="custom-cards">
+    <div class="container px-4 py-5" >
         <h2 class="pb-2 border-bottom"><a href="{{ route('zvit') }}" class=""><i class="bi bi-arrow-left"></i></a>
             Звітність {{ $volunteer->getName() }}
         </h2>

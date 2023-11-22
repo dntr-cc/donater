@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DonateRequest;
 use App\Http\Resources\DonateResource;
 use App\Models\Donate;
+use Symfony\Component\HttpFoundation\Response;
 
 class DonateController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $this->authorize('viewAny', Donate::class);
@@ -15,11 +21,18 @@ class DonateController extends Controller
         return DonateResource::collection(Donate::all());
     }
 
+    public function create()
+    {
+        return view('donate');
+    }
+
     public function store(DonateRequest $request)
     {
         $this->authorize('create', Donate::class);
 
-        return new DonateResource(Donate::create($request->validated()));
+        Donate::create($request->validated());
+
+        return redirect(route('my'), Response::HTTP_FOUND)->header('Cache-Control', 'no-store, no-cache, must-revalidate');
     }
 
     public function show(Donate $donate)
