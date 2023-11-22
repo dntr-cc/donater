@@ -59,7 +59,7 @@
                         @php $count = $rows->count(); @endphp
                         @foreach($rows->all() as $row)
                             @php $donater = $row->getDonater($row->getComment()) @endphp
-                            @php $donater ? $donaters->offsetSet($donater->getUsername(), $donater) : '' @endphp
+                            @php $donater ? $donaters->push($donater) : '' @endphp
                             <tr>
                                 <th scope="row">{{ $count-- }}</th>
                                 <td>{{ $row->getDate() }}</td>
