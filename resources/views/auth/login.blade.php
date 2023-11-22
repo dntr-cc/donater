@@ -41,7 +41,7 @@
                     loginHash: $('#loginCode').val(),
                 },
                 success: function (data) {
-                    window.location.assign(data.url ?? '{{ route('my') }}');
+                    window.location.assign(data.url ?? '{{ route('donate') }}');
                 },
             });
         }, 1000);

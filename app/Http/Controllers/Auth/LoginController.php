@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Services\LoginService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
@@ -31,7 +30,7 @@ class LoginController extends Controller
      */
     public function showLoginForm(): View
     {
-        session()->put(self::RETURN_AFTER_LOGIN, url()->previous());
+        session()->put(self::RETURN_AFTER_LOGIN, route('donate'));
 
         return view('auth.login', ['loginHash' => app(LoginService::class)->getNewLoginHash()]);
     }
