@@ -9,7 +9,7 @@
         </h2>
         <p class="lead">
             Для участі в розіграші треба зробити донат з кодом. Код ви можете знайти натиснувши
-            <a href="{{route('donate')}}" class="btn btn-sm btn-outline-success">
+            <a href="{{route('donate')}}" class="btn btn-outline-success">
                 <i class="bi bi-plus-circle-fill"></i>
                 Задонатити
             </a>
@@ -23,20 +23,18 @@
             <div class="d-flex">
                 <div class="row">
                     <div class="col-md-4 px-2 py-2">
-                    <span
+                    <a href="{{ route('zvit.volunteer', ['volunteer' => $volunteer->getKey()]) }}"
                         class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg bg-image-position-center"
                         style="background-image: url('{{ url($volunteer->getAvatar()) }}');">
                         <div class="d-flex flex-column min-vh-25 h-100 p-4 pb-3 text-shadow-1">
                         </div>
-                    </span>
+                    </a>
                     </div>
                     <div class="col-md-8 px-2 py-2">
                         <p class="lead">
                             {!! $volunteer->getDescription() !!}
                         </p>
-                        <a href="{{ $volunteer->getLink() }}" target="_blank" class="btn btn-outline-success">Банка</a>
-                        <a href="{{ $volunteer->getLink() }}" target="_blank" class="btn btn-outline-success">Банка збору</a>
-                        <a href="{{ route('donate') }}" class="btn btn-outline-success">Задонатити</a>
+                    @include('layouts.links', compact('volunteer'))
                     </div>
                 </div>
             </div>
