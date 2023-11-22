@@ -1,6 +1,7 @@
 @extends('layouts.base')
 @section('page_title', 'Всі збори з розіграшами - donater.com.ua')
 @section('page_description', 'Всі збори з розіграшами - donater.com.ua')
+@php $withZvitLink = true; @endphp
 
 @section('content')
     <div class="container px-4 py-5" >
@@ -9,7 +10,7 @@
         </h2>
         <p class="lead">
             Для участі в розіграші треба зробити донат з кодом. Код ви можете знайти натиснувши
-            <a href="{{route('donate')}}" class="btn btn-sm btn-outline-success">
+            <a href="{{route('donate')}}" class="btn btn-outline-success">
                 <i class="bi bi-plus-circle-fill"></i>
                 Задонатити
             </a>
@@ -23,20 +24,18 @@
             <div class="d-flex">
                 <div class="row">
                     <div class="col-md-4 px-2 py-2">
-                    <span
-                        class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg bg-image-position-center"
-                        style="background-image: url('{{ url($volunteer->getAvatar()) }}');">
-                        <div class="d-flex flex-column min-vh-25 h-100 p-4 pb-3 text-shadow-1">
+                        <div class="card border-0 rounded-4 shadow-lg">
+                            <a href="{{ route('zvit.volunteer', ['volunteer' => $volunteer->getKey()]) }}" class="card">
+                                <img src="{{ url($volunteer->getAvatar()) }}" class="bg-image-position-center"
+                                     alt="{{ $volunteer->getName() }}">
+                            </a>
                         </div>
-                    </span>
                     </div>
                     <div class="col-md-8 px-2 py-2">
                         <p class="lead">
                             {!! $volunteer->getDescription() !!}
                         </p>
-                        <a href="{{ $volunteer->getLink() }}" target="_blank" class="btn btn-outline-success">Банка</a>
-                        <a href="{{ $volunteer->getPage() }}" target="_blank" class="btn btn-outline-success">Сторінка
-                            збору</a>
+                    @include('layouts.links', compact('volunteer', 'withZvitLink'))
                     </div>
                 </div>
             </div>

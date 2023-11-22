@@ -57,4 +57,4 @@ Route::delete('/user/link/{userLink}', [App\Http\Controllers\UserLinkController:
 Route::patch('/user/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('user.edit');
 Route::post('/user/{user}/avatar', [App\Http\Controllers\UserController::class, 'updateAvatar'])->name('user.edit.avatar');
 Route::get('/roadmap', fn() => view('roadmap'))->name('roadmap');
-Route::get('/raffles', fn() => view('raffles', ['volunteers' => Volunteer::whereIn('key', ['glits04_1', 'setnemo_twitter_subscribe'])->get()]))->name('raffles');
+Route::get('/raffles', fn() => view('raffles', data: ['volunteers' => Volunteer::whereIn('key', config('app.raffles'))->get()]))->name('raffles');

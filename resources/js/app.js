@@ -10,6 +10,13 @@ window.Toast = Toast;
 
 import '../sass/app.scss'
 
+// Initialization for ES Users
+import { Tab, initMDB } from 'mdb-ui-kit/js/mdb.es.min.js';
+
+window.Tab = Tab;
+
+initMDB({ Tab });
+
 window.copyContent = async function copyContent(text) {
     try {
         await navigator.clipboard.writeText(text);

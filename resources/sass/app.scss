@@ -7,6 +7,7 @@
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 @import '~bootstrap-icons/font/bootstrap-icons.css';
+@import 'mdb-ui-kit/css/mdb.min.css';
 
 .timeline-with-icons {
     border-left: 1px solid hsl(0, 0%, 90%);
@@ -68,7 +69,7 @@
     background-position: center;
     background-size: cover;
     background-repeat:no-repeat;
-    min-height:200px;
+    max-width: 100%;
 }
 
 .btn-outline-golden {

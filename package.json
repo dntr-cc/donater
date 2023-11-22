@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "bootstrap": "^5.3.2",
-        "jquery": "^3.7.1"
+        "jquery": "^3.7.1",
+        "mdb-ui-kit": "^7.0.0"
     }
 }
