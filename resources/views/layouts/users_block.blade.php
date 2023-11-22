@@ -1,10 +1,11 @@
 @php /** @var \Illuminate\Support\Collection|\App\Models\User[] $users */ @endphp
-
-@forelse($users->filter()->all() as $it => $user)
-    @if(1 === (1 + $it) % 3)
+@php $it = 0; @endphp
+@forelse($users->filter()->all() as $user)
+    @if(0 === $it || 0 === $it % 3)
         <div class="col-lg-12">
             <div class="row">
     @endif
+                @php ++$it @endphp
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-body text-center">
@@ -36,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-    @if(0 === (1 + $it) % 3)
+    @if($it && 0 === $it % 3)
             </div>
         </div>
     @endif
