@@ -6,15 +6,15 @@
 @php $uniqueCode = app(DonateService::class)->getNewUniqueHash(); @endphp
 
 @section('content')
-    <div class="container px-4 py-5">
+    <div class="container">
     <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="modal-dialog" role="document">
             <div class="modal-content rounded-4 shadow">
-                <div class="modal-header p-5 pb-4 border-bottom-0">
+                <div class="modal-header p-4 pb-2 border-bottom-0 justify-content-center">
                     <h1 class="title fs-5" id="createDonateModalLabel">Новий благодійний внесок</h1>
                 </div>
-                <div class="modal-body p-5 pt-0">
+                <div class="modal-body p-3 pt-0">
                     <form id="donate">
                         @csrf
                         <div class="mb-3">
@@ -97,7 +97,6 @@
             });
             return false;
         });
-
         $('#jarLink').click(() => {
             $('#createDonate').attr('disabled', false);
         });
