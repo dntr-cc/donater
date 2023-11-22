@@ -16,3 +16,4 @@ google.json
 /node_modules/
 /vendor/
 google.json
+/public/build/
