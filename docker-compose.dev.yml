@@ -1,90 +1,65 @@
 version: '3'
 services:
-  nginx:
-    image: ghcr.io/setnemo/nginx:latest
-    env_file:
-      - .env
-    environment:
-      WEBROOT: '/var/www/html/public'
-      PHPFPMHOST: 'laravel'
-      GID: 1000
-      UID: 1000
-    ports:
-      - '${DOCKER_APP_PORT:-80}:80'
-    volumes:
-      - '.:/var/www/html:delegated'
-    networks:
-      - sail
-    depends_on:
-      - laravel
-  laravel:
-    image: ghcr.io/setnemo/php:latest
-    env_file:
-      - .env
-    environment:
-      TZ: Europe/Kiev
-      GID: 1000
-      UID: 1000
-    ports:
-      - '9000:9000'
-    volumes:
-      - '.:/var/www/html'
-      - './supervisor/deploy.conf:/etc/supervisor/conf.d/deploy.conf:ro'
-      - './supervisor/schedule.conf:/etc/supervisor/conf.d/schedule.conf:ro'
-    networks:
-      - sail
-    depends_on:
-      - postgres
-      - redis
-  node:
-    image: ghcr.io/setnemo/node:latest
-    env_file:
-      - .env
-    working_dir: /var/www/html
-    tty: true
-    ports:
-      - '${VITE_PORT:-5173}:5173'
-    volumes:
-      - ./:/var/www/html
-      - './supervisor/deploy.node.conf:/etc/supervisor/conf.d/deploy.node.conf:ro'
-  postgres:
-    image: postgres:9.5-alpine
-    env_file:
-      - .env
-    volumes:
-      - "sail-postgres:/var/lib/postgresql/data"
-    environment:
-      - POSTGRES_USER=${DB_USERNAME}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_DATABASE}
-    ports:
-      - "${DB_PORT_DOCKER:-5432}:5432"
-    networks:
-      - sail
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-  redis:
-    image: 'redis:alpine'
-    env_file:
-      - .env
-    ports:
-      - '${REDIS_PORT:-6379}:6379'
-    volumes:
-      - 'sail-redis:/data'
-    networks:
-      - sail
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      retries: 3
-      timeout: 5s
+    laravel:
+        image: ghcr.io/setnemo/php:latest
+        environment:
+            WEBROOT: '/var/www/html/public'
+            PHP_REDIS_SESSION_HOST: 'redis'
+            CREATE_LARAVEL_STORAGE: '1'
+            PHP_ERRORS_STDERR: '1'
+        env_file:
+          - .env
+        restart: always
+        ports:
+            - '${DOCKER_APP_PORT:-80}:80'
+        volumes:
+            - '.:/var/www/html'
+            - './supervisor/:/etc/supervisor/conf.d/'
+        networks:
+            - sail
+        depends_on:
+            - postgres
+            - redis
+    postgres:
+        image: postgres:9.5-alpine
+        volumes:
+            - "sail-postgres:/var/lib/postgresql/data"
+        environment:
+            - POSTGRES_USER=${DB_USERNAME}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_DB=${DB_DATABASE}
+        env_file:
+          - .env
+        restart: always
+        ports:
+            - "${DB_PORT_DOCKER:-5432}:5432"
+        networks:
+            - sail
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+    redis:
+        image: 'redis:alpine'
+        restart: always
+        env_file:
+          - .env
+        ports:
+            - '${REDIS_PORT_DOCKER:-6379}:6379'
+        volumes:
+            - 'sail-redis:/data'
+        networks:
+            - sail
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            retries: 3
+            timeout: 5s
 networks:
-  sail:
-    driver: bridge
+    sail:
+        driver: bridge
 volumes:
-  sail-postgres:
-    driver: local
-  sail-redis:
-    driver: local
+    sail-postgres:
+        driver: local
+    sail-redis:
+        driver: local

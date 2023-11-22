@@ -38,7 +38,7 @@ bash:
 
 .PHONY: front
 front:
-	docker-compose exec node npm run build
+	docker-compose exec laravel npm run build
 
 .PHONY: folders
 folders:
@@ -132,10 +132,6 @@ install-all-dev:
 	docker-compose -f ./docker-compose.dev.yml exec laravel composer install
 	docker-compose -f ./docker-compose.dev.yml exec laravel npm install
 	docker-compose -f ./docker-compose.dev.yml exec laravel npm run build
-
-.41+PHONY: front-dev
-front-dev:
-	docker-compose -f ./docker-compose.dev.yml exec exec node npm run build
 
 .PHONY: folders-dev
 folders-dev:

@@ -21,21 +21,30 @@ function install_website() {
         php artisan migrate --force > /dev/null 2>&1 || php artisan migrate --force >> /var/log/supervisor/laravel-deploy.log
         tar -cf - database/migrations | md5sum | awk '{ print $1 }' > migrations.md5
     fi
+    if [ $(md5sum package-lock.json | awk '{ print $1 }') == $(cat npm.md5) ] ; then
+        date | sed 's/$/: SKIP npm install/'
+    else
+        date | sed 's/$/: RUN npm install/'
+        npm i --quiet --no-progress > /dev/null 2>&1 || npm i --quiet --no-progress >> /var/log/supervisor/laravel-deploy.log
+        md5sum package-lock.json | awk '{ print $1 }' > npm.md5
+    fi
+    date | sed 's/$/: RUN npm run production/'
+    npm run prod --silent > /dev/null 2>&1 || npm run prod --silent >> /var/log/supervisor/laravel-deploy.log
     date | sed 's/$/: RUN clear caches/'
-	php artisan config:clear
-	php artisan event:clear
-	php artisan route:clear
-	php artisan route:clear
-	php artisan queue:clear
-	php artisan schedule:clear-cache
+    php artisan cache:clear
+    php artisan config:clear
+    php artisan event:clear
+    php artisan route:clear
+    php artisan view:clear
+    date | sed 's/$/: RUN disable maintanance mode/'
+    php artisan up > /dev/null 2>&1 || php artisan up >> /var/log/supervisor/laravel-deploy.log
+    rm -f ./deploy.pid
 }
 
 for i in {1..60} ; do
     FILE=./deploy.pid
     if [ -f "$FILE" ] ; then
-        touch ./deploy.php.pid
         install_website
-        rm ./deploy.php.pid
     else
         sleep 1
     fi
