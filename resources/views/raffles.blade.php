@@ -1,6 +1,7 @@
 @extends('layouts.base')
 @section('page_title', 'Всі збори з розіграшами - donater.com.ua')
 @section('page_description', 'Всі збори з розіграшами - donater.com.ua')
+@php $withZvitLink = true; @endphp
 
 @section('content')
     <div class="container px-4 py-5" >
@@ -34,7 +35,7 @@
                         <p class="lead">
                             {!! $volunteer->getDescription() !!}
                         </p>
-                    @include('layouts.links', compact('volunteer'))
+                    @include('layouts.links', compact('volunteer', 'withZvitLink'))
                     </div>
                 </div>
             </div>
