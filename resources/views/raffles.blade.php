@@ -35,8 +35,8 @@
                             {!! $volunteer->getDescription() !!}
                         </p>
                         <a href="{{ $volunteer->getLink() }}" target="_blank" class="btn btn-outline-success">Банка</a>
-                        <a href="{{ $volunteer->getPage() }}" target="_blank" class="btn btn-outline-success">Сторінка
-                            збору</a>
+                        <a href="{{ $volunteer->getLink() }}" target="_blank" class="btn btn-outline-success">Банка збору</a>
+                        <a href="{{ route('donate') }}" class="btn btn-outline-success">Задонатити</a>
                     </div>
                 </div>
             </div>
