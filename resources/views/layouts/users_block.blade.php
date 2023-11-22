@@ -3,7 +3,7 @@
 @forelse($users->filter()->all() as $it => $user)
     @if(1 === (1 + $it) % 3)
         <div class="col-lg-12">
-            <div class="row">`
+            <div class="row">
     @endif
                 <div class="col-md-4">
                     <div class="card mb-4">
