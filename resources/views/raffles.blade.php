@@ -24,12 +24,12 @@
             <div class="d-flex">
                 <div class="row">
                     <div class="col-md-4 px-2 py-2">
-                    <a href="{{ route('zvit.volunteer', ['volunteer' => $volunteer->getKey()]) }}"
-                        class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg bg-image-position-center"
-                        style="background-image: url('{{ url($volunteer->getAvatar()) }}');">
-                        <div class="d-flex flex-column min-vh-25 h-100 p-4 pb-3 text-shadow-1">
+                        <div class="card border-0 rounded-4 shadow-lg">
+                            <a href="{{ route('zvit.volunteer', ['volunteer' => $volunteer->getKey()]) }}" class="card">
+                                <img src="{{ url($volunteer->getAvatar()) }}" class="bg-image-position-center"
+                                     alt="{{ $volunteer->getName() }}">
+                            </a>
                         </div>
-                    </a>
                     </div>
                     <div class="col-md-8 px-2 py-2">
                         <p class="lead">

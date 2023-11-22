@@ -217,4 +217,5 @@ return [
     'secret_start' => env('SECRET_START'),
     'spreadsheet_id' => env('SPREADSHEET_ID'),
     'spreadsheet_range' => env('SPREADSHEET_RANGE', 'Sheet1!A:A'),
+    'raffles' => explode(',', env('RAFFLES', [])),
 ];
