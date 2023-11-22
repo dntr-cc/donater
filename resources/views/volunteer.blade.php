@@ -8,25 +8,22 @@
         <h2 class="pb-2 border-bottom"><a href="{{ route('zvit') }}" class=""><i class="bi bi-arrow-left"></i></a>
             Звітність {{ $volunteer->getName() }}
         </h2>
-        <div class="d-flex">
-            <div class="row">
-                <div class="col-md-4 px-2 py-2">
-                    <span
-                        class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg bg-image-position-center"
-                        style="background-image: url('{{ url($volunteer->getAvatar()) }}');">
-                        <div class="d-flex flex-column min-vh-25 h-100 p-4 pb-3 text-shadow-1">
-                        </div>
-                    </span>
-                </div>
-                <div class="col-md-8 px-2 py-2">
-                    <p class="lead">
-                        {!! $volunteer->getDescription() !!}
-                    </p>
-                    @include('layouts.links', compact('volunteer'))
+        <div class="row">
+            <div class="col-md-4 px-2 py-2">
+                <div class="card border-0 rounded-4 shadow-lg">
+                    <a href="{{ route('zvit.volunteer', ['volunteer' => $volunteer->getKey()]) }}" class="card">
+                        <img src="{{ url($volunteer->getAvatar()) }}" class="bg-image-position-center"
+                             alt="{{ $volunteer->getName() }}">
+                    </a>
                 </div>
             </div>
+            <div class="col-md-8 px-2 py-2">
+                <p class="lead">
+                    {!! $volunteer->getDescription() !!}
+                </p>
+                @include('layouts.links', compact('volunteer'))
+            </div>
         </div>
-        <!-- Tabs navs -->
         <ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">
             <li class="nav-item" role="presentation">
                 <a data-mdb-tab-init class="nav-link active" id="icons-tab-1" href="#donates-tabs-all" role="tab"
