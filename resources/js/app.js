@@ -10,7 +10,6 @@ window.Toast = Toast;
 
 import '../sass/app.scss'
 
-// Initialization for ES Users
 import { Tab, initMDB } from 'mdb-ui-kit/js/mdb.es.min.js';
 
 window.Tab = Tab;
@@ -32,6 +31,6 @@ window.toast = function toast(text, selector) {
         toastBootstrap.show();
         setInterval(() => {
             $('closeToast').click();
-        }, 500);
+        }, 200);
     });
 }

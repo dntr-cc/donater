@@ -1,11 +1,7 @@
 name: dev
-
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -14,7 +10,7 @@ jobs:
       - name: Check previous deploy
         run: |
           status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy)
-          while [[ "$status_code" -ne 204 ]]; do echo "Previous deploy in progress. Waiting 20sec..." && sleep 20 && status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy); done
+          while [[ "$status_code" -ne 204 ]]; do echo "Previous deploy in progress. Waiting 5sec..." && sleep 5 && status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy); done
         shell: bash
       - name: Create deploy.pid for run job after deploy
         working-directory: ./
