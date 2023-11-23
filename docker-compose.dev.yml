@@ -6,7 +6,6 @@ services:
       - .env
     environment:
       WEBROOT: '/var/www/html/public'
-      PHPFPMHOST: 'laravel'
     ports:
       - '${DOCKER_APP_PORT:-80}:80'
     volumes:
