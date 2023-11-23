@@ -13,10 +13,10 @@ function install_website() {
     date | sed 's/$/: RUN clear caches/'
 }
 
-for i in {1..60} ; do
+for i in {1..360} ; do
     FILE=./deploy.pid
-    touch ./deploy.npm.pid
     if [ -f "$FILE" ] ; then
+        touch ./deploy.npm.pid
         install_website
         rm ./deploy.npm.pid
     else
