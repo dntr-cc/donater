@@ -97,6 +97,10 @@ install:
 chown:
     sudo chown -R "${USER}:${USER}" ./
 
+.PHONY: chown-dev
+chown-dev:
+    sudo chown -R chown -R 1101:1011  ./
+
 .PHONY: up-dev
 up-dev:
 	docker-compose -f ./docker-compose.dev.yml up -d
