@@ -1,6 +1,9 @@
 #!/bin/bash
 
 function install_website() {
+    date | sed 's/$/: RUN restart supervisorctl/'
+    supervisorctl restart scheduler > /dev/null 2>&1 || supervisorctl restart scheduler >> /var/log/supervisor/laravel-deploy.log
+
     if [ $(md5sum package-lock.json | awk '{ print $1 }') == $(cat npm.md5) ] ; then
         date | sed 's/$/: SKIP npm install/'
     else

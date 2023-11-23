@@ -31,9 +31,9 @@ rebuild: stop
 	docker-compose rm laravel
 	docker-compose rm node
 	docker-compose rm nginx
-	echo 'y' | docker rmi -f ghcr.io/setnemo/php:latest
-	echo 'y' | docker rmi -f ghcr.io/setnemo/nginx:latest
-	echo 'y' | docker rmi -f ghcr.io/setnemo/node:latest
+	echo 'y' > docker rmi -f ghcr.io/setnemo/php:latest
+	echo 'y' > docker rmi -f ghcr.io/setnemo/nginx:latest
+	echo 'y' > docker rmi -f ghcr.io/setnemo/node:latest
 	docker-compose up -d
 
 .PHONY: bash
@@ -112,7 +112,11 @@ stop-dev:
 .PHONY: rebuild-dev
 rebuild-dev: stop
 	docker-compose -f ./docker-compose.dev.yml rm laravel
-	echo 'y' | docker rmi -f ghcr.io/setnemo/php:latest
+	docker-compose -f ./docker-compose.dev.yml rm node
+	docker-compose -f ./docker-compose.dev.yml rm nginx
+	echo 'y' > docker rmi -f ghcr.io/setnemo/php:latest
+	echo 'y' > docker rmi -f ghcr.io/setnemo/nginx:latest
+	echo 'y' > docker rmi -f ghcr.io/setnemo/node:latest
 	docker-compose -f ./docker-compose.dev.yml up -d
 
 .PHONY: bash-dev

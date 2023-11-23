@@ -1,6 +1,8 @@
 #!/bin/bash
 
 function install_website() {
+    date | sed 's/$/: RUN chown www-data/'
+    chown -R www-data:www-data ./* > /dev/null 2>&1 || chown -R www-data:www-data ./* >> /var/log/supervisor/laravel-deploy.log
     date | sed 's/$/: RUN restart supervisorctl/'
     supervisorctl restart scheduler > /dev/null 2>&1 || supervisorctl restart scheduler >> /var/log/supervisor/laravel-deploy.log
     date | sed 's/$/: RUN chmod -R 777 storage/'
