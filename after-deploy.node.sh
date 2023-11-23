@@ -11,22 +11,14 @@ function install_website() {
     date | sed 's/$/: RUN npm run build/'
     npm run prod --silent > /dev/null 2>&1 || npm run prod --silent >> /var/log/supervisor/laravel-deploy.log
     date | sed 's/$/: RUN clear caches/'
-    for i in {1..360} ; do
-        FILE=./deploy.php.pid
-        if [ -f "$FILE" ] ; then
-            sleep 1
-        else
-            date | sed 's/$/: RUN disable maintanance mode/'
-            rm -f ./deploy.pid
-            break
-        fi
-    done
 }
 
 for i in {1..60} ; do
     FILE=./deploy.pid
+    touch ./deploy.npm.pid
     if [ -f "$FILE" ] ; then
         install_website
+        rm ./deploy.npm.pid
     else
         sleep 1
     fi

@@ -1,12 +1,19 @@
 #!/bin/bash
 
 function install_website() {
+    for i in {1..360} ; do
+        FILE=./deploy.npm.pid
+        if [ -f "$FILE" ] ; then
+            sleep 1
+        else
+            rm -f ./deploy.pid
+            break
+        fi
+    done
     date | sed 's/$/: RUN restart supervisorctl/'
     supervisorctl restart scheduler > /dev/null 2>&1 || supervisorctl restart scheduler >> /var/log/supervisor/laravel-deploy.log
     date | sed 's/$/: RUN chmod -R 777 storage/'
     chmod -R 777 storage > /dev/null 2>&1 || chmod -R 777 storage >> /var/log/supervisor/laravel-deploy.log
-    date | sed 's/$/: RUN updating files owner/'
-    chown -R nginx:nginx ./ > /dev/null 2>&1 || chown -R nginx:nginx ./ >> /var/log/supervisor/laravel-deploy.log
     if [ $(md5sum composer.lock | awk '{ print $1 }') == $(cat composer.md5) ] ; then
         date | sed 's/$/: SKIP composer install/'
     else
@@ -31,11 +38,9 @@ function install_website() {
 }
 
 for i in {1..60} ; do
-    FILE=./deploy.pid
+    FILE=./deploy.npm.pid
     if [ -f "$FILE" ] ; then
-        touch ./deploy.php.pid
         install_website
-        rm ./deploy.php.pid
     else
         sleep 1
     fi
