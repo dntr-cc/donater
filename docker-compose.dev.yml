@@ -20,7 +20,7 @@ services:
     env_file:
       - .env
     environment:
-      TZ: ${TZ}
+      TZ: "${TZ}"
     ports:
       - '9000:9000'
     volumes:
