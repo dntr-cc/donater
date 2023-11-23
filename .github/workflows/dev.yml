@@ -16,10 +16,8 @@ jobs:
           status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy)
           while [[ "$status_code" -ne 204 ]]; do echo "Previous deploy in progress. Waiting 20sec..." && sleep 20 && status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy); done
         shell: bash
-      - name: Remove .git
-        run: |
-          rm -rf .git
       - name: Create deploy.pid for run job after deploy
+        working-directory: ./
         run: |
           touch ./deploy.pid
       - name: Install SSH Key
@@ -31,11 +29,16 @@ jobs:
       - name: Set outputs
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Remove .git
+        working-directory: ./
+        run: |
+          rm -rf .git
       - name: Check outputs
+        working-directory: ./
         run: echo ${{ steps.vars.outputs.sha_short }} > version.md
       - name: Adding Known Hosts
         run: ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_HOST }}  >> ~/.ssh/known_hosts
       - name: Run rsync
+        working-directory: ./
         run: |
-          mkdir -p ~/backup
           rsync -avzr -e 'ssh -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} -i ~/.ssh/id_rsa'  ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}
