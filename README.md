@@ -13,6 +13,11 @@ make up
 make folders
 make install
 make migrate
+make front # build front
+make vite # run dev
+make node # node container for installing new npm packages
+make php # php container for installing new composer packages
+make clear # clear cache
 ```
 - open http://localhost/
 - open http://localhost/my, waiting autologin with test user

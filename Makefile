@@ -29,7 +29,11 @@ stop:
 .PHONY: rebuild
 rebuild: stop
 	docker-compose rm laravel
+	docker-compose rm node
+	docker-compose rm nginx
 	echo 'y' | docker rmi -f ghcr.io/setnemo/php:latest
+	echo 'y' | docker rmi -f ghcr.io/setnemo/nginx:latest
+	echo 'y' | docker rmi -f ghcr.io/setnemo/node:latest
 	docker-compose up -d
 
 .PHONY: bash
@@ -38,7 +42,15 @@ bash:
 
 .PHONY: front
 front:
-	docker-compose exec laravel npm run build
+	docker-compose exec node npm run build
+
+.PHONY: node
+node:
+	docker-compose exec node bash
+
+.PHONY: vite
+vite:
+	docker-compose exec node npm run dev -- --host
 
 .PHONY: folders
 folders:
@@ -61,6 +73,10 @@ artisan:
 migrate:
 	docker-compose exec laravel php artisan migrate
 
+.PHONY: localdb
+localdb:
+	cat tests/data/init.sql | docker-compose exec -T postgres psql -Upostgres
+
 .PHONY: clear
 clear:
 	docker-compose exec laravel php artisan cache:clear
@@ -72,11 +88,14 @@ clear:
 	docker-compose exec laravel php artisan schedule:clear-cache
 	docker-compose exec laravel php artisan optimize:clear
 
-.PHONY: install-all
-install-all:
+.PHONY: install
+install:
 	docker-compose exec laravel composer install
-	docker-compose exec laravel npm install
-	docker-compose exec laravel npm run production
+	docker-compose exec node npm install
+
+.PHONY: chown
+chown:
+    sudo chown -R "${USER}:${USER}" ./
 
 .PHONY: up-dev
 up-dev:
@@ -127,16 +146,20 @@ clear-dev:
 	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan schedule:clear-cache
 	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan optimize:clear
 
-.PHONY: install-all-dev
-install-all-dev:
+.PHONY: install-dev
+install-dev:
 	docker-compose -f ./docker-compose.dev.yml exec laravel composer install
-	docker-compose -f ./docker-compose.dev.yml exec laravel npm install
-	docker-compose -f ./docker-compose.dev.yml exec laravel npm run build
+	docker-compose -f ./docker-compose.dev.yml exec node npm install
+
+.41+PHONY: front-dev
+front-dev:
+	docker-compose -f ./docker-compose.dev.yml exec exec node npm run build
 
 .PHONY: folders-dev
 folders-dev:
 	docker-compose -f ./docker-compose.dev.yml exec laravel chmod -R 777 /var/www/html/storage && echo "Make writeable storage..."
 	docker-compose -f ./docker-compose.dev.yml exec laravel chmod -R 777 /var/www/html/bootstrap && echo "Make writeable bootstrap..."
+
 
 .PHONY: default
 default: up
