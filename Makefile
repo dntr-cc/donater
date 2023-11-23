@@ -93,6 +93,10 @@ install:
 	docker-compose exec laravel composer install
 	docker-compose exec node npm install
 
+.PHONY: chown
+chown:
+    sudo chown -R "${USER}:${USER}" ./
+
 .PHONY: up-dev
 up-dev:
 	docker-compose -f ./docker-compose.dev.yml up -d
@@ -155,6 +159,7 @@ front-dev:
 folders-dev:
 	docker-compose -f ./docker-compose.dev.yml exec laravel chmod -R 777 /var/www/html/storage && echo "Make writeable storage..."
 	docker-compose -f ./docker-compose.dev.yml exec laravel chmod -R 777 /var/www/html/bootstrap && echo "Make writeable bootstrap..."
+
 
 .PHONY: default
 default: up
