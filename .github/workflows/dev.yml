@@ -1,36 +1,22 @@
-name: dev
+name: deploy
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
     branches: [ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Check previous deploy
-        run: |
-          status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy)
-          while [[ "$status_code" -ne 204 ]]; do echo "Previous deploy in progress. Waiting 20sec..." && sleep 20 && status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy); done
-        shell: bash
-      - name: Remove .git
-        run: |
-          rm -rf .git
-      - name: Create deploy.pid for run job after deploy
-        run: |
-          touch ./deploy.pid
-      - name: rsync deployments
-        uses: burnett01/rsync-deployments@5.2
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
         with:
-          switches: -avzr
-          path: ./
-          remote_path: ${{ secrets.DEPLOY_PATH }}
-          remote_host: ${{ secrets.DEPLOY_HOST }}
-          remote_port: ${{ secrets.DEPLOY_PORT }}
-          remote_user: ${{ secrets.DEPLOY_USER }}
-          remote_key: ${{ secrets.DEPLOY_KEY }}
-          remote_key_pass: ${{ secrets.DEPLOY_KEY_PASS }}
-
+          key: ${{ secrets.DEPLOY_KEY }}
+          name: id_rsa
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_HOST }}  >> ~/.ssh/known_hosts
+      - name: Run rsync
+        run: |
+          mkdir -p ~/backup
+          rsync -avzr -e 'ssh -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} -i ~/.ssh/id_rsa'  ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}

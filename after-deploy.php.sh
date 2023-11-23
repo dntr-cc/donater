@@ -10,8 +10,8 @@ function install_website() {
             break
         fi
     done
-    date | sed 's/$/: RUN restart supervisorctl/'
-    supervisorctl restart scheduler > /dev/null 2>&1 || supervisorctl restart scheduler >> /var/log/supervisor/laravel-deploy.log
+    date | sed 's/$/: CRTEAT restart supervisorctl pid file/'
+    touch supervisor-restart.pid > /dev/null 2>&1 || touch supervisor-restart.pid >> /var/log/supervisor/laravel-deploy.log
     date | sed 's/$/: RUN chmod -R 777 storage/'
     chmod -R 777 storage > /dev/null 2>&1 || chmod -R 777 storage >> /var/log/supervisor/laravel-deploy.log
     if [ $(md5sum composer.lock | awk '{ print $1 }') == $(cat composer.md5) ] ; then
