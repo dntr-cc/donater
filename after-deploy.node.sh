@@ -9,8 +9,7 @@ function install_website() {
         md5sum package-lock.json | awk '{ print $1 }' > npm.md5
     fi
     date | sed 's/$/: RUN npm run build/'
-    npm run prod --silent > /dev/null 2>&1 || npm run prod --silent >> /var/log/supervisor/laravel-deploy.log
-    date | sed 's/$/: RUN clear caches/'
+    npm run build --silent > /dev/null 2>&1 || npm run build --silent >> /var/log/supervisor/laravel-deploy.log
 }
 
 for i in {1..360} ; do
@@ -19,6 +18,7 @@ for i in {1..360} ; do
         touch ./deploy.npm.pid
         install_website
         rm ./deploy.npm.pid
+        sleep 30
     else
         sleep 1
     fi
