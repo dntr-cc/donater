@@ -10,7 +10,7 @@ function install_website() {
             break
         fi
     done
-    date | sed 's/$/: CRTEAT restart supervisorctl pid file/'
+    date | sed 's/$/: CREATE restart supervisorctl pid file/'
     touch supervisor-restart.pid > /dev/null 2>&1 || touch supervisor-restart.pid >> /var/log/supervisor/laravel-deploy.log
     date | sed 's/$/: RUN chmod -R 777 storage/'
     chmod -R 777 storage > /dev/null 2>&1 || chmod -R 777 storage >> /var/log/supervisor/laravel-deploy.log
@@ -35,6 +35,7 @@ function install_website() {
 	php artisan route:clear
 	php artisan queue:clear
 	php artisan schedule:clear-cache
+	php artisan up
 }
 
 for i in {1..60} ; do
