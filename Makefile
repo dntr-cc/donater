@@ -121,7 +121,7 @@ rebuild-dev: stop
 
 .PHONY: bash-dev
 bash-dev:
-	docker-compose -f ./docker-compose.dev.yml exec laravel bash
+	docker-compose  --user root -f ./docker-compose.dev.yml exec laravel bash
 
 .PHONY: logs-dev
 logs-dev:

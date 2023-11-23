@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-#      - name: Check previous deploy
-#        run: |
-#          status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy)
-#          while [[ "$status_code" -ne 204 ]]; do echo "Previous deploy in progress. Waiting 20sec..." && sleep 20 && status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy); done
-#        shell: bash
+      - name: Check previous deploy
+        run: |
+          status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy)
+          while [[ "$status_code" -ne 204 ]]; do echo "Previous deploy in progress. Waiting 20sec..." && sleep 20 && status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy); done
+        shell: bash
       - name: Remove .git
         run: |
           rm -rf .git
