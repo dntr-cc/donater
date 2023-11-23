@@ -71,7 +71,7 @@ services:
     env_file:
       - .env
     ports:
-      - '${REDIS_PORT:-6379}:6379'
+      - '${REDIS_PORT_DOCKER:-6379}:6379'
     volumes:
       - 'sail-redis:/data'
     networks:
