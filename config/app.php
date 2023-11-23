@@ -154,6 +154,7 @@ return [
     |
     */
 
+    'version'  => (string)file_get_contents(base_path('version.md')) ?? 'sha12345678',
     'dev_hash' => env('DEV_HASH', ''),
 
     'providers' => [
