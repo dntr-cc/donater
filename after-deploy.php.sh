@@ -29,13 +29,13 @@ function install_website() {
         tar -cf - database/migrations | md5sum | awk '{ print $1 }' > migrations.md5
     fi
     date | sed 's/$/: RUN clear caches/'
-	php artisan config:clear
-	php artisan event:clear
-	php artisan route:clear
-	php artisan route:clear
-	php artisan queue:clear
-	php artisan schedule:clear-cache
-	php artisan up
+    php artisan config:clear
+    php artisan event:clear
+    php artisan route:clear
+    php artisan route:clear
+    php artisan queue:clear
+    php artisan schedule:clear-cache
+    php artisan up
 }
 
 for i in {1..60} ; do
