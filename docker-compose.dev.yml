@@ -7,8 +7,8 @@ services:
     environment:
       WEBROOT: '/var/www/html/public'
       PHPFPMHOST: 'laravel'
-      GID: 1000
-      UID: 1000
+      GID: $USER
+      UID: $USER
     ports:
       - '${DOCKER_APP_PORT:-80}:80'
     volumes:
@@ -23,8 +23,8 @@ services:
       - .env
     environment:
       TZ: Europe/Kiev
-      GID: 1000
-      UID: 1000
+      GID: $USER
+      UID: $USER
     ports:
       - '9000:9000'
     volumes:
