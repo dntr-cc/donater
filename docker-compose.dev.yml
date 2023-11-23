@@ -25,8 +25,8 @@ services:
       - '9000:9000'
     volumes:
       - '.:/var/www/html'
-      - './supervisor/deploy.conf:/etc/supervisor/conf.d/deploy.conf:ro'
-      - './supervisor/schedule.conf:/etc/supervisor/conf.d/schedule.conf:ro'
+      - './supervisor/deploy.php.conf:/etc/supervisor/conf.d/deploy.php.conf'
+      - './supervisor/schedule.conf:/etc/supervisor/conf.d/schedule.conf'
     networks:
       - sail
     depends_on:
@@ -42,7 +42,7 @@ services:
       - '${VITE_PORT:-5173}:5173'
     volumes:
       - ./:/var/www/html
-      - './supervisor/deploy.node.conf:/etc/supervisor/conf.d/deploy.node.conf:ro'
+      - './supervisor/deploy.node.conf:/etc/supervisor/conf.d/deploy.node.conf'
   postgres:
     image: postgres:9.5-alpine
     env_file:
