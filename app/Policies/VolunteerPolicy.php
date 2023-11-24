@@ -20,9 +20,9 @@ class VolunteerPolicy
         return $volunteer->isEnabled() || $user && $user->getId() === $volunteer->getUserId();
     }
 
-    public function create(User $user): bool
+    public function create(?User $user): bool
     {
-        return true;
+        return !!$user;
     }
 
     public function update(User $user, Volunteer $volunteer): bool

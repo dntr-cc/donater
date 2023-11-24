@@ -9,13 +9,14 @@ class VolunteerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'key'       => ['required'],
-            'name'       => ['required'],
-            'link'       => ['required'],
-            'page'       => ['required'],
-            'avatar'     => ['required'],
-            'is_enabled' => ['required'],
-            'user_id'    => ['required', 'integer'],
+            'key'            => ['required'],
+            'name'           => ['required'],
+            'link'           => ['required'],
+            'page'           => ['required'],
+            'avatar'         => ['required'],
+            'description'    => ['required'],
+            'user_id'        => ['required', 'integer'],
+            'spreadsheet_id' => ['required'],
         ];
     }
 

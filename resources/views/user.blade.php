@@ -3,7 +3,7 @@
 @php use App\Models\UserLink; @endphp
 @php use App\Models\Volunteer; @endphp
 @php /** @var User $user */ @endphp
-@php /** @var Donate $donate */ @endphp
+@php /** @var Donate $volunteer */ @endphp
 @php /** @var Volunteer $volunteer */ @endphp
 @php /** @var UserLink $link */ @endphp
 @extends('layouts.base')
@@ -21,7 +21,7 @@
                             <div class="card-body text-center">
                                 <img src="{{ $user->getAvatar() }}"
                                      @if (auth()?->user()?->getId() === $user->getId())
-                                     data-bs-toggle="modal" data-bs-target="#userEditModal"
+                                         data-bs-toggle="modal" data-bs-target="#userEditModal"
                                      @endif
                                      alt="avatar"
                                      class="rounded-circle img-fluid" style="width: 150px;">
@@ -36,7 +36,8 @@
                                     <button type="button" title="Завалідовані донати"
                                             class="btn btn-lg btn-outline-success-light rounded-pill position-relative">
                                         <i class="bi bi-check-circle-fill text-success"></i>
-                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
                                             {{ $user->getApprovedDonateCount() }}
                                             <span class="visually-hidden">завалідовані донати</span>
                                         </span>
@@ -46,7 +47,8 @@
                                     <button type="button" title="Очікують валідації"
                                             class="btn btn-lg btn-outline-secondary-light rounded-pill position-relative">
                                         <i class="bi bi-clock-fill text-success-light"></i>
-                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
                                             {{ $user->getNotValidatedDonatesCount() }}
                                             <span class="visually-hidden">Очікують валідації</span>
                                         </span>
@@ -126,8 +128,49 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12 mb-md-0">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <ul class="list-group list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                        <div class="me-auto mt-auto">
+                                            <h4>Збори та Фонди</h4>
+                                        </div>
+                                        @if (auth()?->user()?->getId() === $user->getId())
+                                            <a href="{{route('volunteer.create')}}" class="btn btn-outline-success">
+                                                <i class="bi bi-plus-circle-fill"></i>
+                                                Створити
+                                            </a>
+                                        @endif
+                                    </li>
+                                    @foreach($user->getVolunteers() as $it => $volunteer)
+                                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                                            <div class="ms-2 me-auto">
+                                                <div class="fw-bold">{{ $volunteer->getName() }}</div>
+{{--                                                Код внеску {{ $volunteer->getUniqHash() }}.--}}
+{{--                                                Створено {{ $volunteer->getCreatedAt()->format('Y-m-d H:i:s') }}.--}}
+{{--                                                @if($volunteer->isValidated())--}}
+{{--                                                    Завалідовано {{ $volunteer->getValidatedAt()->format('Y-m-d H:i:s') }}--}}
+{{--                                                    .--}}
+{{--                                                @endif--}}
+                                            </div>
+{{--                                            @if($volunteer->isValidated())--}}
+{{--                                                <span class="badge text-bg-success ">--}}
+{{--                                                    Завалідовано--}}
+{{--                                                    <i class="bi bi-check-circle-fill text-bg-success"></i>--}}
+{{--                                                </span>--}}
+{{--                                            @else--}}
+{{--                                                <span class="badge text-bg-secondary rounded-pill">--}}
+{{--                                                    очікує на валідацію--}}
+{{--                                                    <i class="bi bi-clock text-bg-secondary"></i>--}}
+{{--                                                </span>--}}
+{{--                                            @endif--}}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-body">
                                 <ul class="list-group list-group">
                                     <li class="list-group-item d-flex justify-content-between align-items-start">
                                         <div class="me-auto mt-auto">
@@ -140,17 +183,18 @@
                                             </a>
                                         @endif
                                     </li>
-                                    @foreach($user->getDonates() as $it => $donate)
+                                    @foreach($user->getDonates() as $it => $volunteer)
                                         <li class="list-group-item d-flex justify-content-between align-items-start">
                                             <div class="ms-2 me-auto">
-                                                <div class="fw-bold">{{ $donate->getHumanType() }}</div>
-                                                Код внеску {{ $donate->getUniqHash() }}.
-                                                Створено {{ $donate->getCreatedAt()->format('Y-m-d H:i:s') }}.
-                                                @if($donate->isValidated())
-                                                    Завалідовано {{ $donate->getValidatedAt()->format('Y-m-d H:i:s') }}.
+                                                <div class="fw-bold">{{ $volunteer->getHumanType() }}</div>
+                                                Код внеску {{ $volunteer->getUniqHash() }}.
+                                                Створено {{ $volunteer->getCreatedAt()->format('Y-m-d H:i:s') }}.
+                                                @if($volunteer->isValidated())
+                                                    Завалідовано {{ $volunteer->getValidatedAt()->format('Y-m-d H:i:s') }}
+                                                    .
                                                 @endif
                                             </div>
-                                            @if($donate->isValidated())
+                                            @if($volunteer->isValidated())
                                                 <span class="badge text-bg-success ">
                                                     Завалідовано
                                                     <i class="bi bi-check-circle-fill text-bg-success"></i>
@@ -172,118 +216,119 @@
         </div>
     </div>
     @auth
-    <div class="modal fade" id="createLinkModal" tabindex="-1" aria-labelledby="createLinkModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="createLinkModalLabel">Створити нове посилання</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form class="form">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            @csrf
-                            <div class="form-floating py-1">
-                                <input type="text" class="form-control" maxlength="180" name="linkUrl" id="linkUrl"
-                                       required>
-                                <label for="linkUrl">
-                                    Посилання
-                                </label>
-                            </div>
-                            <div class="form-floating py-1">
-                                <input type="text" class="form-control" maxlength="20" name="linkName" id="linkName"
-                                       required>
-                                <label for="linkName">
-                                    Назва
-                                </label>
-                            </div>
-                            <div class="form-floating py-1 input-group">
+        <div class="modal fade" id="createLinkModal" tabindex="-1" aria-labelledby="createLinkModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="createLinkModalLabel">Створити нове посилання</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form class="form">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                @csrf
+                                <div class="form-floating py-1">
+                                    <input type="text" class="form-control" maxlength="180" name="linkUrl" id="linkUrl"
+                                           required>
+                                    <label for="linkUrl">
+                                        Посилання
+                                    </label>
+                                </div>
+                                <div class="form-floating py-1">
+                                    <input type="text" class="form-control" maxlength="20" name="linkName" id="linkName"
+                                           required>
+                                    <label for="linkName">
+                                        Назва
+                                    </label>
+                                </div>
+                                <div class="form-floating py-1 input-group">
                                 <span class="input-group-text">
                                      <i id="icon-preview" class="bi bi-globe"></i>
                                 </span>
-                                <select id="linkIcon" class="form-select" name="linkIcon">
-                                    <option value="globe" selected>Оберіть іконку</option>
-                                    @foreach(UserLink::ICONS as $style => $name )
-                                        <option value="{{ $style }}">
-                                            <i class="{{ $style }}"></i>
-                                            {{ $name  }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                    <select id="linkIcon" class="form-select" name="linkIcon">
+                                        <option value="globe" selected>Оберіть іконку</option>
+                                        @foreach(UserLink::ICONS as $style => $name )
+                                            <option value="{{ $style }}">
+                                                <i class="{{ $style }}"></i>
+                                                {{ $name  }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
+                            <p id="linkError" style="display: none;" class="lead fw-bold text-danger"></p>
                         </div>
-                        <p id="linkError" style="display: none;" class="lead fw-bold text-danger"></p>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-secondary justify-content-evenly"
-                                data-bs-dismiss="modal">
-                            Закрити
-                        </button>
-                        <button id="createLink" type="submit" class="btn btn-primary">Зберігти</button>
-                    </div>
-                </form>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-secondary justify-content-evenly"
+                                    data-bs-dismiss="modal">
+                                Закрити
+                            </button>
+                            <button id="createLink" type="submit" class="btn btn-primary">Зберігти</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="userEditModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="userEditModalLabel">Змінити дані профілю</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form class="form">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            @csrf
-                            <div class="d-flex justify-content-center">
+        <div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="userEditModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="userEditModalLabel">Змінити дані профілю</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form class="form">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                @csrf
+                                <div class="d-flex justify-content-center">
                                 <span class="position-relative">
                                     <img src="{{ $user->getAvatar() }}"
-                                     alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                         alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
                                     <label for="file" type="file"
                                            class="position-absolute top-80 start-80 translate-middle badge rounded-pill bg-danger">
                                         <i class="bi bi-pencil-fill font-large"></i>
                                     </label>
                                     <input id="file" type="file" style="display: none;" accept="image/*">
                                 </span>
+                                </div>
+                                <div class="form-floating py-1">
+                                    <input type="text" class="form-control" maxlength="50" name="username" id="username"
+                                           value="{{ $user->getUsername() }}">
+                                    <label for="username">
+                                        Нікнейм
+                                    </label>
+                                </div>
+                                <div class="form-floating py-1">
+                                    <input type="text" class="form-control" maxlength="50" name="firstName"
+                                           id="firstName"
+                                           value="{{ $user->getFirstName() }}">
+                                    <label for="firstName">
+                                        Ім'я
+                                    </label>
+                                </div>
+                                <div class="form-floating py-1">
+                                    <input type="text" class="form-control" maxlength="50" name="lastName" id="lastName"
+                                           value="{{ $user->getLastName() }}">
+                                    <label for="lastName">
+                                        Прізвище
+                                    </label>
+                                </div>
                             </div>
-                            <div class="form-floating py-1">
-                                <input type="text" class="form-control" maxlength="50" name="username" id="username"
-                                       value="{{ $user->getUsername() }}">
-                                <label for="username">
-                                    Нікнейм
-                                </label>
-                            </div>
-                            <div class="form-floating py-1">
-                                <input type="text" class="form-control" maxlength="50" name="firstName" id="firstName"
-                                       value="{{ $user->getFirstName() }}">
-                                <label for="firstName">
-                                    Ім'я
-                                </label>
-                            </div>
-                            <div class="form-floating py-1">
-                                <input type="text" class="form-control" maxlength="50" name="lastName" id="lastName"
-                                       value="{{ $user->getLastName() }}">
-                                <label for="lastName">
-                                    Прізвище
-                                </label>
-                            </div>
+                            <p id="userEditError" style="display: none;" class="lead fw-bold text-danger"></p>
                         </div>
-                        <p id="userEditError" style="display: none;" class="lead fw-bold text-danger"></p>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-secondary justify-content-evenly"
-                                data-bs-dismiss="modal">
-                            Закрити
-                        </button>
-                        <button id="userEdit" type="submit" class="btn btn-primary">Зберігти</button>
-                    </div>
-                </form>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-secondary justify-content-evenly"
+                                    data-bs-dismiss="modal">
+                                Закрити
+                            </button>
+                            <button id="userEdit" type="submit" class="btn btn-primary">Зберігти</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
     @endauth
     <script type="module">
         let copyLink = $('#copyLink');
@@ -301,8 +346,8 @@
         $('#userEdit').on('click', function (e) {
             e.preventDefault();
             let formData = {
-                first_name:  $('#firstName').val(),
-                last_name:  $('#lastName').val(),
+                first_name: $('#firstName').val(),
+                last_name: $('#lastName').val(),
             };
             let newUsername = $('#username').val();
             if (newUsername !== '{{ $user->getUsername() }}') {

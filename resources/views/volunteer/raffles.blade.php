@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-md-4 px-2 py-2">
                         <div class="card border-0 rounded-4 shadow-lg">
-                            <a href="{{ route('zvit.volunteer', ['volunteer' => $volunteer->getKey()]) }}" class="card">
+                            <a href="{{ route('volunteer.show', ['volunteer' => $volunteer->getKey()]) }}" class="card">
                                 <img src="{{ url($volunteer->getAvatar()) }}" class="bg-image-position-center"
                                      alt="{{ $volunteer->getName() }}">
                             </a>

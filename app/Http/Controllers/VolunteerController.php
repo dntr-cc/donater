@@ -23,12 +23,17 @@ class VolunteerController extends Controller
         return new VolunteerResource(Volunteer::create($request->validated()));
     }
 
+    public function create()
+    {
+        return view('volunteer.create');
+    }
+
     public function show(Volunteer $volunteer)
     {
         $this->authorize('view', $volunteer);
         $rows = app(GoogleServiceSheets::class)->getRowCollection($volunteer);
 
-        return view('volunteer', compact('volunteer', 'rows'));
+        return view('volunteer.show', compact('volunteer', 'rows'));
     }
 
     public function update(VolunteerRequest $request, Volunteer $volunteer)

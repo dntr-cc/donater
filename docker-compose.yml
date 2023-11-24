@@ -41,7 +41,7 @@ services:
             - '${VITE_PORT:-5173}:5173'
         volumes:
             - ./:/var/www/html
-            - './supervisor/deploy.node.conf:/etc/supervisor/conf.d/deploy.node.conf:ro'
+            - './supervisor/deploy.node.conf:/etc/supervisor/conf.d/deploy.node.conf'
     postgres:
         image: postgres:9.5-alpine
         env_file:

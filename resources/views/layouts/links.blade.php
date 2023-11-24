@@ -14,7 +14,7 @@
     Задонатити
 </a>
 @if($withZvitLink)
-    <a href="{{route('zvit.volunteer', ['volunteer' => $volunteer->getKey()])}}" class="btn btn-outline-success m-1">
+    <a href="{{route('volunteer.show', ['volunteer' => $volunteer->getKey()])}}" class="btn btn-outline-success m-1">
         <i class="bi bi-info-square-fill"></i>
         Звіт
     </a>

@@ -50,12 +50,13 @@ node:
 
 .PHONY: vite
 vite:
-	docker-compose exec node npm run dev -- --host
+	docker-compose exec node npm run dev
+
 
 .PHONY: folders
 folders:
-	docker-compose exec laravel chmod -R 777 /var/www/html/storage && echo "Make writeable storage..."
-	docker-compose exec laravel chmod -R 777 /var/www/html/bootstrap && echo "Make writeable bootstrap..."
+	docker-compose exec laravel chmod -R 1777 /var/www/html/storage && echo "Make writeable storage..."
+	docker-compose exec laravel chmod -R 1777 /var/www/html/bootstrap && echo "Make writeable bootstrap..."
 
 .PHONY: logs
 logs:
@@ -75,7 +76,7 @@ migrate:
 
 .PHONY: localdb
 localdb:
-	cat tests/data/init.sql | docker-compose exec -T postgres psql -Upostgres
+	cat tests/data/init.sql | docker-compose exec -T postgres psql -Udocker
 
 .PHONY: clear
 clear:

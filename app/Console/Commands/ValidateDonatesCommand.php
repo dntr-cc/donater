@@ -44,7 +44,7 @@ class ValidateDonatesCommand extends Command
                             'chat_id' => $telegramId,
                             'text'    => strtr('Ваш внесок :code було завалідовано! Подивитися звіт: :url', [
                                 ':code' => $donate->getUniqHash(),
-                                ':url'  => route('zvit.volunteer', ['volunteer' => $volunteer->getKey()]),
+                                ':url'  => route('volunteer.show', ['volunteer' => $volunteer->getKey()]),
                             ]),
                         ]);
                     }
