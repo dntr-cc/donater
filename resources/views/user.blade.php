@@ -157,20 +157,20 @@
 {{--                                            </p>--}}
                                         </div>
                                         <div>
-                                            @can ('update', $volunteer)
-                                                <a href="{{route('volunteer.edit')}}" class="btn-xs btn btn-outline-warning m-1">
-                                                    <i class="bi bi-pencil-fill"></i>
-                                                </a>
-                                                @if ($volunteer->isEnabled())
-                                                    <a href="{{route('volunteer.edit')}}" class="btn-xs btn btn-outline-danger m-1">
-                                                        <i class="bi bi-stop-circle-fill"></i>
-                                                    </a>
-                                                @else
-                                                    <a href="{{route('volunteer.edit')}}" class="btn-xs btn btn-outline-success m-1">
-                                                        <i class="bi bi-play-circle"></i>
-                                                    </a>
-                                                @endif
-                                            @endcan
+{{--                                            @can ('update', $volunteer)--}}
+{{--                                                <a href="{{route('volunteer.edit')}}" class="btn-xs btn btn-outline-warning m-1">--}}
+{{--                                                    <i class="bi bi-pencil-fill"></i>--}}
+{{--                                                </a>--}}
+{{--                                                @if ($volunteer->isEnabled())--}}
+{{--                                                    <a href="{{route('volunteer.edit')}}" class="btn-xs btn btn-outline-danger m-1">--}}
+{{--                                                        <i class="bi bi-stop-circle-fill"></i>--}}
+{{--                                                    </a>--}}
+{{--                                                @else--}}
+{{--                                                    <a href="{{route('volunteer.edit')}}" class="btn-xs btn btn-outline-success m-1">--}}
+{{--                                                        <i class="bi bi-play-circle"></i>--}}
+{{--                                                    </a>--}}
+{{--                                                @endif--}}
+{{--                                            @endcan--}}
                                         </div>
                                     </div>
                                 </div>
