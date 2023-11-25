@@ -6,6 +6,8 @@
 @php /** @var Donate $volunteer */ @endphp
 @php /** @var Volunteer $volunteer */ @endphp
 @php /** @var UserLink $link */ @endphp
+@php $withZvitLink = true; @endphp
+@php $additionalClasses = 'btn-xs'; @endphp
 @extends('layouts.base')
 @section('page_title', strtr(':fullName (:username) - користувач сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]))
 @section('page_description', strtr(':fullName (:username) - користувач сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]))
@@ -130,43 +132,51 @@
                         </div>
                         <div class="card mb-4">
                             <div class="card-body">
-                                <ul class="list-group list-group">
-                                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                                        <div class="me-auto mt-auto">
-                                            <h4>Збори та Фонди</h4>
+                                <div class="row">
+                                    <div class="col-sm-12 d-flex justify-content-between align-items-start">
+                                        <h4>Збори та Фонди</h4>
+{{--                                        @if (auth()?->user()?->getId() === $user->getId())--}}
+{{--                                            <a href="{{route('volunteer.create')}}" class="btn btn-outline-success">--}}
+{{--                                                <i class="bi bi-plus-circle-fill"></i>--}}
+{{--                                                Створити--}}
+{{--                                            </a>--}}
+{{--                                        @endif--}}
+                                    </div>
+                                </div>
+                                <hr>
+                                @foreach($user->getVolunteers() as $it => $volunteer)
+
+                                <div class="row">
+                                    <div class="col-sm-12 d-flex justify-content-between align-items-start volunteer"
+                                        data-volunteer="{{ $volunteer->getKey() }}">
+                                        <div class="fw-bold">
+                                            {{ $volunteer->getName() }}
+                                            @include('layouts.links', compact('volunteer', 'withZvitLink', 'additionalClasses'))
+{{--                                            <p class="lead" data-volunteer="{{ $volunteer->getKey() }}" style="display: none">--}}
+{{--                                                {!! $volunteer->getDescription() !!}--}}
+{{--                                            </p>--}}
                                         </div>
-                                        @if (auth()?->user()?->getId() === $user->getId())
-                                            <a href="{{route('volunteer.create')}}" class="btn btn-outline-success">
-                                                <i class="bi bi-plus-circle-fill"></i>
-                                                Створити
-                                            </a>
-                                        @endif
-                                    </li>
-                                    @foreach($user->getVolunteers() as $it => $volunteer)
-                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                            <div class="ms-2 me-auto">
-                                                <div class="fw-bold">{{ $volunteer->getName() }}</div>
-{{--                                                Код внеску {{ $volunteer->getUniqHash() }}.--}}
-{{--                                                Створено {{ $volunteer->getCreatedAt()->format('Y-m-d H:i:s') }}.--}}
-{{--                                                @if($volunteer->isValidated())--}}
-{{--                                                    Завалідовано {{ $volunteer->getValidatedAt()->format('Y-m-d H:i:s') }}--}}
-{{--                                                    .--}}
-{{--                                                @endif--}}
-                                            </div>
-{{--                                            @if($volunteer->isValidated())--}}
-{{--                                                <span class="badge text-bg-success ">--}}
-{{--                                                    Завалідовано--}}
-{{--                                                    <i class="bi bi-check-circle-fill text-bg-success"></i>--}}
-{{--                                                </span>--}}
-{{--                                            @else--}}
-{{--                                                <span class="badge text-bg-secondary rounded-pill">--}}
-{{--                                                    очікує на валідацію--}}
-{{--                                                    <i class="bi bi-clock text-bg-secondary"></i>--}}
-{{--                                                </span>--}}
-{{--                                            @endif--}}
-                                        </li>
-                                    @endforeach
-                                </ul>
+                                        <div>
+                                            @can ('update', $volunteer)
+                                                <a href="{{route('volunteer.edit')}}" class="btn-xs btn btn-outline-warning m-1">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                </a>
+                                                @if ($volunteer->isEnabled())
+                                                    <a href="{{route('volunteer.edit')}}" class="btn-xs btn btn-outline-danger m-1">
+                                                        <i class="bi bi-stop-circle-fill"></i>
+                                                    </a>
+                                                @else
+                                                    <a href="{{route('volunteer.edit')}}" class="btn-xs btn btn-outline-success m-1">
+                                                        <i class="bi bi-play-circle"></i>
+                                                    </a>
+                                                @endif
+                                            @endcan
+                                        </div>
+                                    </div>
+                                </div>
+                                    <hr>
+                                @endforeach
+
                             </div>
                         </div>
                         <div class="card mb-4">

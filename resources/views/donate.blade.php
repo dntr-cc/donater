@@ -3,6 +3,8 @@
 @section('page_description', 'Вся звітність по Фондам та актуальним зборам коштів - donater.com.ua')
 @php use App\Services\DonateService; @endphp
 @php use App\Models\Volunteer; @endphp
+@php /** @var Volunteer $volunteer */ @endphp
+@php $choosen = request()->get('volunteer', ''); @endphp
 @php $uniqueCode = app(DonateService::class)->getNewUniqueHash(); @endphp
 
 @section('content')
@@ -34,10 +36,16 @@
                             <div class="form">
                                 <select id="chooseVolunteer" class="form-select form-select-lg mb-3"
                                         aria-label="Оберіть збір">
-                                    <option value="0" selected>Оберіть збір</option>
+                                    <option value="0" @if('' === $choosen)
+                                        selected
+                                        @endif>Оберіть збір</option>
                                     @foreach(Volunteer::getActual()->all() as $volunteer)
                                         <option data-url="{{ $volunteer->getLink() }}"
-                                                value="{{ $volunteer->getId() }}">
+                                                data-key="{{ $volunteer->getKey() }}"
+                                                value="{{ $volunteer->getId() }}"
+                                                @if($volunteer->getKey() === $choosen)
+                                                    selected
+                                            @endif>
                                             {{ $volunteer->getName() }}
                                         </option>
                                     @endforeach
@@ -100,18 +108,25 @@
         $('#jarLink').click(() => {
             $('#createDonate').attr('disabled', false);
         });
+        const choosen = '{{ $choosen }}';
+        console.log(choosen)
+        function volunteerHasBeenChoosen(selected) {
+            $('#jarLink').attr('href', selected.data('url')).text(
+                'Відкрийте банку по посиланню, зробіть донат, обов\'язково код в коментарі'
+            );
+            $('#commentImg').show();
+            let volunteer = selected.text().trim();
+            let donateCode = $('#donateCode').val();
+            const text = 'Після донату з кодом "code" в банку volunteer треба натиснути "Зберігти". Без цього внесок не буде зараховано!'
+            $('#acceptDonate').text(text.replace('code', donateCode).replace('volunteer', volunteer));
+        }
+            if (choosen) {
+                volunteerHasBeenChoosen($('#chooseVolunteer option:selected'));
+            }
         document.querySelector('#chooseVolunteer').addEventListener('change', () => {
             let selected = $('#chooseVolunteer option:selected');
-            console.log(selected)
             if (selected.val() > 0) {
-                $('#jarLink').attr('href', selected.data('url')).text(
-                    'Відкрийте банку по посиланню, зробіть донат, обов\'язково код в коментарі'
-                );
-                $('#commentImg').show();
-                let volunteer = selected.text().trim();
-                let donateCode = $('#donateCode').val();
-                const text = 'Після донату з кодом "code" в банку volunteer треба натиснути "Зберігти". Без цього внесок не буде зараховано!'
-                $('#acceptDonate').text(text.replace('code', donateCode).replace('volunteer', volunteer));
+                volunteerHasBeenChoosen(selected);
             } else {
                 $('#commentImg').hide();
                 $('#jarLink').attr('href', '').text('');

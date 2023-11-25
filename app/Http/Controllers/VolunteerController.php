@@ -28,6 +28,14 @@ class VolunteerController extends Controller
         return view('volunteer.create');
     }
 
+    public function edit(Volunteer $volunteer)
+    {
+        $this->authorize('view', $volunteer);
+        $rows = app(GoogleServiceSheets::class)->getRowCollection($volunteer);
+
+        return view('volunteer.show', compact('volunteer', 'rows'));
+    }
+
     public function show(Volunteer $volunteer)
     {
         $this->authorize('view', $volunteer);

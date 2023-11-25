@@ -9,6 +9,10 @@
 @import '~bootstrap-icons/font/bootstrap-icons.css';
 @import 'mdb-ui-kit/css/mdb.min.css';
 
+.btn-xs {
+    --bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
+}
+
 .timeline-with-icons {
     border-left: 1px solid hsl(0, 0%, 90%);
     position: relative;

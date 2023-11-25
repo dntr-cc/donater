@@ -53,6 +53,7 @@ Route::get('/zvit/{volunteer}', [App\Http\Controllers\VolunteerController::class
 Route::get('/raffles', fn() => view('volunteer.raffles', data: ['volunteers' => Volunteer::whereIn('key', config('app.raffles'))->get()]))->name('raffles');
 Route::post('/volunteer', [App\Http\Controllers\VolunteerController::class, 'store'])->name('volunteer.create');
 Route::get('/volunteer/new', [App\Http\Controllers\VolunteerController::class, 'create'])->name('volunteer.create');
+Route::get('/volunteer/edit', [App\Http\Controllers\VolunteerController::class, 'edit'])->name('volunteer.edit');
 
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
