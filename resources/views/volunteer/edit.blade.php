@@ -39,15 +39,15 @@
                                     <div class="col-md-6 mb-3">
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <div class="col-md-6 mb-3">
-                                                    <div class="form-floating">
-                                                        <input type="text" class="form-control" id="name"
-                                                               value="{{ $volunteer->getName() }}" required maxlength="50">
-                                                        <label for="name">
-                                                            Назва (до 50 символів)
-                                                        </label>
-                                                    </div>
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control" id="name"
+                                                           value="{{ $volunteer->getName() }}" required maxlength="50">
+                                                    <label for="name">
+                                                        Назва (до 50 символів)
+                                                    </label>
                                                 </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="key"
                                                            value="{{ $volunteer->getKey() }}" required>
