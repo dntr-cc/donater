@@ -48,12 +48,18 @@ Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLog
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-Route::get('/zvit', fn() => view('volunteer.zvit', ['volunteers' => Volunteer::where('is_enabled', '=', true)->get()]))->name('volunteer.all');
+Route::get('/zvit', fn() => view('volunteer.zvit', ['volunteers' => Volunteer::all()]))->name('volunteer.all');
 Route::get('/zvit/{volunteer}', [App\Http\Controllers\VolunteerController::class, 'show'])->name('volunteer.show');
 Route::get('/raffles', fn() => view('volunteer.raffles', data: ['volunteers' => Volunteer::whereIn('key', config('app.raffles'))->get()]))->name('raffles');
 Route::post('/volunteer', [App\Http\Controllers\VolunteerController::class, 'store'])->name('volunteer.create');
-Route::get('/volunteer/new', [App\Http\Controllers\VolunteerController::class, 'create'])->name('volunteer.create');
-Route::get('/volunteer/edit', [App\Http\Controllers\VolunteerController::class, 'edit'])->name('volunteer.edit');
+Route::post('/volunteer/avatar', [App\Http\Controllers\VolunteerController::class, 'storeAvatar'])->name('volunteer.avatar');
+Route::post('/volunteer/key', [App\Http\Controllers\VolunteerController::class, 'checkKey'])->name('volunteer.key');
+Route::post('/volunteer/spreadsheet', [App\Http\Controllers\VolunteerController::class, 'spreadsheet'])->name('volunteer.spreadsheet');
+Route::get('/volunteer/new', [App\Http\Controllers\VolunteerController::class, 'create'])->name('volunteer.new');
+Route::get('/volunteer/{volunteer}/edit', [App\Http\Controllers\VolunteerController::class, 'edit'])->name('volunteer.edit');
+Route::patch('/volunteer/{volunteer}/edit', [App\Http\Controllers\VolunteerController::class, 'update'])->name('volunteer.update');
+Route::get('/volunteer/{volunteer}/start', [App\Http\Controllers\VolunteerController::class, 'start'])->name('volunteer.start');
+Route::get('/volunteer/{volunteer}/stop', [App\Http\Controllers\VolunteerController::class, 'stop'])->name('volunteer.stop');
 
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');

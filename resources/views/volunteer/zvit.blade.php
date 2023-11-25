@@ -20,9 +20,9 @@
                         </div>
                     </div>
                     <div class="col-md-8 px-2 py-2">
-                        <p class="lead">
+                        <div>
                             {!! $volunteer->getDescription() !!}
-                        </p>
+                        </div>
                         @include('layouts.links', compact('volunteer', 'withZvitLink'))
                     </div>
                 </div>

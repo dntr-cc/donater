@@ -10,7 +10,7 @@
         </h2>
         <p class="lead">
             Для участі в розіграші треба зробити донат з кодом. Код ви можете знайти натиснувши
-            <a href="{{route('donate')}}" class="btn btn-outline-success">
+            <a href="{{route('donate')}}" class="btn btn-secondary-outline">
                 <i class="bi bi-plus-circle-fill"></i>
                 Задонатити
             </a>
@@ -32,9 +32,9 @@
                         </div>
                     </div>
                     <div class="col-md-8 px-2 py-2">
-                        <p class="lead">
+                        <div>
                             {!! $volunteer->getDescription() !!}
-                        </p>
+                        </div>
                     @include('layouts.links', compact('volunteer', 'withZvitLink'))
                     </div>
                 </div>

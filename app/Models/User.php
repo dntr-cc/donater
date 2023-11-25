@@ -277,4 +277,9 @@ class User extends Authenticatable
     {
         return $this->links;
     }
+
+    public function isSuperAdmin(): bool
+    {
+        return 1 === $this->getId();
+    }
 }

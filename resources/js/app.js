@@ -4,17 +4,15 @@ import jquery from "jquery";
 
 window.$ = window.jQuery = jquery;
 
+import slug from 'limax/lib/limax';
+
+window.slug = slug;
+
 import {Toast} from 'bootstrap';
 
 window.Toast = Toast;
 
 import '../sass/app.scss'
-
-import { Tab, initMDB } from 'mdb-ui-kit/js/mdb.es.min.js';
-
-window.Tab = Tab;
-
-initMDB({ Tab });
 
 window.copyContent = async function copyContent(text) {
     try {
@@ -23,8 +21,15 @@ window.copyContent = async function copyContent(text) {
         alert('Помилка копіювання');
     }
 }
-window.toast = function toast(text, selector) {
+window.toast = function toast(text, selector, bgClass = 'text-bg-success') {
     let toast = $('#toast');
+    toast.removeClass('text-bg-success')
+        .removeClass('text-bg-warning')
+        .removeClass('text-bg-secondary')
+        .removeClass('text-bg-info')
+        .removeClass('text-bg-danger')
+        .removeClass('text-bg-primary')
+        .addClass(bgClass);
     let toastBootstrap = window.Toast.getOrCreateInstance(toast)
     selector.click(() => {
         $('#toast .toastText').text(text);
@@ -33,4 +38,12 @@ window.toast = function toast(text, selector) {
             $('closeToast').click();
         }, 200);
     });
+}
+
+window.isValidUrl = urlString => {
+    try {
+        return Boolean(new URL(urlString));
+    } catch (e) {
+        return false;
+    }
 }

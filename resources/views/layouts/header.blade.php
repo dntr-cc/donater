@@ -38,12 +38,6 @@
                             Користувачі
                         </a>
                     </li>
-                    <li class="">
-                        <a href="{{ route('donate') }}" class="nav-link text-white">
-                            <i class="bi bi-plus-circle-fill d-inline mx-auto mb-1"></i>
-                            Задонатити
-                        </a>
-                    </li>
                     @guest
                         <li>
                             <a href="{{ route('login') }}" class="nav-link text-white">

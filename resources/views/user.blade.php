@@ -3,7 +3,7 @@
 @php use App\Models\UserLink; @endphp
 @php use App\Models\Volunteer; @endphp
 @php /** @var User $user */ @endphp
-@php /** @var Donate $volunteer */ @endphp
+@php /** @var Donate $donate */ @endphp
 @php /** @var Volunteer $volunteer */ @endphp
 @php /** @var UserLink $link */ @endphp
 @php $withZvitLink = true; @endphp
@@ -36,7 +36,7 @@
                                 @endif
                                 @if ($user->getApprovedDonateCount())
                                     <button type="button" title="Завалідовані донати"
-                                            class="btn btn-lg btn-outline-success-light rounded-pill position-relative">
+                                            class="btn btn-lg btn-secondary-outline-light rounded-pill position-relative">
                                         <i class="bi bi-check-circle-fill text-success"></i>
                                         <span
                                             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
@@ -75,7 +75,7 @@
                                         <h4>Посилання</h4>
                                         @if (auth()?->user()?->getId() === $user->getId())
                                             <button data-bs-toggle="modal" data-bs-target="#createLinkModal"
-                                                    id="addDonation" class="btn btn-outline-success">
+                                                    id="addDonation" class="btn btn-secondary-outline">
                                                 <i class="bi bi-plus-circle-fill"></i>
                                             </button>
                                         @endcan
@@ -97,80 +97,26 @@
                     </div>
                     <div class="col-lg-8">
                         <div class="card mb-4">
-                            <div class="card-body"
-                                 @if (auth()?->user()?->getId() === $user->getId())
-                                     data-bs-toggle="modal" data-bs-target="#userEditModal"
-                                 @endif
-                                 onclick="return false;">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p class="mb-0">Нікнейм</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p class="text-muted mb-0">{{ $user->getUsername() }}</p>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p class="mb-0">Ім'я</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p class="text-muted mb-0">{{ $user->getFirstName() }}</p>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p class="mb-0">Прізвище</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p class="text-muted mb-0">{{ $user->getLastName() }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-4">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-12 d-flex justify-content-between align-items-start">
                                         <h4>Збори та Фонди</h4>
-{{--                                        @if (auth()?->user()?->getId() === $user->getId())--}}
-{{--                                            <a href="{{route('volunteer.create')}}" class="btn btn-outline-success">--}}
-{{--                                                <i class="bi bi-plus-circle-fill"></i>--}}
-{{--                                                Створити--}}
-{{--                                            </a>--}}
-{{--                                        @endif--}}
+                                        @if (auth()?->user()?->getId() === $user->getId())
+                                            <a href="{{route('volunteer.new')}}" class="btn btn-secondary-outline">
+                                                <i class="bi bi-plus-circle-fill"></i>
+                                                Створити
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr>
                                 @foreach($user->getVolunteers() as $it => $volunteer)
-
                                 <div class="row">
                                     <div class="col-sm-12 d-flex justify-content-between align-items-start volunteer"
                                         data-volunteer="{{ $volunteer->getKey() }}">
                                         <div class="fw-bold">
                                             {{ $volunteer->getName() }}
                                             @include('layouts.links', compact('volunteer', 'withZvitLink', 'additionalClasses'))
-{{--                                            <p class="lead" data-volunteer="{{ $volunteer->getKey() }}" style="display: none">--}}
-{{--                                                {!! $volunteer->getDescription() !!}--}}
-{{--                                            </p>--}}
-                                        </div>
-                                        <div>
-{{--                                            @can ('update', $volunteer)--}}
-{{--                                                <a href="{{route('volunteer.edit')}}" class="btn-xs btn btn-outline-warning m-1">--}}
-{{--                                                    <i class="bi bi-pencil-fill"></i>--}}
-{{--                                                </a>--}}
-{{--                                                @if ($volunteer->isEnabled())--}}
-{{--                                                    <a href="{{route('volunteer.edit')}}" class="btn-xs btn btn-outline-danger m-1">--}}
-{{--                                                        <i class="bi bi-stop-circle-fill"></i>--}}
-{{--                                                    </a>--}}
-{{--                                                @else--}}
-{{--                                                    <a href="{{route('volunteer.edit')}}" class="btn-xs btn btn-outline-success m-1">--}}
-{{--                                                        <i class="bi bi-play-circle"></i>--}}
-{{--                                                    </a>--}}
-{{--                                                @endif--}}
-{{--                                            @endcan--}}
                                         </div>
                                     </div>
                                 </div>
@@ -186,25 +132,20 @@
                                         <div class="me-auto mt-auto">
                                             <h4>Благодійні внески</h4>
                                         </div>
-                                        @if (auth()?->user()?->getId() === $user->getId())
-                                            <a href="{{route('donate')}}" class="btn btn-outline-success">
-                                                <i class="bi bi-plus-circle-fill"></i>
-                                                Задонатити
-                                            </a>
-                                        @endif
                                     </li>
-                                    @foreach($user->getDonates() as $it => $volunteer)
+                                    @foreach($user->getDonates() as $it => $donate)
                                         <li class="list-group-item d-flex justify-content-between align-items-start">
-                                            <div class="ms-2 me-auto">
-                                                <div class="fw-bold">{{ $volunteer->getHumanType() }}</div>
-                                                Код внеску {{ $volunteer->getUniqHash() }}.
-                                                Створено {{ $volunteer->getCreatedAt()->format('Y-m-d H:i:s') }}.
-                                                @if($volunteer->isValidated())
-                                                    Завалідовано {{ $volunteer->getValidatedAt()->format('Y-m-d H:i:s') }}
+                                            <a href="{{ route('volunteer.show', ['volunteer' => $donate->getVolunteer()]) }}"
+                                               class="ms-2 me-auto text-decoration-none" style="color: rgba(var(--bs-body-color-rgb),var(--bs-text-opacity, 1))">
+                                                <div class="fw-bold">{{ $donate->getHumanType() }}</div>
+                                                Код внеску {{ $donate->getUniqHash() }}.
+                                                Створено {{ $donate->getCreatedAt()->format('Y-m-d H:i:s') }}.
+                                                @if($donate->isValidated())
+                                                    Завалідовано {{ $donate->getValidatedAt()->format('Y-m-d H:i:s') }}
                                                     .
                                                 @endif
-                                            </div>
-                                            @if($volunteer->isValidated())
+                                            </a>
+                                            @if($donate->isValidated())
                                                 <span class="badge text-bg-success ">
                                                     Завалідовано
                                                     <i class="bi bi-check-circle-fill text-bg-success"></i>
@@ -406,7 +347,6 @@
             let $file = $('#file');
             let photo = $file.prop('files')[0];
             if (photo) {
-                console.log(photo.name);
                 formData.append('FILE', photo);
             }
             $.ajax({

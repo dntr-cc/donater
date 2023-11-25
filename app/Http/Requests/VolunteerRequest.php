@@ -14,9 +14,9 @@ class VolunteerRequest extends FormRequest
             'link'           => ['required'],
             'page'           => ['required'],
             'avatar'         => ['required'],
-            'description'    => ['required'],
-            'user_id'        => ['required', 'integer'],
+            'description'    => [],
             'spreadsheet_id' => ['required'],
+            'user_id'        => ['required', 'integer'],
         ];
     }
 

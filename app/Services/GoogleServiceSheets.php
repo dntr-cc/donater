@@ -26,11 +26,11 @@ class GoogleServiceSheets
      * @param string $range
      * @return RowCollection
      */
-    public function getRowCollection(Volunteer $volunteer, string $range = self::RANGE_DEFAULT): RowCollection
+    public function getRowCollection(string $spreadsheetId, int $volunteerId = 0, string $range = self::RANGE_DEFAULT): RowCollection
     {
         $collection   = new RowCollection();
-        $values       = $this->getSpreadsheetValues($volunteer->getSpreadsheetId(), $range)->getValues() ?? [];
-        $donatesItems = Donate::query()->where('volunteer_id', '=', $volunteer->getId())->get();
+        $values       = $this->getSpreadsheetValues($spreadsheetId, $range)->getValues() ?? [];
+        $donatesItems = Donate::query()->where('volunteer_id', '=', $volunteerId)->get();
         $donates      = [];
         foreach ($donatesItems as $donate) {
             $donates[$donate->getUniqHash()] = $donate;

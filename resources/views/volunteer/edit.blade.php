@@ -4,6 +4,8 @@
 @push('head-scripts')
     @vite(['resources/js/tinymce.js'])
 @endpush
+@php use App\Models\Volunteer; @endphp
+@php /** @var Volunteer $volunteer */@endphp
 @section('content')
     <form id="volunteer-new">
         <div class="container">
@@ -12,7 +14,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content rounded-4 shadow">
                             <div class="modal-header p-4 pb-2 border-bottom-0 justify-content-center">
-                                <h2 class="title fs-5" id="createVolunteerModalLabel">Створити новий збір</h2>
+                                <h2 class="title fs-5" id="createVolunteerModalLabel">Редагування</h2>
                             </div>
                             <div class="modal-b-ody p-3 pt-0">
                                 <div class="row">
@@ -20,7 +22,7 @@
                                         <div class="d-flex justify-content-center">
                                         <span class="position-relative">
                                             <div class="card border-0 rounded-4 shadow-lg">
-                                                <img id="avatarImage" src="{{ url('/images/avatars/avatar.jpeg') }}"
+                                                <img id="avatarImage" src="{{ url($volunteer->getAvatar()) }}"
                                                      class="bg-image-position-center"
                                                      alt="avatar">
                                             </div>
@@ -29,7 +31,7 @@
                                                 <i class="bi bi-pencil-fill font-large"></i>
                                             </label>
                                             <input id="avatar" type="text" style="display: none;" aria-label="Баннер"
-                                                   value="/images/avatars/avatar.jpeg">
+                                                   value="{{ $volunteer->getAvatar() }}">
                                             <input id="file" type="file" style="display: none;" accept="image/*">
                                         </span>
                                         </div>
@@ -37,18 +39,18 @@
                                     <div class="col-md-6 mb-3">
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <div class="form-floating">
-                                                    <input type="text" class="form-control" id="name"
-                                                           value="" required maxlength="50">
-                                                    <label for="name">
-                                                        Назва (до 50 символів)
-                                                    </label>
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control" id="name"
+                                                               value="{{ $volunteer->getName() }}" required maxlength="50">
+                                                        <label for="name">
+                                                            Назва (до 50 символів)
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="key"
-                                                           value="" required>
+                                                           value="{{ $volunteer->getKey() }}" required>
                                                     <label for="key">
                                                         Унікальний префікс для посилання
                                                     </label>
@@ -59,7 +61,7 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="link"
-                                                           value="" required>
+                                                           value="{{ $volunteer->getLink() }}" required>
                                                     <label for="link">
                                                         Посилання на монобанку
                                                     </label>
@@ -68,7 +70,7 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="page"
-                                                           value="" required>
+                                                           value="{{ $volunteer->getLink() }}" required>
                                                     <label for="page">
                                                         Посилання на сторінку збору чи Фонду
                                                     </label>
@@ -97,7 +99,7 @@
                                             <div class="col-md-12 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="spreadsheet_id"
-                                                           value="" required>
+                                                           value="{{ $volunteer->getSpreadsheetLink() }}" required>
                                                     <label for="spreadsheet_id">
                                                         Посилання на Google Spreadsheet
                                                     </label>
@@ -108,7 +110,9 @@
                                 </div>
                                 <div class="row mt-3">
                                     <h5>Опис збору чи Фонду:</h5>
-                                    <textarea id="description"></textarea>
+                                    <div>
+                                        <textarea id="description"></textarea>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 mt-5 mb-4">
@@ -132,6 +136,10 @@
     </form>
     <script type="module">
         const APP_URL = '{!! json_encode(url('/')) !!}';
+        const text  = `{!! $volunteer->getDescription() !!}`;
+        let config = window.baseTinymceConfig;
+        Object.assign(config, {init_instance_callback: editor => editor.setContent(text)});
+        window.tinymce.init(config);
         let copyEmail = $('#copyEmail');
         copyEmail.on('click', function (e) {
             e.preventDefault();
@@ -173,12 +181,6 @@
         document.querySelector('#key').addEventListener('change', (event) => {
             event.preventDefault();
             let key = $('#key');
-            const regex = /[a-zA-Z0-9_-]+/g;
-            if (key.val().match(regex)) {
-                key.removeClass('is-invalid').addClass('is-valid');
-            } else {
-                key.removeClass('is-valid').addClass('is-invalid');
-            }
             $.ajax({
                 url: '{{ route('volunteer.key') }}',
                 type: "POST",
@@ -276,7 +278,7 @@
 
         $('#createVolunteer').on('click', function (e) {
             e.preventDefault();
-            if ($('.is-invalid').length > 0 || $('.is-valid').length < 5) {
+            if ($('.is-invalid').length > 0) {
                 let empty = $("<a>");
                 toast('Перевірте заповнені поля, будь ласка', empty, 'text-bg-danger');
                 empty.click();
@@ -284,8 +286,8 @@
                 return ;
             }
             $.ajax({
-                url: '{{ route('volunteer.create') }}',
-                type: "POST",
+                url: '{{ route('volunteer.update', compact('volunteer')) }}',
+                type: "PATCH",
                 data: {
                     user_id: <?= auth()?->user()?->getId() ?>,
                     volunteer_id: $('#chooseVolunteer option:selected').val(),

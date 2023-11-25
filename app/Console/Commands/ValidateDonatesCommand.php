@@ -34,7 +34,7 @@ class ValidateDonatesCommand extends Command
             /** @var Donate $donate */
             foreach (Donate::query()->whereNull('validated_at')->get()->all() as $donate) {
                 $volunteer = $donate->getVolunteer();
-                $rows      = $this->service->getRowCollection($volunteer);
+                $rows      = $this->service->getRowCollection($volunteer->getSpreadsheetId(), $volunteer->getId());
                 if ($rows->hasUniqHash($donate->getUniqHash())) {
                     $donate->setValidatedAt(Carbon::now())->save();
                     $this->output->info('Validated object: ' . $donate->toJson());

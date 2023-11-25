@@ -2,6 +2,12 @@
 @extends('layouts.base')
 @section('page_title', strtr('Звітність по :volunteer - donater.com.ua', [':volunteer' => $volunteer->getName()]))
 @section('page_description', strtr('Звітність по :volunteer - donater.com.ua', [':volunteer' => $volunteer->getName()]))
+@push('head-scripts')
+    @vite(['resources/js/tabs.js'])
+@endpush
+@php $withZvitLink = true; @endphp
+@php $withJarLink = true; @endphp
+@php $withPageLink = true; @endphp
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
 @section('content')
@@ -19,10 +25,11 @@
                 </div>
             </div>
             <div class="col-md-8 px-2 py-2">
-                <p class="lead">
+                <div>
                     {!! $volunteer->getDescription() !!}
-                </p>
-                @include('layouts.links', compact('volunteer'))
+                </div>
+                <div class="mt-3"></div>
+                @include('layouts.links', compact('volunteer', 'withJarLink', 'withPageLink', 'withZvitLink'))
             </div>
         </div>
         <ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">

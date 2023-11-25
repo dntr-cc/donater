@@ -9,6 +9,11 @@
 @import '~bootstrap-icons/font/bootstrap-icons.css';
 @import 'mdb-ui-kit/css/mdb.min.css';
 
+body {
+    margin: 0!important;
+    font-family: var(--mdb-body-font-family)!important;
+    line-height: var(--bs-body-line-height)!important;
+}
 .btn-xs {
     --bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
 }
@@ -65,6 +70,9 @@
 }
 .font-xx-large {
     font-size: xx-large;
+}
+.font-x-large {
+    font-size: x-large;
 }
 .min-vh-25 {
     min-height: 25vh;

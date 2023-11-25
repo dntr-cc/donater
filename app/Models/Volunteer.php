@@ -54,8 +54,12 @@ class Volunteer extends Model
     protected static function boot(): void
     {
         parent::boot();
+        static::addGlobalScope('donates_count', static function (Builder $builder) {
+            $builder->withCount('donates');
+        });
         static::addGlobalScope('order', static function (Builder $builder) {
-            $builder->orderBy('id', 'asc');
+            $builder->withCount('donates')->orderBy('donates_count', 'desc')
+                ->orderBy('is_enabled', 'desc');
         });
     }
 
@@ -172,6 +176,11 @@ class Volunteer extends Model
     public function getSpreadsheetId(): string
     {
         return $this->spreadsheet_id;
+    }
+
+    public function getSpreadsheetLink(): string
+    {
+        return strtr('https://docs.google.com/spreadsheets/d/:spreadsheetId/edit#gid=0', [':spreadsheetId' => $this->getSpreadsheetId()]);
     }
 
     public function setSpreadsheetId(string $spreadsheetId): self

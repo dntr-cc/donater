@@ -36,7 +36,8 @@ class UserController extends Controller
         $this->authorize('update', $user);
         $uploadedFiles = $request->file('FILE');
         $fileName      = $uploadedFiles->getClientOriginalName();
-        $directory = public_path('/images/avatars/' . $user->getUsername());$uploadedFiles->move($directory, $fileName);
+        $directory = public_path('/images/avatars/' . $user->getUsername());
+        $uploadedFiles->move($directory, $fileName);
         $avatar = '/images/avatars/' . $user->getUsername() . '/' . $fileName;
         $user->update(['avatar' => $avatar]);
 

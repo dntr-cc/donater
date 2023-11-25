@@ -17,7 +17,7 @@ class VolunteerPolicy
 
     public function view(?User $user, Volunteer $volunteer): bool
     {
-        return $volunteer->isEnabled() || $user && $user->getId() === $volunteer->getUserId();
+        return true;
     }
 
     public function create(?User $user): bool
@@ -27,11 +27,11 @@ class VolunteerPolicy
 
     public function update(User $user, Volunteer $volunteer): bool
     {
-        return true;
+        return $user->getId() === $volunteer->getUserId() || $user->isSuperAdmin();
     }
 
     public function delete(User $user, Volunteer $volunteer): bool
     {
-        return $user->getId() == $volunteer->getUserId();
+        return $user->getId() === $volunteer->getUserId() || $user->isSuperAdmin();
     }
 }

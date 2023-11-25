@@ -52,6 +52,10 @@ node:
 vite:
 	docker-compose exec node npm run dev
 
+.PHONY: bash-node
+bash-node:
+	docker-compose exec node bash
+
 
 .PHONY: folders
 folders:
