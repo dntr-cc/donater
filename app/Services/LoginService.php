@@ -83,11 +83,11 @@ class LoginService
         $it = 0;
         while (1) {
             $username = $generator->generate();
-            if (0 === User::find($username, ['username'])->count()) {
+            if (0 === User::query()->where('username', '=', $username)->count()) {
                 return $username;
             }
             $username = $username . $it++;
-            if (0 === User::find($username, ['username'])->count()) {
+            if (0 === User::query()->where('username', '=', $username)->count()) {
                 return $username;
             }
         }
