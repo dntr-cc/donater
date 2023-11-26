@@ -6,9 +6,10 @@
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom">Звітність по Фондам та Зборам</h2>
         @foreach($volunteers->all() as $it => $volunteer)
+            @php $owner = $volunteer->owner()->get()->first(); @endphp
             <div class="container px-4 py-5">
                 <h3 class="pb-2 border-bottom">
-                    {{ $volunteer->getName() }}
+                    {{ $volunteer->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
                 </h3>
                 <div class="row">
                     <div class="col-md-4 px-2 py-2">

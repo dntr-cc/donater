@@ -81,7 +81,7 @@ class LoginController extends Controller
         $this->guard()->login(app(LoginService::class)->getOrCreateUser([
             'id'          => 1,
             'username'    => 'test',
-            'telegram_id' => 212123213213123,
+            'telegram_id' => 1,
             'first_name'  => 'first_name',
             'last_name'   => 'last_name',
             'is_premium'  => true,

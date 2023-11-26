@@ -22,7 +22,7 @@ class VolunteerPolicy
 
     public function create(?User $user): bool
     {
-        return !!$user;
+        return (bool)$user;
     }
 
     public function update(?User $user, Volunteer $volunteer): bool
