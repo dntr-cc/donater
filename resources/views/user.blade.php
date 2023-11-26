@@ -75,7 +75,7 @@
                                         <h4>Посилання</h4>
                                         @if (auth()?->user()?->can('update', $user))
                                             <button data-bs-toggle="modal" data-bs-target="#createLinkModal"
-                                                    id="addDonation" class="btn ">
+                                                    id="addDonation" class="btn">
                                                 <i class="bi bi-plus-circle-fill"></i>
                                             </button>
                                         @endcan
@@ -102,7 +102,7 @@
                                     <div class="col-sm-12 d-flex justify-content-between align-items-start">
                                         <h4>Збори та Фонди</h4>
                                         @if (auth()?->user()?->getId() === $user->getId())
-                                            <a href="{{route('volunteer.new')}}" class="btn ">
+                                            <a href="{{route('volunteer.new')}}" class="btn">
                                                 <i class="bi bi-plus-circle-fill"></i>
                                                 Створити
                                             </a>
@@ -133,7 +133,7 @@
                                             <h4>Благодійні внески</h4>
                                         </div>
                                         @if(auth()?->user()?->volunteers?->count())
-                                        <a href="{{ route('donate', ['fixCode' => 1]) }}" class="btn ">
+                                        <a href="{{ route('donate', ['fixCode' => 1]) }}" class="btn">
                                             ДОДАТИ ЗАГУБЛЕНИЙ КОД
                                         </a>
                                         @endif
