@@ -70,7 +70,7 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="page"
-                                                           value="{{ $volunteer->getLink() }}" required>
+                                                           value="{{ $volunteer->getPage() }}" required>
                                                     <label for="page">
                                                         Посилання на сторінку збору чи Фонду
                                                     </label>
@@ -85,9 +85,7 @@
                                                        target="_blacnk">в такому форматі.</a>
                                                     Також треба зробити доступ до таблиці для редагування. Треба додати в
                                                     редактори (Editor) email
-                                                    <span id="editorEmail" class="text-warning">
-                                                        zbir-404114@zbir-404114.iam.gserviceaccount.com
-                                                    </span>
+                                                    <span id="editorEmail" class="text-warning">zbir-404114@zbir-404114.iam.gserviceaccount.com</span>
                                                     <button id="copyEmail" class="btn btn-sm btn-outline-secondary"
                                                             onclick="return false;">
                                                         <i class="bi bi-copy"></i>
