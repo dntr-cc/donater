@@ -5,7 +5,8 @@
 @php use App\Models\Volunteer; @endphp
 @php /** @var Volunteer $volunteer */ @endphp
 @php $choosen = request()->get('volunteer', ''); @endphp
-@php $uniqueCode = app(DonateService::class)->getNewUniqueHash(); @endphp
+@php $fixCode = auth()->user()->volunteers->count() && request()->get('fixCode', 0); @endphp
+@php $uniqueCode = $fixCode? '' : app(DonateService::class)->getNewUniqueHash(); @endphp
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -17,11 +18,10 @@
                         </div>
                         <div class="modal-body p-3 pt-0">
                             <form id="donate">
-                                @csrf
                                 <div class="mb-3">
                                     <div class="form-floating input-group">
                                         <input type="text" class="form-control" id="donateCode"
-                                               value="{{ $uniqueCode }}" disabled>
+                                               value="{{ $uniqueCode }}" @if(!$fixCode) disabled @endif >
                                         <label for="donateCode">
                                             Унікальний код
                                         </label>
@@ -39,7 +39,8 @@
                                                 selected
                                                 @endif>Оберіть збір
                                             </option>
-                                            @foreach(Volunteer::getActual()->all() as $volunteer)
+                                            @php $all = $fixCode ? auth()->user()->volunteers : Volunteer::getActual()->all(); @endphp
+                                            @foreach($all as $volunteer)
                                                 <option data-url="{{ $volunteer->getLink() }}"
                                                         data-key="{{ $volunteer->getKey() }}"
                                                         value="{{ $volunteer->getId() }}"
@@ -47,6 +48,16 @@
                                                             selected
                                                     @endif>
                                                     {{ $volunteer->getName() }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form">
+                                        <select id="userId" class="form-select form-select-lg mb-3"
+                                                aria-label="Оберіть користувача">
+                                            @foreach(\App\Models\User::all() as $user)
+                                                <option value="{{ $user->getId() }}">
+                                                    {{ $user->getAtUsername() }} - {{ $user->getFullName() }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -67,7 +78,7 @@
                                     <a href="{{ route('my') }}" type="button" class="btn btn-secondary">
                                         Моя сторінка
                                     </a>
-                                    <button id="createDonate" type="button" class="btn btn-primary" disabled
+                                    <button id="createDonate" type="button" class="btn btn-primary" @if(!$fixCode) disabled @endif
                                             onclick="return false;">
                                         Зберігти
                                     </button>
@@ -89,20 +100,34 @@
         });
         toast('Код скопійовано', copyDonateHash);
 
-        @auth
-        $('#createDonate').on('click', function (e) {
-            e.preventDefault();
+        $('#createDonate').on('click', event => {
+            event.preventDefault();
+            let fixCode = {{ $fixCode ? 'true' : 'false' }};
+            let userId = fixCode ? $('#userId option:selected').val() : {{ auth()->user()->getId() }};
+            let volunteerId = $('#chooseVolunteer option:selected').val();
+            if (!(volunteerId > 0)) {
+                let empty = $("<a>");
+                toast('Треба обрати збір', empty, 'text-bg-danger');
+                empty.click();
+                return;
+            }
             $.ajax({
                 url: '{{ route('donate') }}',
                 type: "POST",
                 data: {
-                    _token: $(`#donate [name="_token"]`).val(),
+                    _token: $('meta[name="csrf-token"]').attr('content'),
                     uniq_hash: $('#donateCode').val(),
-                    user_id: <?= auth()?->user()?->getId() ?>,
-                    volunteer_id: $('#chooseVolunteer option:selected').val(),
+                    user_id: userId,
+                    volunteer_id: volunteerId,
                 },
-                success: function (data) {
+                success: data => {
                     window.location.assign(data.url ?? '{{ route('my') }}');
+                },
+                error: data => {
+                    let empty = $("<a>");
+                    toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
+                    empty.click();
+                    $('meta[name="csrf-token"]').attr('content', data.csrf);
                 },
             });
             return false;
@@ -118,7 +143,7 @@
             );
             $('#jarLink').attr('href', selected.data('url')).text(
                 'ВІДКРИТИ БАНКУ'
-            ).addClass('btn btn-secondary-outline btn-lg font-x-large');
+            ).addClass('btn  btn-lg font-x-large');
             $('#commentImg').show();
             let volunteer = selected.text().trim();
             let donateCode = $('#donateCode').val();
@@ -136,11 +161,10 @@
             } else {
                 $('#commentImg').hide();
                 $('#jarText').text('');
-                $('#jarLink').attr('href', '').text('').removeClass('btn btn-secondary-outline btn-lg font-x-large');
+                $('#jarLink').attr('href', '').text('').removeClass('btn  btn-lg font-x-large');
                 $('#acceptDonate').text('');
                 $('#createDonate').attr('disabled', true);
             }
         });
-        @endauth
     </script>
 @endsection

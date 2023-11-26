@@ -10,7 +10,7 @@
         </h2>
         <p class="lead">
             Для участі в розіграші треба зробити донат з кодом. Код ви можете знайти натиснувши
-            <a href="{{route('donate')}}" class="btn btn-secondary-outline">
+            <a href="{{route('donate')}}" class="btn ">
                 <i class="bi bi-plus-circle-fill"></i>
                 Задонатити
             </a>

@@ -36,7 +36,7 @@
                                 @endif
                                 @if ($user->getApprovedDonateCount())
                                     <button type="button" title="Завалідовані донати"
-                                            class="btn btn-lg btn-secondary-outline-light rounded-pill position-relative">
+                                            class="btn btn-lg -light rounded-pill position-relative">
                                         <i class="bi bi-check-circle-fill text-success"></i>
                                         <span
                                             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
@@ -75,7 +75,7 @@
                                         <h4>Посилання</h4>
                                         @if (auth()?->user()?->can('update', $user))
                                             <button data-bs-toggle="modal" data-bs-target="#createLinkModal"
-                                                    id="addDonation" class="btn btn-secondary-outline">
+                                                    id="addDonation" class="btn ">
                                                 <i class="bi bi-plus-circle-fill"></i>
                                             </button>
                                         @endcan
@@ -102,7 +102,7 @@
                                     <div class="col-sm-12 d-flex justify-content-between align-items-start">
                                         <h4>Збори та Фонди</h4>
                                         @if (auth()?->user()?->getId() === $user->getId())
-                                            <a href="{{route('volunteer.new')}}" class="btn btn-secondary-outline">
+                                            <a href="{{route('volunteer.new')}}" class="btn ">
                                                 <i class="bi bi-plus-circle-fill"></i>
                                                 Створити
                                             </a>
@@ -132,6 +132,9 @@
                                         <div class="me-auto mt-auto">
                                             <h4>Благодійні внески</h4>
                                         </div>
+                                        <a href="{{ route('donate', ['fixCode' => 1]) }}" class="btn ">
+                                            ДОДАТИ ЗАГУБЛЕНИЙ КОД
+                                        </a>
                                     </li>
                                     @foreach($user->getDonates() as $it => $donate)
                                         <li class="list-group-item d-flex justify-content-between align-items-start">

@@ -54,7 +54,7 @@
                             <li class="mt-4">
                                 <span class="flex">
                                     Натискаєте на кнопку "Задонатити"
-                                    <a href="{{route('donate')}}" class="btn btn-sm btn-secondary-outline">
+                                    <a href="{{route('donate')}}" class="btn btn-sm ">
                                         <i class="bi bi-plus-circle-fill"></i>
                                         Задонатити
                                     </a>
