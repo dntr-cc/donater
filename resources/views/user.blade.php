@@ -378,7 +378,7 @@
         $('.delete-link').on('click', event => {
             event.preventDefault();
             $.ajax({
-                url: '{{ route('user.link') }}' + '/' + $(this).attr('data-id'),
+                url: '{{ route('user.link') }}' + '/' + $(event.target).attr('data-id'),
                 type: "DELETE",
                 data: {
                     _token: $('meta[name="csrf-token"]').attr('content')
