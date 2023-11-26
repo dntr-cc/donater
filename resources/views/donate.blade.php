@@ -25,10 +25,12 @@
                                         <label for="donateCode">
                                             Унікальний код
                                         </label>
-                                        <button id="copyDonateHash" class="btn btn-outline-secondary"
-                                                onclick="return false;">
-                                            <i class="bi bi-copy"></i>
-                                        </button>
+                                        @if(!$fixCode)
+                                            <button id="copyDonateHash" class="btn btn-outline-secondary"
+                                                    onclick="return false;">
+                                                <i class="bi bi-copy"></i>
+                                            </button>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="mb-3">
