@@ -28,7 +28,7 @@
     Звіт
 </a>
 @endif
-@if(request()->user()->can('update', $volunteer))
+@if(request()->user()?->can('update', $volunteer))
 <a href="{{route('volunteer.edit', ['volunteer' => $volunteer->getKey()])}}" class="btn btn-secondary-outline m-1 {{ $additionalClasses }}">
     <i class="bi bi-pencil-fill"></i>
     Редагування
