@@ -23,6 +23,13 @@ class CommandWrapper
             return;
         }
         $chatId  = $chat->getId();
+        if (Cache::get('ru' . $chatId)) {
+            Cache::delete('ru' . $chatId);
+            Telegram::sendMessage([
+                'chat_id' => $chatId,
+                'text' => 'РЕЖИМ ЛАГІДНОЇ УКРАЇНІЗАЦІЇ ДЕАКТИВОВАНО.',
+            ]);
+        }
         Telegram::sendChatAction([
             'chat_id' => $chatId,
             'action' => Actions::TYPING,
@@ -33,6 +40,7 @@ class CommandWrapper
         }
         $isExist = Cache::pull('login:start:' . $text);
         if ('ru' === $from->getLanguageCode()) {
+            Cache::set('ru' . $chatId, true);
             Telegram::sendMessage([
                 'chat_id' => $chatId,
                 'text' => 'РЕЖИМ ЛАГІДНОЇ УКРАЇНІЗАЦІЇ АКТИВОВАНО. Для продовження змінить мову в додатку Телеграм. У разі відсутності подальших взаємодій з додатку з українською мовою ваш telegram user id буде додано в базу даних Служби Безпеки України',
