@@ -14,7 +14,7 @@
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ route('volunteer.all') }}" class=""><i class="bi bi-arrow-left"></i></a>
-            Звітність {{ $volunteer->getName() }} Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
+            Звітність {{ $volunteer->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
         </h2>
         <div class="row">
             <div class="col-md-4 px-2 py-2">
