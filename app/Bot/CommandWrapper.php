@@ -14,19 +14,28 @@ class CommandWrapper
     public function handle(Update $update)
     {
         $message = $update->getMessage();
-        $chat    = $message->getChat();
-        $from    = $message->getFrom();
+        $chat    = $message?->getChat();
+        if (!$chat) {
+            return;
+        }
+        $from    = $message?->getFrom();
+        if (!$from) {
+            return;
+        }
         $chatId  = $chat->getId();
         Telegram::sendChatAction([
             'chat_id' => $chatId,
             'action' => Actions::TYPING,
         ]);
-        $text = $message->getText();
+        $text = $message?->getText();
+        if ($this->chatValidation(mb_strtolower((string)$text), (string)$chatId)) {
+            return;
+        }
         $isExist = Cache::pull('login:start:' . $text);
         if ('ru' === $from->getLanguageCode()) {
             Telegram::sendMessage([
                 'chat_id' => $chatId,
-                'text' => 'Режим лагідної українізації активовано. Для продовження змінить мову в додатку Телеграм.',
+                'text' => 'РЕЖИМ ЛАГІДНОЇ УКРАЇНІЗАЦІЇ АКТИВОВАНО. Для продовження змінить мову в додатку Телеграм. У разі відсутності подальших взаємодій з додатку з українською мовою ваш telegram user id буде додано в базу даних Служби Безпеки України',
             ]);
             return;
         }
@@ -42,5 +51,24 @@ class CommandWrapper
             'chat_id' => $chatId,
             'text' => "Ключ входу `{$text}` не знайдено! Спробуйте оновити сторінку donater.com.ua/login",
         ]);
+    }
+
+    public function chatValidation(string $text, string $chatId): bool
+    {
+        $answer = match ($text) {
+            'слава україні' => 'Героям Слава',
+            'слава нації' => 'Смерть ворогам',
+            'україна' => 'Понад усе',
+            default => '',
+        };
+        if (!empty($answer)) {
+            Telegram::sendMessage([
+                'chat_id' => $chatId,
+                'text' => $answer,
+            ]);
+            return true;
+        }
+
+        return false;
     }
 }
