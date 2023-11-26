@@ -52,16 +52,18 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="form">
-                                        <select id="userId" class="form-select form-select-lg mb-3"
-                                                aria-label="Оберіть користувача">
-                                            @foreach(\App\Models\User::all() as $user)
-                                                <option value="{{ $user->getId() }}">
-                                                    {{ $user->getAtUsername() }} - {{ $user->getFullName() }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                    @if(!$fixCode)
+                                        <div class="form">
+                                            <select id="userId" class="form-select form-select-lg mb-3"
+                                                    aria-label="Оберіть користувача">
+                                                @foreach(\App\Models\User::all() as $user)
+                                                    <option value="{{ $user->getId() }}">
+                                                        {{ $user->getAtUsername() }} - {{ $user->getFullName() }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
                                     <br>
                                     <div class="mb-3 lead text-center">
                                         <p id="jarText"></p>
