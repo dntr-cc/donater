@@ -25,13 +25,13 @@ class UserLinkPolicy
         return true;
     }
 
-    public function update(User $user, UserLink $userLink): bool
+    public function update(?User $user, UserLink $userLink): bool
     {
-        return $user->getId() === $userLink->getUserId();
+        return $user && $user->getId() === $userLink->getUserId() || $user && $user->isSuperAdmin();
     }
 
-    public function delete(User $user, UserLink $userLink): bool
+    public function delete(?User $user, UserLink $userLink): bool
     {
-        return $user->getId() === $userLink->getUserId();
+        return $user && $user->getId() === $userLink->getUserId() || $user && $user->isSuperAdmin();
     }
 }

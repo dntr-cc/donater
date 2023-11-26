@@ -9,8 +9,8 @@ class VolunteerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'key'            => ['required'],
-            'name'           => ['required'],
+            'key'            => ['required', 'regex:/^[a-zA-Z-_]+$/i'],
+            'name'           => ['required', 'max:50'],
             'link'           => ['required'],
             'page'           => ['required'],
             'avatar'         => ['required'],

@@ -10,4 +10,12 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    /**
+     * @return string
+     */
+    protected function getNewCSRFToken(): string
+    {
+        return config('session.csrf')();
+    }
 }

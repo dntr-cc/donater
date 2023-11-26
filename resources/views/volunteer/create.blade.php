@@ -171,11 +171,12 @@
         document.querySelector('#key').addEventListener('change', (event) => {
             event.preventDefault();
             let key = $('#key');
-            const regex = /[a-zA-Z0-9_-]+/g;
-            if (key.val().match(regex)) {
+            const regex = /^[a-zA-Z0-9_-]+$/g;
+            if (regex.test(key.val())) {
                 key.removeClass('is-invalid').addClass('is-valid');
             } else {
                 key.removeClass('is-valid').addClass('is-invalid');
+                return;
             }
             $.ajax({
                 url: '{{ route('volunteer.key') }}',
@@ -278,7 +279,6 @@
                 let empty = $("<a>");
                 toast('Перевірте заповнені поля, будь ласка', empty, 'text-bg-danger');
                 empty.click();
-                console.log($('#description').text())
                 return ;
             }
             $.ajax({
@@ -292,7 +292,7 @@
                     link: $('#link').val(),
                     page: $('#page').val(),
                     avatar: $('#avatar').val(),
-                    description: window.tinymce.get('description').getContent(),
+                    description: window.tinymce.get('description').getContent() || '<p></p>',
                     spreadsheet_id: getSpreadsheetId($('#spreadsheet_id').val()),
                 },
                 headers: {
@@ -302,6 +302,9 @@
                     window.location.assign(data.url ?? '{{ route('my') }}');
                 },
                 error: data => {
+                    let empty = $("<a>");
+                    toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
+                    empty.click();
                     $('meta[name="csrf-token"]').attr('content', data.csrf);
                 },
             });

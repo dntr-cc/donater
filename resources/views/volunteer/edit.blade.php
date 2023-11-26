@@ -14,7 +14,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content rounded-4 shadow">
                             <div class="modal-header p-4 pb-2 border-bottom-0 justify-content-center">
-                                <h2 class="title fs-5" id="createVolunteerModalLabel">Редагування</h2>
+                                <h2 class="title fs-5" id="updateVolunteerModalLabel">Редагування</h2>
                             </div>
                             <div class="modal-b-ody p-3 pt-0">
                                 <div class="row">
@@ -118,7 +118,7 @@
                                             <a href="{{ route('my') }}" type="button" class="btn btn-secondary ms-4">
                                                 Моя сторінка
                                             </a>
-                                            <button id="createVolunteer" type="submit" class="btn btn-primary me-4"
+                                            <button id="updateVolunteer" type="submit" class="btn btn-primary me-4"
                                                     onclick="return false;">
                                                 Зберігти
                                             </button>
@@ -179,6 +179,13 @@
         document.querySelector('#key').addEventListener('change', (event) => {
             event.preventDefault();
             let key = $('#key');
+            const regex = /^[a-zA-Z0-9_-]+$/g;
+            if (regex.test(key.val())) {
+                key.removeClass('is-invalid').addClass('is-valid');
+            } else {
+                key.removeClass('is-valid').addClass('is-invalid');
+                return;
+            }
             $.ajax({
                 url: '{{ route('volunteer.key') }}',
                 type: "POST",
@@ -274,7 +281,7 @@
             return false;
         });
 
-        $('#createVolunteer').on('click', function (e) {
+        $('#updateVolunteer').on('click', function (e) {
             e.preventDefault();
             if ($('.is-invalid').length > 0) {
                 let empty = $("<a>");
@@ -287,14 +294,13 @@
                 url: '{{ route('volunteer.update', compact('volunteer')) }}',
                 type: "PATCH",
                 data: {
-                    user_id: <?= auth()?->user()?->getId() ?>,
-                    volunteer_id: $('#chooseVolunteer option:selected').val(),
+                    user_id: {{ $volunteer->getUserId() }},
                     key: $('#key').val(),
                     name: $('#name').val(),
                     link: $('#link').val(),
                     page: $('#page').val(),
                     avatar: $('#avatar').val(),
-                    description: window.tinymce.get('description').getContent(),
+                    description: window.tinymce.get('description').getContent() || '<p></p>',
                     spreadsheet_id: getSpreadsheetId($('#spreadsheet_id').val()),
                 },
                 headers: {
@@ -304,6 +310,9 @@
                     window.location.assign(data.url ?? '{{ route('my') }}');
                 },
                 error: data => {
+                    let empty = $("<a>");
+                    toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
+                    empty.click();
                     $('meta[name="csrf-token"]').attr('content', data.csrf);
                 },
             });

@@ -31,7 +31,7 @@ return new class extends Migration {
             'avatar'         => '/images/banners/savelife.png',
             'spreadsheet_id' => '1YqwMthW7y5SXM059AuAogkmhDg7BVMextxPT3IuB9_s',
             'is_enabled'     => true,
-            'user_id'        => 0,
+            'user_id'        => 1,
             'description'    => '«Повернись живим» — це благодійний фонд компетентної допомоги армії, а також громадська організація, яка займається аналітикою у секторі безпеки та оборони, реалізує проєкти з реабілітації ветеранів через спорт.',
         ]);
         Volunteer::create([
@@ -43,7 +43,7 @@ return new class extends Migration {
             'avatar'         => '/images/banners/prytulafoundation.png',
             'spreadsheet_id' => '1dKiA7w69uv5FaawrSEXg04eiQW1FafDr8vNTGBTKAok',
             'is_enabled'     => true,
-            'user_id'        => 0,
+            'user_id'        => 1,
             'description'    => 'Благодійний фонд Сергія Притули опікується посиленням Сил Оборони України, а також допомогою цивільному населенню, яке постраждало від російської агресії.',
         ]);
         Volunteer::create([
@@ -55,7 +55,7 @@ return new class extends Migration {
             'avatar'         => '/images/banners/hospitallers.png',
             'spreadsheet_id' => '1ZSPaWAdm4aW-ZBwrzdk5u-vQwSda_wigj6bVjrDelOk',
             'is_enabled'     => true,
-            'user_id'        => 0,
+            'user_id'        => 1,
             'description'    => '“Госпітальєри”— добровольча організація парамедиків. Була заснована Яною Зінкевич на початку бойових дій в Україні у 2014 році. Тоді Росія анексувала Крим і розпочала бойові дії на сході країни.',
         ]);
         Volunteer::create([
@@ -67,7 +67,7 @@ return new class extends Migration {
             'avatar'         => '/images/banners/letsseethevictory.png',
             'spreadsheet_id' => '1lB-CZLWPg--o5YMdNbvuokL1Gmv_YzzEwqCa17JZfpA',
             'is_enabled'     => true,
-            'user_id'        => 0,
+            'user_id'        => 1,
             'description'    => 'Місія Благодійного Фонду полягає в тому, щоб допомагати людям, які втратили зір під час війни. На жаль, пересадка очей неможлива, тому життя людей після такої травми змінюється радикально.',
         ]);
     }

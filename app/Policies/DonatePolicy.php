@@ -25,13 +25,13 @@ class DonatePolicy
         return true;
     }
 
-    public function update(User $user, Donate $donate): bool
+    public function update(?User $user, Donate $donate): bool
     {
-        return $user->getId() === $donate->getUserId();
+        return $user && $user->getId() === $donate->getUserId() || $user && $user->isSuperAdmin();
     }
 
-    public function delete(User $user, Donate $donate): bool
+    public function delete(?User $user, Donate $donate): bool
     {
-        return $user->getId() === $donate->getUserId();
+        return $user && $user->getId() === $donate->getUserId() || $user && $user->isSuperAdmin();
     }
 }

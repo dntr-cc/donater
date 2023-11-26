@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserLinkRequest;
 use App\Http\Resources\UserLinkResource;
 use App\Models\UserLink;
+use Illuminate\Http\JsonResponse;
 
 class UserLinkController extends Controller
 {
@@ -18,8 +19,9 @@ class UserLinkController extends Controller
     public function store(UserLinkRequest $request)
     {
         $this->authorize('create', UserLink::class);
+        UserLink::create($request->validated());
 
-        return new UserLinkResource(UserLink::create($request->validated()));
+        return new JsonResponse(['csrf' => $this->getNewCSRFToken()]);
     }
 
     public function show(UserLink $userLink)

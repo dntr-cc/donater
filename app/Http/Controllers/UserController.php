@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Nette\Schema\ValidationException;
@@ -41,7 +42,7 @@ class UserController extends Controller
         $avatar = '/images/avatars/' . $user->getUsername() . '/' . $fileName;
         $user->update(['avatar' => $avatar]);
 
-        return response([]);
+        return new JsonResponse(['url' => route('user', compact('user')), 'csrf' => $this->getNewCSRFToken()]);
     }
 
     public function update(UserRequest $request, User $user)
@@ -50,6 +51,6 @@ class UserController extends Controller
 
         $user->update($request->validated());
 
-        return new UserResource($user);
+        return new JsonResponse(['url' => route('user', compact('user')), 'csrf' => $this->getNewCSRFToken()]);
     }
 }

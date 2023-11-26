@@ -22,7 +22,7 @@
                              onclick="return false;">
                             <div class="card-body text-center">
                                 <img src="{{ $user->getAvatar() }}"
-                                     @if (auth()?->user()?->getId() === $user->getId())
+                                     @if (auth()?->user()?->can('update', $user))
                                          data-bs-toggle="modal" data-bs-target="#userEditModal"
                                      @endif
                                      alt="avatar"
@@ -73,7 +73,7 @@
                                 <ul class="list-group list-group-flush rounded-3">
                                     <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <h4>Посилання</h4>
-                                        @if (auth()?->user()?->getId() === $user->getId())
+                                        @if (auth()?->user()?->can('update', $user))
                                             <button data-bs-toggle="modal" data-bs-target="#createLinkModal"
                                                     id="addDonation" class="btn btn-secondary-outline">
                                                 <i class="bi bi-plus-circle-fill"></i>
@@ -178,7 +178,6 @@
                     <form class="form">
                         <div class="modal-body">
                             <div class="mb-3">
-                                @csrf
                                 <div class="form-floating py-1">
                                     <input type="text" class="form-control" maxlength="180" name="linkUrl" id="linkUrl"
                                            required>
@@ -208,7 +207,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <p id="linkError" style="display: none;" class="lead fw-bold text-danger"></p>
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-secondary justify-content-evenly"
@@ -232,7 +230,6 @@
                     <form class="form">
                         <div class="modal-body">
                             <div class="mb-3">
-                                @csrf
                                 <div class="d-flex justify-content-center">
                                 <span class="position-relative">
                                     <img src="{{ $user->getAvatar() }}"
@@ -267,7 +264,6 @@
                                     </label>
                                 </div>
                             </div>
-                            <p id="userEditError" style="display: none;" class="lead fw-bold text-danger"></p>
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-secondary justify-content-evenly"
@@ -294,8 +290,8 @@
         $('#linkIcon').click(() => {
             $('#icon-preview').attr('class', $('#linkIcon option:selected').val());
         });
-        $('#userEdit').on('click', function (e) {
-            e.preventDefault();
+        $('#userEdit').on('click', event => {
+            event.preventDefault();
             let formData = {
                 first_name: $('#firstName').val(),
                 last_name: $('#lastName').val(),
@@ -305,43 +301,51 @@
                 formData.username = newUsername;
             }
             $.ajax({
-                url: '{{ url('/user') }}' + '/{{ $user->getUsername() }}',
+                url: '{{ route('user.edit', compact('user')) }}',
                 type: "PATCH",
                 data: formData,
                 headers: {
-                    'X-CSRF-TOKEN': $(`[name="_token"]`).val()
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function () {
-                    location.reload();
+                success: data => {
+                    window.location.assign(data.url ?? '{{ route('my') }}');
                 },
-                error: function (data) {
-                    $('#userEditError').html(JSON.parse(data.responseText).message).show();
+                error: data => {
+                    let empty = $("<a>");
+                    toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
+                    empty.click();
+                    $('meta[name="csrf-token"]').attr('content', data.csrf);
                 },
             });
             return false;
         });
-        $('#createLink').on('click', (event) => {
+        $('#createLink').on('click', event => {
             event.preventDefault();
             $.ajax({
                 url: '{{ route('user.link') }}',
                 type: "POST",
                 data: {
-                    _token: $(`#createLinkModal [name="_token"]`).val(),
-                    user_id: <?= auth()?->user()?->getId() ?>,
+                    user_id: {{ $user->getId() }},
                     link: $('#linkUrl').val(),
                     name: $('#linkName').val(),
                     icon: $('#linkIcon option:selected').val(),
                 },
-                success: function () {
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: () => {
                     location.reload();
                 },
-                error: function (data) {
-                    $('#linkError').html(JSON.parse(data.responseText).message).show();
+                error: data => {
+                    let empty = $("<a>");
+                    toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
+                    empty.click();
+                    $('meta[name="csrf-token"]').attr('content', data.csrf);
                 },
             });
             return false;
         });
-        document.querySelector('#file').addEventListener('change', (event) => {
+        document.querySelector('#file').addEventListener('change', event => {
             event.preventDefault();
             let formData = new FormData();
             let $file = $('#file');
@@ -350,7 +354,7 @@
                 formData.append('FILE', photo);
             }
             $.ajax({
-                url: '{{ url('/user') }}' + '/{{ $user->getUsername() }}' + '/avatar',
+                url: '{{ route('user.edit.avatar', compact('user')) }}',
                 type: "POST",
                 data: formData,
                 cache: false,
@@ -359,22 +363,25 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function () {
-                    location.reload();
+                success: data => {
+                    window.location.assign(data.url ?? '{{ route('my') }}');
                 },
-                error: function (data) {
-                    $('#userEditError').html(JSON.parse(data.responseText).message).show();
+                error: data => {
+                    let empty = $("<a>");
+                    toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
+                    empty.click();
+                    $('meta[name="csrf-token"]').attr('content', data.csrf);
                 },
             });
             return false;
         });
-        $('.delete-link').on('click', function (e) {
-            e.preventDefault();
+        $('.delete-link').on('click', event => {
+            event.preventDefault();
             $.ajax({
                 url: '{{ route('user.link') }}' + '/' + $(this).attr('data-id'),
                 type: "DELETE",
                 data: {
-                    _token: $(`[name="_token"]`).val(),
+                    _token: $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function () {
                     location.reload();

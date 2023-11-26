@@ -6,11 +6,9 @@ use App\Http\Requests\VolunteerRequest;
 use App\Http\Resources\VolunteerResource;
 use App\Models\Volunteer;
 use App\Services\GoogleServiceSheets;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
 use Symfony\Component\HttpFoundation\Response;
 
 class VolunteerController extends Controller
@@ -53,14 +51,6 @@ class VolunteerController extends Controller
         $avatar = '/images/banners/' . $username . '/' . $fileName;
 
         return new JsonResponse(['avatar' => url($avatar), 'csrf' => $this->getNewCSRFToken()]);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getNewCSRFToken(): string
-    {
-        return config('session.csrf')();
     }
 
     public function checkKey(Request $request): JsonResponse

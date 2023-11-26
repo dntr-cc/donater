@@ -10,7 +10,7 @@
 @php $withPageLink = true; @endphp
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
-@php $owner = $volunteer->owner()->first(); @endphp
+@php $owner = $volunteer->owner()->get()->first(); @endphp
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ route('volunteer.all') }}" class=""><i class="bi bi-arrow-left"></i></a>

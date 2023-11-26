@@ -24,13 +24,13 @@ class UserPolicy
         return true;
     }
 
-    public function update(User $user, User $targetUser): bool
+    public function update(?User $user, User $targetUser): bool
     {
-        return $user->getId() === $targetUser->getId();
+        return $user && $user->getId() === $targetUser->getId() || $user && $user->isSuperAdmin();
     }
 
-    public function delete(User $user, User $targetUser): bool
+    public function delete(?User $user, User $targetUser): bool
     {
-        return $user->getId() === $targetUser->getId();
+        return $user && $user->getId() === $targetUser->getId() || $user && $user->isSuperAdmin();
     }
 }
