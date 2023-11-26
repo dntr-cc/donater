@@ -63,6 +63,7 @@ class CommandWrapper
 
     public function chatValidation(string $text, string $chatId): bool
     {
+        $text = trim(strtr($text, ['!' => '', '1' => '']));
         $answer = match ($text) {
             'слава україні' => 'Героям Слава',
             'слава нації' => 'Смерть ворогам',

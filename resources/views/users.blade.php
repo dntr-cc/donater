@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row">
-        <h2>Користувачі <span class="badge rounded-pill text-bg-info">{{ $users->count() }}</span></h2>
+        <h2>Користувачі <span class="badge rounded-pill text-bg-secondary">{{ $users->count() }}</span></h2>
         @include('layouts.users_block', compact('users'))
     </div>
 @endsection
