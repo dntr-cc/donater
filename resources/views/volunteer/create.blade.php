@@ -138,7 +138,7 @@
         });
         toast('Email скопійовано', copyEmail);
 
-        document.querySelector('#file').addEventListener('change', (event) => {
+        document.querySelector('#file').addEventListener('change', event => {
             event.preventDefault();
             let formData = new FormData();
             let $file = $('#file');
@@ -168,7 +168,7 @@
             });
             return false;
         });
-        document.querySelector('#key').addEventListener('change', (event) => {
+        document.querySelector('#key').addEventListener('change', event => {
             event.preventDefault();
             let key = $('#key');
             const regex = /^[a-zA-Z0-9_-]+$/g;
@@ -198,7 +198,7 @@
             });
             return false;
         });
-        document.querySelector('#name').addEventListener('change', (event) => {
+        document.querySelector('#name').addEventListener('change', event => {
             event.preventDefault();
             let name = $('#name');
             if (name.val().length > 0) {
@@ -212,7 +212,7 @@
             }
             return false;
         });
-        document.querySelector('#link').addEventListener('change', (event) => {
+        document.querySelector('#link').addEventListener('change', event => {
             event.preventDefault();
             let link = $('#link');
             const regex = /(https:\/\/|http:\/\/)?send.monobank.ua\/jar\/[a-zA-Z0-9]{10}/g;
@@ -223,7 +223,7 @@
             }
             return false;
         });
-        document.querySelector('#page').addEventListener('change', (event) => {
+        document.querySelector('#page').addEventListener('change', event => {
             event.preventDefault();
             let page = $('#page');
             if (window.isValidUrl(page.val())) {
@@ -241,7 +241,7 @@
             return match[1];
         }
 
-        document.querySelector('#spreadsheet_id').addEventListener('change', (event) => {
+        document.querySelector('#spreadsheet_id').addEventListener('change', event => {
             event.preventDefault();
             let id = '';
             let spreadsheet_id = $('#spreadsheet_id');

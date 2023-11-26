@@ -5,7 +5,7 @@
 @php use App\Models\Volunteer; @endphp
 @php /** @var Volunteer $volunteer */ @endphp
 @php $choosen = request()->get('volunteer', ''); @endphp
-@php $fixCode = auth()->user()->volunteers->count() && request()->get('fixCode', 0); @endphp
+@php $fixCode = auth()->user()->volunteers->count() && request()->get('fixCode', false); @endphp
 @php $uniqueCode = $fixCode? '' : app(DonateService::class)->getNewUniqueHash(); @endphp
 @section('content')
     <div class="container">
@@ -52,7 +52,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    @if(!$fixCode)
+                                    @if($fixCode)
                                         <div class="form">
                                             <select id="userId" class="form-select form-select-lg mb-3"
                                                     aria-label="Оберіть користувача">

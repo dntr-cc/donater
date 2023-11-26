@@ -14,6 +14,11 @@ body {
     font-family: var(--mdb-body-font-family)!important;
     line-height: var(--bs-body-line-height)!important;
 }
+
+.hide {
+    display: none!important;
+}
+
 .btn-xs {
     --bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
 }

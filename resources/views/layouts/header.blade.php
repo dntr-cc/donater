@@ -32,6 +32,12 @@
                             Звітність
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('donates') }}" class="nav-link text-white">
+                            <i class="bi bi-lightning-fill d-inline mx-auto mb-1"></i>
+                            Донати
+                        </a>
+                    </li>
                     <li class="">
                         <a href="{{ route('users') }}" class="nav-link text-white">
                             <i class="bi bi-people-fill d-inline mx-auto mb-1"></i>
