@@ -23,6 +23,11 @@
                                 @endif
                             </p>
                             <p class="text-muted mb-1">
+                                @if ($user->volunteers->count())
+                                    <span title="Створені збори" class="badge rounded-pill bg-info">
+                                    {{ $user->volunteers->count() }}
+                                </span>
+                                @endif
                                 @if ($user->getApprovedDonateCount())
                                     <span title="Завалідовані донати" class="badge rounded-pill bg-success">
                                     {{ $user->getApprovedDonateCount() }}
