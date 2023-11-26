@@ -132,9 +132,11 @@
                                         <div class="me-auto mt-auto">
                                             <h4>Благодійні внески</h4>
                                         </div>
+                                        @if(auth()?->user()?->volunteers?->count())
                                         <a href="{{ route('donate', ['fixCode' => 1]) }}" class="btn ">
                                             ДОДАТИ ЗАГУБЛЕНИЙ КОД
                                         </a>
+                                        @endif
                                     </li>
                                     @foreach($user->getDonates() as $it => $donate)
                                         <li class="list-group-item d-flex justify-content-between align-items-start">
