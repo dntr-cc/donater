@@ -25,13 +25,13 @@ class VolunteerPolicy
         return !!$user;
     }
 
-    public function update(User $user, Volunteer $volunteer): bool
+    public function update(?User $user, Volunteer $volunteer): bool
     {
-        return $user->getId() === $volunteer->getUserId() || $user->isSuperAdmin();
+        return $user && $user->getId() === $volunteer->getUserId() || $user && $user->isSuperAdmin();
     }
 
-    public function delete(User $user, Volunteer $volunteer): bool
+    public function delete(?User $user, Volunteer $volunteer): bool
     {
-        return $user->getId() === $volunteer->getUserId() || $user->isSuperAdmin();
+        return $user && $user->getId() === $volunteer->getUserId() || $user && $user->isSuperAdmin();
     }
 }

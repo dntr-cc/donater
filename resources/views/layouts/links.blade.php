@@ -33,16 +33,15 @@
     <i class="bi bi-pencil-fill"></i>
     Редагування
 </a>
-@if($volunteer->isEnabled())
-    <a href="{{route('volunteer.stop', ['volunteer' => $volunteer->getKey()])}}" class="btn btn-secondary-outline m-1 {{ $additionalClasses }}">
-        <i class="bi bi-arrow-down-circle-fill"></i>
-        Зупинити
-    </a>
-@else
-    <a href="{{route('volunteer.start', ['volunteer' => $volunteer->getKey()])}}" class="btn btn-secondary-outline m-1 {{ $additionalClasses }}">
-        <i class="bi bi-arrow-up-circle-fill"></i>
-        Розпочати
-    </a>
-@endif
-
+    @if($volunteer->isEnabled())
+        <a href="{{route('volunteer.stop', ['volunteer' => $volunteer->getKey()])}}" class="btn btn-secondary-outline m-1 {{ $additionalClasses }}">
+            <i class="bi bi-arrow-down-circle-fill"></i>
+            Зупинити
+        </a>
+    @else
+        <a href="{{route('volunteer.start', ['volunteer' => $volunteer->getKey()])}}" class="btn btn-secondary-outline m-1 {{ $additionalClasses }}">
+            <i class="bi bi-arrow-up-circle-fill"></i>
+            Розпочати
+        </a>
+    @endif
 @endif

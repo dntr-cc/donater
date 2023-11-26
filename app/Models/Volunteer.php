@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
@@ -77,6 +78,14 @@ class Volunteer extends Model
     public function donates(): HasMany
     {
         return $this->hasMany(Donate::class, 'volunteer_id', 'id');
+    }
+
+    /**
+     * @return HasOne|User
+     */
+    public function owner(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     public function getId(): int

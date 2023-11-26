@@ -85,7 +85,7 @@
                                                        target="_blacnk">в такому форматі.</a>
                                                     Також треба зробити доступ до таблиці для редагування. Треба додати в
                                                     редактори (Editor) email
-                                                    <span id="editorEmail" class="text-warning">zbir-404114@zbir-404114.iam.gserviceaccount.com</span>
+                                                    <span id="editorEmail" class="text-warning">zbir-404114@zbir-404114.iam.gserviceaccount.com </span>
                                                     <button id="copyEmail" class="btn btn-sm btn-outline-secondary"
                                                             onclick="return false;">
                                                         <i class="bi bi-copy"></i>
