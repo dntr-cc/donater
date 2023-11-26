@@ -11,7 +11,6 @@
                 <section class="w-100 p-5">
                     <section class="">
                         <ul class="timeline-with-icons">
-
                             <li class="timeline-item mb-5">
                                 <span class="timeline-icon">
                                   <i class="bi bi-rocket-fill text-primary"></i>
@@ -23,7 +22,6 @@
                                     регулярність) і при цьому залишитись анонімом.
                                 </p>
                             </li>
-
                             <li class="timeline-item mb-5">
                                 <span class="timeline-icon">
                                   <i class="bi bi-gear-fill text-primary"></i>
@@ -43,7 +41,6 @@
                                     <li>Показувати посилання на банку та виписку в розділі звіти</li>
                                 </ol>
                             </li>
-
                             <li class="timeline-item mb-5">
                                 <span class="timeline-icon">
                                   <i class="bi bi-gear-wide-connected text-primary"></i>
@@ -61,12 +58,27 @@
                                     <li>Створення цього роадмапу</li>
                                 </ol>
                             </li>
-
+                            <li class="timeline-item mb-5">
+                                <span class="timeline-icon">
+                                  <i class="bi bi-star-fill text-primary"></i>
+                                </span>
+                                <h5 class="fw-bold">MVP ідеї, ver.0.0.3</h5>
+                                <p class="text-muted mb-2 fw-bold">26 листопада 2023</p>
+                                <p class="text-muted">
+                                    Велике оновлення волонтерського функціоналу:
+                                </p>
+                                <ul>
+                                    <li>Додавання нових зборів чи Фондів</li>
+                                    <li>Редагування вже створених зборів</li>
+                                    <li>Зупинити чи розпочати збір (виключає чи включає можливість створити благодійний внесок до збору)</li>
+                                    <li>Сортування зборів по кількості донатів на збір</li>
+                                </ul>
+                            </li>
                             <li class="timeline-item mb-5">
                                 <span class="timeline-icon">
                                   <i class="bi bi-stars text-primary"></i>
                                 </span>
-                                <h5 class="fw-bold">MVP ідеї, ver.0.0.3</h5>
+                                <h5 class="fw-bold">MVP ідеї, ver.0.0.4</h5>
                                 <p class="text-muted mb-2 fw-bold">десь в майбутньому</p>
                                 <p class="text-muted">
                                     Планування майбутнього розвитку:
@@ -75,10 +87,6 @@
                                     <li>Робити розіграши серед користувачів (буде багато)</li>
                                     <li>Волонтерський функціонал:</li>
                                     <ul>
-                                        <li>Дозволити користувачам створювати збір</li>
-                                        <li>Додати можливість додавати посилання на гугл таблицю з випискою</li>
-                                        <li>Налаштування збору - включити, виключити, текст, посилання, банка, баннер
-                                        </li>
                                         <li>Додавати документи до транзакцій з мінусом в виписці (доступ до цих
                                             документів буде мати тільки ті, хто донатив на збір, мають завалідований
                                             внесок)
@@ -129,7 +137,6 @@
                                             документи по звіту тощо.
                                         </li>
                                     </ul>
-
                                 </ul>
                             </li>
                             <p class="text-muted lead">
