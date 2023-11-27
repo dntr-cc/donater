@@ -29,32 +29,25 @@
                                      class="rounded-circle img-fluid" style="width: 150px;">
                                 <h3 class="my-3">{{ $user->getFullName() }}</h3>
                                 @if ($user->isPremium())
-                                    <button type="button" title="Telegram Premium"
-                                            class="btn btn-lg btn-outline-golden rounded-pill position-relative">
-                                        <i class="bi bi-telegram golden icon-size-x-large"></i>
-                                    </button>
+                                    <span title="Створені збори" class="badge bg-golden p-1">
+                                    <i class="bi bi-telegram" title="Telegram Premium"
+                                       style="color: #fff;"></i>
+                                    </span>
+                                @endif
+                                @if ($user->volunteers->count())
+                                    <span title="Створені збори" class="badge p-1 bg-info">
+                                    &nbsp;{{ $user->volunteers->count() }}&nbsp;
+                                </span>
                                 @endif
                                 @if ($user->getApprovedDonateCount())
-                                    <button type="button" title="Завалідовані донати"
-                                            class="btn btn-lg -light rounded-pill position-relative">
-                                        <i class="bi bi-check-circle-fill text-success"></i>
-                                        <span
-                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                                            {{ $user->getApprovedDonateCount() }}
-                                            <span class="visually-hidden">завалідовані донати</span>
-                                        </span>
-                                    </button>
+                                    <span title="Завалідовані донати" class="badge p-1 bg-success">
+                                    &nbsp;{{ $user->getApprovedDonateCount() }}&nbsp;
+                                </span>
                                 @endif
                                 @if ($user->getNotValidatedDonatesCount())
-                                    <button type="button" title="Очікують валідації"
-                                            class="btn btn-lg btn-outline-secondary-light rounded-pill position-relative">
-                                        <i class="bi bi-clock-fill text-success-light"></i>
-                                        <span
-                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
-                                            {{ $user->getNotValidatedDonatesCount() }}
-                                            <span class="visually-hidden">Очікують валідації</span>
-                                        </span>
-                                    </button>
+                                    <span title="Очікують валідації" class="badge p-1 bg-secondary">
+                                    &nbsp;{{ $user->getNotValidatedDonatesCount() }}&nbsp;
+                                </span>
                                 @endif
                                 <h4 class="m-3 text-muted">{{ $user->getAtUsername() }}</h4>
                                 <div class="d-flex justify-content-center mb-2">
