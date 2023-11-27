@@ -34,7 +34,7 @@ class DonateController extends Controller
             ->url('https://donater.com.ua/donates')
             ->appendTo($feed);
 
-        foreach (Donate::with('donater')->latest()->limit(20)->get() as $donate) {
+        foreach (Donate::with('donater')->latest()->limit(100)->get() as $donate) {
             $item = new Item();
             $user = $donate->donater;
             $item
