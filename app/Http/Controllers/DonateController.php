@@ -6,6 +6,9 @@ use App\Http\Requests\DonateRequest;
 use App\Http\Resources\DonateResource;
 use App\Models\Donate;
 use Symfony\Component\HttpFoundation\Response;
+use Bhaktaraz\RSSGenerator\Channel;
+use Bhaktaraz\RSSGenerator\Feed;
+use Bhaktaraz\RSSGenerator\Item;
 
 class DonateController extends Controller
 {
@@ -22,9 +25,26 @@ class DonateController extends Controller
         return view('donates', compact('donates'));
     }
 
-    public function create()
+    public function rss()
     {
-        return view('donate');
+        $feed = new Feed();
+        $channel = new Channel();
+        $channel->title('Донати на donater.com.ua')
+            ->description('Сповіщення про те, що українці донатять')
+            ->url('https://donater.com.ua/donates')
+            ->appendTo($feed);
+
+        foreach (Donate::latest()->limit(20)->get() as $donate) {
+            $item = new Item();
+            $user = $donate->donater->first();
+            $item
+                ->title(strtr('Новий донат в :volunteer', [':volunteer' => $donate->volunteer->getName()]))
+                ->description(strtr('Користувач :name задонатив на збір :volunteer', [':name' => $user->getFullName(), ':volunteer' => $donate->volunteer->getName()]))
+                ->url($user->getUserLink())
+                ->appendTo($channel);
+        }
+
+        return new Response($feed, Response::HTTP_OK, ['Content-type' => 'text/xml;charset=UTF-8']);
     }
 
     public function store(DonateRequest $request)
@@ -34,6 +54,11 @@ class DonateController extends Controller
         Donate::create($request->validated());
 
         return redirect(route('my'), Response::HTTP_FOUND)->header('Cache-Control', 'no-store, no-cache, must-revalidate');
+    }
+
+    public function create()
+    {
+        return view('donate');
     }
 
     public function show(Donate $donate)

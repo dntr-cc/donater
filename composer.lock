@@ -4,8 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "75b92190fcc43741660ea122322611c3",
+    "content-hash": "47dfe7e8c78f0a1276b1fbb608e0f0e2",
     "packages": [
+        {
+            "name": "bhaktaraz/php-rss-generator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bhaktaraz/php-rss-generator.git",
+                "reference": "53cf11db18d87e65973e6df453fb8c1382e5a3bd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bhaktaraz/php-rss-generator/zipball/53cf11db18d87e65973e6df453fb8c1382e5a3bd",
+                "reference": "53cf11db18d87e65973e6df453fb8c1382e5a3bd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bhaktaraz\\RSSGenerator\\": "Source/Bhaktaraz/RSSGenerator/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bhaktaraz Bhatta",
+                    "email": "bhattabhakta@gmail.com"
+                }
+            ],
+            "description": "Simple RSS generator library for PHP 5.5 or later.",
+            "homepage": "https://github.com/bhaktaraz/php-rss-generator",
+            "keywords": [
+                "Facebook product feed generator",
+                "feed",
+                "generator",
+                "rss",
+                "writer"
+            ],
+            "support": {
+                "issues": "https://github.com/bhaktaraz/php-rss-generator/issues",
+                "source": "https://github.com/bhaktaraz/php-rss-generator/tree/master"
+            },
+            "time": "2021-03-15T10:59:47+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.11.0",
@@ -10002,5 +10051,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

@@ -160,6 +160,14 @@ class User extends Authenticatable
     /**
      * @return string
      */
+    public function getUsernameWithFullName(): string
+    {
+        return trim("{$this->getFirstName()} {$this->getLastName()} ({$this->getAtUsername()})");
+    }
+
+    /**
+     * @return string
+     */
     public function getFirstName(): string
     {
         return (string)$this->first_name;

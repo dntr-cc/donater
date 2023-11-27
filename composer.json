@@ -6,16 +6,17 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "bhaktaraz/php-rss-generator": "dev-master",
         "chypriote/unique-names-generator": "^0.0.2",
         "doctrine/dbal": "^3.7",
         "google/apiclient": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "irazasyed/telegram-bot-sdk": "^3.13",
         "laravel/framework": "^10",
+        "laravel/passport": "^11",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.7",
-        "laravel/ui": "^4.2",
-        "laravel/passport": "^11"
+        "laravel/ui": "^4.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
