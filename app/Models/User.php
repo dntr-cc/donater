@@ -51,7 +51,8 @@ class User extends Authenticatable
         parent::boot();
 
         static::addGlobalScope('approved_donates_count', static function (Builder $builder) {
-            $builder->withCount('approvedDonates');
+            $builder->withCount('approvedDonates')
+                ->orderBy('id', 'desc');
         });
     }
 
