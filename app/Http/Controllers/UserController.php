@@ -32,6 +32,18 @@ class UserController extends Controller
         return view('users', compact('users'));
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return View
+     */
+    public function volunteers(): View
+    {
+        $users = User::query()->withWhereHas('volunteers')->paginate(9)->fragment('volunteers');
+
+        return view('users', compact('users'));
+    }
+
     public function updateAvatar(Request $request, User $user)
     {
         $this->authorize('update', $user);
