@@ -11,7 +11,7 @@ class DonateService
     public function getNewUniqueHash(): string
     {
         while (1) {
-            $uniqId = uniqid(true);
+            $uniqId = uniqid('', true);
             if (0 === Donate::where('uniq_hash', '=', $uniqId)->count()) {
                 return $uniqId;
             }

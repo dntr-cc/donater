@@ -18,7 +18,7 @@ class LoginService
 
     public function getNewLoginHash(): string
     {
-        $uid = uniqid(true);
+        $uid = uniqid('', true);
         Cache::set(strtr(self::LOGIN_START, ['key' => $uid]), $uid, 60);
 
         return $uid;
