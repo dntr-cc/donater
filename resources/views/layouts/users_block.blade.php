@@ -51,7 +51,7 @@
     <p>Користувачі не знайдені</p>
 @endforelse
 @if(!$withoutPagination)
-    <div class="col-lg-12">
+    <div class="col-12">
         <div class="row">
             {{ $users->links('layouts.pagination', ['elements' => $users]) }}
         </div>

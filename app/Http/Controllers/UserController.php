@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function index(): View
     {
-        $users = User::paginate(15)->fragment('users');
+        $users = User::paginate(9)->fragment('users');
 
         return view('users', compact('users'));
     }
