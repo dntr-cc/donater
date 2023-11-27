@@ -1,3 +1,4 @@
+-include .env*
 SHELL := $(shell which bash)
 .SHELLFLAGS = -c
 
@@ -13,6 +14,7 @@ Makefile: ;              # skip prerequisite discovery
 .PHONY: up
 up:
 	docker-compose up -d
+	echo "Відкривай ${APP_URL}"
 
 .PHONY: env
 env:
