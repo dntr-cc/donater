@@ -38,8 +38,18 @@ class DonateController extends Controller
             $item = new Item();
             $user = $donate->donater->first();
             $item
-                ->title(strtr('Новий донат в :volunteer', [':volunteer' => $donate->volunteer->getName()]))
-                ->description(strtr('Користувач :name задонатив на збір :volunteer', [':name' => $user->getFullName(), ':volunteer' => $donate->volunteer->getName()]))
+                ->title(
+                    strtr(
+                        'Новий донат в :volunteer від :user з кодом :code',
+                        [':user' => $user->getUsernameWithFullName(), ':volunteer' => $donate->volunteer->getName(), ':code' => $donate->getUniqHash()]
+                    )
+                )
+                ->description(
+                    strtr(
+                        'Новий донат в :volunteer від :user з кодом :code',
+                        [':user' => $user->getUsernameWithFullName(), ':volunteer' => $donate->volunteer->getName(), ':code' => $donate->getUniqHash()]
+                    )
+                )
                 ->url($user->getUserLink())
                 ->appendTo($channel);
         }
