@@ -28,8 +28,9 @@ class UserController extends Controller
     public function index(): View
     {
         $users = User::paginate(9)->fragment('users');
+        $whoIs = 'Користувачі';
 
-        return view('users', compact('users'));
+        return view('users', compact('users', 'whoIs'));
     }
 
     /**
@@ -40,8 +41,9 @@ class UserController extends Controller
     public function volunteers(): View
     {
         $users = User::query()->withWhereHas('volunteers')->paginate(9)->fragment('volunteers');
+        $whoIs = 'Волонтери';
 
-        return view('users', compact('users'));
+        return view('users', compact('users', 'whoIs'));
     }
 
     public function updateAvatar(Request $request, User $user)
