@@ -7,6 +7,7 @@ use Config;
 use Google_Client;
 use Google_Service_Sheets;
 use Illuminate\Foundation\Application;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Str;
 use URL;
@@ -37,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::useBootstrapFive();
         URL::forceRootUrl(Config::get('app.url'));
         if (Str::contains(Config::get('app.url'), 'https://')) {
             URL::forceScheme('https');

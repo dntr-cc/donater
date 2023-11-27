@@ -18,24 +18,24 @@
                             <p class="text-muted mb-1">
                                 {{ $user->getAtUsername() }}
                                 @if ($user->isPremium())
+                                    <span title="Створені збори" class="badge bg-golden p-1">
                                     <i class="bi bi-telegram" title="Telegram Premium"
-                                       style="color: #d9b702;"></i>
+                                       style="color: #fff;"></i>
+                                    </span>
                                 @endif
-                            </p>
-                            <p class="text-muted mb-1">
                                 @if ($user->volunteers->count())
-                                    <span title="Створені збори" class="badge rounded-pill bg-info">
-                                    {{ $user->volunteers->count() }}
+                                    <span title="Створені збори" class="badge p-1 bg-info">
+                                    &nbsp;{{ $user->volunteers->count() }}&nbsp;
                                 </span>
                                 @endif
                                 @if ($user->getApprovedDonateCount())
-                                    <span title="Завалідовані донати" class="badge rounded-pill bg-success">
-                                    {{ $user->getApprovedDonateCount() }}
+                                    <span title="Завалідовані донати" class="badge p-1 bg-success">
+                                    &nbsp;{{ $user->getApprovedDonateCount() }}&nbsp;
                                 </span>
                                 @endif
                                 @if ($user->getNotValidatedDonatesCount())
-                                    <span title="Очікують валідації" class="badge rounded-pill bg-secondary">
-                                    {{ $user->getNotValidatedDonatesCount() }}
+                                    <span title="Очікують валідації" class="badge p-1 bg-secondary">
+                                    &nbsp;{{ $user->getNotValidatedDonatesCount() }}&nbsp;
                                 </span>
                                 @endif
                             </p>
@@ -49,5 +49,9 @@
 @empty
     <p>Користувачі не знайдені</p>
 @endforelse
-
+<div class="col-lg-12">
+    <div class="row">
+    {{ $users->links('layouts.pagination', ['elements' => $users]) }}
+    </div>
+</div>
 

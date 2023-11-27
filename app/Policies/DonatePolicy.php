@@ -10,12 +10,12 @@ class DonatePolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
         return true;
     }
 
-    public function view(User $user, Donate $donate): bool
+    public function view(?User $user, Donate $donate): bool
     {
         return true;
     }

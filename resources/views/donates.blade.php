@@ -3,7 +3,6 @@
 @section('page_description', 'Стрічка благодійних внесків від користувачів donater.com.ua')
 @php use App\Models\Donate; @endphp
 @php /* @var Donate $donate */ @endphp
-@php $donates = Donate::all(); @endphp
 @section('content')
     <div class="container">
         <div class="row">
@@ -12,25 +11,23 @@
                     <div class="card-body">
                         <ul class="list-group list-group">
                             <div class="container m-1 mb-3">
-                            <div class="row">
+                            <div class="row d-flex justify-content-between">
                                 <div class="col-md-6 mt-1">
-                                    <h4 class="align-items-start">Всі благодійні внески</h4>
-                                </div>
-                                <div class="col-md-6 mt-1">
+                                    <h4>Всі благодійні внески</h4>
                                     @if(auth()?->user()?->volunteers?->count())
                                         <a href="{{ route('donate', ['fixCode' => 1]) }}" class="btn">
                                             ДОДАТИ ЗАГУБЛЕНИЙ КОД
                                         </a>
                                     @endif
                                 </div>
-                                <div class="col-md-6 mt-1">
-                                    <div class="form-floating">
-                                        <input id="search" type="search" class="form-control mb-2" placeholder="Пошук коду">
-                                        <label for="search">Пошук коду</label>
-                                        <p class="mt-2 ms-1 lead" id="result">Знайдено: {{ $donates->count() }}</p>
-                                    </div>
-                                </div>
-                                <hr>
+{{--                                <div class="col-md-6 mt-1">--}}
+{{--                                    <div class="form-floating">--}}
+{{--                                        <input id="search" type="search" class="form-control mb-2" placeholder="Пошук коду">--}}
+{{--                                        <label for="search">Пошук коду</label>--}}
+{{--                                        <p class="mt-2 ms-1 lead" id="result">Знайдено: {{ $donates->count() }}</p>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <hr>--}}
                             </div>
                             </div>
                             @foreach($donates as $it => $donate)
@@ -64,6 +61,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="row">
+            {{ $donates->links('layouts.pagination', ['elements' => $donates]) }}
         </div>
     </div>
     <script type="module">

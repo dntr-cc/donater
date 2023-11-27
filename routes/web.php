@@ -64,7 +64,7 @@ Route::get('/volunteer/{volunteer}/stop', [App\Http\Controllers\VolunteerControl
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
 Route::post('/user/{user}/avatar', [App\Http\Controllers\UserController::class, 'updateAvatar'])->name('user.edit.avatar');
-Route::get('/donates', fn() => view('donates'))->name('donates');
+Route::get('/donates', [App\Http\Controllers\DonateController::class, 'index'])->name('donates');
 Route::get('/donate', [App\Http\Controllers\DonateController::class, 'create'])->name('donate');
 Route::post('/donate', [App\Http\Controllers\DonateController::class, 'store']);
 Route::post('/user/link', [App\Http\Controllers\UserLinkController::class, 'store'])->name('user.link');

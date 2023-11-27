@@ -17,8 +17,9 @@ class DonateController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Donate::class);
+        $donates = Donate::paginate(30)->fragment('donates');
 
-        return DonateResource::collection(Donate::all());
+        return view('donates', compact('donates'));
     }
 
     public function create()
