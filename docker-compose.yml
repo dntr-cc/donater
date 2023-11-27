@@ -24,7 +24,7 @@ services:
             - '9000:9000'
         volumes:
             - '.:/var/www/html'
-            - './supervisor/deploy.conf:/etc/supervisor/conf.d/deploy.conf:ro'
+            - './supervisor/deploy.php.conf:/etc/supervisor/conf.d/deploy.php.conf:ro'
             - './supervisor/schedule.conf:/etc/supervisor/conf.d/schedule.conf:ro'
         networks:
             - sail

@@ -165,6 +165,11 @@
                     $('#avatar').val(avatar);
                     $('meta[name="csrf-token"]').attr('content', data.csrf);
                 },
+                error: data => {
+                    let empty = $("<a>");
+                    toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
+                    empty.click();
+                },
             });
             return false;
         });
