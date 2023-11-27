@@ -91,15 +91,24 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
     <script type="module">
+        const choosen = '{{ $choosen }}';
+        const fixCode = '{{ $fixCode }}';
+        gtag('event', 'begin_donation', {
+            'choosen': choosen,
+            'fix_code': fixCode,
+        });
         let copyDonateHash = $('#copyDonateHash');
         copyDonateHash.on('click', function (e) {
             e.preventDefault();
             copyContent($('#donateCode').val());
+            gtag('event', 'copy_code', {
+                'choosen': choosen,
+                'fix_code': fixCode,
+            });
             return false;
         });
         toast('Код скопійовано', copyDonateHash);
@@ -125,21 +134,38 @@
                     volunteer_id: volunteerId,
                 },
                 success: data => {
+                    gtag('event', 'finish_donation', {
+                        'choosen': choosen,
+                        'fix_code': fixCode,
+                        'user_id': userId,
+                        'volunteer_id': volunteerId,
+                    });
                     window.location.assign(data.url ?? '{{ route('my') }}');
                 },
                 error: data => {
                     let empty = $("<a>");
-                    toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
+                    let message = JSON.parse(data.responseText).message;
+                    toast(message, empty, 'text-bg-danger');
                     empty.click();
                     $('meta[name="csrf-token"]').attr('content', data.csrf);
+                    gtag('event', 'failed_donation', {
+                        'choosen': choosen,
+                        'fix_code': fixCode,
+                        'user_id': userId,
+                        'volunteer_id': volunteerId,
+                        'message': message,
+                    });
                 },
             });
             return false;
         });
         $('#jarLink').click(() => {
+            gtag('event', 'open_jar', {
+                'choosen': choosen,
+                'fix_code': fixCode,
+            });
             $('#createDonate').attr('disabled', false);
         });
-        const choosen = '{{ $choosen }}';
 
         function volunteerHasBeenChoosen(selected) {
             $('#jarText').text(
