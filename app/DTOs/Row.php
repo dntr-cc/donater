@@ -71,11 +71,11 @@ class Row
 
     public function getDonater(string $comment): ?User
     {
-        $matches = $matches2 = [];
-        preg_match('/[a-zA-Z0-9]{13}/', $comment, $matches);
+        $matches1 = $matches2 = [];
+        preg_match('/[a-zA-Z0-9]{13}/', $comment, $matches1);
         preg_match('/[a-zA-Z0-9]{14}[.][0-9]{8}/', $comment, $matches2);
         /** @var Donate $donate */
-        $donate = $this->donates[$matches[0] ?? $matches2[0] ?? ''] ?? null;
+        $donate = $this->donates[$matches2[0] ?? $matches1[0] ?? ''] ?? null;
         if ($donate) {
             return User::find($donate->getUserId());
         }
