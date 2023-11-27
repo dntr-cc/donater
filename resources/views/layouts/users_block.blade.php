@@ -1,5 +1,6 @@
 @php /** @var \Illuminate\Support\Collection|\App\Models\User[] $users */ @endphp
 @php $it = 0; @endphp
+@php $withoutPagination = $withoutPagination ?? false; @endphp
 @forelse($users->filter()->all() as $user)
     @if(0 === $it || 0 === $it % 3)
         <div class="col-lg-12">
@@ -49,9 +50,11 @@
 @empty
     <p>Користувачі не знайдені</p>
 @endforelse
-<div class="col-lg-12">
-    <div class="row">
-    {{ $users->links('layouts.pagination', ['elements' => $users]) }}
+@if(!$withoutPagination)
+    <div class="col-lg-12">
+        <div class="row">
+            {{ $users->links('layouts.pagination', ['elements' => $users]) }}
+        </div>
     </div>
-</div>
+@endif
 
