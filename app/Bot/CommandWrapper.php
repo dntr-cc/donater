@@ -14,15 +14,20 @@ class CommandWrapper
     public function handle(Update $update)
     {
         $message = $update->getMessage();
-        $chat    = $message?->getChat();
-        if (!$chat) {
+        try {
+            $chat    = $message?->getChat();
+            if (!$chat) {
+                return;
+            }
+            $from    = $message?->getFrom();
+            if (!$from) {
+                return;
+            }
+            $chatId  = $chat->getId();
+        } catch (\Throwable $t) {
+            \Log::error($t->getMessage());
             return;
         }
-        $from    = $message?->getFrom();
-        if (!$from) {
-            return;
-        }
-        $chatId  = $chat->getId();
         if (Cache::get('ru' . $chatId)) {
             Cache::delete('ru' . $chatId);
             Telegram::sendMessage([

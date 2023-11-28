@@ -6,6 +6,7 @@ namespace App\Bot;
 
 use App\Models\User;
 use Telegram\Bot\Commands\Command;
+use Telegram\Bot\Exceptions\TelegramOtherException;
 
 class NotifyCommand extends Command
 {
@@ -14,7 +15,7 @@ class NotifyCommand extends Command
     /**
      * @var string Command Description
      */
-    protected string $description = 'Привітання';
+    protected string $description = 'Розсилка';
 
     /**
      * {@inheritdoc}
@@ -22,14 +23,21 @@ class NotifyCommand extends Command
     public function handle(): void
     {
         $chatId = $this->getUpdate()?->getChat()?->getId();
-        if (503910905 === (int)$chatId) {
-//            foreach (User::all() as $user) {
-                \Telegram::sendMessage([
-                    'chat_id' => $chatId,
-                    'text' => $this->getUpdate()?->getMessage()->getText(),
-                ]);
-//            }
-            $this->replyWithMessage(['text' => 'Вітаю!']);
+        $blocked = [];
+        $it = 0;
+        if (5609509050 === (int)$chatId) {
+            foreach (User::all() as $user) {
+                try {
+                    \Telegram::sendMessage([
+                        'chat_id' => $user->getTelegramId(),
+                        'text' => strtr($this->getUpdate()?->getMessage()?->getText() ?? '', ['/notify ' => '']),
+                    ]);
+                    $it++;
+                } catch (TelegramOtherException $exception) {
+                    $blocked[] = $user->getUserLink();
+                }
+            }
+            $this->replyWithMessage(['text' => 'Blocked:' . implode(', ', $blocked) . PHP_EOL . 'Send messages: ' . $it]);
         }
     }
 }
