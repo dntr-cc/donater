@@ -25,7 +25,7 @@ class NotifyCommand extends Command
         $chatId = $this->getUpdate()?->getChat()?->getId();
         $blocked = [];
         $it = 0;
-        if (5609509050 === (int)$chatId) {
+        if (in_array($chatId, [5609509050, 281861745])) {
             foreach (User::all() as $user) {
                 try {
                     \Telegram::sendMessage([
@@ -33,7 +33,7 @@ class NotifyCommand extends Command
                         'text' => strtr($this->getUpdate()?->getMessage()?->getText() ?? '', ['/notify ' => '']),
                     ]);
                     $it++;
-                } catch (TelegramOtherException $exception) {
+                } catch (\Throwable $exception) {
                     $blocked[] = $user->getUserLink();
                 }
             }
