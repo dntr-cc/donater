@@ -124,6 +124,14 @@ class VolunteerController extends Controller
         return $this->getRedirectResponse($volunteer);
     }
 
+    public function raffle(Volunteer $volunteer)
+    {
+        $this->authorize('update', $volunteer);
+        $volunteer = $volunteer->with('donates')->first();
+
+        return view('volunteer.raffle', compact('volunteer'));
+    }
+
     public function destroy(Volunteer $volunteer)
     {
         $this->authorize('delete', $volunteer);

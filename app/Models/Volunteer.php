@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Collections\DonateCollection;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,6 +25,7 @@ use Illuminate\Support\Collection;
  * @property int $user_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property DonateCollection|null $donates
  */
 class Volunteer extends Model
 {
@@ -78,6 +80,14 @@ class Volunteer extends Model
     public function donates(): HasMany
     {
         return $this->hasMany(Donate::class, 'volunteer_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function donatesWithAmount(): HasMany
+    {
+        return $this->hasMany(Donate::class, 'volunteer_id', 'id')->where('amount', '>', 0);
     }
 
     /**
@@ -197,5 +207,10 @@ class Volunteer extends Model
         $this->spreadsheet_id = $spreadsheetId;
 
         return $this;
+    }
+
+    public function getDonates(): ?DonateCollection
+    {
+        return $this->donates;
     }
 }

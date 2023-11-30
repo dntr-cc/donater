@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 
 /**
  * @property array|Row[] $items
+ * @method Row|null first(callable $callback = null, $default = null)
  */
 class RowCollection extends Collection
 {
@@ -32,5 +33,16 @@ class RowCollection extends Collection
         return (bool)$this->filter(static function(Row $row) use ($getUniqHash) {
             return str_contains($row->getComment(), $getUniqHash);
         })->count();
+    }
+
+    /**
+     * @param string $getUniqHash
+     * @return float
+     */
+    public function getAmountByUniqHash(string $getUniqHash): float
+    {
+        return floatval($this->filter(static function(Row $row) use ($getUniqHash) {
+            return str_contains($row->getComment(), $getUniqHash);
+        })?->first()?->getAmount() ?? 0.00);
     }
 }

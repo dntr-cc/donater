@@ -2,6 +2,7 @@
 @section('page_title', 'Всі збори з розіграшами - donater.com.ua')
 @section('page_description', 'Всі збори з розіграшами - donater.com.ua')
 @php $withZvitLink = true; @endphp
+@php $raffles = false; @endphp
 
 @section('content')
     <div class="container px-4 py-5" >
@@ -35,7 +36,10 @@
                         <div>
                             {!! $volunteer->getDescription() !!}
                         </div>
-                    @include('layouts.links', compact('volunteer', 'withZvitLink'))
+                    @if(request()->user()?->can('update', $volunteer))
+                        @php $raffles = true; @endphp
+                    @endif
+                    @include('layouts.links', compact('volunteer', 'withZvitLink', 'raffles'))
                     </div>
                 </div>
             </div>

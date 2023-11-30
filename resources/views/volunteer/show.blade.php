@@ -8,6 +8,7 @@
 @php $withZvitLink = true; @endphp
 @php $withJarLink = true; @endphp
 @php $withPageLink = true; @endphp
+@php $raffles = true; @endphp
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
 @php $owner = $volunteer->owner()->get()->first(); @endphp
@@ -30,7 +31,7 @@
                     {!! $volunteer->getDescription() !!}
                 </div>
                 <div class="mt-3"></div>
-                @include('layouts.links', compact('volunteer', 'withJarLink', 'withPageLink', 'withZvitLink'))
+                @include('layouts.links', compact('volunteer', 'withJarLink', 'withPageLink', 'withZvitLink', 'raffles'))
             </div>
         </div>
         <ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">

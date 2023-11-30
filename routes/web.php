@@ -60,6 +60,7 @@ Route::get('/volunteer/{volunteer}/edit', [App\Http\Controllers\VolunteerControl
 Route::patch('/volunteer/{volunteer}/edit', [App\Http\Controllers\VolunteerController::class, 'update'])->name('volunteer.update');
 Route::get('/volunteer/{volunteer}/start', [App\Http\Controllers\VolunteerController::class, 'start'])->name('volunteer.start');
 Route::get('/volunteer/{volunteer}/stop', [App\Http\Controllers\VolunteerController::class, 'stop'])->name('volunteer.stop');
+Route::get('/volunteer/{volunteer}/raffle', [App\Http\Controllers\VolunteerController::class, 'raffle'])->name('volunteer.raffle');
 
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
