@@ -110,7 +110,11 @@
                                             class="col-sm-12 d-flex justify-content-between align-items-start volunteer"
                                             data-volunteer="{{ $volunteer->getKey() }}">
                                             <div class="fw-bold">
-                                                {{ $volunteer->getName() }}
+                                                @if($volunteer->isEnabled())
+                                                    <span class="btn btn-xs btn-info">ЗБІР ТРИВАЄ</span>
+                                                @else
+                                                    <span class="btn btn-xs btn-danger">ЗБІР ЗАКРИТО</span>
+                                                @endif{{ $volunteer->getName() }}
                                                 @include('layouts.links', compact('volunteer', 'withZvitLink', 'additionalClasses'))
                                             </div>
                                         </div>

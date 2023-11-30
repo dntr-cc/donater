@@ -9,6 +9,11 @@
             @php $owner = $volunteer->owner()->get()->first(); @endphp
             <div class="container px-4 py-5">
                 <h3 class="pb-2 border-bottom">
+                    @if($volunteer->isEnabled())
+                        <span class="btn btn-info">ЗБІР ТРИВАЄ</span>
+                    @else
+                        <span class="btn btn-danger">ЗБІР ЗАКРИТО</span>
+                    @endif
                     {{ $volunteer->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
                 </h3>
                 <div class="row">
