@@ -120,7 +120,7 @@
                                             </a>
                                             <button id="updateVolunteer" type="submit" class="btn btn-primary me-4"
                                                     onclick="return false;">
-                                                Зберігти
+                                                Зберегти
                                             </button>
                                         </div>
                                     </div>

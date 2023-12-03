@@ -20,6 +20,13 @@
     @foreach($volunteers->all() as $it => $volunteer)
         <div class="container px-4 py-5" >
             <h3 class="pb-2 border-bottom">
+                @if($volunteer->isEnabled())
+                    <span class="btn btn-info">ЗБІР ТРИВАЄ</span>
+                @elseif($volunteer->donates->count())
+                    <span class="btn btn-danger">ЗБІР ЗАКРИТО</span>
+                @else
+                    <span class="btn btn-secondary">СКОРО РОЗПОЧНЕТЬСЯ</span>
+                @endif
                 {{ $volunteer->getName() }}
             </h3>
             <div class="d-flex">

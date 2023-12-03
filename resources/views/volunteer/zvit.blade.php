@@ -12,8 +12,10 @@
                 <h3 class="pb-2 border-bottom">
                     @if($volunteer->isEnabled())
                         <span class="btn btn-info">ЗБІР ТРИВАЄ</span>
-                    @else
+                    @elseif($volunteer->donates->count())
                         <span class="btn btn-danger">ЗБІР ЗАКРИТО</span>
+                    @else
+                        <span class="btn btn-secondary">СКОРО РОЗПОЧНЕТЬСЯ</span>
                     @endif
                     {{ $volunteer->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
                 </h3>

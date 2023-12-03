@@ -200,7 +200,7 @@
                                         data-bs-dismiss="modal">
                                     Закрити
                                 </button>
-                                <button id="createLink" type="submit" class="btn btn-primary">Зберігти</button>
+                                <button id="createLink" type="submit" class="btn btn-primary">Зберегти</button>
                             </div>
                         </form>
                     </div>
@@ -259,7 +259,7 @@
                                         data-bs-dismiss="modal">
                                     Закрити
                                 </button>
-                                <button id="userEdit" type="submit" class="btn btn-primary">Зберігти</button>
+                                <button id="userEdit" type="submit" class="btn btn-primary">Зберегти</button>
                             </div>
                         </form>
                     </div>

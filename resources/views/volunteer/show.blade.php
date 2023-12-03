@@ -15,12 +15,14 @@
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ route('volunteer.all') }}" class=""><i class="bi bi-arrow-left"></i></a>
-            Звітність {{ $volunteer->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
             @if($volunteer->isEnabled())
                 <span class="btn btn-info">ЗБІР ТРИВАЄ</span>
-            @else
+            @elseif($volunteer->donates->count())
                 <span class="btn btn-danger">ЗБІР ЗАКРИТО</span>
+            @else
+                <span class="btn btn-secondary">СКОРО РОЗПОЧНЕТЬСЯ</span>
             @endif
+            Звітність {{ $volunteer->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
         </h2>
         <div class="row">
             <div class="col-md-4 px-2 py-2">
