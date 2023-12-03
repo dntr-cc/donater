@@ -25,7 +25,8 @@ class VolunteerController extends Controller
         $this->authorize('create', Volunteer::class);
 
         $attributes = $request->validated();
-        if ($attributes['user_id'] !== $request->user()->getId() && !$request->user()->isSuperAdmin()) {
+
+        if ((int)$attributes['user_id'] !== $request->user()->getId() && !$request->user()->isSuperAdmin()) {
             return new JsonResponse([], Response::HTTP_UNAUTHORIZED);
         }
 

@@ -8,9 +8,10 @@ import slug from 'limax/lib/limax';
 
 window.slug = slug;
 
-import {Toast} from 'bootstrap';
+import {Toast, Button} from 'bootstrap';
 
 window.Toast = Toast;
+window.Button = Button;
 
 import '../sass/app.scss'
 

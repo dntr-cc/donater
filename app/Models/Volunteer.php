@@ -213,4 +213,9 @@ class Volunteer extends Model
     {
         return $this->donates;
     }
+
+    public function getDonateCollectionWithAmount(): ?DonateCollection
+    {
+        return self::with('donatesWithAmount')->first()->donatesWithAmount;
+    }
 }

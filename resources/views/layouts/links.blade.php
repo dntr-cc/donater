@@ -34,12 +34,12 @@
     <i class="bi bi-pencil-fill"></i>
     Редагування
 </a>
-    @if($raffles)
-        <a href="{{route('volunteer.raffle', ['volunteer' => $volunteer->getKey()])}}" class="btn  m-1 {{ $additionalClasses }}">
-            <i class="bi bi-dice-3-fill"></i>
-            Розіграш
-        </a>
-    @endif
+{{--    @if($raffles)--}}
+{{--        <a href="{{route('volunteer.raffle', ['volunteer' => $volunteer->getKey()])}}" class="btn  m-1 {{ $additionalClasses }}">--}}
+{{--            <i class="bi bi-dice-3-fill"></i>--}}
+{{--            Розіграш--}}
+{{--        </a>--}}
+{{--    @endif--}}
     @if($volunteer->isEnabled())
         <a href="{{route('volunteer.stop', ['volunteer' => $volunteer->getKey()])}}" class="btn  m-1 {{ $additionalClasses }}">
             <i class="bi bi-arrow-down-circle-fill"></i>
