@@ -81,7 +81,7 @@
                             <li class="mt-4">
                                 <span class="flex">
                                     Повертаєтесь во вкладку с сайт, натискаете кнопку
-                                    <button id="createDonate" type="button" class="btn btn-sm btn-primary">Зберігти</button>
+                                    <button id="createDonate" type="button" class="btn btn-sm btn-primary">Зберегти</button>
                                 </span>
                             </li>
                         </ol>

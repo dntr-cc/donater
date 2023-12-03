@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Collections\DonateCollection;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @property int $id
@@ -146,5 +148,16 @@ class Donate extends Model
     public function isValidated(): bool
     {
         return (bool)$this->getValidatedAt();
+    }
+
+    /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param  array<int, Model>  $models
+     * @return \Illuminate\Database\Eloquent\Collection<int, Model>
+     */
+    public function newCollection(array $models = []): Collection
+    {
+        return new DonateCollection($models);
     }
 }

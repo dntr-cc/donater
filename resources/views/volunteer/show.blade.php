@@ -8,18 +8,21 @@
 @php $withZvitLink = true; @endphp
 @php $withJarLink = true; @endphp
 @php $withPageLink = true; @endphp
+@php $raffles = true; @endphp
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
 @php $owner = $volunteer->owner()->get()->first(); @endphp
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ route('volunteer.all') }}" class=""><i class="bi bi-arrow-left"></i></a>
-            Звітність {{ $volunteer->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
             @if($volunteer->isEnabled())
                 <span class="btn btn-info">ЗБІР ТРИВАЄ</span>
-            @else
+            @elseif($volunteer->donates->count())
                 <span class="btn btn-danger">ЗБІР ЗАКРИТО</span>
+            @else
+                <span class="btn btn-secondary">СКОРО РОЗПОЧНЕТЬСЯ</span>
             @endif
+            Звітність {{ $volunteer->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
         </h2>
         <div class="row">
             <div class="col-md-4 px-2 py-2">
@@ -35,7 +38,7 @@
                     {!! $volunteer->getDescription() !!}
                 </div>
                 <div class="mt-3"></div>
-                @include('layouts.links', compact('volunteer', 'withJarLink', 'withPageLink', 'withZvitLink'))
+                @include('layouts.links', compact('volunteer', 'withJarLink', 'withPageLink', 'withZvitLink', 'raffles'))
             </div>
         </div>
         <ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">

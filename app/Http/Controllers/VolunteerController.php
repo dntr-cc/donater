@@ -25,7 +25,8 @@ class VolunteerController extends Controller
         $this->authorize('create', Volunteer::class);
 
         $attributes = $request->validated();
-        if ($attributes['user_id'] !== $request->user()->getId() && !$request->user()->isSuperAdmin()) {
+
+        if ((int)$attributes['user_id'] !== $request->user()->getId() && !$request->user()->isSuperAdmin()) {
             return new JsonResponse([], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -122,6 +123,14 @@ class VolunteerController extends Controller
         $volunteer->update(['is_enabled' => false]);
 
         return $this->getRedirectResponse($volunteer);
+    }
+
+    public function raffle(Volunteer $volunteer)
+    {
+        $this->authorize('update', $volunteer);
+        $volunteer = $volunteer->with('donates')->first();
+
+        return view('volunteer.raffle', compact('volunteer'));
     }
 
     public function destroy(Volunteer $volunteer)

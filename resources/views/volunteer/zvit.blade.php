@@ -2,6 +2,7 @@
 @section('page_title', 'Звітність по Фондам та Зборам - donater.com.ua')
 @section('page_description', 'Вся звітність по Фондам та актуальним зборам коштів - donater.com.ua')
 @php $withZvitLink = true; @endphp
+@php $raffles = false; @endphp
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom">Звітність по Фондам та Зборам</h2>
@@ -11,8 +12,10 @@
                 <h3 class="pb-2 border-bottom">
                     @if($volunteer->isEnabled())
                         <span class="btn btn-info">ЗБІР ТРИВАЄ</span>
-                    @else
+                    @elseif($volunteer->donates->count())
                         <span class="btn btn-danger">ЗБІР ЗАКРИТО</span>
+                    @else
+                        <span class="btn btn-secondary">СКОРО РОЗПОЧНЕТЬСЯ</span>
                     @endif
                     {{ $volunteer->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
                 </h3>
@@ -29,7 +32,10 @@
                         <div>
                             {!! $volunteer->getDescription() !!}
                         </div>
-                        @include('layouts.links', compact('volunteer', 'withZvitLink'))
+                        @if(request()->user()?->can('update', $volunteer))
+                            @php $raffles = true; @endphp
+                        @endif
+                        @include('layouts.links', compact('volunteer', 'withZvitLink', 'raffles'))
                     </div>
                 </div>
             </div>

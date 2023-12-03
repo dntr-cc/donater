@@ -84,7 +84,7 @@
                                     </a>
                                     <button id="createDonate" type="button" class="btn btn-primary" @if(!$fixCode) disabled @endif
                                             onclick="return false;">
-                                        Зберігти
+                                        Зберегти
                                     </button>
                                 </div>
                             </form>
@@ -169,7 +169,7 @@
 
         function volunteerHasBeenChoosen(selected) {
             $('#jarText').text(
-                'Відкрийте банку по посиланню, зробіть донат, обов\'язково код в коментарі. Кнопка зберігти буде активована після кліку на посилання банки збору'
+                'Відкрийте банку по посиланню, зробіть донат, обов\'язково код в коментарі. Кнопка Зберегти буде активована після кліку на посилання банки збору'
             );
             $('#jarLink').attr('href', selected.data('url')).text(
                 'ВІДКРИТИ БАНКУ'
@@ -177,7 +177,7 @@
             $('#commentImg').show();
             let volunteer = selected.text().trim();
             let donateCode = $('#donateCode').val();
-            const text = 'Після донату з кодом "code" в банку volunteer треба натиснути "Зберігти". Без цього внесок не буде зараховано!'
+            const text = 'Після донату з кодом "code" в банку volunteer треба натиснути "Зберегти". Без цього внесок не буде зараховано!'
             $('#acceptDonate').text(text.replace('code', donateCode).replace('volunteer', volunteer));
         }
 

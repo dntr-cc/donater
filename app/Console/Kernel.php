@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
          $schedule->command('validate:donates')->everyMinute();
+         $schedule->command('fill:amount')->everyMinute();
     }
 
     /**
