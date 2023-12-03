@@ -61,8 +61,7 @@ class Volunteer extends Model
             $builder->withCount('donates');
         });
         static::addGlobalScope('order', static function (Builder $builder) {
-            $builder->withCount('donates')->orderBy('donates_count', 'desc')
-                ->orderBy('is_enabled', 'desc');
+            $builder->withCount('donates')->orderBy('is_enabled', 'desc')->orderBy('donates_count', 'desc');
         });
     }
 
