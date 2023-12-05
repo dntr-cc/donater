@@ -250,7 +250,7 @@
             event.preventDefault();
             let id = '';
             let spreadsheet_id = $('#spreadsheet_id');
-            const regex = /(https:\/\/)?docs.google.com\/spreadsheets\/d\/[a-zA-Z0-9-_]+(\/|\/edit|\/edit#gid=0)/g;
+            const regex = /(https:\/\/)?docs.google.com\/spreadsheets\/d\/[a-zA-Z0-9-_]+(\/|\/edit|\/edit.*)/g;
             if (spreadsheet_id.val().match(regex)) {
                 id = getSpreadsheetId(spreadsheet_id.val());
             } else {
