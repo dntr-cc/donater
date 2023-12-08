@@ -220,7 +220,7 @@
         document.querySelector('#link').addEventListener('change', event => {
             event.preventDefault();
             let link = $('#link');
-            const regex = /(https:\/\/|http:\/\/)?send.monobank.ua\/jar\/[a-zA-Z0-9]{10}/g;
+            const regex = /(https:\/\/|http:\/\/)?send.monobank.ua\/jar\/[a-zA-Z0-9]{8,12}/g;
             if (link.val().match(regex)) {
                 link.removeClass('is-invalid').addClass('is-valid');
             } else {
