@@ -215,6 +215,6 @@ class Volunteer extends Model
 
     public function getDonateCollectionWithAmount(): ?DonateCollection
     {
-        return self::with('donatesWithAmount')->first()->donatesWithAmount;
+        return self::with('donatesWithAmount')->where('id', '=', $this->getId())->first()->donatesWithAmount;
     }
 }

@@ -128,7 +128,6 @@ class VolunteerController extends Controller
     public function raffle(Volunteer $volunteer)
     {
         $this->authorize('update', $volunteer);
-        $volunteer = $volunteer->with('donates')->first();
 
         return view('volunteer.raffle', compact('volunteer'));
     }
