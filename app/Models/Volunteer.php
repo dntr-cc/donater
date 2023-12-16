@@ -86,7 +86,9 @@ class Volunteer extends Model
      */
     public function donatesWithAmount(): HasMany
     {
-        return $this->hasMany(Donate::class, 'volunteer_id', 'id')->where('amount', '>', 0);
+        return $this->hasMany(Donate::class, 'volunteer_id', 'id')
+            ->where('amount', '>', 0)
+            ->whereNotNull('validated_at');
     }
 
     /**

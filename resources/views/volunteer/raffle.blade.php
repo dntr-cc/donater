@@ -52,8 +52,8 @@
                                     </div>
                                     <div id="price_input" class="col-md-4 mb-3">
                                         <div class="form-floating">
-                                            <input type="number" step="0.1" min="0" class="form-control" id="price"
-                                                   value="0" >
+                                            <input type="number" step="1" min="1" class="form-control" id="price"
+                                                   value="1" >
                                             <label for="price">
                                                 Ціна квитка
                                             </label>
@@ -71,36 +71,15 @@
                                     <div class="col-md-12">
                                         <div id="winners_input" class="col-md-3">
                                             <button type="submit" class="btn">ПОРАХУВАТИ УЧАСНИКІВ</button>
-                                        </div>                                    </div>
-
+                                        </div>
+                                    </div>
                                 </div>
                         </form>
                     </div>
 
                     <div class="tab-pane fade" id="donates-tabs-users" role="tabpanel"
                          aria-labelledby="donates-tabs-users">
-                        <div class="table-responsive">
-                            <table class="table table-sm table-striped table-bordered">
-                                <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Користувач</th>
-                                    <th scope="col">Кількість внесків</th>
-                                    <th scope="col">Сума</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($volunteer->getDonateCollectionWithAmount()->getRaffleUserCollection()->all() as $it => $raffleUser)
-                                    <tr>
-                                        <th scope="row">{{ $it + 1 }}</th>
-                                        <td><a href="{{ $raffleUser->getUser()->getUserLink() }}"
-                                               class="">{{ $raffleUser->getUser()->getUsernameWithFullName() }}</a></td>
-                                        <td>{{ $raffleUser->getDonateCollection()->count() }}</td>
-                                        <td>{{ round($raffleUser->getDonateCollection()->sum(fn(Donate $donate) => $donate->getAmount()), 2) }}</td>
-                                    </tr>
-                                @endforeach
-                            </table>
-                        </div>
+                        @include('volunteer.donaters', compact('volunteer'))
                     </div>
                 </div>
             </div>
@@ -108,21 +87,23 @@
     </div>
 
     <script type="module">
+        let type1 = $('#type1');
+        let type2 = $('#type2');
         function showAndHidePrice(event) {
             event.preventDefault();
             let priceInput = $('#price_input');
-            if ($('#type2').is(':checked')) {
+            if (type2.is(':checked')) {
                 priceInput.addClass('hide');
             } else {
                 priceInput.removeClass('hide');
             }
         }
 
-        $('#type1').change(event => {
+        type1.change(event => {
             showAndHidePrice(event);
         });
 
-        $('#type2').change(event => {
+        type2.change(event => {
             showAndHidePrice(event);
         });
     </script>

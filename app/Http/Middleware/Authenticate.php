@@ -17,7 +17,7 @@ class Authenticate extends Middleware
     {
         if (! $request->expectsJson()) {
             $previous = url()->full();
-            $route = str_contains($previous, config('app.url')) ? $previous : route('volunteers');
+            $route = str_contains($previous, config('app.url')) ? $previous : route('my');
             session()->put(LoginController::RETURN_AFTER_LOGIN, $route);
 
             return route('login');

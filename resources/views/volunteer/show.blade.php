@@ -100,7 +100,7 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="donates-tabs-users" role="tabpanel" aria-labelledby="donates-tabs-users">
-                @include('layouts.users_block', ['users' => $donaters->unique(fn (\App\Models\User $user) => $user->getUsername())->filter(), 'withoutPagination' => true])
+                @include('volunteer.donaters', compact('volunteer'))
             </div>
         </div>
     </div>
