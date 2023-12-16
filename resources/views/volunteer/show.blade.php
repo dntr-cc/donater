@@ -5,7 +5,6 @@
 @push('head-scripts')
     @vite(['resources/js/tabs.js'])
 @endpush
-@php $withZvitLink = true; @endphp
 @php $withJarLink = true; @endphp
 @php $withPageLink = true; @endphp
 @php $raffles = true; @endphp
@@ -38,7 +37,7 @@
                     {!! $volunteer->getDescription() !!}
                 </div>
                 <div class="mt-3"></div>
-                @include('layouts.links', compact('volunteer', 'withJarLink', 'withPageLink', 'withZvitLink', 'raffles'))
+                @include('layouts.links', compact('volunteer', 'withJarLink', 'withPageLink', 'raffles'))
             </div>
         </div>
         <ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">
@@ -58,6 +57,7 @@
         <div class="tab-content" id="icons-content">
             <div class="tab-pane fade show active" id="donates-tabs-all" role="tabpanel" aria-labelledby="icons-tab-1">
                 <div class="table-responsive">
+                    @if($rows)
                     <table class="table table-sm table-striped table-bordered">
                         <thead class="table-dark">
                         <tr>
@@ -94,6 +94,9 @@
                             </tr>
                         @endforeach
                     </table>
+                    @else
+                        <h6>Google Spreadsheet Api повернуло помилку. Повторіть пізніше.</h6>
+                    @endif
                 </div>
             </div>
             <div class="tab-pane fade" id="donates-tabs-users" role="tabpanel" aria-labelledby="donates-tabs-users">

@@ -9,6 +9,7 @@ use App\Services\GoogleServiceSheets;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class VolunteerController extends Controller
@@ -81,7 +82,12 @@ class VolunteerController extends Controller
     public function show(Volunteer $volunteer)
     {
         $this->authorize('view', $volunteer);
-        $rows = app(GoogleServiceSheets::class)->getRowCollection($volunteer->getSpreadsheetId(), $volunteer->getId());
+        $rows = null;
+        try {
+            $rows = app(GoogleServiceSheets::class)->getRowCollection($volunteer->getSpreadsheetId(), $volunteer->getId());
+        } catch (\Throwable $throwable) {
+            Log::critical($throwable->getMessage(), ['trace' => $throwable->getTraceAsString()]);
+        }
 
         return view('volunteer.show', compact('volunteer', 'rows'));
     }

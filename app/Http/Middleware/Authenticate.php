@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
@@ -15,6 +16,10 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
+            $previous = url()->full();
+            $route = str_contains($previous, config('app.url')) ? $previous : route('volunteers');
+            session()->put(LoginController::RETURN_AFTER_LOGIN, $route);
+
             return route('login');
         }
     }

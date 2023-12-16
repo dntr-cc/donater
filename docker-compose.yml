@@ -43,7 +43,7 @@ services:
             - ./:/var/www/html
             - './supervisor/deploy.node.conf:/etc/supervisor/conf.d/deploy.node.conf'
     postgres:
-        image: postgres:9.5-alpine
+        image: arm64v8/postgres:9.5
         env_file:
             - .env
         volumes:
@@ -63,7 +63,7 @@ services:
             timeout: 5s
             retries: 5
     redis:
-        image: 'redis:alpine'
+        image: arm64v8/redis:alpine
         ports:
             - '${REDIS_PORT:-6379}:6379'
         volumes:

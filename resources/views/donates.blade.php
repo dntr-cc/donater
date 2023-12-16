@@ -29,7 +29,7 @@
                                 {{--                                <hr>--}}
                             </div>
                         </div>
-                        @include('layouts.donates', compact('donates')))
+                        @include('layouts.donates', compact('donates'))
                     </div>
                 </div>
             </div>

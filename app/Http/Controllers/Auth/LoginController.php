@@ -30,8 +30,6 @@ class LoginController extends Controller
      */
     public function showLoginForm(): View
     {
-        session()->put(self::RETURN_AFTER_LOGIN, route('donate'));
-
         return view('auth.login', ['loginHash' => app(LoginService::class)->getNewLoginHash()]);
     }
 
