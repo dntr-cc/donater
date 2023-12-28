@@ -82,7 +82,8 @@
                                                 <div class="form-text">
                                                     Таблиця по посиланню має бути строго
                                                     <a href="https://docs.google.com/spreadsheets/d/1-7UQWTU2RxRtXP2d5Z6nBc2pUlqMTk7rt695n5JnTBs/edit#gid=0"
-                                                       target="_blacnk">в такому форматі.</a>
+                                                       target="_blacnk">в такому форматі.</a> Будь ласка, зробіть копію цієї таблиці.
+                                                    Якщо ви не додате свою таблицю або не будете оновлювати виписку - збір буде видалено автоматично.
                                                     Також треба зробити доступ до таблиці для редагування. Треба додати в
                                                     редактори (Editor) email
                                                     <span id="editorEmail" class="text-warning">zbir-404114@zbir-404114.iam.gserviceaccount.com </span>
