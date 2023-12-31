@@ -5,10 +5,9 @@ namespace App\Console\Commands;
 use App\Models\Donate;
 use App\Models\User;
 use App\Services\GoogleServiceSheets;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use Telegram;
+use Telegram\Bot\Laravel\Facades\Telegram;
 use Throwable;
 
 class AllUsersRaffleCommand extends Command
@@ -32,7 +31,6 @@ class AllUsersRaffleCommand extends Command
     public function handle(): void
     {
         $users = $all = [];
-        try {
             /** @var Donate $donate */
             $collection = Donate::query()->whereNotIn('user_id', [1, 3])
                 ->where('amount', '>', 0)->get();
@@ -54,10 +52,15 @@ class AllUsersRaffleCommand extends Command
                 shuffle($all);
                 $winnerNumber = mt_rand(0, $count);
                 $this->output->info(strtr('Winner number is :number', [':number' => $winnerNumber]));
-                $this->output->info(strtr('Winner is :winner', [':winner' => User::find($all[$winnerNumber])?->getFullName() ?? '']));
+                $winner = User::find($all[$winnerNumber]);
+                $this->output->info(strtr('Winner is :winner', [':winner' => $winner?->getFullName() ?? '']));
+                try {
+                    Telegram::sendMessage(['chat_id' => $winner?->getTelegramId(), 'text' => 'Вітаю! Ви виграли подарунок, пишить @setnemo в приватні повідомлення']);
+                    break;
+                } catch (Throwable $t) {
+                    Log::error($t->getMessage(), [':winner' => $winner?->getFullName(), 'trace' => $t->getTraceAsString()]);
+                }
             }
-        } catch (Throwable $t) {
-            Log::error($t->getMessage(), ['trace' => $t->getTraceAsString()]);
-        }
+
     }
 }
