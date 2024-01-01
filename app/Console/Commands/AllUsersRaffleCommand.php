@@ -58,6 +58,7 @@ class AllUsersRaffleCommand extends Command
                     Telegram::sendMessage(['chat_id' => $winner?->getTelegramId(), 'text' => 'Вітаю! Ви виграли подарунок, пишить @setnemo в приватні повідомлення']);
                     break;
                 } catch (Throwable $t) {
+                    $this->output->info('Skip...');
                     Log::error($t->getMessage(), [':winner' => $winner?->getFullName(), 'trace' => $t->getTraceAsString()]);
                 }
             }
