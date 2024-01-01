@@ -30,7 +30,7 @@ class RowCollection extends Collection
 
     public function hasUniqHash(string $getUniqHash): bool
     {
-        return (bool)$this->filter(static function(Row $row) use ($getUniqHash) {
+        return (bool)$this->filter(static function (Row $row) use ($getUniqHash) {
             return str_contains($row->getComment(), $getUniqHash);
         })->count();
     }
@@ -41,8 +41,33 @@ class RowCollection extends Collection
      */
     public function getAmountByUniqHash(string $getUniqHash): float
     {
-        return floatval($this->filter(static function(Row $row) use ($getUniqHash) {
-            return str_contains($row->getComment(), $getUniqHash);
-        })?->first()?->getAmount() ?? 0.00);
+        return floatval(
+            $this->filter(static function (Row $row) use ($getUniqHash) {
+                return str_contains($row->getComment(), $getUniqHash);
+            })?->first()?->getAmount() ?? 0.00
+        );
+    }
+
+    public function perDay(): ?array
+    {
+        $perDay = $result = null;
+        $sum = 0;
+        foreach ($this->items as $item) {
+            if ($item->getAmount() > 0) {
+                $date = $item->getDate();
+                $day = date('Y/m/d', strtotime($date));
+                $perDay[$day] = $perDay[$day] ?? 0;
+                $perDay[$day] += floatval($item->getAmount());
+                $sum += floatval($item->getAmount());
+            }
+        }
+        if ($perDay) {
+            foreach ($perDay as $day => $amount) {
+                $result[$day]['amount'] = $amount;
+                $result[$day]['percent'] = round($amount / $sum * 100, 2);
+            }
+        }
+
+        return $result;
     }
 }

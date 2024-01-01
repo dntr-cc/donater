@@ -1,4 +1,3 @@
-
 @extends('layouts.base')
 @section('page_title', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @section('page_description', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
@@ -6,6 +5,7 @@
     @vite(['resources/js/tabs.js'])
 @endpush
 @php /* @var App\Models\Donate $donate */ @endphp
+@php /* @var \App\Collections\RowCollection $rows */ @endphp
 @php $withJarLink = true; @endphp
 @php $withPageLink = true; @endphp
 @php $raffles = true; @endphp
@@ -63,7 +63,7 @@
             <li class="nav-item" role="presentation">
                 <a data-mdb-tab-init class="nav-link" id="icons-tab-4" href="#donates-analytics" role="tab"
                    aria-controls="donates-tabs-users" aria-selected="false">
-                    <i class="bi bi-lightning-fill"></i> Очікують валідації
+                    <i class="bi bi-pie-chart-fill"></i> Аналітика
                 </a>
             </li>
         </ul>
@@ -138,26 +138,33 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="donates-analytics" role="tabpanel" aria-labelledby="donates-tabs-analytics">
+                @if($rows)
                 <div class="table-responsive">
                     <table class="table table-sm table-striped table-bordered">
                         <thead class="table-dark">
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Користувач</th>
-                            <th scope="col">Час створення внеску</th>
+                            <th colspan="3"><h4>По дням</h4></th>
+                        </tr>
+                        <thead class="table-dark">
+                        <tr>
+                            <th scope="col">День</th>
+                            <th scope="col">Сума</th>
+                            <th scope="col">Відсоток від всієї суми</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($fundraising->getDonateCollectionWithoutValidation()->all() as $it => $donate)
+                        @foreach($rows->perDay() as $day => $data)
                             <tr>
-                                <th scope="row">{{ $it + 1 }}</th>
-                                <td><a href="{{ $donate->donater()->first()->getUserLink() }}"
-                                       class="">{{ $donate->donater()->first()->getUsernameWithFullName() }}</a></td>
-                                <td>{{ $donate->getCreatedAt()->toString() }}</td>
+                                <td>{{ $day }}</td>
+                                <td>{{ $data['amount'] }}</td>
+                                <td>{{ $data['percent'] }}</td>
                             </tr>
                         @endforeach
                     </table>
                 </div>
+                @else
+                    <h6>Google Spreadsheet Api повернуло помилку. Повторіть пізніше.</h6>
+                @endif
             </div>
         </div>
     </div>

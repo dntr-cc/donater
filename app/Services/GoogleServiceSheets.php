@@ -22,7 +22,8 @@ class GoogleServiceSheets
     }
 
     /**
-     * @param Fundraising $fundraising
+     * @param string $spreadsheetId
+     * @param int $fundraisingId
      * @param string $range
      * @return RowCollection
      */
