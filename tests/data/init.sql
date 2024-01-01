@@ -13,7 +13,7 @@ GRANT ALL PRIVILEGES ON DATABASE root TO root;
 CREATE TABLE public.donates (
                                 id bigint NOT NULL,
                                 user_id bigint NOT NULL,
-                                volunteer_id bigint NOT NULL,
+                                fundraising_id bigint NOT NULL,
                                 amount double precision DEFAULT '0'::double precision NOT NULL,
                                 uniq_hash character varying(255) NOT NULL,
                                 validated_at timestamp(0) without time zone,
@@ -513,7 +513,7 @@ ALTER TABLE ONLY public.volunteers ALTER COLUMN id SET DEFAULT nextval('public.v
 -- Data for Name: donates; Type: TABLE DATA; Schema: public; Owner: docker
 --
 
-COPY public.donates (id, user_id, volunteer_id, amount, uniq_hash, validated_at, deleted_at, created_at, updated_at) FROM stdin;
+COPY public.donates (id, user_id, fundraising_id, amount, uniq_hash, validated_at, deleted_at, created_at, updated_at) FROM stdin;
 1	1	1	0	655925323dfad	2023-11-19 03:43:01	\N	2023-11-18 22:57:58	2023-11-19 03:43:01
 34	18	6	0	655cc9bebccbe	2023-11-22 16:46:02	\N	2023-11-21 17:17:49	2023-11-22 16:46:02
 65	7	1	0	65625b4f7d0f1	\N	\N	2023-11-25 22:38:58	2023-11-25 22:38:58

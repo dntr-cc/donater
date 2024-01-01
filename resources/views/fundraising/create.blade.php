@@ -5,14 +5,14 @@
     @vite(['resources/js/tinymce.js'])
 @endpush
 @section('content')
-    <form id="volunteer-new">
+    <form id="fundraising-new">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content rounded-4 shadow">
                             <div class="modal-header p-4 pb-2 border-bottom-0 justify-content-center">
-                                <h2 class="title fs-5" id="createVolunteerModalLabel">Створити новий збір</h2>
+                                <h2 class="title fs-5" id="createFundraisingModalLabel">Створити новий збір</h2>
                             </div>
                             <div class="modal-b-ody p-3 pt-0">
                                 <div class="row">
@@ -115,7 +115,7 @@
                                             <a href="{{ route('my') }}" type="button" class="btn btn-secondary ms-4">
                                                 Моя сторінка
                                             </a>
-                                            <button id="createVolunteer" type="submit" class="btn btn-primary me-4"
+                                            <button id="createFundraising" type="submit" class="btn btn-primary me-4"
                                                     onclick="return false;">
                                                 Зберегти
                                             </button>
@@ -148,7 +148,7 @@
                 formData.append('FILE', photo);
             }
             $.ajax({
-                url: '{{ route('volunteer.avatar') }}',
+                url: '{{ route('fundraising.avatar') }}',
                 type: "POST",
                 data: formData,
                 cache: false,
@@ -185,7 +185,7 @@
                 return;
             }
             $.ajax({
-                url: '{{ route('volunteer.key') }}',
+                url: '{{ route('fundraising.key') }}',
                 type: "POST",
                 data: {
                     key: key.val()
@@ -259,7 +259,7 @@
                 return ;
             }
             $.ajax({
-                url: '{{ route('volunteer.spreadsheet') }}',
+                url: '{{ route('fundraising.spreadsheet') }}',
                 type: "POST",
                 data: {
                     spreadsheet_id: id
@@ -279,7 +279,7 @@
             return false;
         });
 
-        $('#createVolunteer').on('click', function (e) {
+        $('#createFundraising').on('click', function (e) {
             e.preventDefault();
             if ($('.is-invalid').length > 0 || $('.is-valid').length < 5) {
                 let empty = $("<a>");
@@ -288,11 +288,11 @@
                 return ;
             }
             $.ajax({
-                url: '{{ route('volunteer.create') }}',
+                url: '{{ route('fundraising.create') }}',
                 type: "POST",
                 data: {
                     user_id: <?= auth()?->user()?->getId() ?>,
-                    volunteer_id: $('#chooseVolunteer option:selected').val(),
+                    fundraising_id: $('#chooseFundraising option:selected').val(),
                     key: $('#key').val(),
                     name: $('#name').val(),
                     link: $('#link').val(),

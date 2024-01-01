@@ -33,8 +33,8 @@ class FillAmountCommand extends Command
         try {
             /** @var Donate $donate */
             foreach (Donate::query()->where('amount', '=', 0)->get()->all() as $donate) {
-                $volunteer = $donate->getVolunteer();
-                $rows      = $this->service->getRowCollection($volunteer->getSpreadsheetId(), $volunteer->getId());
+                $fundraising = $donate->getFundraising();
+                $rows      = $this->service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
                 if ($rows->hasUniqHash($donate->getUniqHash())) {
                     $donate->setAmount($rows->getAmountByUniqHash($donate->getUniqHash()))->save();
                     $this->output->info('Fill object: ' . $donate->toJson());

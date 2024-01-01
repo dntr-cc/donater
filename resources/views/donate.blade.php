@@ -1,11 +1,11 @@
 @extends('layouts.base')
-@section('page_title', 'Звітність по Фондам та Зборам - donater.com.ua')
-@section('page_description', 'Вся звітність по Фондам та актуальним зборам коштів - donater.com.ua')
+@section('page_title', 'Створити новий благодійний внесок - donater.com.ua')
+@section('page_description', 'Створити новий благодійний внесок - donater.com.ua')
 @php use App\Services\DonateService; @endphp
-@php use App\Models\Volunteer; @endphp
-@php /** @var Volunteer $volunteer */ @endphp
-@php $choosen = request()->get('volunteer', ''); @endphp
-@php $fixCode = auth()->user()->volunteers->count() && request()->get('fixCode', false); @endphp
+@php use App\Models\Fundraising; @endphp
+@php /** @var Fundraising $fundraising */ @endphp
+@php $choosen = request()->get('fundraising', ''); @endphp
+@php $fixCode = auth()->user()->fundraisings->count() && request()->get('fixCode', false); @endphp
 @php $uniqueCode = $fixCode? '' : app(DonateService::class)->getNewUniqueHash(); @endphp
 @section('content')
     <div class="container">
@@ -35,21 +35,21 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="form">
-                                        <select id="chooseVolunteer" class="form-select form-select-lg mb-3"
+                                        <select id="chooseFundraising" class="form-select form-select-lg mb-3"
                                                 aria-label="Оберіть збір">
                                             <option value="0" @if('' === $choosen)
                                                 selected
-                                                @endif>Оберіть збір
+                                                    @endif>Оберіть збір
                                             </option>
-                                            @php $all = $fixCode ? auth()->user()->volunteers : Volunteer::getActual()->all(); @endphp
-                                            @foreach($all as $volunteer)
-                                                <option data-url="{{ $volunteer->getLink() }}"
-                                                        data-key="{{ $volunteer->getKey() }}"
-                                                        value="{{ $volunteer->getId() }}"
-                                                        @if($volunteer->getKey() === $choosen)
+                                            @php $all = $fixCode ? auth()->user()->fundraisings : Fundraising::getActual()->all(); @endphp
+                                            @foreach($all as $fundraising)
+                                                <option data-url="{{ $fundraising->getLink() }}"
+                                                        data-key="{{ $fundraising->getKey() }}"
+                                                        value="{{ $fundraising->getId() }}"
+                                                        @if($fundraising->getKey() === $choosen)
                                                             selected
-                                                    @endif>
-                                                    {{ $volunteer->getName() }}
+                                                        @endif>
+                                                    {{ $fundraising->getName() }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -82,7 +82,8 @@
                                     <a href="{{ route('my') }}" type="button" class="btn btn-secondary">
                                         Моя сторінка
                                     </a>
-                                    <button id="createDonate" type="button" class="btn btn-primary" @if(!$fixCode) disabled @endif
+                                    <button id="createDonate" type="button" class="btn btn-primary"
+                                            @if(!$fixCode) disabled @endif
                                             onclick="return false;">
                                         Зберегти
                                     </button>
@@ -117,8 +118,8 @@
             event.preventDefault();
             let fixCode = {{ $fixCode ? 'true' : 'false' }};
             let userId = fixCode ? $('#userId option:selected').val() : {{ auth()->user()->getId() }};
-            let volunteerId = $('#chooseVolunteer option:selected').val();
-            if (!(volunteerId > 0)) {
+            let fundraisingId = $('#chooseFundraising option:selected').val();
+            if (!(fundraisingId > 0)) {
                 let empty = $("<a>");
                 toast('Треба обрати збір', empty, 'text-bg-danger');
                 empty.click();
@@ -131,14 +132,14 @@
                     _token: $('meta[name="csrf-token"]').attr('content'),
                     uniq_hash: $('#donateCode').val(),
                     user_id: userId,
-                    volunteer_id: volunteerId,
+                    fundraising_id: fundraisingId,
                 },
                 success: data => {
                     gtag('event', 'finish_donation', {
                         'choosen': choosen,
                         'fix_code': fixCode,
                         'user_id': userId,
-                        'volunteer_id': volunteerId,
+                        'fundraising_id': fundraisingId,
                     });
                     window.location.assign(data.url ?? '{{ route('my') }}');
                 },
@@ -152,7 +153,7 @@
                         'choosen': choosen,
                         'fix_code': fixCode,
                         'user_id': userId,
-                        'volunteer_id': volunteerId,
+                        'fundraising_id': fundraisingId,
                         'message': message,
                     });
                 },
@@ -167,7 +168,7 @@
             $('#createDonate').attr('disabled', false);
         });
 
-        function volunteerHasBeenChoosen(selected) {
+        function fundraisingHasBeenChoosen(selected) {
             $('#jarText').text(
                 'Відкрийте банку по посиланню, зробіть донат, обов\'язково код в коментарі. Кнопка Зберегти буде активована після кліку на посилання банки збору'
             );
@@ -175,19 +176,19 @@
                 'ВІДКРИТИ БАНКУ'
             ).addClass('btn  btn-lg font-x-large');
             $('#commentImg').show();
-            let volunteer = selected.text().trim();
+            let fundraising = selected.text().trim();
             let donateCode = $('#donateCode').val();
-            const text = 'Після донату з кодом "code" в банку volunteer треба натиснути "Зберегти". Без цього внесок не буде зараховано!'
-            $('#acceptDonate').text(text.replace('code', donateCode).replace('volunteer', volunteer));
+            const text = 'Після донату з кодом "code" в банку fundraising треба натиснути "Зберегти". Без цього внесок не буде зараховано!'
+            $('#acceptDonate').text(text.replace('code', donateCode).replace('fundraising', fundraising));
         }
 
         if (choosen) {
-            volunteerHasBeenChoosen($('#chooseVolunteer option:selected'));
+            fundraisingHasBeenChoosen($('#chooseFundraising option:selected'));
         }
-        document.querySelector('#chooseVolunteer').addEventListener('change', () => {
-            let selected = $('#chooseVolunteer option:selected');
+        document.querySelector('#chooseFundraising').addEventListener('change', () => {
+            let selected = $('#chooseFundraising option:selected');
             if (selected.val() > 0) {
-                volunteerHasBeenChoosen(selected);
+                fundraisingHasBeenChoosen(selected);
             } else {
                 $('#commentImg').hide();
                 $('#jarText').text('');

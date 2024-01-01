@@ -27,9 +27,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('volunteer.all') }}" class="nav-link text-white">
+                        <a href="{{ route('fundraising.all') }}" class="nav-link text-white">
                             <i class="bi bi-activity d-inline mx-auto mb-1"></i>
-                            Звітність
+                            Всі збори
                         </a>
                     </li>
                     <li>

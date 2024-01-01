@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\Collection;
 /**
  * @property int $id
  * @property int $user_id
- * @property int $volunteer_id
- * @property Volunteer $volunteer
+ * @property int $fundraising_id
+ * @property Fundraising $fundraising
  * @property float $amount
  * @property string $uniq_hash
  * @property Carbon $validated_at
@@ -26,7 +26,7 @@ class Donate extends Model
 {
     use SoftDeletes, HasFactory;
 
-    protected $with = ['volunteer'];
+    protected $with = ['fundraising'];
 
     /**
      * The attributes that are mass assignable.
@@ -35,7 +35,7 @@ class Donate extends Model
      */
     protected $fillable = [
         'user_id',
-        'volunteer_id',
+        'fundraising_id',
         'uniq_hash',
         'validated_at',
     ];
@@ -55,9 +55,9 @@ class Donate extends Model
         });
     }
 
-    public function volunteer(): HasOne
+    public function fundraising(): HasOne
     {
-        return $this->hasOne(Volunteer::class, 'id', 'volunteer_id');
+        return $this->hasOne(Fundraising::class, 'id', 'fundraising_id');
     }
 
     public function donater(): HasOne
@@ -70,14 +70,9 @@ class Donate extends Model
         return $this->user_id;
     }
 
-    public function getType(): string
-    {
-        return $this->volunteerId;
-    }
-
     public function getHumanType(): string
     {
-        return $this->volunteer->getName();
+        return $this->fundraising->getName();
     }
 
     public function getAmount(): float
@@ -125,14 +120,14 @@ class Donate extends Model
         return $this->id;
     }
 
-    public function getVolunteerId(): int
+    public function getFundraisingId(): int
     {
-        return $this->volunteer_id;
+        return $this->fundraising_id;
     }
 
-    public function getVolunteer(): Volunteer
+    public function getFundraising(): Fundraising
     {
-        return $this->volunteer;
+        return $this->fundraising;
     }
 
     public function getCreatedAt(): Carbon

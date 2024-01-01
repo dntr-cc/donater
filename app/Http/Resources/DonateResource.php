@@ -11,9 +11,9 @@ class DonateResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'user_id'      => $this->user_id,
-            'volunteer_id' => $this->volunteer_id,
-            'uniq_hash'    => $this->uniq_hash,
+            'user_id'        => $this->user_id,
+            'fundraising_id' => $this->fundraising_id,
+            'uniq_hash'      => $this->uniq_hash,
         ];
     }
 }

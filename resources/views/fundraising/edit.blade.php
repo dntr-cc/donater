@@ -4,17 +4,17 @@
 @push('head-scripts')
     @vite(['resources/js/tinymce.js'])
 @endpush
-@php use App\Models\Volunteer; @endphp
-@php /** @var Volunteer $volunteer */@endphp
+@php use App\Models\Fundraising; @endphp
+@php /** @var Fundraising $fundraising */@endphp
 @section('content')
-    <form id="volunteer-new">
+    <form id="fundraising-new">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content rounded-4 shadow">
                             <div class="modal-header p-4 pb-2 border-bottom-0 justify-content-center">
-                                <h2 class="title fs-5" id="updateVolunteerModalLabel">Редагування</h2>
+                                <h2 class="title fs-5" id="updateFundraisingModalLabel">Редагування</h2>
                             </div>
                             <div class="modal-b-ody p-3 pt-0">
                                 <div class="row">
@@ -22,7 +22,7 @@
                                         <div class="d-flex justify-content-center">
                                         <span class="position-relative">
                                             <div class="card border-0 rounded-4 shadow-lg">
-                                                <img id="avatarImage" src="{{ url($volunteer->getAvatar()) }}"
+                                                <img id="avatarImage" src="{{ url($fundraising->getAvatar()) }}"
                                                      class="bg-image-position-center"
                                                      alt="avatar">
                                             </div>
@@ -31,7 +31,7 @@
                                                 <i class="bi bi-pencil-fill font-large"></i>
                                             </label>
                                             <input id="avatar" type="text" style="display: none;" aria-label="Баннер"
-                                                   value="{{ $volunteer->getAvatar() }}">
+                                                   value="{{ $fundraising->getAvatar() }}">
                                             <input id="file" type="file" style="display: none;" accept="image/*">
                                         </span>
                                         </div>
@@ -41,7 +41,7 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="name"
-                                                           value="{{ $volunteer->getName() }}" required maxlength="50">
+                                                           value="{{ $fundraising->getName() }}" required maxlength="50">
                                                     <label for="name">
                                                         Назва (до 50 символів)
                                                     </label>
@@ -50,7 +50,7 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="key"
-                                                           value="{{ $volunteer->getKey() }}" required>
+                                                           value="{{ $fundraising->getKey() }}" required>
                                                     <label for="key">
                                                         Унікальний префікс для посилання
                                                     </label>
@@ -61,7 +61,7 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="link"
-                                                           value="{{ $volunteer->getLink() }}" required>
+                                                           value="{{ $fundraising->getLink() }}" required>
                                                     <label for="link">
                                                         Посилання на монобанку
                                                     </label>
@@ -70,7 +70,7 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="page"
-                                                           value="{{ $volunteer->getPage() }}" required>
+                                                           value="{{ $fundraising->getPage() }}" required>
                                                     <label for="page">
                                                         Посилання на сторінку збору чи Фонду
                                                     </label>
@@ -82,9 +82,12 @@
                                                 <div class="form-text">
                                                     Таблиця по посиланню має бути строго
                                                     <a href="https://docs.google.com/spreadsheets/d/1-7UQWTU2RxRtXP2d5Z6nBc2pUlqMTk7rt695n5JnTBs/edit#gid=0"
-                                                       target="_blacnk">в такому форматі.</a> Будь ласка, зробіть копію цієї таблиці.
-                                                    Якщо ви не додате свою таблицю або не будете оновлювати виписку - збір буде видалено автоматично.
-                                                    Також треба зробити доступ до таблиці для редагування. Треба додати в
+                                                       target="_blacnk">в такому форматі.</a> Будь ласка, зробіть копію
+                                                    цієї таблиці.
+                                                    Якщо ви не додате свою таблицю або не будете оновлювати виписку -
+                                                    збір буде видалено автоматично.
+                                                    Також треба зробити доступ до таблиці для редагування. Треба додати
+                                                    в
                                                     редактори (Editor) email
                                                     <span id="editorEmail" class="text-warning">zbir-404114@zbir-404114.iam.gserviceaccount.com </span>
                                                     <button id="copyEmail" class="btn btn-sm btn-outline-secondary"
@@ -98,7 +101,7 @@
                                             <div class="col-md-12 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="spreadsheet_id"
-                                                           value="{{ $volunteer->getSpreadsheetLink() }}" required>
+                                                           value="{{ $fundraising->getSpreadsheetLink() }}" required>
                                                     <label for="spreadsheet_id">
                                                         Посилання на Google Spreadsheet
                                                     </label>
@@ -119,7 +122,7 @@
                                             <a href="{{ route('my') }}" type="button" class="btn btn-secondary ms-4">
                                                 Моя сторінка
                                             </a>
-                                            <button id="updateVolunteer" type="submit" class="btn btn-primary me-4"
+                                            <button id="updateFundraising" type="submit" class="btn btn-primary me-4"
                                                     onclick="return false;">
                                                 Зберегти
                                             </button>
@@ -135,7 +138,7 @@
     </form>
     <script type="module">
         const APP_URL = '{!! json_encode(url('/')) !!}';
-        const text  = `{!! $volunteer->getDescription() !!}`;
+        const text = `{!! $fundraising->getDescription() !!}`;
         let config = window.baseTinymceConfig;
         Object.assign(config, {init_instance_callback: editor => editor.setContent(text)});
         window.tinymce.init(config);
@@ -156,7 +159,7 @@
                 formData.append('FILE', photo);
             }
             $.ajax({
-                url: '{{ route('volunteer.avatar') }}',
+                url: '{{ route('fundraising.avatar') }}',
                 type: "POST",
                 data: formData,
                 cache: false,
@@ -188,7 +191,7 @@
                 return;
             }
             $.ajax({
-                url: '{{ route('volunteer.key') }}',
+                url: '{{ route('fundraising.key') }}',
                 type: "POST",
                 data: {
                     key: key.val()
@@ -259,10 +262,10 @@
                 id = getSpreadsheetId(spreadsheet_id.val());
             } else {
                 spreadsheet_id.removeClass('is-valid').addClass('is-invalid');
-                return ;
+                return;
             }
             $.ajax({
-                url: '{{ route('volunteer.spreadsheet') }}',
+                url: '{{ route('fundraising.spreadsheet') }}',
                 type: "POST",
                 data: {
                     spreadsheet_id: id
@@ -282,20 +285,20 @@
             return false;
         });
 
-        $('#updateVolunteer').on('click', function (e) {
+        $('#updateFundraising').on('click', function (e) {
             e.preventDefault();
             if ($('.is-invalid').length > 0) {
                 let empty = $("<a>");
                 toast('Перевірте заповнені поля, будь ласка', empty, 'text-bg-danger');
                 empty.click();
                 console.log($('#description').text())
-                return ;
+                return;
             }
             $.ajax({
-                url: '{{ route('volunteer.update', compact('volunteer')) }}',
+                url: '{{ route('fundraising.update', compact('fundraising')) }}',
                 type: "PATCH",
                 data: {
-                    user_id: {{ $volunteer->getUserId() }},
+                    user_id: {{ $fundraising->getUserId() }},
                     key: $('#key').val(),
                     name: $('#name').val(),
                     link: $('#link').val(),

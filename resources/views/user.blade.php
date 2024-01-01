@@ -1,10 +1,10 @@
 @php use App\Models\Donate; @endphp
 @php use App\Models\User; @endphp
 @php use App\Models\UserLink; @endphp
-@php use App\Models\Volunteer; @endphp
+@php use App\Models\Fundraising; @endphp
 @php /** @var User $user */ @endphp
 @php /** @var Donate $donate */ @endphp
-@php /** @var Volunteer $volunteer */ @endphp
+@php /** @var Fundraising $fundraising */ @endphp
 @php /** @var UserLink $link */ @endphp
 @php $withZvitLink = true; @endphp
 @php $additionalClasses = 'btn-xs'; @endphp
@@ -35,9 +35,9 @@
                                        style="color: #fff;"></i>
                                     </span>
                                 @endif
-                                @if ($user->volunteers->count())
+                                @if ($user->fundraisings->count())
                                     <span title="Створені збори" class="badge p-1 bg-info">
-                                    &nbsp;{{ $user->volunteers->count() }}&nbsp;
+                                    &nbsp;{{ $user->fundraisings->count() }}&nbsp;
                                 </span>
                                 @endif
                                 @if ($user->getApprovedDonateCount())
@@ -51,6 +51,7 @@
                                 </span>
                                 @endif
                                 <h4 class="m-3 text-muted">{{ $user->getAtUsername() }}</h4>
+                                <h6 class="m-3 text-muted">Дата реєстрації {{ $user->getCreatedAt() }}</h6>
                                 <div class="d-flex justify-content-center mb-2">
                                     <div class="form-floating input-group">
                                         <input type="text" class="form-control" id="userLink"
@@ -96,7 +97,7 @@
                                     <div class="col-sm-12 d-flex justify-content-between align-items-start">
                                         <h4>Збори та Фонди</h4>
                                         @if (auth()?->user()?->getId() === $user->getId())
-                                            <a href="{{route('volunteer.new')}}" class="btn ">
+                                            <a href="{{route('fundraising.new')}}" class="btn ">
                                                 <i class="bi bi-plus-circle-fill"></i>
                                                 Створити
                                             </a>
@@ -104,18 +105,18 @@
                                     </div>
                                 </div>
                                 <hr>
-                                @foreach($user->getVolunteers() as $it => $volunteer)
+                                @foreach($user->getFundraisings() as $it => $fundraising)
                                     <div class="row">
                                         <div
-                                            class="col-sm-12 d-flex justify-content-between align-items-start volunteer"
-                                            data-volunteer="{{ $volunteer->getKey() }}">
+                                            class="col-sm-12 d-flex justify-content-between align-items-start fundraising"
+                                            data-fundraising="{{ $fundraising->getKey() }}">
                                             <div class="fw-bold">
-                                                @if($volunteer->isEnabled())
-                                                    <span class="btn btn-xs btn-info">ЗБІР ТРИВАЄ</span>
+                                                @if($fundraising->isEnabled())
+                                                    <a href="{{route('donate', ['fundraising' => $fundraising->getKey()])}}" class="btn btn-xs btn-info">ЗБІР ТРИВАЄ</a>
                                                 @else
-                                                    <span class="btn btn-xs btn-danger">ЗБІР ЗАКРИТО</span>
-                                                @endif{{ $volunteer->getName() }}
-                                                @include('layouts.links', compact('volunteer', 'withZvitLink', 'additionalClasses'))
+                                                    <a href="{{route('donate', ['fundraising' => $fundraising->getKey()])}}" class="btn btn-xs btn-danger">ЗБІР ЗАКРИТО</a>
+                                                @endif{{ $fundraising->getName() }}
+                                                @include('layouts.links', compact('fundraising', 'withZvitLink', 'additionalClasses'))
                                             </div>
                                         </div>
                                     </div>
@@ -127,24 +128,24 @@
                         <div class="card mb-4">
                             <div class="card-body">
                                 <div class="container">
-                                <div class="row">
-                                    <div class="col-md-7">
-                                        <div class="me-auto mt-auto">
-                                            <h4>Благодійні внески</h4>
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div class="me-auto mt-auto">
+                                                <h4>Благодійні внески</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            @if(auth()?->user()?->fundraisings?->count())
+                                                <a href="{{ route('donate', ['fixCode' => 1]) }}" class="btn ">
+                                                    <nobr>ДОДАТИ ЗАГУБЛЕНИЙ КОД</nobr>
+                                                </a>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-12">
+                                            @include('layouts.donates', compact('donates'))
                                         </div>
                                     </div>
-                                    <div class="col-md-5">
-                                        @if(auth()?->user()?->volunteers?->count())
-                                            <a href="{{ route('donate', ['fixCode' => 1]) }}" class="btn ">
-                                                <nobr>ДОДАТИ ЗАГУБЛЕНИЙ КОД</nobr>
-                                            </a>
-                                        @endif
-                                    </div>
-                                    <div class="col-md-12">
-                                        @include('layouts.donates', compact('donates'))
-                                    </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                     </div>

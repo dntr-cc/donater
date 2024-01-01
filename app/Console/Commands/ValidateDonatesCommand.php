@@ -33,8 +33,8 @@ class ValidateDonatesCommand extends Command
         try {
             /** @var Donate $donate */
             foreach (Donate::query()->whereNull('validated_at')->get()->all() as $donate) {
-                $volunteer = $donate->getVolunteer();
-                $rows      = $this->service->getRowCollection($volunteer->getSpreadsheetId(), $volunteer->getId());
+                $fundraising = $donate->getFundraisingF();
+                $rows      = $this->service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
                 if ($rows->hasUniqHash($donate->getUniqHash())) {
                     $donate->setValidatedAt(Carbon::now())->save();
                     $this->output->info('Validated object: ' . $donate->toJson());
@@ -44,7 +44,7 @@ class ValidateDonatesCommand extends Command
                             'chat_id' => $telegramId,
                             'text'    => strtr('Ваш внесок :code було завалідовано! Подивитися звіт: :url', [
                                 ':code' => $donate->getUniqHash(),
-                                ':url'  => route('volunteer.show', ['volunteer' => $volunteer->getKey()]),
+                                ':url'  => route('fundraising.show', ['fundraising' => $fundraising->getKey()]),
                             ]),
                         ]);
                     }

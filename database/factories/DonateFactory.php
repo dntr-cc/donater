@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Donate;
 use App\Models\User;
-use App\Models\Volunteer;
+use App\Models\Fundraising;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
@@ -17,7 +17,7 @@ class DonateFactory extends Factory
         $i = rand() % 3;
         return [
             'user_id'      => User::factory()->create()->getId(),
-            'volunteer_id' => $i + 1,
+            'fundraising_id' => $i + 1,
             'amount'       => $this->faker->randomFloat(),
             'uniq_hash'    => uniqid('', true),
             'validated_at' => rand() % 2 === 0 ? Carbon::now() : null,
@@ -38,13 +38,13 @@ class DonateFactory extends Factory
     }
 
     /**
-     * @param Volunteer $volunteer
+     * @param Fundraising $fundraising
      * @return DonateFactory
      */
-    public function withVolunteer(Volunteer $volunteer): DonateFactory
+    public function withFundraising(Fundraising $fundraising): DonateFactory
     {
         return $this->state(fn (array $attributes) => [
-            'volunteer_id' => $volunteer->getId(),
+            'fundraising_id' => $fundraising->getId(),
         ]);
     }
 

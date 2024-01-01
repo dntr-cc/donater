@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VolunteerRequest extends FormRequest
+class FundraisingRequest extends FormRequest
 {
     public function rules(): array
     {

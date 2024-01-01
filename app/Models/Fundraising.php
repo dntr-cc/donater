@@ -27,7 +27,7 @@ use Illuminate\Support\Collection;
  * @property Carbon $updated_at
  * @property DonateCollection|null $donates
  */
-class Volunteer extends Model
+class Fundraising extends Model
 {
     use SoftDeletes, HasFactory;
 
@@ -78,7 +78,7 @@ class Volunteer extends Model
      */
     public function donates(): HasMany
     {
-        return $this->hasMany(Donate::class, 'volunteer_id', 'id');
+        return $this->hasMany(Donate::class, 'fundraising_id', 'id');
     }
 
     /**
@@ -86,7 +86,7 @@ class Volunteer extends Model
      */
     public function donatesWithAmount(): HasMany
     {
-        return $this->hasMany(Donate::class, 'volunteer_id', 'id')
+        return $this->hasMany(Donate::class, 'fundraising_id', 'id')
             ->where('amount', '>', 0)
             ->whereNotNull('validated_at');
     }
@@ -96,7 +96,7 @@ class Volunteer extends Model
      */
     public function donatesWithoutValidation(): HasMany
     {
-        return $this->hasMany(Donate::class, 'volunteer_id', 'id')
+        return $this->hasMany(Donate::class, 'fundraising_id', 'id')
             ->whereNull('validated_at');
     }
 

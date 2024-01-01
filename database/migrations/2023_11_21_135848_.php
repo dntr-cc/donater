@@ -1,13 +1,13 @@
 <?php
 
-use App\Models\Volunteer;
+use App\Models\Fundraising;
 use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration {
     public function up(): void
     {
-        Volunteer::find(5)->setDescription("Збор коштів на мережеве обладнання для роти звʼязку 80 окремого батальйону управління КМП та тепловізійного монокуляру взводу охорони того ж батальйону. Підрозділ займається забезпеченням звʼязку в Миколаївській та Херсонській областях.<br><br>Розіграш павербанку BASEUS 10000mAh 22.5w 1 донат від 1грн, 1 код - 1 квиток.")->save();
-        Volunteer::create([
+        Fundraising::find(5)->setDescription("Збор коштів на мережеве обладнання для роти звʼязку 80 окремого батальйону управління КМП та тепловізійного монокуляру взводу охорони того ж батальйону. Підрозділ займається забезпеченням звʼязку в Миколаївській та Херсонській областях.<br><br>Розіграш павербанку BASEUS 10000mAh 22.5w 1 донат від 1грн, 1 код - 1 квиток.")->save();
+        Fundraising::create([
             'id'             => 6,
             'key'            => 'setnemo_twitter_subscribe',
             'name'           => 'Збір Госпам від setnemo',
@@ -23,6 +23,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Volunteer::find(6)?->delete();
+        Fundraising::find(6)?->delete();
     }
 };

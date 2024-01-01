@@ -1,5 +1,5 @@
 @php use App\Models\Donate; @endphp
-@php /** @var App\Models\Volunteer $volunteer */ @endphp
+@php /** @var App\Models\Fundraising $fundraising */ @endphp
 <div class="table-responsive">
     <table class="table table-sm table-striped table-bordered">
         <thead class="table-dark">
@@ -11,7 +11,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($volunteer->getDonateCollectionWithAmount()->getRaffleUserCollection()->all() as $it => $raffleUser)
+        @foreach($fundraising->getDonateCollectionWithAmount()->getRaffleUserCollection()->all() as $it => $raffleUser)
             <tr>
                 <th scope="row">{{ $it + 1 }}</th>
                 <td><a href="{{ $raffleUser->getUser()->getUserLink() }}"

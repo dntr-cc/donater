@@ -3,13 +3,13 @@
 namespace Database\Factories;
 
 use App\Models\User;
-use App\Models\Volunteer;
+use App\Models\Fundraising;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class VolunteerFactory extends Factory
+class FundraisingFactory extends Factory
 {
-    protected $model = Volunteer::class;
+    protected $model = Fundraising::class;
 
     public function definition(): array
     {

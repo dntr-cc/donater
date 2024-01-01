@@ -5,10 +5,10 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 use App\Models\Donate;
 use App\Models\UserLink;
-use App\Models\Volunteer;
+use App\Models\Fundraising;
 use App\Policies\DonatePolicy;
 use App\Policies\UserLinkPolicy;
-use App\Policies\VolunteerPolicy;
+use App\Policies\FundraisingPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -19,9 +19,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        Donate::class    => DonatePolicy::class,
-        Volunteer::class => VolunteerPolicy::class,
-        UserLink::class  => UserLinkPolicy::class,
+        Donate::class      => DonatePolicy::class,
+        Fundraising::class => FundraisingPolicy::class,
+        UserLink::class    => UserLinkPolicy::class,
     ];
 
     /**

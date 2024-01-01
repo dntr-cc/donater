@@ -7,7 +7,7 @@ namespace App\Services;
 use App\Collections\RowCollection;
 use App\DTOs\Row;
 use App\Models\Donate;
-use App\Models\Volunteer;
+use App\Models\Fundraising;
 use Google\Service\Sheets\ValueRange;
 use Google_Service_Sheets;
 
@@ -22,15 +22,15 @@ class GoogleServiceSheets
     }
 
     /**
-     * @param Volunteer $volunteer
+     * @param Fundraising $fundraising
      * @param string $range
      * @return RowCollection
      */
-    public function getRowCollection(string $spreadsheetId, int $volunteerId = 0, string $range = self::RANGE_DEFAULT): RowCollection
+    public function getRowCollection(string $spreadsheetId, int $fundraisingId = 0, string $range = self::RANGE_DEFAULT): RowCollection
     {
         $collection   = new RowCollection();
         $values       = $this->getSpreadsheetValues($spreadsheetId, $range)->getValues() ?? [];
-        $donatesItems = Donate::query()->where('volunteer_id', '=', $volunteerId)->get();
+        $donatesItems = Donate::query()->where('fundraising_id', '=', $fundraisingId)->get();
         $donates      = [];
         foreach ($donatesItems as $donate) {
             $donates[$donate->getUniqHash()] = $donate;

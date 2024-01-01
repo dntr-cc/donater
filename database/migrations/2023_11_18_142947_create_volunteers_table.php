@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Volunteer;
+use App\Models\Fundraising;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('volunteers', function (Blueprint $table) {
+        Schema::create('fundraisings', function (Blueprint $table) {
             $table->id();
             $table->string('key')->unique();
             $table->string('name');
@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->softDeletes();
             $table->timestamps();
         });
-        Volunteer::create([
+        Fundraising::create([
             'id'             => 1,
             'key'            => 'savelife',
             'name'           => 'Повернись живим',
@@ -34,7 +34,7 @@ return new class extends Migration {
             'user_id'        => 1,
             'description'    => '«Повернись живим» — це благодійний фонд компетентної допомоги армії, а також громадська організація, яка займається аналітикою у секторі безпеки та оборони, реалізує проєкти з реабілітації ветеранів через спорт.',
         ]);
-        Volunteer::create([
+        Fundraising::create([
             'id'             => 2,
             'key'            => 'prytulafoundation',
             'name'           => 'Фонд Сергія Притули',
@@ -46,7 +46,7 @@ return new class extends Migration {
             'user_id'        => 1,
             'description'    => 'Благодійний фонд Сергія Притули опікується посиленням Сил Оборони України, а також допомогою цивільному населенню, яке постраждало від російської агресії.',
         ]);
-        Volunteer::create([
+        Fundraising::create([
             'id'             => 3,
             'key'            => 'hospitallers',
             'name'           => 'Медичний батальйон "Госпітальєри"',
@@ -58,7 +58,7 @@ return new class extends Migration {
             'user_id'        => 1,
             'description'    => '“Госпітальєри”— добровольча організація парамедиків. Була заснована Яною Зінкевич на початку бойових дій в Україні у 2014 році. Тоді Росія анексувала Крим і розпочала бойові дії на сході країни.',
         ]);
-        Volunteer::create([
+        Fundraising::create([
             'id'             => 4,
             'key'            => 'letsseethevictory',
             'name'           => 'Фонд "Побачимо Перемогу"',
@@ -74,6 +74,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('volunteers');
+        Schema::dropIfExists('fundraisings');
     }
 };

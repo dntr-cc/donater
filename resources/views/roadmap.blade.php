@@ -1,4 +1,4 @@
-@php use App\Models\Volunteer; @endphp
+@php use App\Models\Fundraising; @endphp
 @extends('layouts.base')
 @section('page_title', 'Плани проекту donater.com.ua')
 @section('page_description', 'donater.com.ua - Інтернет спільнота реальних людей, які донатять на Сили Оборони України.')

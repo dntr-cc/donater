@@ -24,9 +24,9 @@
                                        style="color: #fff;"></i>
                                     </span>
                                 @endif
-                                @if ($user->volunteers->count())
+                                @if ($user->fundraisings->count())
                                     <span title="Створені збори" class="badge p-1 bg-info">
-                                    &nbsp;{{ $user->volunteers->count() }}&nbsp;
+                                    &nbsp;{{ $user->fundraisings->count() }}&nbsp;
                                 </span>
                                 @endif
                                 @if ($user->getApprovedDonateCount())

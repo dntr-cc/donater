@@ -22,7 +22,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Collection|Donate[] $donates
- * @property Collection|Volunteer[] $volunteers
+ * @property Collection|Fundraising[] $fundraisings
  * @property Collection|UserLink[] $links
  * @property int $approved_donates_count
  */
@@ -30,7 +30,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $with = ['donates', 'volunteers', 'links'];
+    protected $with = ['donates', 'fundraisings', 'links'];
 
     /**
      * The attributes that are mass assignable.
@@ -75,9 +75,9 @@ class User extends Authenticatable
     /**
      * @return HasMany
      */
-    public function volunteers(): HasMany
+    public function fundraisings(): HasMany
     {
-        return $this->hasMany(Volunteer::class, 'user_id', 'id');
+        return $this->hasMany(Fundraising::class, 'user_id', 'id');
     }
 
     /**
@@ -269,9 +269,9 @@ class User extends Authenticatable
         return $this->donates;
     }
 
-    public function getVolunteers(): Collection|array
+    public function getFundraisings(): Collection|array
     {
-        return $this->volunteers;
+        return $this->fundraisings;
     }
 
     public function getApprovedDonateCount(): int

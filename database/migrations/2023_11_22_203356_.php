@@ -1,12 +1,12 @@
 <?php
 
-use App\Models\Volunteer;
+use App\Models\Fundraising;
 use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration {
     public function up(): void
     {
-        Volunteer::create([
+        Fundraising::create([
             'id'             => 8,
             'key'            => '52_fpv_01',
             'name'           => 'Зб*р на 5 FPV для 52-го ОСБ 🐝',
@@ -29,6 +29,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Volunteer::find(8)?->delete();
+        Fundraising::find(8)?->delete();
     }
 };

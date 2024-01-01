@@ -1,7 +1,7 @@
 
 @extends('layouts.base')
-@section('page_title', strtr('Звітність по :volunteer - donater.com.ua', [':volunteer' => $volunteer->getName()]))
-@section('page_description', strtr('Звітність по :volunteer - donater.com.ua', [':volunteer' => $volunteer->getName()]))
+@section('page_title', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
+@section('page_description', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @push('head-scripts')
     @vite(['resources/js/tabs.js'])
 @endpush
@@ -11,34 +11,34 @@
 @php $raffles = true; @endphp
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
-@php $owner = $volunteer->owner()->get()->first(); @endphp
+@php $owner = $fundraising->owner()->get()->first(); @endphp
 @section('content')
     <div class="container px-4 py-5">
-        <h2 class="pb-2 border-bottom"><a href="{{ route('volunteer.all') }}" class=""><i class="bi bi-arrow-left"></i></a>
-            @if($volunteer->isEnabled())
+        <h2 class="pb-2 border-bottom"><a href="{{ route('fundraising.all') }}" class=""><i class="bi bi-arrow-left"></i></a>
+            @if($fundraising->isEnabled())
                 <span class="btn btn-info">ЗБІР ТРИВАЄ</span>
-            @elseif($volunteer->donates->count())
+            @elseif($fundraising->donates->count())
                 <span class="btn btn-danger">ЗБІР ЗАКРИТО</span>
             @else
                 <span class="btn btn-secondary">СКОРО РОЗПОЧНЕТЬСЯ</span>
             @endif
-            Звітність {{ $volunteer->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
+            Звітність {{ $fundraising->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
         </h2>
         <div class="row">
             <div class="col-md-4 px-2 py-2">
                 <div class="card border-0 rounded-4 shadow-lg">
-                    <a href="{{ route('volunteer.show', ['volunteer' => $volunteer->getKey()]) }}" class="card">
-                        <img src="{{ url($volunteer->getAvatar()) }}" class="bg-image-position-center"
-                             alt="{{ $volunteer->getName() }}">
+                    <a href="{{ route('fundraising.show', ['fundraising' => $fundraising->getKey()]) }}" class="card">
+                        <img src="{{ url($fundraising->getAvatar()) }}" class="bg-image-position-center"
+                             alt="{{ $fundraising->getName() }}">
                     </a>
                 </div>
             </div>
             <div class="col-md-8 px-2 py-2">
                 <div>
-                    {!! $volunteer->getDescription() !!}
+                    {!! $fundraising->getDescription() !!}
                 </div>
                 <div class="mt-3"></div>
-                @include('layouts.links', compact('volunteer', 'withJarLink', 'withPageLink', 'raffles'))
+                @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'raffles'))
             </div>
         </div>
         <ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">
@@ -107,7 +107,7 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="donates-tabs-users" role="tabpanel" aria-labelledby="donates-tabs-users">
-                @include('volunteer.donaters', compact('volunteer'))
+                @include('fundraising.donaters', compact('fundraising'))
             </div>
             <div class="tab-pane fade" id="donates-waiting" role="tabpanel" aria-labelledby="donates-tabs-users">
                 <div class="table-responsive">
@@ -120,7 +120,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($volunteer->getDonateCollectionWithoutValidation()->all() as $it => $donate)
+                        @foreach($fundraising->getDonateCollectionWithoutValidation()->all() as $it => $donate)
                             <tr>
                                 <th scope="row">{{ $it + 1 }}</th>
                                 <td><a href="{{ $donate->donater()->first()->getUserLink() }}"

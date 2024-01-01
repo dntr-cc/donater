@@ -1,7 +1,7 @@
 <?php
 
 use App\Bot\CommandWrapper;
-use App\Models\Volunteer;
+use App\Models\Fundraising;
 use App\Services\DonateService;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,21 +48,21 @@ Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLog
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-Route::get('/zvit', fn() => redirect(route('volunteer.all'), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/fundraising', fn() => view('volunteer.zvit', ['volunteers' => Volunteer::all()]))->name('volunteer.all');
-Route::get('/zvit/{volunteer}', fn(Volunteer $volunteer) => redirect(route('volunteer.show', compact('volunteer')), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/fundraising/{volunteer}', [App\Http\Controllers\VolunteerController::class, 'show'])->name('volunteer.show');
-Route::get('/raffles', fn() => view('volunteer.raffles', data: ['volunteers' => Volunteer::query()->where('is_enabled', '=', true)->whereNotIn('user_id', [1,3])->get()]))->name('raffles');
-Route::post('/volunteer', [App\Http\Controllers\VolunteerController::class, 'store'])->name('volunteer.create');
-Route::post('/volunteer/avatar', [App\Http\Controllers\VolunteerController::class, 'storeAvatar'])->name('volunteer.avatar');
-Route::post('/volunteer/key', [App\Http\Controllers\VolunteerController::class, 'checkKey'])->name('volunteer.key');
-Route::post('/volunteer/spreadsheet', [App\Http\Controllers\VolunteerController::class, 'spreadsheet'])->name('volunteer.spreadsheet');
-Route::get('/volunteer/new', [App\Http\Controllers\VolunteerController::class, 'create'])->name('volunteer.new');
-Route::get('/volunteer/{volunteer}/edit', [App\Http\Controllers\VolunteerController::class, 'edit'])->name('volunteer.edit');
-Route::patch('/volunteer/{volunteer}/edit', [App\Http\Controllers\VolunteerController::class, 'update'])->name('volunteer.update');
-Route::get('/volunteer/{volunteer}/start', [App\Http\Controllers\VolunteerController::class, 'start'])->name('volunteer.start');
-Route::get('/volunteer/{volunteer}/stop', [App\Http\Controllers\VolunteerController::class, 'stop'])->name('volunteer.stop');
-Route::get('/volunteer/{volunteer}/raffle', [App\Http\Controllers\VolunteerController::class, 'raffle'])->name('volunteer.raffle');
+Route::get('/zvit', fn() => redirect(route('fundraising.all'), Response::HTTP_MOVED_PERMANENTLY));
+Route::get('/fundraising', fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()->paginate(3)->fragment('fundraising')]))->name('fundraising.all');
+Route::get('/zvit/{fundraising}', fn(Fundraising $fundraising) => redirect(route('fundraising.show', compact('fundraising')), Response::HTTP_MOVED_PERMANENTLY));
+Route::get('/fundraising/{fundraising}', [App\Http\Controllers\FundraisingController::class, 'show'])->name('fundraising.show');
+Route::get('/raffles', fn() => view('fundraising.raffles', data: ['fundraisings' => Fundraising::query()->where('is_enabled', '=', true)->whereNotIn('user_id', [1,3])->get()]))->name('raffles');
+Route::post('/fundraising', [App\Http\Controllers\FundraisingController::class, 'store'])->name('fundraising.create');
+Route::post('/fundraising/avatar', [App\Http\Controllers\FundraisingController::class, 'storeAvatar'])->name('fundraising.avatar');
+Route::post('/fundraising/key', [App\Http\Controllers\FundraisingController::class, 'checkKey'])->name('fundraising.key');
+Route::post('/fundraising/spreadsheet', [App\Http\Controllers\FundraisingController::class, 'spreadsheet'])->name('fundraising.spreadsheet');
+Route::get('/fundraising/new', [App\Http\Controllers\FundraisingController::class, 'create'])->name('fundraising.new');
+Route::get('/fundraising/{fundraising}/edit', [App\Http\Controllers\FundraisingController::class, 'edit'])->name('fundraising.edit');
+Route::patch('/fundraising/{fundraising}/edit', [App\Http\Controllers\FundraisingController::class, 'update'])->name('fundraising.update');
+Route::get('/fundraising/{fundraising}/start', [App\Http\Controllers\FundraisingController::class, 'start'])->name('fundraising.start');
+Route::get('/fundraising/{fundraising}/stop', [App\Http\Controllers\FundraisingController::class, 'stop'])->name('fundraising.stop');
+Route::get('/fundraising/{fundraising}/raffle', [App\Http\Controllers\FundraisingController::class, 'raffle'])->name('fundraising.raffle');
 
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
