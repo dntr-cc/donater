@@ -48,14 +48,14 @@ class RaffleCommand extends Command
                 $winner = User::find($all[$winnerNumber]);
                 $this->output->info(strtr('Winner is :winner', [':winner' => $winner?->getFullName() . ' ' . $winner->getUserLink()]));
                 try {
-//                    Telegram::sendMessage(['chat_id' => $winner?->getTelegramId(), 'text' => 'Вітаю! Ви виграли подарунок, пишить @setnemo в приватні повідомлення']);
+                    $winnersIdsFilter = array_merge($winnersIdsFilter, [$winner->getId()]);
+                    $this->output->info($winnersIdsFilter);
+                    $all = $this->getAll($winnersIdsFilter, $prefix);
+                    Telegram::sendMessage(['chat_id' => $winner?->getTelegramId(), 'text' => 'Вітаю! Ви виграли подарунок, пишить @setnemo в приватні повідомлення']);
                     $winners++;
                     if ($realWinners === $winners) {
                         break;
                     }
-                    $winnersIdsFilter = array_merge($winnersIdsFilter, [$winner->getId()]);
-                    $this->output->info($winnersIdsFilter);
-                    $all = $this->getAll($winnersIdsFilter, $prefix);
                 } catch (Throwable $t) {
                     $this->output->info('Skip...');
                     Log::error($t->getMessage(), [':winner' => $winner?->getFullName(), 'trace' => $t->getTraceAsString()]);
