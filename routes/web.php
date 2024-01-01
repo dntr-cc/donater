@@ -48,8 +48,10 @@ Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLog
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-Route::get('/zvit', fn() => view('volunteer.zvit', ['volunteers' => Volunteer::all()]))->name('volunteer.all');
-Route::get('/zvit/{volunteer}', [App\Http\Controllers\VolunteerController::class, 'show'])->name('volunteer.show');
+Route::get('/zvit', fn() => redirect(route('volunteer.all'), Response::HTTP_MOVED_PERMANENTLY));
+Route::get('/fundraising', fn() => view('volunteer.zvit', ['volunteers' => Volunteer::all()]))->name('volunteer.all');
+Route::get('/zvit/{volunteer}', fn(Volunteer $volunteer) => redirect(route('volunteer.show', compact('volunteer')), Response::HTTP_MOVED_PERMANENTLY));
+Route::get('/fundraising/{volunteer}', [App\Http\Controllers\VolunteerController::class, 'show'])->name('volunteer.show');
 Route::get('/raffles', fn() => view('volunteer.raffles', data: ['volunteers' => Volunteer::query()->where('is_enabled', '=', true)->whereNotIn('user_id', [1,3])->get()]))->name('raffles');
 Route::post('/volunteer', [App\Http\Controllers\VolunteerController::class, 'store'])->name('volunteer.create');
 Route::post('/volunteer/avatar', [App\Http\Controllers\VolunteerController::class, 'storeAvatar'])->name('volunteer.avatar');

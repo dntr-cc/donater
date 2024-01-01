@@ -5,6 +5,7 @@
 @push('head-scripts')
     @vite(['resources/js/tabs.js'])
 @endpush
+@php /* @var App\Models\Donate $donate */ @endphp
 @php $withJarLink = true; @endphp
 @php $withPageLink = true; @endphp
 @php $raffles = true; @endphp
@@ -51,6 +52,12 @@
                 <a data-mdb-tab-init class="nav-link" id="icons-tab-2" href="#donates-tabs-users" role="tab"
                    aria-controls="donates-tabs-users" aria-selected="false">
                     <i class="bi bi-lightning-fill"></i> Донатери збору
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a data-mdb-tab-init class="nav-link" id="icons-tab-2" href="#donates-waiting" role="tab"
+                   aria-controls="donates-tabs-users" aria-selected="false">
+                    <i class="bi bi-lightning-fill"></i> Очікують валідації
                 </a>
             </li>
         </ul>
@@ -101,6 +108,28 @@
             </div>
             <div class="tab-pane fade" id="donates-tabs-users" role="tabpanel" aria-labelledby="donates-tabs-users">
                 @include('volunteer.donaters', compact('volunteer'))
+            </div>
+            <div class="tab-pane fade" id="donates-waiting" role="tabpanel" aria-labelledby="donates-tabs-users">
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped table-bordered">
+                        <thead class="table-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Користувач</th>
+                            <th scope="col">Час створення внеску</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($volunteer->getDonateCollectionWithoutValidation()->all() as $it => $donate)
+                            <tr>
+                                <th scope="row">{{ $it + 1 }}</th>
+                                <td><a href="{{ $donate->donater()->first()->getUserLink() }}"
+                                       class="">{{ $donate->donater()->first()->getUsernameWithFullName() }}</a></td>
+                                <td>{{ $donate->getCreatedAt()->toString() }}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
             </div>
         </div>
     </div>

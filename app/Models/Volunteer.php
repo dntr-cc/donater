@@ -92,6 +92,15 @@ class Volunteer extends Model
     }
 
     /**
+     * @return HasMany
+     */
+    public function donatesWithoutValidation(): HasMany
+    {
+        return $this->hasMany(Donate::class, 'volunteer_id', 'id')
+            ->whereNull('validated_at');
+    }
+
+    /**
      * @return HasOne|User
      */
     public function owner(): HasOne
@@ -218,5 +227,10 @@ class Volunteer extends Model
     public function getDonateCollectionWithAmount(): ?DonateCollection
     {
         return self::with('donatesWithAmount')->where('id', '=', $this->getId())->first()->donatesWithAmount;
+    }
+
+    public function getDonateCollectionWithoutValidation(): ?DonateCollection
+    {
+        return self::with('donatesWithoutValidation')->where('id', '=', $this->getId())->first()->donatesWithoutValidation;
     }
 }
