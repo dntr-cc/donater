@@ -43,7 +43,7 @@
         </div>
         <ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">
             <li class="nav-item" role="presentation">
-                <a data-mdb-tab-init class="nav-link active" id="icons-tab-1" href="#donates-tabs-all" role="tab"
+                <a data-mdb-tab-init class="nav-link active" id="icons-tab-1" href="#donates-all" role="tab"
                    aria-controls="donates-tabs-all" aria-selected="true">
                     <i class="bi bi-tablet-landscape-fill"></i> Виписка з банки
                 </a>
@@ -55,14 +55,20 @@
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a data-mdb-tab-init class="nav-link" id="icons-tab-2" href="#donates-waiting" role="tab"
+                <a data-mdb-tab-init class="nav-link" id="icons-tab-3" href="#donates-waiting" role="tab"
+                   aria-controls="donates-tabs-users" aria-selected="false">
+                    <i class="bi bi-lightning-fill"></i> Очікують валідації
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a data-mdb-tab-init class="nav-link" id="icons-tab-4" href="#donates-analytics" role="tab"
                    aria-controls="donates-tabs-users" aria-selected="false">
                     <i class="bi bi-lightning-fill"></i> Очікують валідації
                 </a>
             </li>
         </ul>
         <div class="tab-content" id="icons-content">
-            <div class="tab-pane fade show active" id="donates-tabs-all" role="tabpanel" aria-labelledby="icons-tab-1">
+            <div class="tab-pane fade show active" id="donates-all" role="tabpanel" aria-labelledby="donates-all">
                 <div class="table-responsive">
                     @if($rows)
                     <table class="table table-sm table-striped table-bordered">
@@ -109,7 +115,29 @@
             <div class="tab-pane fade" id="donates-tabs-users" role="tabpanel" aria-labelledby="donates-tabs-users">
                 @include('fundraising.donaters', compact('fundraising'))
             </div>
-            <div class="tab-pane fade" id="donates-waiting" role="tabpanel" aria-labelledby="donates-tabs-users">
+            <div class="tab-pane fade" id="donates-waiting" role="tabpanel" aria-labelledby="donates-tabs-waiting">
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped table-bordered">
+                        <thead class="table-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Користувач</th>
+                            <th scope="col">Час створення внеску</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($fundraising->getDonateCollectionWithoutValidation()->all() as $it => $donate)
+                            <tr>
+                                <th scope="row">{{ $it + 1 }}</th>
+                                <td><a href="{{ $donate->donater()->first()->getUserLink() }}"
+                                       class="">{{ $donate->donater()->first()->getUsernameWithFullName() }}</a></td>
+                                <td>{{ $donate->getCreatedAt()->toString() }}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="donates-analytics" role="tabpanel" aria-labelledby="donates-tabs-analytics">
                 <div class="table-responsive">
                     <table class="table table-sm table-striped table-bordered">
                         <thead class="table-dark">

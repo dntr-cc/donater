@@ -7,7 +7,7 @@ use App\Services\GoogleServiceSheets;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use Telegram;
+use Telegram\Bot\Laravel\Facades\Telegram;
 use Throwable;
 
 class ValidateDonatesCommand extends Command
@@ -33,7 +33,7 @@ class ValidateDonatesCommand extends Command
         try {
             /** @var Donate $donate */
             foreach (Donate::query()->whereNull('validated_at')->get()->all() as $donate) {
-                $fundraising = $donate->getFundraisingF();
+                $fundraising = $donate->getFundraising();
                 $rows      = $this->service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
                 if ($rows->hasUniqHash($donate->getUniqHash())) {
                     $donate->setValidatedAt(Carbon::now())->save();

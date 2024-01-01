@@ -2,7 +2,7 @@
 
 use App\Bot\CommandWrapper;
 use App\Models\Fundraising;
-use App\Services\DonateService;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Telegram\Bot\Laravel\Facades\Telegram;
@@ -51,7 +51,6 @@ Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logou
 Route::get('/zvit', fn() => redirect(route('fundraising.all'), Response::HTTP_MOVED_PERMANENTLY));
 Route::get('/fundraising', fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()->paginate(3)->fragment('fundraising')]))->name('fundraising.all');
 Route::get('/zvit/{fundraising}', fn(Fundraising $fundraising) => redirect(route('fundraising.show', compact('fundraising')), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/fundraising/{fundraising}', [App\Http\Controllers\FundraisingController::class, 'show'])->name('fundraising.show');
 Route::get('/raffles', fn() => view('fundraising.raffles', data: ['fundraisings' => Fundraising::query()->where('is_enabled', '=', true)->whereNotIn('user_id', [1,3])->get()]))->name('raffles');
 Route::post('/fundraising', [App\Http\Controllers\FundraisingController::class, 'store'])->name('fundraising.create');
 Route::post('/fundraising/avatar', [App\Http\Controllers\FundraisingController::class, 'storeAvatar'])->name('fundraising.avatar');
@@ -63,6 +62,7 @@ Route::patch('/fundraising/{fundraising}/edit', [App\Http\Controllers\Fundraisin
 Route::get('/fundraising/{fundraising}/start', [App\Http\Controllers\FundraisingController::class, 'start'])->name('fundraising.start');
 Route::get('/fundraising/{fundraising}/stop', [App\Http\Controllers\FundraisingController::class, 'stop'])->name('fundraising.stop');
 Route::get('/fundraising/{fundraising}/raffle', [App\Http\Controllers\FundraisingController::class, 'raffle'])->name('fundraising.raffle');
+Route::get('/fundraising/{fundraising}', [App\Http\Controllers\FundraisingController::class, 'show'])->name('fundraising.show');
 
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
