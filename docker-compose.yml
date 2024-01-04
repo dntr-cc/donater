@@ -17,15 +17,31 @@ services:
     laravel:
         image: ghcr.io/setnemo/php:latest
         env_file:
-            - .env
-        environment:
-            TZ: "${TZ}"
+            - ./short_url/.env
         ports:
             - '9000:9000'
         volumes:
             - '.:/var/www/html'
             - './supervisor/deploy.php.conf:/etc/supervisor/conf.d/deploy.php.conf:ro'
             - './supervisor/schedule.conf:/etc/supervisor/conf.d/schedule.conf:ro'
+        networks:
+            - sail
+        depends_on:
+            - postgres
+            - redis
+    laravel2:
+        image: ghcr.io/setnemo/php:victory
+        environment:
+            WEBROOT: '/var/www/html/public'
+            PHP_REDIS_SESSION_HOST: 'redis'
+            CREATE_LARAVEL_STORAGE: '1'
+            PHP_ERRORS_STDERR: '1'
+        env_file:
+            - .env
+        ports:
+            - '${DOCKER_APP_PORT2:-11888}:80'
+        volumes:
+            - './short_url/.:/var/www/html'
         networks:
             - sail
         depends_on:

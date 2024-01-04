@@ -31,6 +31,24 @@ services:
     depends_on:
       - postgres
       - redis
+  laravel2:
+    image: ghcr.io/setnemo/php:victory
+    environment:
+      WEBROOT: '/var/www/html/public'
+      PHP_REDIS_SESSION_HOST: 'redis'
+      CREATE_LARAVEL_STORAGE: '1'
+      PHP_ERRORS_STDERR: '1'
+    env_file:
+      - .env
+    ports:
+      - '${DOCKER_APP_PORT2:-11888}:80'
+    volumes:
+      - './short_url/.:/var/www/html'
+    networks:
+      - sail
+    depends_on:
+      - postgres
+      - redis
   node:
     image: ghcr.io/setnemo/node:latest
     env_file:
