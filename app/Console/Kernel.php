@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Fundraising;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,6 +16,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        foreach (Fundraising::all() as $item) {
+            /** @uses CacheFundraisingCommand::class */
+            $schedule->command('fundraising:cache ' . $item->getId())->everyMinute();
+        }
          $schedule->command('validate:donates')->everyMinute();
          $schedule->command('fill:amount')->everyMinute();
     }
