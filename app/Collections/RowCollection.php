@@ -59,7 +59,7 @@ class RowCollection extends Collection
         $sum = 0;
         $daysTimestamp = [];
         foreach ($this->all() as $item) {
-            if ($item->getAmount() > 0) {
+            if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
                 $date = $item->getDate();
                 $timestamp = strtotime($date);
                 $daysTimestamp[] = $timestamp;
@@ -90,7 +90,7 @@ class RowCollection extends Collection
     {
         $result = null;
         foreach ($this->all() as $item) {
-            if ($item->getAmount() > 0) {
+            if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
                 $sum = (float)$item->getAmount();
                 $type = match (true) {
                     $sum === 0.00 => null,
