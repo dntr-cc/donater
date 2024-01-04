@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FundraisingRequest;
 use App\Models\Fundraising;
+use App\Services\ChartService;
 use App\Services\GoogleServiceSheets;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -38,9 +39,9 @@ class FundraisingController extends Controller
         $this->authorize('create', Fundraising::class);
 
         $uploadedFiles = $request->file('FILE');
-        $fileName      = $uploadedFiles->getClientOriginalName();
-        $username      = $request->user()->getUsername();
-        $directory     = public_path('/images/banners/' . $username);
+        $fileName = $uploadedFiles->getClientOriginalName();
+        $username = $request->user()->getUsername();
+        $directory = public_path('/images/banners/' . $username);
         $uploadedFiles->move($directory, $fileName);
         $avatar = '/images/banners/' . $username . '/' . $fileName;
 
@@ -74,14 +75,77 @@ class FundraisingController extends Controller
     public function show(Fundraising $fundraising)
     {
         $this->authorize('view', $fundraising);
-        $rows = null;
+        $rows = $charts = $charts2 = null;
+        $data = '{}';
         try {
             $rows = app(GoogleServiceSheets::class)->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
+            $perDay = $rows->perDay();
+            $perSum = $rows->perSum();
+            $charts = app(ChartService::class)->chart()->name('pieChartTest')
+                ->name('pieChartTest')
+                ->type('line')
+                ->labels(array_keys($perDay))
+                ->datasets([
+                    [
+                        'borderColor' => "rgb(255, 99, 132)",
+                        'fill'        => false,
+                        'data'        => array_map(fn(array $item, string $key) => ['x' => $key, 'y' => $item['amount']], array_values($perDay), array_keys($perDay)),
+                    ],
+                ])
+                ->optionsRaw(
+                    "{
+                    plugins: {
+                      legend: false
+                    },
+                    scales: {
+                      x: {
+                        type: 'linear'
+                      }
+                    }
+                }"
+                );
+            $colors = [
+                '#4dc9f6',
+                '#f67019',
+                '#f53794',
+                '#537bc4',
+                '#acc236',
+                '#166a8f',
+                '#00a950',
+                '#58595b',
+                '#8549ba'
+            ];
+            $charts2 = app(ChartService::class)->chart()->name('pieChartTest')
+                ->name('pieChartTest2')
+                ->type('pie')
+                ->size(['width' => 400, 'height' => 200])
+                ->labels(array_keys($perSum))
+                ->datasets([
+                    [
+                        'backgroundColor'      => array_slice($colors, 0, count($perSum)),
+                        'hoverBackgroundColor' => array_slice($colors, 0, count($perSum)),
+                        'data'                 => array_values($perSum),
+                    ],
+                ])
+                ->optionsRaw(
+                    " {
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        position: 'top',
+                      },
+                      title: {
+                        display: true,
+                        text: 'Донати по сумі'
+                      }
+                    }
+                  }"
+                );
         } catch (\Throwable $throwable) {
             Log::critical($throwable->getMessage(), ['trace' => $throwable->getTraceAsString()]);
         }
 
-        return view('fundraising.show', compact('fundraising', 'rows'));
+        return view('fundraising.show', compact('fundraising', 'rows', 'charts', 'charts2'));
     }
 
     public function start(Fundraising $fundraising)

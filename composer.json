@@ -11,6 +11,7 @@
         "doctrine/dbal": "^3.7",
         "google/apiclient": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
+        "icehouse-ventures/laravel-chartjs": "^1.0",
         "irazasyed/telegram-bot-sdk": "^3.13",
         "laravel/framework": "^10",
         "laravel/passport": "^11",

@@ -1,4 +1,11 @@
 <?php return array (
+  'icehouse-ventures/laravel-chartjs' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'IcehouseVentures\\LaravelChartjs\\Providers\\ChartjsServiceProvider',
+    ),
+  ),
   'irazasyed/telegram-bot-sdk' => 
   array (
     'aliases' => 

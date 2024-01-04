@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47dfe7e8c78f0a1276b1fbb608e0f0e2",
+    "content-hash": "7dca994039dc1e2ae85a3a616ae41d55",
     "packages": [
         {
             "name": "bhaktaraz/php-rss-generator",
@@ -1713,6 +1713,69 @@
                 }
             ],
             "time": "2023-08-27T10:19:19+00:00"
+        },
+        {
+            "name": "icehouse-ventures/laravel-chartjs",
+            "version": "v1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/icehouse-ventures/laravel-chartjs.git",
+                "reference": "95fa1f1b671bd3860b3a852dd01aab8b33c1f293"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/icehouse-ventures/laravel-chartjs/zipball/95fa1f1b671bd3860b3a852dd01aab8b33c1f293",
+                "reference": "95fa1f1b671bd3860b3a852dd01aab8b33c1f293",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.1|^6.0|^7.0|^8.0|^9.0|^10.0",
+                "php": ">=5.6.4"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.13",
+                "orchestra/testbench": "^8.19",
+                "pestphp/pest": "^2.30",
+                "pestphp/pest-plugin-laravel": "^2.2",
+                "phpstan/phpstan": "^1.10"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "IcehouseVentures\\LaravelChartjs\\Providers\\ChartjsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "IcehouseVentures\\LaravelChartjs\\": "src/",
+                    "IcehouseVentures\\LaravelChartjs\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Icehouse Ventures",
+                    "email": "tech@icehouseventures.co.nz"
+                }
+            ],
+            "description": "Simple package to facilitate and automate the use of charts in Laravel using the Chart.js library",
+            "keywords": [
+                "chartjs",
+                "charts",
+                "graphs",
+                "icehouseventures",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/icehouse-ventures/laravel-chartjs/issues",
+                "source": "https://github.com/icehouse-ventures/laravel-chartjs/tree/v1.0.6"
+            },
+            "time": "2023-12-30T10:14:30+00:00"
         },
         {
             "name": "irazasyed/telegram-bot-sdk",
@@ -10050,7 +10113,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0.2"
+        "php": "^8.3.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

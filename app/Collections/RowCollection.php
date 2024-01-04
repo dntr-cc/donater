@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace App\Collections;
 
 use App\DTOs\Row;
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Illuminate\Support\Collection;
+
+use function PHPUnit\Framework\matches;
 
 /**
  * @property array|Row[] $items
@@ -52,19 +57,54 @@ class RowCollection extends Collection
     {
         $perDay = $result = null;
         $sum = 0;
-        foreach ($this->items as $item) {
+        $daysTimestamp = [];
+        foreach ($this->all() as $item) {
             if ($item->getAmount() > 0) {
                 $date = $item->getDate();
-                $day = date('Y/m/d', strtotime($date));
+                $timestamp = strtotime($date);
+                $daysTimestamp[] = $timestamp;
+                $day = date('d/m/Y', $timestamp);
                 $perDay[$day] = $perDay[$day] ?? 0;
                 $perDay[$day] += floatval($item->getAmount());
                 $sum += floatval($item->getAmount());
             }
         }
         if ($perDay) {
+            $period = new DatePeriod(
+                new DateTime(date('Y-m-d', min($daysTimestamp))),
+                new DateInterval('P1D'),
+                new DateTime(date('Y-m-d', max($daysTimestamp))),
+            );
+            foreach ($period as $value) {
+                $result[$value->format('d/m/Y')] = ['amount' => 0.00, 'percent' => 0];
+            }
             foreach ($perDay as $day => $amount) {
                 $result[$day]['amount'] = $amount;
                 $result[$day]['percent'] = round($amount / $sum * 100, 2);
+            }
+        }
+
+        return $result;
+    }
+    public function perSum(): ?array
+    {
+        $result = null;
+        foreach ($this->all() as $item) {
+            if ($item->getAmount() > 0) {
+                $sum = (float)$item->getAmount();
+                $type = match (true) {
+                    $sum === 0.00 => null,
+                    $sum <= 10 => 'донат до 10 грн.',
+                    $sum <= 100 => 'донат до 100 грн.',
+                    $sum <= 500 => 'донат до 500 грн.',
+                    $sum <= 1000 => 'донат до 1000 грн.',
+                    $sum > 1000 => 'донати 1000+ грн.',
+                    default => null,
+                };
+                if ($type) {
+                    $result[$type] = $result[$type] ?? 0;
+                    ++$result[$type];
+                }
             }
         }
 
