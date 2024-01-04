@@ -28,7 +28,7 @@ class CacheFundraisingCommand extends Command
 
     public function handle(): void
     {
-        if ($id = $this->option('id')) {
+        if ($id = $this->argument('id')) {
             try {
                 $fundraising = Fundraising::find($id);
                 $this->service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId(), \App\Services\GoogleServiceSheets::RANGE_DEFAULT, false);
