@@ -121,9 +121,9 @@
                                             data-fundraising="{{ $fundraising->getKey() }}">
                                             <div class="fw-bold">
                                                 @if($fundraising->isEnabled())
-                                                    <a href="{{route('donate', ['fundraising' => $fundraising->getKey()])}}" class="btn btn-xs btn-info">ЗБІР ТРИВАЄ</a>
+                                                    <a href="{{route('fundraising.show', ['fundraising' => $fundraising->getKey()])}}" class="btn btn-xs btn-info">ЗБІР ТРИВАЄ</a>
                                                 @else
-                                                    <a href="{{route('donate', ['fundraising' => $fundraising->getKey()])}}" class="btn btn-xs btn-danger">ЗБІР ЗАКРИТО</a>
+                                                    <a href="{{route('fundraising.show', ['fundraising' => $fundraising->getKey()])}}" class="btn btn-xs btn-danger">ЗБІР ЗАКРИТО</a>
                                                 @endif{{ $fundraising->getName() }}
                                                 @include('layouts.links', compact('fundraising', 'withZvitLink', 'additionalClasses'))
                                             </div>

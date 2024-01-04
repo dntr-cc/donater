@@ -13,11 +13,6 @@
                             <div class="row d-flex justify-content-between">
                                 <div class="col-md-6 mt-1">
                                     <h4>Всі благодійні внески</h4>
-                                    @if(auth()?->user()?->fundraisings?->count())
-                                        <a href="{{ route('donate', ['fixCode' => 1]) }}" class="btn">
-                                            ДОДАТИ ЗАГУБЛЕНИЙ КОД
-                                        </a>
-                                    @endif
                                 </div>
                                 {{--                                <div class="col-md-6 mt-1">--}}
                                 {{--                                    <div class="form-floating">--}}
