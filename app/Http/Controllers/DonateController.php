@@ -57,20 +57,6 @@ class DonateController extends Controller
         return new Response($feed, Response::HTTP_OK, ['Content-type' => 'text/xml;charset=UTF-8']);
     }
 
-    public function store(DonateRequest $request)
-    {
-        $this->authorize('create', Donate::class);
-
-        Donate::create($request->validated());
-
-        return redirect(route('my'), Response::HTTP_FOUND)->header('Cache-Control', 'no-store, no-cache, must-revalidate');
-    }
-
-    public function create()
-    {
-        return view('donate');
-    }
-
     public function show(Donate $donate)
     {
         $this->authorize('view', $donate);

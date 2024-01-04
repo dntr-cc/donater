@@ -11,7 +11,7 @@ class DonateRequest extends FormRequest
         return [
             'user_id'      => ['required', 'integer'],
             'fundraising_id' => ['required', 'integer'],
-            'uniq_hash'    => ['required'],
+            'hash'    => ['required'],
         ];
     }
 

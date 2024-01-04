@@ -17,12 +17,7 @@
         Сторінка збору
     </a>
 @endif
-@if($fundraising->isEnabled())
-    <a href="{{route('donate', ['fundraising' => $fundraising->getKey()])}}" class="btn  m-1 {{ $additionalClasses }}">
-        <i class="bi bi-plus-circle-fill"></i>
-        Задонатити
-    </a>
-@endif
+
 @if($withZvitLink)
     <a href="{{route('fundraising.show', ['fundraising' => $fundraising->getKey()])}}"
        class="btn  m-1 {{ $additionalClasses }}">

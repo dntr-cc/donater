@@ -93,8 +93,6 @@ Route::get('/volunteers', [App\Http\Controllers\UserController::class, 'voluntee
 Route::post('/user/{user}/avatar', [App\Http\Controllers\UserController::class, 'updateAvatar'])->name('user.edit.avatar');
 Route::get('/donates', [App\Http\Controllers\DonateController::class, 'index'])->name('donates');
 Route::get('/donates/rss.xml', [App\Http\Controllers\DonateController::class, 'rss'])->name('donates.rss');
-Route::get('/donate', [App\Http\Controllers\DonateController::class, 'create'])->name('donate');
-Route::post('/donate', [App\Http\Controllers\DonateController::class, 'store']);
 Route::post('/user/link', [App\Http\Controllers\UserLinkController::class, 'store'])->name('user.link');
 Route::delete('/user/link/{userLink}', [App\Http\Controllers\UserLinkController::class, 'destroy'])->name('user.link.delete');
 Route::patch('/user/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('user.edit');

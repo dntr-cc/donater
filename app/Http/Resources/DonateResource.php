@@ -13,7 +13,7 @@ class DonateResource extends JsonResource
         return [
             'user_id'        => $this->user_id,
             'fundraising_id' => $this->fundraising_id,
-            'uniq_hash'      => $this->uniq_hash,
+            'hash'      => $this->hash,
         ];
     }
 }

@@ -19,8 +19,9 @@ class Kernel extends ConsoleKernel
         foreach (Fundraising::all() as $item) {
             /** @uses CacheFundraisingCommand::class */
             $schedule->command('fundraising:cache ' . $item->getId())->everyMinute();
+            /** @uses ValidateDonatesCommand::class */
+            $schedule->command('validate:donates '  . $item->getId())->everyMinute();
         }
-//         $schedule->command('validate:donates')->everyMinute();
     }
 
     /**

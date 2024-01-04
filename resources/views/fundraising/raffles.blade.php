@@ -9,13 +9,6 @@
         <h2 class="pb-2 border-bottom">
             Всі збори з розіграшами та призами
         </h2>
-        <p class="lead">
-            Для участі в розіграші треба зробити донат з кодом. Код ви можете знайти натиснувши
-            <a href="{{route('donate')}}" class="btn">
-                <i class="bi bi-plus-circle-fill"></i>
-                Задонатити
-            </a>
-        </p>
     </div>
     @foreach($fundraisings->all() as $it => $fundraising)
         <div class="container px-4 py-5" >

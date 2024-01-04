@@ -12,7 +12,7 @@ class DonateService
     {
         while (1) {
             $uniqId = uniqid('', true);
-            if (0 === Donate::where('uniq_hash', '=', $uniqId)->count()) {
+            if (0 === Donate::where('hash', '=', $uniqId)->count()) {
                 return $uniqId;
             }
         }

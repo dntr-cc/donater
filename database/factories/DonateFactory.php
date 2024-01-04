@@ -19,8 +19,7 @@ class DonateFactory extends Factory
             'user_id'      => User::factory()->create()->getId(),
             'fundraising_id' => $i + 1,
             'amount'       => $this->faker->randomFloat(),
-            'uniq_hash'    => uniqid('', true),
-            'validated_at' => rand() % 2 === 0 ? Carbon::now() : null,
+            'hash'    => uniqid('', true),
             'created_at'   => Carbon::now()->subDays(rand(0, 14)),
             'updated_at'   => Carbon::now(),
         ];
