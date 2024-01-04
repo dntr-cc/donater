@@ -13,12 +13,12 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 
 class LoginService
 {
-    public const LOGIN_START = 'login:start:key';
-    public const LOGIN_END = 'login:end:key';
+    public const string LOGIN_START = 'login:start:key';
+    public const string LOGIN_END = 'login:end:key';
 
     public function getNewLoginHash(): string
     {
-        $uid = uniqid('', true);
+        $uid = app(UserCodeService::class)->createLoginCode();
         Cache::set(strtr(self::LOGIN_START, ['key' => $uid]), $uid, 60);
 
         return $uid;

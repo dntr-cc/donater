@@ -65,6 +65,7 @@ Route::get('/analytics', static function () {
 })->name('analytics');
 Route::get('/about', static fn() => redirect(\route('welcome'), Response::HTTP_FOUND)->header('Cache-Control', 'no-store, no-cache, must-revalidate'))->name('about');
 Route::get('/roadmap', static fn() => view('roadmap'))->name('roadmap');
+Route::get('/faq', static fn() => view('faq'))->name('faq');
 Route::get('/my', [App\Http\Controllers\HomeController::class, 'index'])->name('my');
 Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm']);
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');

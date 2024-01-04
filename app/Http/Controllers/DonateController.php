@@ -41,13 +41,13 @@ class DonateController extends Controller
                 ->title(
                     strtr(
                         'Новий донат в :fundraising від :user з кодом :code',
-                        [':user' => $user->getUsernameWithFullName(), ':fundraising' => $donate->fundraising->getName(), ':code' => $donate->getUniqHash()]
+                        [':user' => $user->getUsernameWithFullName(), ':fundraising' => $donate->fundraising->getName(), ':code' => $donate->getHash()]
                     )
                 )
                 ->description(
                     strtr(
                         'Новий донат в :fundraising від :user з кодом :code',
-                        [':user' => $user->getUsernameWithFullName(), ':fundraising' => $donate->fundraising->getName(), ':code' => $donate->getUniqHash()]
+                        [':user' => $user->getUsernameWithFullName(), ':fundraising' => $donate->fundraising->getName(), ':code' => $donate->getHash()]
                     )
                 )
                 ->url($user->getUserLink())

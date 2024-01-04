@@ -35,7 +35,7 @@ class GoogleServiceSheets
         $donatesItems = Donate::query()->where('fundraising_id', '=', $fundraisingId)->get();
         $donates      = [];
         foreach ($donatesItems as $donate) {
-            $donates[$donate->getUniqHash()] = $donate;
+            $donates[$donate->getHash()] = $donate;
         }
 
         array_walk($values, static function (?array $range = null) use ($donates, $collection) {

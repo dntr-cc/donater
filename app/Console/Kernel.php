@@ -20,8 +20,7 @@ class Kernel extends ConsoleKernel
             /** @uses CacheFundraisingCommand::class */
             $schedule->command('fundraising:cache ' . $item->getId())->everyMinute();
         }
-         $schedule->command('validate:donates')->everyMinute();
-         $schedule->command('fill:amount')->everyMinute();
+//         $schedule->command('validate:donates')->everyMinute();
     }
 
     /**

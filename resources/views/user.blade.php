@@ -61,6 +61,15 @@
                                             <i class="bi bi-copy"></i></button>
                                     </div>
                                 </div>
+                                <div class="d-flex justify-content-center mb-2">
+                                    <div class="form-floating input-group">
+                                        <input type="text" class="form-control" id="userCode"
+                                               value="{{ $user->getUserCode() }}" disabled>
+                                        <label for="userCode">Код донатера (регістр букв обов'язковий!)</label>
+                                        <button id="copyCode" class="btn btn-outline-secondary" onclick="return false;">
+                                            <i class="bi bi-copy"></i></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card mb-4 mb-lg-0">
@@ -133,13 +142,6 @@
                                             <div class="me-auto mt-auto">
                                                 <h4>Благодійні внески</h4>
                                             </div>
-                                        </div>
-                                        <div class="col-md-5">
-                                            @if(auth()?->user()?->fundraisings?->count())
-                                                <a href="{{ route('donate', ['fixCode' => 1]) }}" class="btn ">
-                                                    <nobr>ДОДАТИ ЗАГУБЛЕНИЙ КОД</nobr>
-                                                </a>
-                                            @endif
                                         </div>
                                         <div class="col-md-12">
                                             @include('layouts.donates', compact('donates'))
@@ -269,12 +271,19 @@
         @endauth
         <script type="module">
             let copyLink = $('#copyLink');
-            copyLink.on('click', function (e) {
-                e.preventDefault();
+            copyLink.on('click', event => {
+                event.preventDefault();
                 copyContent($('#userLink').val());
                 return false;
             });
             toast('Посилання скопійовано', copyLink);
+            let copyCode = $('#copyCode');
+            copyCode.on('click', event => {
+                event.preventDefault();
+                copyContent($('#userCode').val());
+                return false;
+            });
+            toast('Код скопійовано', copyCode);
 
             @auth
             $('#linkIcon').click(() => {

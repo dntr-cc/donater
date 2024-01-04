@@ -17,8 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property int $fundraising_id
  * @property Fundraising $fundraising
  * @property float $amount
- * @property string $uniq_hash
- * @property Carbon $validated_at
+ * @property string $hash
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
@@ -36,12 +35,15 @@ class Donate extends Model
     protected $fillable = [
         'user_id',
         'fundraising_id',
-        'uniq_hash',
-        'validated_at',
+        'hash',
+        'amount',
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [
-        'validated_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**
@@ -87,30 +89,36 @@ class Donate extends Model
         return $this;
     }
 
-    public function getUniqHash(): string
+    public function getHash(): string
     {
-        return $this->uniq_hash;
+        return $this->hash;
     }
 
-    public function setUniqHash(string $uniq_hash): self
+    public function setHash(string $hash): self
     {
-        $this->uniq_hash = $uniq_hash;
+        $this->hash = $hash;
 
         return $this;
     }
 
-    public function getValidatedAt(): ?Carbon
+    /**
+     * @param Carbon|null $value
+     * @return $this
+     */
+    public function setCreatedAt($value): self
     {
-        return $this->validated_at;
+        $this->created_at = $value;
+
+        return $this;
     }
 
     /**
-     * @param Carbon|null $validatedAt
+     * @param Carbon|null $value
      * @return $this
      */
-    public function setValidatedAt(Carbon $validatedAt = null): self
+    public function setUpdatedAt($value): self
     {
-        $this->validated_at = $validatedAt;
+        $this->updated_at = $value;
 
         return $this;
     }
@@ -140,10 +148,6 @@ class Donate extends Model
         return $this->updated_at;
     }
 
-    public function isValidated(): bool
-    {
-        return (bool)$this->getValidatedAt();
-    }
 
     /**
      * Create a new Eloquent Collection instance.

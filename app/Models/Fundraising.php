@@ -87,8 +87,7 @@ class Fundraising extends Model
     public function donatesWithAmount(): HasMany
     {
         return $this->hasMany(Donate::class, 'fundraising_id', 'id')
-            ->where('amount', '>', 0)
-            ->whereNotNull('validated_at');
+            ->where('amount', '>', 0);
     }
 
     /**
@@ -96,8 +95,7 @@ class Fundraising extends Model
      */
     public function donatesWithoutValidation(): HasMany
     {
-        return $this->hasMany(Donate::class, 'fundraising_id', 'id')
-            ->whereNull('validated_at');
+        return $this->hasMany(Donate::class, 'fundraising_id', 'id');
     }
 
     /**

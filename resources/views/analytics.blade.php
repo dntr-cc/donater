@@ -1,6 +1,6 @@
 @extends('layouts.base')
-@section('page_title', 'donater.com.ua - Інтернет спільнота реальних людей, які донатять на Сили Оборони України.')
-@section('page_description', 'donater.com.ua - Інтернет спільнота реальних людей, які донатять на Сили Оборони України.')
+@section('page_title', 'Аналітика по всім зборам на сайті donater.com.ua')
+@section('page_description', 'Аналітика по всім зборам на сайті donater.com.ua. Сума донатів в день, кількість донатів в розрізі сум донатів тощо')
 
 @section('content')
     <div class="container px-4 py-5">

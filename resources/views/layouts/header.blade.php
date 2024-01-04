@@ -15,6 +15,12 @@
 
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                     <li>
+                        <a href="{{ route('faq') }}" class="nav-link text-white">
+                            <i class="bi bi-question-circle-fill d-inline mx-auto mb-1"></i>
+                            Довідка
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('roadmap') }}" class="nav-link text-white">
                             <i class="bi bi-sign-turn-right-fill d-inline mx-auto mb-1"></i>
                             Roadmap

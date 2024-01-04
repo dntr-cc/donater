@@ -52,17 +52,12 @@
                     <div class="card-body">
                         <ol class="mt-3 mb-4">
                             <li class="mt-4">
-                                <span class="flex">
-                                    Натискаєте на кнопку "Задонатити"
-                                    <a href="{{route('donate')}}" class="btn btn-sm ">
-                                        <i class="bi bi-plus-circle-fill"></i>
-                                        Задонатити
-                                    </a>
-                                </span>
+                                Відкриваєте свою сторінку
+                                <a href="https://donater.com.ua/my" target="_blank" class="">donater.com.ua/my</a>
                             </li>
                             <li class="mt-4">
                                 <span class="flex">
-                                    Копіюєте код, натиснувши на кнопку
+                                    Копіюєте код донату, натиснувши на кнопку
                                     <button id="copyCode" class="me-4 btn btn-sm btn-outline-secondary"
                                             onclick="return false;">
                                         <i class="bi bi-copy"></i>
@@ -76,13 +71,7 @@
                                 Відкриваєте банку по посиланню (відкриється в новій вкладці)
                             </li>
                             <li class="mt-4">
-                                В коментар додаєте код, поповнюєте банку
-                            </li>
-                            <li class="mt-4">
-                                <span class="flex">
-                                    Повертаєтесь во вкладку с сайт, натискаете кнопку
-                                    <button id="createDonate" type="button" class="btn btn-sm btn-primary">Зберегти</button>
-                                </span>
+                                В коментар до донату додаєте свій код
                             </li>
                         </ol>
                     </div>
@@ -97,16 +86,7 @@
                         <ol class="mt-3 mb-4">
                             <li class="mt-4">
                                 Очікуєте поки волонтер закине виписку на Гугл Диск. Коли завалідується вам прийде повідомлення в
-                                телеграм бота, а бейдж
-                                <span class="badge text-bg-secondary rounded-pill">
-                                    очікує на валідацію
-                                    <i class="bi bi-clock text-bg-secondary"></i>
-                                </span>
-                                заміниться на
-                                <span class="badge text-bg-success ">
-                                    Завалідовано
-                                    <i class="bi bi-check-circle-fill text-bg-success"></i>
-                                </span>
+                                телеграм бота
                             </li>
                         </ol>
                     </div>

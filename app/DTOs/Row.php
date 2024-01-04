@@ -71,11 +71,9 @@ class Row
 
     public function getDonater(string $comment): ?User
     {
-        $matches1 = $matches2 = [];
-        preg_match('/[a-zA-Z0-9]{13}/', $comment, $matches1);
-        preg_match('/[a-zA-Z0-9]{14}[.][0-9]{8}/', $comment, $matches2);
+        $code = $this->extractCode($comment);
         /** @var Donate $donate */
-        $donate = $this->donates[$matches2[0] ?? $matches1[0] ?? ''] ?? null;
+        $donate = $this->donates[$code] ?? null;
         if ($donate) {
             return User::find($donate->getUserId());
         }
@@ -86,5 +84,20 @@ class Row
     public function isOwnerTransaction(): bool
     {
         return 'Разові поповнення' === $this->getCategory();
+    }
+
+    /**
+     * @param string $comment
+     * @return string
+     */
+    public function extractCode(string $comment): string
+    {
+        $matches1 = $matches2 = $matches3 = [];
+        preg_match('/dntr.cc\/[a-zA-Z0-9]{5}/', $comment, $matches1);
+        preg_match('/[a-zA-Z0-9]{14}[.][0-9]{8}/', $comment, $matches2);
+        preg_match('/[a-zA-Z0-9]{13}/', $comment, $matches3);
+        $matches1 = explode('/', $matches1[0] ?? '');
+
+        return $matches1[1] ?? $matches2[0] ?? $matches3[0] ?? '';
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\UserCodeService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -93,7 +94,7 @@ class User extends Authenticatable
      */
     public function approvedDonates(): HasMany
     {
-        return $this->hasMany(Donate::class, 'user_id', 'id')->whereNotNull('validated_at');
+        return $this->hasMany(Donate::class, 'user_id', 'id');
     }
 
     /**
@@ -290,5 +291,10 @@ class User extends Authenticatable
     public function isSuperAdmin(): bool
     {
         return 1 === $this->getId();
+    }
+
+    public function getUserCode(): string
+    {
+        return app(UserCodeService::class)->getUserDonateCode($this->getId());
     }
 }
