@@ -38,6 +38,17 @@
                     {!! $fundraising->getDescription() !!}
                 </div>
                 <div class="mt-3"></div>
+                @auth
+                    <div class="d-flex justify-content-center mb-2 px-2 py-2">
+                        <div class="form-floating input-group">
+                            <input type="text" class="form-control" id="userCode"
+                                   value="{{ auth()?->user()->getUserCode() }}" disabled>
+                            <label for="userCode">Код донатера (регістр букв обов'язковий!)</label>
+                            <button id="copyCode" class="btn btn-outline-secondary" onclick="return false;">
+                                <i class="bi bi-copy"></i></button>
+                        </div>
+                    </div>
+                @endauth
                 @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'raffles'))
             </div>
         </div>
@@ -114,4 +125,15 @@
             </div>
         </div>
     </div>
+        @auth
+            <script type="module">
+                let copyCode = $('#copyCode');
+                copyCode.on('click', event => {
+                    event.preventDefault();
+                    copyContent($('#userCode').val());
+                    return false;
+                });
+                toast('Код скопійовано', copyCode);
+            </script>
+        @endauth
 @endsection
