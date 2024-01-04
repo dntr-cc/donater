@@ -6,6 +6,7 @@ use App\Models\Fundraising;
 use App\Services\ChartService;
 use App\Services\GoogleServiceSheets;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Telegram\Bot\Laravel\Facades\Telegram;
@@ -45,16 +46,22 @@ Route::get('/deploy', static function () {
 
 Route::get('/', static fn() => view('welcome'))->name('welcome');
 Route::get('/analytics', static function () {
-    $rows = new RowCollection();
-    $service = app(GoogleServiceSheets::class);
-    foreach (Fundraising::all() as $fundraising) {
-        $rows->push(...$service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->all());
+    $rows = $charts = $charts2 = $charts3 = null;
+    try {
+        $rows = new RowCollection();
+        $service = app(GoogleServiceSheets::class);
+        foreach (Fundraising::all() as $fundraising) {
+            $rows->push(...$service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->all());
+        }
+        $chartsService = app(ChartService::class);
+        $charts = $chartsService->getChartPerDay($rows);
+        $charts2 = $chartsService->getChartPerAmount($rows);
+        $charts3 = $chartsService->getChartPerSum($rows);
+    } catch (Throwable $throwable) {
+        Log::critical($throwable->getMessage(), ['trace' => $throwable->getTraceAsString()]);
     }
-    $chartsService = app(ChartService::class);
-    $charts = $chartsService->getChartPerDay($rows);
-    $charts2 = $chartsService->getChartPerSum($rows);
 
-    return view('analytics', compact('charts', 'charts2'));
+    return view('analytics', compact('rows', 'charts', 'charts2', 'charts3'));
 })->name('analytics');
 Route::get('/about', static fn() => redirect(\route('welcome'), Response::HTTP_FOUND)->header('Cache-Control', 'no-store, no-cache, must-revalidate'))->name('about');
 Route::get('/roadmap', static fn() => view('roadmap'))->name('roadmap');

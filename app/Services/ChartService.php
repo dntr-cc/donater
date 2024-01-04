@@ -7,6 +7,18 @@ use IcehouseVentures\LaravelChartjs\Builder;
 
 class ChartService
 {
+    const array COLOR = [
+        '#4dc9f6',
+        '#f67019',
+        '#f53794',
+        '#537bc4',
+        '#acc236',
+        '#166a8f',
+        '#00a950',
+        '#58595b',
+        '#8549ba',
+    ];
+
     public function chart(): Builder
     {
         return app()->chartjs;
@@ -22,6 +34,7 @@ class ChartService
 
         return $this->chart()->name('linePerDay')
             ->type('line')
+            ->size(['width' => 400, 'height' => 200])
             ->labels(array_keys($perDay))
             ->datasets([
                 [
@@ -48,20 +61,9 @@ class ChartService
      * @param RowCollection $rows
      * @return Builder
      */
-    public function getChartPerSum(RowCollection $rows): Builder
+    public function getChartPerAmount(RowCollection $rows): Builder
     {
-        $perSum = $rows->perSum();
-        $colors = [
-            '#4dc9f6',
-            '#f67019',
-            '#f53794',
-            '#537bc4',
-            '#acc236',
-            '#166a8f',
-            '#00a950',
-            '#58595b',
-            '#8549ba',
-        ];
+        $perSum = $rows->perAmount();
 
         return $this->chart()->name('piePerAmount')
             ->type('pie')
@@ -69,8 +71,8 @@ class ChartService
             ->labels(array_keys($perSum))
             ->datasets([
                 [
-                    'backgroundColor'      => array_slice($colors, 0, count($perSum)),
-                    'hoverBackgroundColor' => array_slice($colors, 0, count($perSum)),
+                    'backgroundColor'      => array_slice(self::COLOR, 0, count($perSum)),
+                    'hoverBackgroundColor' => array_slice(self::COLOR, 0, count($perSum)),
                     'data'                 => array_values($perSum),
                 ],
             ])
@@ -79,7 +81,42 @@ class ChartService
                     responsive: true,
                     plugins: {
                       legend: {
-                        position: 'top',
+                        position: 'bottom',
+                      },
+                      title: {
+                        display: true,
+                        text: 'Донати по сумі'
+                      }
+                    }
+                  }"
+            );
+    }
+
+    /**
+     * @param RowCollection $rows
+     * @return Builder
+     */
+    public function getChartPerSum(RowCollection $rows): Builder
+    {
+        $perSum = $rows->perSum();
+
+        return $this->chart()->name('piePerSum')
+            ->type('pie')
+            ->size(['width' => 400, 'height' => 200])
+            ->labels(array_keys($perSum))
+            ->datasets([
+                [
+                    'backgroundColor'      => array_slice(self::COLOR, 0, count($perSum)),
+                    'hoverBackgroundColor' => array_slice(self::COLOR, 0, count($perSum)),
+                    'data'                 => array_values($perSum),
+                ],
+            ])
+            ->optionsRaw(
+                " {
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        position: 'bottom',
                       },
                       title: {
                         display: true,

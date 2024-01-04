@@ -78,18 +78,18 @@ class FundraisingController extends Controller
     public function show(Fundraising $fundraising)
     {
         $this->authorize('view', $fundraising);
-        $rows = $charts = $charts2 = null;
-        $data = '{}';
+        $rows = $charts = $charts2 = $charts3 = null;
         try {
             $rows = app(GoogleServiceSheets::class)->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
             $chartsService = app(ChartService::class);
             $charts = $chartsService->getChartPerDay($rows);
-            $charts2 = $chartsService->getChartPerSum($rows);
+            $charts2 = $chartsService->getChartPerAmount($rows);
+            $charts3 = $chartsService->getChartPerSum($rows);
         } catch (Throwable $throwable) {
             Log::critical($throwable->getMessage(), ['trace' => $throwable->getTraceAsString()]);
         }
 
-        return view('fundraising.show', compact('fundraising', 'rows', 'charts', 'charts2'));
+        return view('fundraising.show', compact('fundraising', 'rows', 'charts', 'charts2', 'charts3'));
     }
 
     public function start(Fundraising $fundraising)

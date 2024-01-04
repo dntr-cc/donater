@@ -138,16 +138,7 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="donates-analytics" role="tabpanel" aria-labelledby="donates-tabs-analytics">
-                @if($rows)
-                    <div>
-                        {!! $charts->render() !!}
-                    </div>
-                    <div>
-                        {!! $charts2->render() !!}
-                    </div>
-                @else
-                    <h6>Google Spreadsheet Api повернуло помилку. Повторіть пізніше.</h6>
-                @endif
+                @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3'))
             </div>
         </div>
     </div>

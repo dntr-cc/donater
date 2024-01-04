@@ -86,24 +86,50 @@ class RowCollection extends Collection
 
         return $result;
     }
-    public function perSum(): ?array
+
+    public function perAmount(): ?array
     {
         $result = null;
         foreach ($this->all() as $item) {
             if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
-                $sum = (float)$item->getAmount();
+                $amount = (float)$item->getAmount();
                 $type = match (true) {
-                    $sum === 0.00 => null,
-                    $sum <= 10 => 'донат до 10 грн.',
-                    $sum <= 100 => 'донат до 100 грн.',
-                    $sum <= 500 => 'донат до 500 грн.',
-                    $sum <= 1000 => 'донат до 1000 грн.',
-                    $sum > 1000 => 'донати 1000+ грн.',
+                    $amount === 0.00 => null,
+                    $amount <= 10 => 'донат до 10 грн.',
+                    $amount <= 100 => 'донат до 100 грн.',
+                    $amount <= 500 => 'донат до 500 грн.',
+                    $amount <= 1000 => 'донат до 1000 грн.',
+                    $amount > 1000 => 'донати 1000+ грн.',
                     default => null,
                 };
                 if ($type) {
                     $result[$type] = $result[$type] ?? 0;
                     ++$result[$type];
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public function perSum(): ?array
+    {
+        $result = null;
+        foreach ($this->all() as $item) {
+            if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
+                $amount = (float)$item->getAmount();
+                $type = match (true) {
+                    $amount === 0.00 => null,
+                    $amount <= 10 => 'сума донатів до 10 грн.',
+                    $amount <= 100 => 'сума донатів до 100 грн.',
+                    $amount <= 500 => 'сума донатів до 500 грн.',
+                    $amount <= 1000 => 'сума донатів до 1000 грн.',
+                    $amount > 1000 => 'сума донатів 1000+ грн.',
+                    default => null,
+                };
+                if ($type) {
+                    $result[$type] = $result[$type] ?? 0;
+                    $result[$type] += $amount;
                 }
             }
         }
