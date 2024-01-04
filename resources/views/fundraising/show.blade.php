@@ -55,12 +55,6 @@
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a data-mdb-tab-init class="nav-link" id="icons-tab-3" href="#donates-waiting" role="tab"
-                   aria-controls="donates-tabs-users" aria-selected="false">
-                    <i class="bi bi-lightning-fill"></i> Очікують валідації
-                </a>
-            </li>
-            <li class="nav-item" role="presentation">
                 <a data-mdb-tab-init class="nav-link" id="icons-tab-4" href="#donates-analytics" role="tab"
                    aria-controls="donates-tabs-users" aria-selected="false">
                     <i class="bi bi-pie-chart-fill"></i> Аналітика
@@ -114,28 +108,6 @@
             </div>
             <div class="tab-pane fade" id="donates-tabs-users" role="tabpanel" aria-labelledby="donates-tabs-users">
                 @include('fundraising.donaters', compact('fundraising'))
-            </div>
-            <div class="tab-pane fade" id="donates-waiting" role="tabpanel" aria-labelledby="donates-tabs-waiting">
-                <div class="table-responsive">
-                    <table class="table table-sm table-striped table-bordered">
-                        <thead class="table-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Користувач</th>
-                            <th scope="col">Час створення внеску</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($fundraising->getDonateCollectionWithoutValidation()->all() as $it => $donate)
-                            <tr>
-                                <th scope="row">{{ $it + 1 }}</th>
-                                <td><a href="{{ $donate->donater()->first()->getUserLink() }}"
-                                       class="">{{ $donate->donater()->first()->getUsernameWithFullName() }}</a></td>
-                                <td>{{ $donate->getCreatedAt()->toString() }}</td>
-                            </tr>
-                        @endforeach
-                    </table>
-                </div>
             </div>
             <div class="tab-pane fade" id="donates-analytics" role="tabpanel" aria-labelledby="donates-tabs-analytics">
                 @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3'))

@@ -45,11 +45,6 @@
                                     &nbsp;{{ $user->getApprovedDonateCount() }}&nbsp;
                                 </span>
                                 @endif
-                                @if ($user->getNotValidatedDonatesCount())
-                                    <span title="Очікують валідації" class="badge p-1 bg-secondary">
-                                    &nbsp;{{ $user->getNotValidatedDonatesCount() }}&nbsp;
-                                </span>
-                                @endif
                                 <h4 class="m-3 text-muted">{{ $user->getAtUsername() }}</h4>
                                 <h6 class="m-3 text-muted">Дата реєстрації {{ $user->getCreatedAt() }}</h6>
                                 <div class="d-flex justify-content-center mb-2">

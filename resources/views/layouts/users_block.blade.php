@@ -34,11 +34,6 @@
                                     &nbsp;{{ $user->getApprovedDonateCount() }}&nbsp;
                                 </span>
                                 @endif
-                                @if ($user->getNotValidatedDonatesCount())
-                                    <span title="Очікують валідації" class="badge p-1 bg-secondary">
-                                    &nbsp;{{ $user->getNotValidatedDonatesCount() }}&nbsp;
-                                </span>
-                                @endif
                             </p>
                         </div>
                     </div>
