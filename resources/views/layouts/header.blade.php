@@ -21,6 +21,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('analytics') }}" class="nav-link text-white">
+                            <i class="bi bi-pie-chart-fill d-inline mx-auto mb-1"></i>
+                            Аналітика
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('raffles') }}" class="nav-link text-white">
                             <i class="bi bi-dice-5-fill d-inline mx-auto mb-1"></i>
                             Збори з призами

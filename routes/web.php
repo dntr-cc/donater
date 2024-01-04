@@ -1,7 +1,10 @@
 <?php
 
 use App\Bot\CommandWrapper;
+use App\Collections\RowCollection;
 use App\Models\Fundraising;
+use App\Services\ChartService;
+use App\Services\GoogleServiceSheets;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,18 +43,30 @@ Route::get('/deploy', static function () {
     return response(null, $deployNotAvailable ? Response::HTTP_CONFLICT : Response::HTTP_NO_CONTENT);
 })->middleware(['dev'])->name('dev_deploy');
 
-Route::get('/', fn() => view('welcome'))->name('welcome');
-Route::get('/about', fn() => redirect(\route('welcome'), Response::HTTP_FOUND)->header('Cache-Control', 'no-store, no-cache, must-revalidate'))->name('about');
-Route::get('/roadmap', fn() => view('roadmap'))->name('roadmap');
+Route::get('/', static fn() => view('welcome'))->name('welcome');
+Route::get('/analytics', static function () {
+    $rows = new RowCollection();
+    $service = app(GoogleServiceSheets::class);
+    foreach (Fundraising::all() as $fundraising) {
+        $rows->push(...$service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->all());
+    }
+    $chartsService = app(ChartService::class);
+    $charts = $chartsService->getChartPerDay($rows);
+    $charts2 = $chartsService->getChartPerSum($rows);
+
+    return view('analytics', compact('charts', 'charts2'));
+})->name('analytics');
+Route::get('/about', static fn() => redirect(\route('welcome'), Response::HTTP_FOUND)->header('Cache-Control', 'no-store, no-cache, must-revalidate'))->name('about');
+Route::get('/roadmap', static fn() => view('roadmap'))->name('roadmap');
 Route::get('/my', [App\Http\Controllers\HomeController::class, 'index'])->name('my');
 Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm']);
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-Route::get('/zvit', fn() => redirect(route('fundraising.all'), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/fundraising', fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()->paginate(3)->fragment('fundraising')]))->name('fundraising.all');
+Route::get('/zvit', static fn() => redirect(route('fundraising.all'), Response::HTTP_MOVED_PERMANENTLY));
+Route::get('/fundraising', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()->paginate(3)->fragment('fundraising')]))->name('fundraising.all');
 Route::get('/zvit/{fundraising}', fn(Fundraising $fundraising) => redirect(route('fundraising.show', compact('fundraising')), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/raffles', fn() => view('fundraising.raffles', data: ['fundraisings' => Fundraising::query()->where('is_enabled', '=', true)->whereNotIn('user_id', [1,3])->get()]))->name('raffles');
+Route::get('/raffles', static fn() => view('fundraising.raffles', data: ['fundraisings' => Fundraising::query()->where('is_enabled', '=', true)->whereNotIn('user_id', [1,3])->get()]))->name('raffles');
 Route::post('/fundraising', [App\Http\Controllers\FundraisingController::class, 'store'])->name('fundraising.create');
 Route::post('/fundraising/avatar', [App\Http\Controllers\FundraisingController::class, 'storeAvatar'])->name('fundraising.avatar');
 Route::post('/fundraising/key', [App\Http\Controllers\FundraisingController::class, 'checkKey'])->name('fundraising.key');
