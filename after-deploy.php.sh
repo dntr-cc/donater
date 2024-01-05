@@ -12,6 +12,8 @@ function install_website() {
     done
     date | sed 's/$/: CREATE restart supervisorctl pid file/'
     touch supervisor-restart.pid > /dev/null 2>&1 || touch supervisor-restart.pid >> /var/log/supervisor/laravel-deploy.log
+    date | sed 's/$/: RUN chmod -R 777 short_url/storage/'
+    chmod -R 777 short_url/storage > /dev/null 2>&1 || chmod -R 777 storage >> /var/log/supervisor/laravel-deploy.log
     date | sed 's/$/: RUN chmod -R 777 storage/'
     chmod -R 777 storage > /dev/null 2>&1 || chmod -R 777 storage >> /var/log/supervisor/laravel-deploy.log
     date | sed 's/$/: RUN chmod -R 777 public/'
