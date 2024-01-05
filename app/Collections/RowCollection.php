@@ -55,7 +55,7 @@ class RowCollection extends Collection
 
     public function perDay(): ?array
     {
-        $perDay = $result = null;
+        $perDay = $result = [];
         $sum = 0;
         $daysTimestamp = [];
         foreach ($this->all() as $item) {
@@ -89,7 +89,7 @@ class RowCollection extends Collection
 
     public function perAmount(): ?array
     {
-        $result = null;
+        $result = [];
         foreach ($this->all() as $item) {
             if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
                 $amount = (float)$item->getAmount();
@@ -114,7 +114,7 @@ class RowCollection extends Collection
 
     public function perSum(): ?array
     {
-        $result = null;
+        $result = [];
         foreach ($this->all() as $item) {
             if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
                 $amount = (float)$item->getAmount();
