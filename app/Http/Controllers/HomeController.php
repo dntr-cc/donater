@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Collections\RowCollection;
+use App\Services\ChartService;
+use App\Services\GoogleServiceSheets;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +26,25 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('user', ['user' => auth()->user()]);
+        $rows = $charts = $charts2 = $charts3 = null;
+        $user = auth()->user();
+        if (auth()?->user()?->can('update', $user)) {
+            $rows = new RowCollection();
+            $service = app(GoogleServiceSheets::class);
+            foreach ($user->getFundraisings() as $fundraising) {
+                $rows->push(...$service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->all());
+            }
+            $chartsService = app(ChartService::class);
+            $charts = $chartsService->getChartPerDay($rows);
+            $charts2 = $chartsService->getChartPerAmount($rows);
+            $charts3 = $chartsService->getChartPerSum($rows);
+        }
+        return view('user', [
+            'user' => $user,
+            'rows' => $rows,
+            'charts' => $charts,
+            'charts2' => $charts2,
+            'charts3' => $charts3,
+        ]);
     }
 }
