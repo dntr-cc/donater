@@ -8,8 +8,9 @@ import slug from 'limax/lib/limax';
 
 window.slug = slug;
 
-import {Toast, Button} from 'bootstrap';
+import {Modal, Toast, Button} from 'bootstrap';
 
+window.Modal = Modal;
 window.Toast = Toast;
 window.Button = Button;
 

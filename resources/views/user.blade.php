@@ -164,6 +164,39 @@
                             </div>
                         @endcan
                     </div>
+                    <div class="modal fade" id="welcomeVolunteerModal" tabindex="-1" aria-labelledby="welcomeVolunteerModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="welcomeVolunteerModalLabel">Ласкаво просимо на сторінку донатера {{ '@' . $user->getUsername() }}</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form class="form">
+                                    <div class="modal-body">
+                                        <p>
+                                            donater.com.ua це платформа, яка зроблена для волонтерів допомагати робити збори
+                                            більш прозорими. Благодійники можуть вказувати свій унікальний код донатера, це
+                                            допомогає потім через виписку метчіти донати з користувачами сайту. Таким чином
+                                            це дає волонтерам додаткові можливості, такі як розіграші серед донаторів з різними
+                                            налаштуваннями, аналітика по збору, чи загалом по всім зборам, тощо.
+                                        </p>
+                                        <p>
+                                            Наразі сайт в відкритому бета-тесті, найближчим часом планується реалізувати
+                                            нагадування для донаторів, функціонал розіграшів, можливість донаторів робити
+                                            розіграш на вашому зборі без вашої участі, щоб підпушити ваш збір.
+                                            Приблизний план розвитку є в розділі Roadmap
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-secondary justify-content-evenly" data-bs-dismiss="modal">
+                                            Закрити
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -281,42 +314,11 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="welcomeVolunteerModal" tabindex="-1" aria-labelledby="welcomeVolunteerModalLabel" aria-modal="true" >
-                <div class="modal-dialog modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="welcomeVolunteerModalLabel">Ласкаво просимо на сторінку донатера @{{ $user->getUsername() }}</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form class="form">
-                            <div class="modal-body">
-                                <p>
-                                    donater.com.ua це платформа, яка зроблена для волонтерів допомагати робити збори
-                                    більш прозорими. Благодійники можуть вказувати свій унікальний код донатера, це
-                                    допомогає потім через виписку метчіти донати з користувачами сайту. Таким чином
-                                    це дає волонтерам додаткові можливості, такі як розіграші серед донаторів з різними
-                                    налаштуваннями, аналітика по збору, чи загалом по всім зборам, тощо.
-                                </p>
-                                <p>
-                                    Наразі сайт в відкритому бета-тесті, найближчим часом планується реалізувати
-                                    нагадування для донаторів, функціонал розіграшів, можливість донаторів робити
-                                    розіграш на вашому зборі без вашої участі, щоб підпушити ваш збір.
-                                    Приблизний план розвитку є в розділі Roadmap
-                                </p>
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                                <button type="button" class="btn btn-secondary justify-content-evenly" data-bs-dismiss="modal">
-                                    Закрити
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
         @endauth
         <script type="module">
             @if($dntr)
-            $('#welcomeVolunteerModal').modal('show')
+            let welcome = Modal.getOrCreateInstance(document.getElementById('welcomeVolunteerModal'));
+            welcome.toggle('show');
             @endif
             let copyLink = $('#copyLink');
             copyLink.on('click', event => {
