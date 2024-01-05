@@ -8,6 +8,7 @@ use App\Models\Fundraising;
 use App\Models\User;
 use App\Services\ChartService;
 use App\Services\GoogleServiceSheets;
+use Cache;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -17,8 +18,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         $rows = $charts = $charts2 = $charts3 = null;
-        $dntr = str_contains(url()->previous(), 'dntr.cc');
-
+        $dntr = (bool)Cache::pull('fg:' . sha1(request()->userAgent() . implode(request()->ips())));
         if (auth()?->user()?->can('update', $user)) {
             $rows = new RowCollection();
             $service = app(GoogleServiceSheets::class);

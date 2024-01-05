@@ -20,6 +20,7 @@ Route::get('/{code}', static function (string $code) {
         $user = \App\Models\User::find($item->getUserId());
         if ($user) {
             $str .= '/u/' . $user->getUsername();
+            Cache::set('fg:' . sha1(request()->userAgent() . implode(request()->ips())), true);
         }
     }
     return redirect($str)->header('Cache-Control', 'no-store, no-cache, must-revalidate');
