@@ -19,8 +19,11 @@ Route::get('/{code}', static function (string $code) {
     if ($item) {
         $user = \App\Models\User::find($item->getUserId());
         if ($user) {
-            $str = $user->getUserLink();
+            $str .= '/u/' . $user->getUsername();
         }
     }
     return redirect($str)->header('Cache-Control', 'no-store, no-cache, must-revalidate');
+});
+Route::get('/', static function () {
+    return redirect('https://donater.com.ua')->header('Cache-Control', 'no-store, no-cache, must-revalidate');
 });
