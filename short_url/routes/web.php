@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/{code}', static function (string $code) {
-    $str = 'https://donater.com.ua';
+    $str = 'donater.com.ua';
     $item = \App\Models\UserCode::query()->where('hash', '=', $code)->first();
     if ($item) {
         $user = \App\Models\User::find($item->getUserId());
@@ -25,5 +25,5 @@ Route::get('/{code}', static function (string $code) {
     return redirect($str)->header('Cache-Control', 'no-store, no-cache, must-revalidate');
 });
 Route::get('/', static function () {
-    return redirect('https://donater.com.ua')->header('Cache-Control', 'no-store, no-cache, must-revalidate');
+    return redirect('donater.com.ua')->header('Cache-Control', 'no-store, no-cache, must-revalidate');
 });
