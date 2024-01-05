@@ -17,6 +17,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         $rows = $charts = $charts2 = $charts3 = null;
+        $dntr = str_contains(url()->previous(), 'dntr.cc');
 
         if (auth()?->user()?->can('update', $user)) {
             $rows = new RowCollection();
@@ -29,7 +30,9 @@ class UserController extends Controller
             $charts2 = $chartsService->getChartPerAmount($rows);
             $charts3 = $chartsService->getChartPerSum($rows);
         }
+
         return view('user', [
+            'dntr' => $dntr,
             'user' => $user,
             'rows' => $rows,
             'charts' => $charts,

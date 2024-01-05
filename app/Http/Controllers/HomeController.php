@@ -40,6 +40,7 @@ class HomeController extends Controller
             $charts3 = $chartsService->getChartPerSum($rows);
         }
         return view('user', [
+            'dntr' => null,
             'user' => $user,
             'rows' => $rows,
             'charts' => $charts,
