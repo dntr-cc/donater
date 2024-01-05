@@ -2,29 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Collections\RowCollection;
 use App\Http\Requests\UserRequest;
-use App\Http\Resources\UserResource;
+use App\Models\Fundraising;
 use App\Models\User;
+use App\Services\ChartService;
+use App\Services\GoogleServiceSheets;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Nette\Schema\ValidationException;
-use Storage;
 
 class UserController extends Controller
 {
     public function show(User $user)
     {
+        $rows = $charts = $charts2 = $charts3 = null;
+
+        if (auth()?->user()?->can('update', $user)) {
+            $rows = new RowCollection();
+            $service = app(GoogleServiceSheets::class);
+            foreach ($user->getFundraisings() as $fundraising) {
+                $rows->push(...$service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->all());
+            }
+            $chartsService = app(ChartService::class);
+            $charts = $chartsService->getChartPerDay($rows);
+            $charts2 = $chartsService->getChartPerAmount($rows);
+            $charts3 = $chartsService->getChartPerSum($rows);
+        }
         return view('user', [
             'user' => $user,
+            'rows' => $rows,
+            'charts' => $charts,
+            'charts2' => $charts2,
+            'charts3' => $charts3,
         ]);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return View
-     */
     public function index(): View
     {
         $users = User::paginate(9)->fragment('users');

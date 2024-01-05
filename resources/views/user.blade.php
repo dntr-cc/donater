@@ -145,6 +145,24 @@
                                 </div>
                             </div>
                         </div>
+                        @if (auth()?->user()?->can('update', $user))
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <div class="me-auto mt-auto">
+                                                    <h4>Ваша аналітика по всім зборам (бачите тільки ви)</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 px-2 py-2">
+                                                @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3'))
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endcan
                     </div>
                 </div>
             </div>
