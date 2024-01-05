@@ -63,6 +63,9 @@ class RowCollection extends Collection
                 $date = $item->getDate();
                 $timestamp = strtotime($date);
                 $daysTimestamp[] = $timestamp;
+                if (!$timestamp) {
+                    continue;
+                }
                 $day = date('d/m/Y', $timestamp);
                 $perDay[$day] = $perDay[$day] ?? 0;
                 $perDay[$day] += floatval($item->getAmount());
