@@ -6,7 +6,6 @@ use App\Services\GoogleServiceSheets;
 use Config;
 use Google_Client;
 use Google_Service_Sheets;
-use Illuminate\Foundation\Application;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Str;

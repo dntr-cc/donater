@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+
+use Config;
 use Illuminate\Support\ServiceProvider;
+use Str;
+use URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,8 +21,16 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
     {
-        //
+        URL::forceRootUrl(Config::get('app.url'));
+        if (Str::contains(Config::get('app.url'), 'https://')) {
+            URL::forceScheme('https');
+        }
     }
 }
