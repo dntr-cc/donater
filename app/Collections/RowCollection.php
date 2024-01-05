@@ -62,10 +62,10 @@ class RowCollection extends Collection
             if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
                 $date = $item->getDate();
                 $timestamp = strtotime($date);
-                $daysTimestamp[] = $timestamp;
                 if (!$timestamp) {
                     continue;
                 }
+                $daysTimestamp[] = $timestamp;
                 $day = date('d/m/Y', $timestamp);
                 $perDay[$day] = $perDay[$day] ?? 0;
                 $perDay[$day] += floatval($item->getAmount());
