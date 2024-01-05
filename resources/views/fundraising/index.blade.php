@@ -1,6 +1,7 @@
 @extends('layouts.base')
 @section('page_title', 'Всі збори та фонди - donater.com.ua')
 @section('page_description', 'Вся звітність по Фондам та актуальним зборам коштів - donater.com.ua')
+@php $withJarLink = true; @endphp
 @php $withZvitLink = true; @endphp
 @php $raffles = false; @endphp
 @section('content')
@@ -35,7 +36,7 @@
                         @if(request()->user()?->can('update', $fundraising))
                             @php $raffles = true; @endphp
                         @endif
-                        @include('layouts.links', compact('fundraising', 'withZvitLink', 'raffles'))
+                        @include('layouts.links', compact('fundraising', 'withZvitLink', 'withJarLink', 'raffles'))
                     </div>
                 </div>
             </div>
