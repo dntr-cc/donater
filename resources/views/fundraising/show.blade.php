@@ -75,7 +75,7 @@
         <div class="tab-content" id="icons-content">
             <div class="tab-pane fade show active" id="donates-all" role="tabpanel" aria-labelledby="donates-all">
                 <div class="table-responsive">
-                    @if($rows)
+                    @if(!empty($rows))
                     <table class="table table-sm table-striped table-bordered">
                         <thead class="table-dark">
                         <tr>
