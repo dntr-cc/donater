@@ -145,7 +145,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if (auth()?->user()?->can('update', $user))
+                        @if (auth()?->user()?->can('update', $user) && $user->getFundraisings()?->count())
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="container">
