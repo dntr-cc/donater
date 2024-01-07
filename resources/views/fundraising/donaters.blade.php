@@ -11,7 +11,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($fundraising->getDonateCollectionWithAmount()->getRaffleUserCollection()->all() as $it => $raffleUser)
+        @foreach($fundraising->getDonateCollection()->getRaffleUserCollection()->all() as $it => $raffleUser)
             <tr>
                 <th scope="row">{{ $it + 1 }}</th>
                 <td><a href="{{ $raffleUser->getUser()->getUserLink() }}"

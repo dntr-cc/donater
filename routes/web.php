@@ -84,8 +84,8 @@ Route::get('/fundraising/{fundraising}/edit', [App\Http\Controllers\FundraisingC
 Route::patch('/fundraising/{fundraising}/edit', [App\Http\Controllers\FundraisingController::class, 'update'])->name('fundraising.update');
 Route::get('/fundraising/{fundraising}/start', [App\Http\Controllers\FundraisingController::class, 'start'])->name('fundraising.start');
 Route::get('/fundraising/{fundraising}/stop', [App\Http\Controllers\FundraisingController::class, 'stop'])->name('fundraising.stop');
-Route::get('/fundraising/{fundraising}/raffle', [App\Http\Controllers\FundraisingController::class, 'raffle'])->name('fundraising.raffle');
 Route::get('/fundraising/{fundraising}', [App\Http\Controllers\FundraisingController::class, 'show'])->name('fundraising.show');
+Route::post('/fundraising/{fundraising}/raffles/predict', [App\Http\Controllers\FundraisingController::class, 'rafflesPredict'])->name('fundraising.raffles.predict');
 
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
@@ -96,3 +96,4 @@ Route::get('/donates/rss.xml', [App\Http\Controllers\DonateController::class, 'r
 Route::post('/user/link', [App\Http\Controllers\UserLinkController::class, 'store'])->name('user.link');
 Route::delete('/user/link/{userLink}', [App\Http\Controllers\UserLinkController::class, 'destroy'])->name('user.link.delete');
 Route::patch('/user/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('user.edit');
+Route::patch('/user/{user}/settings', [App\Http\Controllers\UserSettingsController::class, 'update'])->name('user.settings');

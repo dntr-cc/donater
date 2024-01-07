@@ -3,22 +3,15 @@
 @section('page_description', 'Вся звітність по Фондам та актуальним зборам коштів - donater.com.ua')
 @php $withJarLink = true; @endphp
 @php $withZvitLink = true; @endphp
-@php $raffles = false; @endphp
+@php $raffles = true; @endphp
+@php $withOwner = true; @endphp
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom">Всі збори та фонди</h2>
         @foreach($fundraisings->all() as $it => $fundraising)
-            @php $owner = $fundraising->owner()->get()->first(); @endphp
             <div class="container px-4 py-5">
                 <h3 class="pb-2 border-bottom">
-                    @if($fundraising->isEnabled())
-                        <span class="btn btn-info">ЗБІР ТРИВАЄ</span>
-                    @elseif($fundraising->donates->count())
-                        <span class="btn btn-danger">ЗБІР ЗАКРИТО</span>
-                    @else
-                        <span class="btn btn-secondary">СКОРО РОЗПОЧНЕТЬСЯ</span>
-                    @endif
-                    {{ $fundraising->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
+                    @include('layouts.fundraising_status', compact('fundraising', 'withOwner'))
                 </h3>
                 <div class="row">
                     <div class="col-md-4 px-2 py-2">

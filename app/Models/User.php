@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Collections\UserSettingsCollection;
 use App\Services\UserCodeService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,13 +26,14 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Collection|Donate[] $donates
  * @property Collection|Fundraising[] $fundraisings
  * @property Collection|UserLink[] $links
+ * @property UserSettingsCollection|UserSetting[] $settings
  * @property int $approved_donates_count
  */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $with = ['donates', 'fundraisings', 'links'];
+    protected $with = ['donates', 'fundraisings', 'links', 'settings'];
 
     /**
      * The attributes that are mass assignable.
@@ -51,9 +53,8 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        static::addGlobalScope('approved_donates_count', static function (Builder $builder) {
-            $builder->withCount('approvedDonates')
-                ->orderBy('id', 'desc');
+        static::addGlobalScope('donates_count', static function (Builder $builder) {
+            $builder->withCount('donates')->orderBy('id', 'desc');
         });
     }
 
@@ -92,9 +93,9 @@ class User extends Authenticatable
     /**
      * @return HasMany
      */
-    public function approvedDonates(): HasMany
+    public function settings(): HasMany
     {
-        return $this->hasMany(Donate::class, 'user_id', 'id');
+        return $this->hasMany(UserSetting::class, 'user_id', 'id');
     }
 
     /**
@@ -262,7 +263,7 @@ class User extends Authenticatable
 
     public function getNotValidatedDonatesCount(): int
     {
-        return $this->getDonates()->count() - $this->getApprovedDonateCount();
+        return $this->getDonates()->count() - $this->getDonateCount();
     }
 
     public function getDonates(): Collection|array
@@ -275,9 +276,9 @@ class User extends Authenticatable
         return $this->fundraisings;
     }
 
-    public function getApprovedDonateCount(): int
+    public function getDonateCount(): int
     {
-        return $this->approved_donates_count;
+        return $this->donates_count;
     }
 
     /**
@@ -296,5 +297,14 @@ class User extends Authenticatable
     public function getUserCode(): string
     {
         return app(UserCodeService::class)->getUserDonateCode($this->getId());
+    }
+
+    public function getUserHref(): string
+    {
+        return <<<HTML
+            <a href="{$this->getUserLink()}" class="">
+                {$this->getFullName()} ({$this->getAtUsername()})
+            </a>
+            HTML;
     }
 }

@@ -14,10 +14,13 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class DonateCollection extends Collection
 {
-    public function getRaffleUserCollection(): RaffleUserCollection
+    public function getRaffleUserCollection(array $filterUserIds = []): RaffleUserCollection
     {
         $map = [];
         foreach ($this->all() as $donate) {
+            if (in_array($donate->getUserId(), $filterUserIds)) {
+                continue;
+            }
             $map[$donate->getUserId()][] = $donate;
         }
         $result = new RaffleUserCollection();

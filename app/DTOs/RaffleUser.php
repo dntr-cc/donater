@@ -6,8 +6,9 @@ namespace App\DTOs;
 
 use App\Collections\DonateCollection;
 use App\Models\User;
+use Illuminate\Contracts\Support\Arrayable;
 
-class RaffleUser
+class RaffleUser implements Arrayable
 {
     public function __construct(protected User $user, protected DonateCollection $donateCollection)
     {
@@ -23,4 +24,10 @@ class RaffleUser
         return $this->donateCollection;
     }
 
+    #[\Override] public function toArray()
+    {
+        return [
+            'user' => $this->getUser()->getUserHref(),
+        ];
+    }
 }

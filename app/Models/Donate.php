@@ -148,7 +148,6 @@ class Donate extends Model
         return $this->updated_at;
     }
 
-
     /**
      * Create a new Eloquent Collection instance.
      *
@@ -158,5 +157,10 @@ class Donate extends Model
     public function newCollection(array $models = []): Collection
     {
         return new DonateCollection($models);
+    }
+
+    public function withDonater(): Donate
+    {
+        return self::with('donater')->where('id', '=', $this->getId())->first();
     }
 }

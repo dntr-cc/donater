@@ -31,12 +31,6 @@
         <i class="bi bi-pencil-fill"></i>
         Редагування
     </a>
-    {{--    @if($raffles)--}}
-    {{--        <a href="{{route('fundraising.raffle', ['fundraising' => $fundraising->getKey()])}}" class="btn  m-1 {{ $additionalClasses }}">--}}
-    {{--            <i class="bi bi-dice-3-fill"></i>--}}
-    {{--            Розіграш--}}
-    {{--        </a>--}}
-    {{--    @endif--}}
     @if($fundraising->isEnabled())
         <a href="{{route('fundraising.stop', ['fundraising' => $fundraising->getKey()])}}"
            class="btn  m-1 {{ $additionalClasses }}">

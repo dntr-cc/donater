@@ -5,7 +5,7 @@
     @if(0 === $it || 0 === $it % 3)
         <div class="col-lg-12">
             <div class="row">
-    @endif
+                @endif
                 @php ++$it @endphp
                 <div class="col-md-4">
                     <div class="card mb-4">
@@ -29,16 +29,16 @@
                                     &nbsp;{{ $user->fundraisings->count() }}&nbsp;
                                 </span>
                                 @endif
-                                @if ($user->getApprovedDonateCount())
+                                @if ($user->getDonateCount())
                                     <span title="Завалідовані донати" class="badge p-1 bg-success">
-                                    &nbsp;{{ $user->getApprovedDonateCount() }}&nbsp;
+                                    &nbsp;{{ $user->getDonateCount() }}&nbsp;
                                 </span>
                                 @endif
                             </p>
                         </div>
                     </div>
                 </div>
-    @if($it && 0 === $it % 3)
+                @if($it && 0 === $it % 3)
             </div>
         </div>
     @endif

@@ -8,21 +8,14 @@
 @php /* @var \App\Collections\RowCollection $rows */ @endphp
 @php $withJarLink = true; @endphp
 @php $withPageLink = true; @endphp
-@php $raffles = true; @endphp
+@php $withOwner = true; @endphp
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
 @php $owner = $fundraising->owner()->get()->first(); @endphp
 @section('content')
     <div class="container px-4 py-5">
-        <h2 class="pb-2 border-bottom"><a href="{{ route('fundraising.all') }}" class=""><i class="bi bi-arrow-left"></i></a>
-            @if($fundraising->isEnabled())
-                <span class="btn btn-info">ЗБІР ТРИВАЄ</span>
-            @elseif($fundraising->donates->count())
-                <span class="btn btn-danger">ЗБІР ЗАКРИТО</span>
-            @else
-                <span class="btn btn-secondary">СКОРО РОЗПОЧНЕТЬСЯ</span>
-            @endif
-            Звітність {{ $fundraising->getName() }}. Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
+        <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>
+            @include('layouts.fundraising_status', compact('fundraising', 'withOwner'))
         </h2>
         <div class="row">
             <div class="col-md-4 px-2 py-2">
@@ -49,7 +42,7 @@
                         </div>
                     </div>
                 @endauth
-                @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'raffles'))
+                @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink'))
             </div>
         </div>
         <ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">
@@ -67,10 +60,18 @@
             </li>
             <li class="nav-item" role="presentation">
                 <a data-mdb-tab-init class="nav-link" id="icons-tab-4" href="#donates-analytics" role="tab"
-                   aria-controls="donates-tabs-users" aria-selected="false">
+                   aria-controls="donates-tabs-analytics" aria-selected="false">
                     <i class="bi bi-pie-chart-fill"></i> Аналітика
                 </a>
             </li>
+            @if(request()->user()?->can('update', $fundraising))
+{{--                <li class="nav-item" role="presentation">--}}
+{{--                    <a data-mdb-tab-init class="nav-link" id="icons-tab-4" href="#donates-raffle" role="tab"--}}
+{{--                       aria-controls="donates-tabs-raffle" aria-selected="false">--}}
+{{--                        <i class="bi bi-dice-3-fill"></i> Провести розіграш--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+            @endif
         </ul>
         <div class="tab-content" id="icons-content">
             <div class="tab-pane fade show active" id="donates-all" role="tabpanel" aria-labelledby="donates-all">
@@ -97,9 +98,7 @@
                                 <td>{{ $row->getDate() }}</td>
                                 <td>
                                     @if($donater)
-                                        <a href="{{$donater->getUserLink()}}" class="">
-                                            Від: {{$donater->getFullName() }} ({{ $donater->getAtUsername() }})
-                                        </a>
+                                        Від: {!! $donater->getUserHref()  !!}
                                     @elseif($row->isOwnerTransaction())
                                         Від: Власник банки
                                     @else
@@ -123,6 +122,11 @@
             <div class="tab-pane fade" id="donates-analytics" role="tabpanel" aria-labelledby="donates-tabs-analytics">
                 @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3'))
             </div>
+            @if(request()->user()?->can('update', $fundraising))
+                <div class="tab-pane fade" id="donates-raffle" role="tabpanel" aria-labelledby="donates-tabs-raffle">
+                    @include('layouts.raffle', compact('fundraising'))
+                </div>
+            @endif
         </div>
     </div>
         @auth

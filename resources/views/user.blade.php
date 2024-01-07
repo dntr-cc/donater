@@ -40,9 +40,9 @@
                                     &nbsp;{{ $user->fundraisings->count() }}&nbsp;
                                 </span>
                                 @endif
-                                @if ($user->getApprovedDonateCount())
+                                @if ($user->getDonateCount())
                                     <span title="Завалідовані донати" class="badge p-1 bg-success">
-                                    &nbsp;{{ $user->getApprovedDonateCount() }}&nbsp;
+                                    &nbsp;{{ $user->getDonateCount() }}&nbsp;
                                 </span>
                                 @endif
                                 <h4 class="m-3 text-muted">{{ $user->getAtUsername() }}</h4>
@@ -65,6 +65,14 @@
                                             <i class="bi bi-copy"></i></button>
                                     </div>
                                 </div>
+                                @if (auth()?->user()?->can('update', $user))
+                                    <div class="d-flex justify-content-center mb-2">
+                                        <button class="btn btn-outline-dark" data-bs-toggle="modal"
+                                                data-bs-target="#userEditSettingsModal">
+                                            Налаштування
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="card mb-4 mb-lg-0">
@@ -115,36 +123,34 @@
                                             class="col-sm-12 d-flex justify-content-between align-items-start fundraising"
                                             data-fundraising="{{ $fundraising->getKey() }}">
                                             <div class="fw-bold">
-                                                @if($fundraising->isEnabled())
-                                                    <a href="{{route('fundraising.show', ['fundraising' => $fundraising->getKey()])}}" class="btn btn-xs btn-info">ЗБІР ТРИВАЄ</a>
-                                                @else
-                                                    <a href="{{route('fundraising.show', ['fundraising' => $fundraising->getKey()])}}" class="btn btn-xs btn-danger">ЗБІР ЗАКРИТО</a>
-                                                @endif{{ $fundraising->getName() }}
+                                                @include('layouts.fundraising_status', compact('fundraising', 'additionalClasses'))
                                                 @include('layouts.links', compact('fundraising', 'withZvitLink', 'additionalClasses'))
                                             </div>
                                         </div>
                                     </div>
                                     <hr>
                                 @endforeach
-
                             </div>
                         </div>
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-md-7">
-                                            <div class="me-auto mt-auto">
-                                                <h4>Благодійні внески</h4>
+                        @if(!$donates->isEmpty())
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <div class="me-auto mt-auto">
+                                                    <h4>Донати</h4>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            @include('layouts.donates', compact('donates'))
+                                            <div class="col-md-12">
+                                                @include('layouts.donates', compact('donates'))
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
+                        @endif
                         @if (auth()?->user()?->can('update', $user) && $user->getFundraisings()?->count())
                             <div class="card mb-4">
                                 <div class="card-body">
@@ -164,32 +170,41 @@
                             </div>
                         @endcan
                     </div>
-                    <div class="modal fade" id="welcomeVolunteerModal" tabindex="-1" aria-labelledby="welcomeVolunteerModalLabel"
+                    <div class="modal fade" id="welcomeVolunteerModal" tabindex="-1"
+                         aria-labelledby="welcomeVolunteerModalLabel"
                          aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="welcomeVolunteerModalLabel">Ласкаво просимо на сторінку донатера {{ '@' . $user->getUsername() }}</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h1 class="modal-title fs-5" id="welcomeVolunteerModalLabel">Ласкаво просимо на
+                                        сторінку донатера {{ '@' . $user->getUsername() }}</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
                                 <form class="form">
                                     <div class="modal-body">
                                         <p>
-                                            donater.com.ua це платформа, яка зроблена для волонтерів допомагати робити збори
-                                            більш прозорими. Благодійники можуть вказувати свій унікальний код донатера, це
-                                            допомогає потім через виписку метчіти донати з користувачами сайту. Таким чином
-                                            це дає волонтерам додаткові можливості, такі як розіграші серед донаторів з різними
+                                            donater.com.ua це платформа, яка зроблена для волонтерів допомагати робити
+                                            збори
+                                            більш прозорими. Благодійники можуть вказувати свій унікальний код донатера,
+                                            це
+                                            допомогає потім через виписку метчіти донати з користувачами сайту. Таким
+                                            чином
+                                            це дає волонтерам додаткові можливості, такі як розіграші серед донаторів з
+                                            різними
                                             налаштуваннями, аналітика по збору, чи загалом по всім зборам, тощо.
                                         </p>
                                         <p>
                                             Наразі сайт в відкритому бета-тесті, найближчим часом планується реалізувати
-                                            нагадування для донаторів, функціонал розіграшів, можливість донаторів робити
+                                            нагадування для донаторів, функціонал розіграшів, можливість донаторів
+                                            робити
                                             розіграш на вашому зборі без вашої участі, щоб підпушити ваш збір.
                                             Приблизний план розвитку є в розділі Roadmap
                                         </p>
                                     </div>
                                     <div class="modal-footer justify-content-between">
-                                        <button type="button" class="btn btn-secondary justify-content-evenly" data-bs-dismiss="modal">
+                                        <button type="button" class="btn btn-secondary justify-content-evenly"
+                                                data-bs-dismiss="modal">
                                             Закрити
                                         </button>
                                     </div>
@@ -309,6 +324,41 @@
                                     Закрити
                                 </button>
                                 <button id="userEdit" type="submit" class="btn btn-primary">Зберегти</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="userEditSettingsModal" tabindex="-1"
+                 aria-labelledby="userEditSettingsModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userEditSettingsModalLabel">Змінити налаштування</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form class="form">
+                            <div class="modal-body">
+                                @foreach(\App\Models\UserSetting::SETTINGS_MAP as $key => $name)
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" value="" id="{{ $key }}"
+                                           @if($user->settings->hasSetting($key))
+                                                   checked
+                                            @endif
+                                        >
+                                        <label class="form-check-label" for="{{ $key }}">
+                                            {{ $name }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-secondary justify-content-evenly"
+                                        data-bs-dismiss="modal">
+                                    Закрити
+                                </button>
+                                <button id="userEditSettings" type="submit" class="btn btn-primary">Зберегти</button>
                             </div>
                         </form>
                     </div>
@@ -434,6 +484,33 @@
                     },
                     success: function () {
                         location.reload();
+                    },
+                });
+                return false;
+            });
+            $('#userEditSettings').on('click', event => {
+                event.preventDefault();
+                $.ajax({
+                    url: '{{ route('user.settings', compact('user')) }}',
+                    type: "PATCH",
+                    data: {
+                        settings: {
+                            @foreach(\App\Models\UserSetting::SETTINGS_MAP as $key => $name)
+                                {{ $key }}: $('#{{ $key }}').is(':checked') ? 1 : 0,
+                            @endforeach
+                        },
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: () => {
+                        location.reload();
+                    },
+                    error: data => {
+                        let empty = $("<a>");
+                        toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
+                        empty.click();
+                        $('meta[name="csrf-token"]').attr('content', data.csrf);
                     },
                 });
                 return false;

@@ -61,7 +61,7 @@ class Fundraising extends Model
             $builder->withCount('donates');
         });
         static::addGlobalScope('order', static function (Builder $builder) {
-            $builder->withCount('donates')->orderBy('is_enabled', 'desc')->orderBy('donates_count', 'desc');
+            $builder->withCount('donates')->orderBy('is_enabled', 'desc')->orderBy('id', 'desc');
         });
     }
 
@@ -77,23 +77,6 @@ class Fundraising extends Model
      * @return HasMany
      */
     public function donates(): HasMany
-    {
-        return $this->hasMany(Donate::class, 'fundraising_id', 'id');
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function donatesWithAmount(): HasMany
-    {
-        return $this->hasMany(Donate::class, 'fundraising_id', 'id')
-            ->where('amount', '>', 0);
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function donatesWithoutValidation(): HasMany
     {
         return $this->hasMany(Donate::class, 'fundraising_id', 'id');
     }
@@ -222,13 +205,8 @@ class Fundraising extends Model
         return $this->donates;
     }
 
-    public function getDonateCollectionWithAmount(): ?DonateCollection
+    public function getDonateCollection(): ?DonateCollection
     {
-        return self::with('donatesWithAmount')->where('id', '=', $this->getId())->first()->donatesWithAmount;
-    }
-
-    public function getDonateCollectionWithoutValidation(): ?DonateCollection
-    {
-        return self::with('donatesWithoutValidation')->where('id', '=', $this->getId())->first()->donatesWithoutValidation;
+        return self::with('donates')->where('id', '=', $this->getId())->first()->donates;
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Collections\RowCollection;
 use App\Http\Requests\FundraisingRequest;
 use App\Models\Fundraising;
+use App\Models\UserSetting;
 use App\Services\ChartService;
 use App\Services\GoogleServiceSheets;
-use IcehouseVentures\LaravelChartjs\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -131,13 +130,6 @@ class FundraisingController extends Controller
         return $this->getRedirectResponse($fundraising);
     }
 
-    public function raffle(Fundraising $fundraising)
-    {
-        $this->authorize('update', $fundraising);
-
-        return view('fundraising.raffle', compact('fundraising'));
-    }
-
     public function destroy(Fundraising $fundraising)
     {
         $this->authorize('delete', $fundraising);
@@ -145,5 +137,22 @@ class FundraisingController extends Controller
         $fundraising->delete();
 
         return response()->json();
+    }
+
+    public function rafflesPredict(Request $request, Fundraising $fundraising)
+    {
+        $this->authorize('update', $fundraising);
+
+        $filterUserIds = UserSetting::query()
+            ->where('setting', '=', UserSetting::NO_RAFFLE_ENTRY)
+            ->get()
+            ->pluck('user_id')
+            ->toArray();
+        $result = $fundraising->getDonateCollection()->getRaffleUserCollection($filterUserIds);
+
+        return new JsonResponse([
+            'csrf' => $this->getNewCSRFToken(),
+            'data' => $result->toArray(),
+        ]);
     }
 }

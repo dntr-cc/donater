@@ -1,8 +1,9 @@
 @extends('layouts.base')
-@section('page_title', 'Всі благодійні внески - donater.com.ua')
+@section('page_title', 'Всі донати - donater.com.ua')
 @section('page_description', 'Стрічка благодійних внесків від користувачів donater.com.ua')
 @php use App\Models\Donate; @endphp
 @php /* @var Donate $donate */ @endphp
+@php $donatesWithUser = true; @endphp
 @section('content')
     <div class="container">
         <div class="row">
@@ -12,19 +13,11 @@
                         <div class="container m-1 mb-3">
                             <div class="row d-flex justify-content-between">
                                 <div class="col-md-6 mt-1">
-                                    <h4>Всі благодійні внески</h4>
+                                    <h4>Всі донати</h4>
                                 </div>
-                                {{--                                <div class="col-md-6 mt-1">--}}
-                                {{--                                    <div class="form-floating">--}}
-                                {{--                                        <input id="search" type="search" class="form-control mb-2" placeholder="Пошук коду">--}}
-                                {{--                                        <label for="search">Пошук коду</label>--}}
-                                {{--                                        <p class="mt-2 ms-1 lead" id="result">Знайдено: {{ $donates->count() }}</p>--}}
-                                {{--                                    </div>--}}
-                                {{--                                </div>--}}
-                                {{--                                <hr>--}}
                             </div>
                         </div>
-                        @include('layouts.donates', compact('donates'))
+                        @include('layouts.donates', compact('donates', 'donatesWithUser'))
                     </div>
                 </div>
             </div>
@@ -55,28 +48,5 @@
             return false;
         });
         toast('RSS посилання скопійовано', copyRSS);
-        $('#search').on('change input', event => {
-            event.preventDefault();
-            let hash = $('#search').val() || '';
-            let hashes = document.querySelectorAll('.hashes');
-            let result = $('#result');
-            if (hash.length === 0) {
-                hashes.forEach(item => {
-                    $(item).removeClass('hide');
-                });
-                result.text('Знайдено: :count'.replace(':count', hashes.length.toString()));
-                return;
-            }
-            let showed = 0;
-            hashes.forEach(item => {
-                if ($(item).attr('data-hash').includes(hash)) {
-                    $(item).removeClass('hide');
-                    showed++;
-                } else {
-                    $(item).addClass('hide');
-                }
-            });
-            result.text('Знайдено: :count'.replace(':count', showed.toString()));
-        });
     </script>
 @endsection

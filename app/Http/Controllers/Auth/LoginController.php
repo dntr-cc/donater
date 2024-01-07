@@ -23,24 +23,11 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    /**
-     * Show the application's login form.
-     *
-     * @return View
-     */
     public function showLoginForm(): View
     {
         return view('auth.login', ['loginHash' => app(LoginService::class)->getNewLoginHash()]);
     }
 
-    /**
-     * Handle a login request to the application.
-     *
-     * @param Request $request
-     * @return RedirectResponse|Response|JsonResponse
-     *
-     * @throws ValidationException
-     */
     public function login(Request $request)
     {
         if ('http://localhost' === config('app.url')) {
@@ -59,14 +46,6 @@ class LoginController extends Controller
         return new JsonResponse(['url' => session()->get(self::RETURN_AFTER_LOGIN, route('my'))], Response::HTTP_ACCEPTED);
     }
 
-    /**
-     * Validate the user login request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
     protected function validateLogin(Request $request)
     {
         $request->validate([
@@ -77,11 +56,10 @@ class LoginController extends Controller
     public function fakeLogin(): void
     {
         $this->guard()->login(app(LoginService::class)->getOrCreateUser([
-            'id'          => 1,
-            'username'    => 'test',
-            'telegram_id' => 1,
-            'first_name'  => 'first_name',
-            'last_name'   => 'last_name',
+            'id'          => 5609509050,
+            'username'    => 'admin',
+            'first_name'  => 'Серійний донатер',
+            'last_name'   => '',
             'is_premium'  => true,
         ], false));
     }
