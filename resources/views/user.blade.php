@@ -1,6 +1,7 @@
 @php use App\Models\Donate; @endphp
 @php use App\Models\User; @endphp
 @php use App\Models\UserLink; @endphp
+@php use App\Models\UserSetting; @endphp
 @php use App\Models\Fundraising; @endphp
 @php /** @var User $user */ @endphp
 @php /** @var Donate $donate */ @endphp
@@ -43,6 +44,11 @@
                                 @if ($user->getDonateCount())
                                     <span title="Завалідовані донати" class="badge p-1 bg-success">
                                     &nbsp;{{ $user->getDonateCount() }}&nbsp;
+                                </span>
+                                @endif
+                                @if ($user->getPrizesCount())
+                                    <span title="Призи для зборів" class="badge p-1 bg-warning">
+                                    &nbsp;{{ $user->getPrizesCount() }}&nbsp;
                                 </span>
                                 @endif
                                 <h4 class="m-3 text-muted">{{ $user->getAtUsername() }}</h4>
@@ -103,35 +109,66 @@
                         </div>
                     </div>
                     <div class="col-lg-8">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-12 d-flex justify-content-between align-items-start">
-                                        <h4>Збори та Фонди</h4>
-                                        @if (auth()?->user()?->getId() === $user->getId())
-                                            <a href="{{route('fundraising.new')}}" class="btn ">
-                                                <i class="bi bi-plus-circle-fill"></i>
-                                                Створити
-                                            </a>
-                                        @endif
-                                    </div>
-                                </div>
-                                <hr>
-                                @foreach($user->getFundraisings() as $it => $fundraising)
+                        @if($user->getFundraisings()->count() > 0 || !(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_FUNDRAISING)))
+                            <div class="card mb-4">
+                                <div class="card-body">
                                     <div class="row">
-                                        <div
-                                            class="col-sm-12 d-flex justify-content-between align-items-start fundraising"
-                                            data-fundraising="{{ $fundraising->getKey() }}">
-                                            <div class="fw-bold">
-                                                @include('layouts.fundraising_status', compact('fundraising', 'additionalClasses'))
-                                                @include('layouts.links', compact('fundraising', 'withZvitLink', 'additionalClasses'))
-                                            </div>
+                                        <div class="col-sm-12 d-flex justify-content-between align-items-start">
+                                            <h4>Збори та Фонди</h4>
+                                            @if (auth()?->user()?->getId() === $user->getId())
+                                                <a href="{{route('fundraising.new')}}" class="btn ">
+                                                    <i class="bi bi-plus-circle-fill"></i>
+                                                    Створити
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                     <hr>
-                                @endforeach
+                                    @foreach($user->getFundraisings() as $it => $fundraising)
+                                        <div class="row">
+                                            <div
+                                                class="col-sm-12 d-flex justify-content-between align-items-start fundraising"
+                                                data-fundraising="{{ $fundraising->getKey() }}">
+                                                <div class="fw-bold">
+                                                    @include('layouts.fundraising_status', compact('fundraising', 'additionalClasses'))
+                                                    @include('layouts.links', compact('fundraising', 'withZvitLink', 'additionalClasses'))
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
+                        @endif
+                        @if(!(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_PRIZES)))
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-12 d-flex justify-content-between align-items-start">
+                                            <h4>Призи для донаторів</h4>
+                                            @if (auth()?->user()?->getId() === $user->getId())
+                                                <a href="{{route('prize.new')}}" class="btn ">
+                                                    <i class="bi bi-plus-circle-fill"></i>
+                                                    Створити
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    @foreach($user->withPrizes()->prizes as $it => $prize)
+                                        <div class="row">
+                                            <div
+                                                class="col-sm-12 d-flex justify-content-between align-items-start">
+                                                <div class="fw-bold">
+                                                    {{ $prize->getName() }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
                         @if(!$donates->isEmpty())
                             <div class="card mb-4">
                                 <div class="card-body">
@@ -332,7 +369,7 @@
             <div class="modal fade" id="userEditSettingsModal" tabindex="-1"
                  aria-labelledby="userEditSettingsModalLabel"
                  aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userEditSettingsModalLabel">Змінити налаштування</h1>

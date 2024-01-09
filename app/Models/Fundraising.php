@@ -26,6 +26,7 @@ use Illuminate\Support\Collection;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property DonateCollection|null $donates
+ * @property Collection|null $prizes
  */
 class Fundraising extends Model
 {
@@ -79,6 +80,14 @@ class Fundraising extends Model
     public function donates(): HasMany
     {
         return $this->hasMany(Donate::class, 'fundraising_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function prizes(): HasMany
+    {
+        return $this->hasMany(Prize::class, 'fundraising_id', 'id');
     }
 
     /**
@@ -208,5 +217,63 @@ class Fundraising extends Model
     public function getDonateCollection(): ?DonateCollection
     {
         return self::with('donates')->where('id', '=', $this->getId())->first()->donates;
+    }
+
+    /**
+     * @return Collection|Prize[]|null
+     */
+    public function getPrizes(): ?Collection
+    {
+        return self::with('prizes')->where('id', '=', $this->getId())->first()->prizes;
+    }
+
+    /**
+     * @return Collection|Prize[]|null
+     */
+    public function getAvailablePrizes(): ?Collection
+    {
+        $userPrizes = $this->getUserPrizes();
+        $fundraiserPrizes = $this->getFundraiserPrizes();
+        $availablePrizes = $this->getAvailablePrizesForAll();
+
+        return $availablePrizes->merge($userPrizes->merge($fundraiserPrizes->all())->all());
+    }
+
+    private function getUserPrizes(): Collection
+    {
+        return Prize::query()
+            ->whereNull('fundraising_id')
+            ->where('user_id', '=', auth()?->user()?->getId() ?? 0)
+            ->where('available_type', '=', Prize::ONLY_FOR_ME)
+            ->get();
+    }
+
+    private function getFundraiserPrizes(): Collection
+    {
+        return Prize::query()
+            ->whereNull('fundraising_id')
+            ->where('user_id', '=', $this->getUserId())
+            ->where('available_type', '=', Prize::ONLY_FOR_ME)
+            ->get();
+    }
+
+    private function getAvailablePrizesForAll(): Collection
+    {
+        return Prize::query()
+            ->whereNull('fundraising_id')
+            ->where('user_id', '!=', $this->getUserId())
+            ->where('available_type', '=', Prize::FOR_ALL)
+            ->get();
+    }
+
+    public function rafflesPredictCollection(): \App\Collections\RaffleUserCollection
+    {
+        return $this->getDonateCollection()->getRaffleUserCollection(
+            UserSetting::query()
+                ->where('setting', '=', UserSetting::NO_RAFFLE_ENTRY)
+                ->get()
+                ->pluck('user_id')
+                ->toArray()
+        );
     }
 }

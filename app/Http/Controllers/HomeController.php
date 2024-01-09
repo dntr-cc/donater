@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Collections\RowCollection;
 use App\Services\ChartService;
 use App\Services\GoogleServiceSheets;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {

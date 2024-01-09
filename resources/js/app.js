@@ -14,6 +14,10 @@ window.Modal = Modal;
 window.Toast = Toast;
 window.Button = Button;
 
+import { Dropdown, Collapse, initMDB } from 'mdb-ui-kit';
+
+initMDB({ Dropdown, Collapse });
+
 import '../sass/app.scss'
 
 window.copyContent = async function copyContent(text) {
@@ -49,34 +53,3 @@ window.isValidUrl = urlString => {
         return false;
     }
 }
-
-const animation = {
-    x: {
-        type: 'number',
-            easing: 'linear',
-            duration: 1000,
-            from: NaN, // the point is initially skipped
-            delay(ctx) {
-            if (ctx.type !== 'data' || ctx.xStarted) {
-                return 0;
-            }
-            ctx.xStarted = true;
-            return ctx.index * 1000;
-        }
-    },
-    y: {
-        type: 'number',
-            easing: 'linear',
-            duration: 1000,
-            from: (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(1000) : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y,
-            delay(ctx) {
-            if (ctx.type !== 'data' || ctx.yStarted) {
-                return 0;
-            }
-            ctx.yStarted = true;
-            return ctx.index * 1000;
-        }
-    },
-};
-
-window.animation = animation;

@@ -7,6 +7,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\Fundraising;
 use App\Models\User;
 use App\Services\ChartService;
+use App\Services\FileService;
 use App\Services\GoogleServiceSheets;
 use Cache;
 use Illuminate\Http\JsonResponse;
@@ -65,11 +66,7 @@ class UserController extends Controller
     public function updateAvatar(Request $request, User $user)
     {
         $this->authorize('update', $user);
-        $uploadedFiles = $request->file('FILE');
-        $fileName      = $uploadedFiles->getClientOriginalName();
-        $directory = public_path('/images/avatars/' . $user->getUsername());
-        $uploadedFiles->move($directory, $fileName);
-        $avatar = '/images/avatars/' . $user->getUsername() . '/' . $fileName;
+        $avatar = app(FileService::class)->createAvatar($request, '/images/avatars/');
         $user->update(['avatar' => $avatar]);
 
         return new JsonResponse(['url' => route('user', compact('user')), 'csrf' => $this->getNewCSRFToken()]);

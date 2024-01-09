@@ -25,6 +25,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon $updated_at
  * @property Collection|Donate[] $donates
  * @property Collection|Fundraising[] $fundraisings
+ * @property Collection|Prize[] $prizes
  * @property Collection|UserLink[] $links
  * @property UserSettingsCollection|UserSetting[] $settings
  * @property int $approved_donates_count
@@ -33,7 +34,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $with = ['donates', 'fundraisings', 'links', 'settings'];
+    protected $with = ['donates', 'fundraisings', 'links', 'settings', 'prizes'];
 
     /**
      * The attributes that are mass assignable.
@@ -52,10 +53,6 @@ class User extends Authenticatable
     protected static function boot(): void
     {
         parent::boot();
-
-        static::addGlobalScope('donates_count', static function (Builder $builder) {
-            $builder->withCount('donates')->orderBy('id', 'desc');
-        });
     }
 
     /**
@@ -80,6 +77,14 @@ class User extends Authenticatable
     public function fundraisings(): HasMany
     {
         return $this->hasMany(Fundraising::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function prizes(): HasMany
+    {
+        return $this->hasMany(Prize::class, 'user_id', 'id');
     }
 
     /**
@@ -278,7 +283,12 @@ class User extends Authenticatable
 
     public function getDonateCount(): int
     {
-        return $this->donates_count;
+        return $this->donates->count();
+    }
+
+    public function getPrizesCount(): int
+    {
+        return $this->prizes->count();
     }
 
     /**
@@ -306,5 +316,10 @@ class User extends Authenticatable
                 {$this->getFullName()} ({$this->getAtUsername()})
             </a>
             HTML;
+    }
+
+    public function withPrizes(): self
+    {
+        return self::with('prizes')->where('id', '=', $this->getId())->first();
     }
 }

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FundraisingRequest;
 use App\Models\Fundraising;
+use App\Models\Prize;
 use App\Models\UserSetting;
 use App\Services\ChartService;
+use App\Services\FileService;
 use App\Services\GoogleServiceSheets;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -40,12 +42,7 @@ class FundraisingController extends Controller
     {
         $this->authorize('create', Fundraising::class);
 
-        $uploadedFiles = $request->file('FILE');
-        $fileName = $uploadedFiles->getClientOriginalName();
-        $username = $request->user()->getUsername();
-        $directory = public_path('/images/banners/' . $username);
-        $uploadedFiles->move($directory, $fileName);
-        $avatar = '/images/banners/' . $username . '/' . $fileName;
+        $avatar = app(FileService::class)->createAvatar($request, '/images/banners/');
 
         return new JsonResponse(['avatar' => url($avatar), 'csrf' => $this->getNewCSRFToken()]);
     }
@@ -143,16 +140,27 @@ class FundraisingController extends Controller
     {
         $this->authorize('update', $fundraising);
 
-        $filterUserIds = UserSetting::query()
-            ->where('setting', '=', UserSetting::NO_RAFFLE_ENTRY)
-            ->get()
-            ->pluck('user_id')
-            ->toArray();
-        $result = $fundraising->getDonateCollection()->getRaffleUserCollection($filterUserIds);
-
         return new JsonResponse([
             'csrf' => $this->getNewCSRFToken(),
-            'data' => $result->toArray(),
+            'html' => $fundraising->rafflesPredictCollection()->toHtml($request->get('type'), (int)$request->get('price'), (int)$request->get('winners')),
         ]);
+    }
+
+    public function addPrize(Fundraising $fundraising, Prize $prize)
+    {
+        $this->authorize('update', $fundraising);
+
+        $prize->setFundraisingId($fundraising->getId())->save();
+
+        return new JsonResponse(['url' => route('fundraising.show', compact('fundraising'))]);
+    }
+
+    public function delPrize(Fundraising $fundraising, Prize $prize)
+    {
+        $this->authorize('update', $fundraising);
+
+        $prize->setFundraisingId()->save();
+
+        return new JsonResponse(['url' => route('fundraising.show', compact('fundraising'))]);
     }
 }

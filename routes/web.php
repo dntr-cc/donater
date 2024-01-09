@@ -3,6 +3,7 @@
 use App\Bot\CommandWrapper;
 use App\Collections\RowCollection;
 use App\Models\Fundraising;
+use App\Models\Prize;
 use App\Services\ChartService;
 use App\Services\GoogleServiceSheets;
 use Illuminate\Support\Facades\Artisan;
@@ -72,9 +73,11 @@ Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
 Route::get('/zvit', static fn() => redirect(route('fundraising.all'), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/fundraising', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()->paginate(3)->fragment('fundraising')]))->name('fundraising.all');
+Route::get('/fundraising', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()->paginate(5)]))->name('fundraising.all');
 Route::get('/zvit/{fundraising}', fn(Fundraising $fundraising) => redirect(route('fundraising.show', compact('fundraising')), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/raffles', static fn() => view('fundraising.raffles', data: ['fundraisings' => Fundraising::query()->where('is_enabled', '=', true)->whereNotIn('user_id', [1,3])->get()]))->name('raffles');
+Route::get('/fundraising/actual', static fn() => view('fundraising.index', data: ['fundraisings' => Fundraising::query()->where('is_enabled', '=', true)
+    ->where('created_at', '>', new Carbon\Carbon(strtotime('01.12.2023')))->paginate(5)])
+)->name('fundraising.actual');
 Route::post('/fundraising', [App\Http\Controllers\FundraisingController::class, 'store'])->name('fundraising.create');
 Route::post('/fundraising/avatar', [App\Http\Controllers\FundraisingController::class, 'storeAvatar'])->name('fundraising.avatar');
 Route::post('/fundraising/key', [App\Http\Controllers\FundraisingController::class, 'checkKey'])->name('fundraising.key');
@@ -86,6 +89,8 @@ Route::get('/fundraising/{fundraising}/start', [App\Http\Controllers\Fundraising
 Route::get('/fundraising/{fundraising}/stop', [App\Http\Controllers\FundraisingController::class, 'stop'])->name('fundraising.stop');
 Route::get('/fundraising/{fundraising}', [App\Http\Controllers\FundraisingController::class, 'show'])->name('fundraising.show');
 Route::post('/fundraising/{fundraising}/raffles/predict', [App\Http\Controllers\FundraisingController::class, 'rafflesPredict'])->name('fundraising.raffles.predict');
+Route::post('/fundraising/{fundraising}/prize/{prize}', [App\Http\Controllers\FundraisingController::class, 'addPrize']);
+Route::delete('/fundraising/{fundraising}/prize/{prize}', [App\Http\Controllers\FundraisingController::class, 'delPrize']);
 
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
@@ -97,3 +102,9 @@ Route::post('/user/link', [App\Http\Controllers\UserLinkController::class, 'stor
 Route::delete('/user/link/{userLink}', [App\Http\Controllers\UserLinkController::class, 'destroy'])->name('user.link.delete');
 Route::patch('/user/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('user.edit');
 Route::patch('/user/{user}/settings', [App\Http\Controllers\UserSettingsController::class, 'update'])->name('user.settings');
+
+Route::get('/prizes', static fn() => view('prize.index', ['prizes' => Prize::query()->paginate(3)->fragment('prizes')]))->name('prizes');
+Route::post('/prize', [App\Http\Controllers\PrizeController::class, 'store'])->name('prize.create');
+Route::post('/prize/avatar', [App\Http\Controllers\PrizeController::class, 'storeAvatar'])->name('prize.avatar');
+Route::get('/prize/new', [App\Http\Controllers\PrizeController::class, 'create'])->name('prize.new');
+Route::get('/prize/{prize}', [App\Http\Controllers\PrizeController::class, 'show'])->name('prize.show');

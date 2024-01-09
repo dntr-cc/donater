@@ -34,6 +34,11 @@
                                     &nbsp;{{ $user->getDonateCount() }}&nbsp;
                                 </span>
                                 @endif
+                                @if ($user->getPrizesCount())
+                                    <span title="Призи для зборів" class="badge p-1 bg-warning">
+                                    &nbsp;{{ $user->getPrizesCount() }}&nbsp;
+                                </span>
+                                @endif
                             </p>
                         </div>
                     </div>

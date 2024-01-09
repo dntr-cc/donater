@@ -64,14 +64,14 @@
                     <i class="bi bi-pie-chart-fill"></i> Аналітика
                 </a>
             </li>
-            @if(request()->user()?->can('update', $fundraising))
-{{--                <li class="nav-item" role="presentation">--}}
-{{--                    <a data-mdb-tab-init class="nav-link" id="icons-tab-4" href="#donates-raffle" role="tab"--}}
-{{--                       aria-controls="donates-tabs-raffle" aria-selected="false">--}}
-{{--                        <i class="bi bi-dice-3-fill"></i> Провести розіграш--}}
-{{--                    </a>--}}
-{{--                </li>--}}
-            @endif
+            @foreach($fundraising->getPrizes() as $it => $prize)
+                <li class="nav-item" role="presentation">
+                    <a data-mdb-tab-init class="nav-link" id="icons-tab-4" href="#donates-raffle{{ $it }}" role="tab"
+                       aria-controls="donates-tabs-raffle" aria-selected="false">
+                        <i class="bi bi-dice-{{ ($it % 6) + 1 }}-fill"></i> Розіграш #{{ $it + 1 }}
+                    </a>
+                </li>
+            @endforeach
         </ul>
         <div class="tab-content" id="icons-content">
             <div class="tab-pane fade show active" id="donates-all" role="tabpanel" aria-labelledby="donates-all">
@@ -122,11 +122,11 @@
             <div class="tab-pane fade" id="donates-analytics" role="tabpanel" aria-labelledby="donates-tabs-analytics">
                 @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3'))
             </div>
-            @if(request()->user()?->can('update', $fundraising))
-                <div class="tab-pane fade" id="donates-raffle" role="tabpanel" aria-labelledby="donates-tabs-raffle">
-                    @include('layouts.raffle', compact('fundraising'))
+            @foreach($fundraising->getPrizes() as $it => $prize)
+                <div class="tab-pane fade" id="donates-raffle{{ $it }}" role="tabpanel" aria-labelledby="donates-tabs-raffle">
+                    @include('layouts.raffle', compact('fundraising', 'prize'))
                 </div>
-            @endif
+            @endforeach
         </div>
     </div>
         @auth

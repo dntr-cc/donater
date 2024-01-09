@@ -17,13 +17,19 @@ class UserSetting extends Model
     use HasFactory;
 
     public const string NO_RAFFLE_ENTRY = 'no_raffle_entry';
+    public const string USE_PERCENT_INSTEAD_FRACTION = 'use_percent_instead_fraction';
+    public const string DONT_SHOW_CREATE_FUNDRAISING = 'dont_show_create_fundraising';
+    public const string DONT_SHOW_CREATE_PRIZES = 'dont_show_create_prizes';
     protected $fillable = [
         'setting',
         'user_id',
     ];
 
     public const array SETTINGS_MAP = [
-        self::NO_RAFFLE_ENTRY => 'Не брати участь в розіграшах'
+        self::NO_RAFFLE_ENTRY              => 'Не брати участь в розіграшах',
+        self::USE_PERCENT_INSTEAD_FRACTION => 'Показувати відсотки замість дробі в шансах розіграшів',
+        self::DONT_SHOW_CREATE_FUNDRAISING => 'Не показувати розділ "Збори та Фонди" (не планую створювати збори)',
+        self::DONT_SHOW_CREATE_PRIZES      => 'Не показувати розділ "Призи для донаторів" (не планую створювати призи)',
     ];
 
     public function getId(): int

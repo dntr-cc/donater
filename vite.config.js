@@ -18,6 +18,7 @@ export default defineConfig({
             'tinymce/plugins/link': path.resolve(__dirname, 'node_modules/tinymce/plugins/link/plugin.js'),
             'tinymce/plugins/table': path.resolve(__dirname, 'node_modules/tinymce/plugins/table/plugin.js'),
             'tinymce/plugins/media': path.resolve(__dirname, 'node_modules/tinymce/plugins/media/plugin.js'),
+            'mdb-ui-kit': path.resolve(__dirname, 'node_modules/mdb-ui-kit'),
         }
     },
     server: {
