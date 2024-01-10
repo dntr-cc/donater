@@ -19,7 +19,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         $rows = $charts = $charts2 = $charts3 = null;
-        $dntr = (bool)Cache::pull('fg:' . sha1(request()->userAgent() . implode(request()->ips())));
+        $dntr = (bool)Cache::has('fg:' . sha1(request()->userAgent() . implode(request()->ips())));
         if (auth()?->user()?->can('update', $user)) {
             $rows = new RowCollection();
             $service = app(GoogleServiceSheets::class);

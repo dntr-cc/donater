@@ -20,7 +20,7 @@ Route::get('/{code}', static function (string $code) {
         $user = \App\Models\User::find($item->getUserId());
         if ($user) {
             $str .= '/u/' . $user->getUsername() . '#welcomeVolunteerModal';
-            Cache::set('fg:' . sha1(request()->userAgent() . implode(request()->ips())), true);
+            Cache::set('fg:' . sha1(request()->userAgent() . implode(request()->ips())), $user->getId());
         }
     }
     return redirect($str)->header('Cache-Control', 'no-store, no-cache, must-revalidate');

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Collections\UserSettingsCollection;
 use App\Services\UserCodeService;
 use Carbon\Carbon;
+use Database\Factories\ReferralFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -105,6 +106,14 @@ class User extends Authenticatable
     public function settings(): HasMany
     {
         return $this->hasMany(UserSetting::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function refs(): HasMany
+    {
+        return $this->hasMany(Referral::class, 'user_id', 'id');
     }
 
     /**

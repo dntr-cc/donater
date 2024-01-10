@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Referral;
 use App\Models\User;
 use Chypriote\UniqueNames\Generator;
 use Illuminate\Http\File;
@@ -67,6 +68,12 @@ class LoginService
                 'is_premium'  => $data['is_premium'] ?? false,
                 'avatar'      => $avatar,
             ]);
+            if ($fatherId = Cache::pull('fg:' . sha1(request()->userAgent() . implode(request()->ips())))) {
+                Referral::create([
+                    'user_id' => $fatherId,
+                    'referral_id' => $user->getId(),
+                ]);
+            }
         }
 
         $user->setIsPremium($data['is_premium'] ?? false)->save();
