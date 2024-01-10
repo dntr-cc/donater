@@ -20,6 +20,7 @@ class UserSetting extends Model
     public const string USE_PERCENT_INSTEAD_FRACTION = 'use_percent_instead_fraction';
     public const string DONT_SHOW_CREATE_FUNDRAISING = 'dont_show_create_fundraising';
     public const string DONT_SHOW_CREATE_PRIZES = 'dont_show_create_prizes';
+    public const string DONT_SHOW_REFERRALS = 'dont_show_referrals';
     protected $fillable = [
         'setting',
         'user_id',
@@ -30,6 +31,7 @@ class UserSetting extends Model
         self::USE_PERCENT_INSTEAD_FRACTION => 'Показувати відсотки замість дробі в шансах розіграшів',
         self::DONT_SHOW_CREATE_FUNDRAISING => 'Не показувати розділ "Збори та Фонди" (не планую створювати збори)',
         self::DONT_SHOW_CREATE_PRIZES      => 'Не показувати розділ "Призи для донаторів" (не планую створювати призи)',
+        self::DONT_SHOW_REFERRALS          => 'Не показувати розділ "Запрошені користувачі"',
     ];
 
     public function getId(): int

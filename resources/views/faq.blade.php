@@ -11,14 +11,30 @@
             <div class="col-md-12 px-2 py-2 bg-body-secondary">
                 <div class="accordion accordion-flush" id="accordionFAQ">
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq-headingOne">
+                        <h2 class="accordion-header" id="faq-headingHowToInviteSomeone">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#faq-collapseOne" aria-expanded="false"
-                                    aria-controls="faq-collapseOne">
+                                    data-bs-target="#faq-collapseHowToInviteSomeone" aria-expanded="false"
+                                    aria-controls="faq-collapseHowToInviteSomeone">
+                                Як запросити користувача?
+                            </button>
+                        </h2>
+                        <div id="faq-collapseHowToInviteSomeone" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToInviteSomeone"
+                             data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                Увійти на свою сторінку та скопіюйте код донатера. Попросить друга чи подругу відкрити
+                                цей код в браузері (не вбудованому браузері месенджера як це буває) та зареєструватися.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq-headingHowToEditProfile">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq-collapseHowToEditProfile" aria-expanded="false"
+                                    aria-controls="faq-collapseHowToEditProfile">
                                 Як відредагувати свій профіль?
                             </button>
                         </h2>
-                        <div id="faq-collapseOne" class="accordion-collapse collapse" aria-labelledby="faq-headingOne"
+                        <div id="faq-collapseHowToEditProfile" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToEditProfile"
                              data-bs-parent="#accordionFAQ">
                             <div class="accordion-body">
                                 Увійти на свою сторінку та натиснути на своє фото. Відкриється поп-ап, де ви можете
@@ -27,14 +43,14 @@
                         </div>
                     </div>
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq-headingTwo">
+                        <h2 class="accordion-header" id="faq-headingIconsMeaning">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#faq-collapseTwo" aria-expanded="false"
-                                    aria-controls="faq-collapseTwo">
+                                    data-bs-target="#faq-collapseIconsMeaning" aria-expanded="false"
+                                    aria-controls="faq-collapseIconsMeaning">
                                 Що значать іконки біля імені користувачів?
                             </button>
                         </h2>
-                        <div id="faq-collapseTwo" class="accordion-collapse collapse" aria-labelledby="faq-headingTwo"
+                        <div id="faq-collapseIconsMeaning" class="accordion-collapse collapse" aria-labelledby="faq-headingIconsMeaning"
                              data-bs-parent="#accordionFAQ">
                             <div class="accordion-body">
                                 <ul>
@@ -62,14 +78,14 @@
                         </div>
                     </div>
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq-headingEnd">
+                        <h2 class="accordion-header" id="faq-headingHowToAsk">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#faq-collapseEnd" aria-expanded="false"
-                                    aria-controls="faq-collapseEnd">
+                                    data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
+                                    aria-controls="faq-collapseHowToAsk">
                                 Як поставити питання?
                             </button>
                         </h2>
-                        <div id="faq-collapseEnd" class="accordion-collapse collapse" aria-labelledby="faq-headingEnd"
+                        <div id="faq-collapseHowToAsk" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToAsk"
                              data-bs-parent="#accordionFAQ">
                             <div class="accordion-body">
                                 Написати в телеграм @setnemo - якщо питання поширене, то я додам в цей розділ.
