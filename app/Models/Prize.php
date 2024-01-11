@@ -6,8 +6,10 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -27,6 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  * @property Carbon $started_at
+ * @property bool $is_enabled
  */
 class Prize extends Model
 {
@@ -51,6 +54,7 @@ class Prize extends Model
         'raffle_price',
         'available_type',
         'available_for',
+        'is_enabled',
     ];
 
     protected $casts = [
@@ -73,6 +77,24 @@ class Prize extends Model
     public function donater(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function winners(): HasMany
+    {
+        return $this->hasMany(Winner::class, 'prize_id', 'id');
+    }
+
+    public function getDonater(): User
+    {
+        return self::with('donater')->where('id', '=', $this->getId())->first()->donater;
+    }
+
+    /**
+     * @return Collection|Winner[]
+     */
+    public function getWinners(): Collection
+    {
+        return Winner::query()->where('prize_id', '=', $this->getId())->get();
     }
 
     public function getId(): int
@@ -123,6 +145,9 @@ class Prize extends Model
 
     public function setFundraisingId(int $fundraisingId = null): Prize
     {
+        if (null === $fundraisingId && !$this->isEnabled()) {
+            return $this;
+        }
         $this->fundraising_id = $fundraisingId;
 
         return $this;
@@ -253,8 +278,15 @@ class Prize extends Model
         return $this;
     }
 
-    public function getDonater(): User
+    public function isEnabled(): bool
     {
-        return self::with('donater')->where('id', '=', $this->getId())->first()->donater;
+        return $this->is_enabled;
+    }
+
+    public function setEnabled(bool $isEnabled): Prize
+    {
+        $this->is_enabled = $isEnabled;
+
+        return $this;
     }
 }

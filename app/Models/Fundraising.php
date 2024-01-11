@@ -245,6 +245,7 @@ class Fundraising extends Model
             ->whereNull('fundraising_id')
             ->where('user_id', '=', auth()?->user()?->getId() ?? 0)
             ->where('available_type', '=', Prize::ONLY_FOR_ME)
+            ->where('is_enabled', '=', true)
             ->get();
     }
 
@@ -254,6 +255,7 @@ class Fundraising extends Model
             ->whereNull('fundraising_id')
             ->where('user_id', '=', $this->getUserId())
             ->where('available_type', '=', Prize::ONLY_FOR_ME)
+            ->where('is_enabled', '=', true)
             ->get();
     }
 
@@ -263,6 +265,7 @@ class Fundraising extends Model
             ->whereNull('fundraising_id')
             ->where('user_id', '!=', $this->getUserId())
             ->where('available_type', '=', Prize::FOR_ALL)
+            ->where('is_enabled', '=', true)
             ->get();
     }
 

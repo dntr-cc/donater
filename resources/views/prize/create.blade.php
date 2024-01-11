@@ -191,7 +191,7 @@
                 type: "POST",
                 data: {
                     name: $('#name').val(),
-                    description: window.tinymce.get('description').getContent() || '<p></p>',
+                    description: window.tinymce.get('description').getContent().replace('<img ', '<img style="max-width: 100%;" ') || '<p></p>',
                     avatar: $('#avatar').val(),
                     user_id: <?= auth()?->user()?->getId() ?>,
                     raffle_type: $('input[name="raffle_type"]:checked').attr('id'),
