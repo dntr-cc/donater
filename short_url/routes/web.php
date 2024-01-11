@@ -19,7 +19,7 @@ Route::get('/{code}', static function (string $code) {
     if ($item) {
         $user = \App\Models\User::find($item->getUserId());
         if ($user) {
-            $str .= '/u/' . $user->getUsername() . '#welcomeVolunteerModal';
+            $str .= '/u/' . $user->getUsername();
             Cache::set('fg:' . sha1(request()->userAgent() . implode(request()->ips())), $user->getId());
         }
     }
