@@ -37,13 +37,11 @@ class ValidateDonatesCommand extends Command
             $fundraisingId = $fundraising->getId();
             $rows = $this->service->getRowCollection($fundraising->getSpreadsheetId(), $fundraisingId);
             foreach ($rows->all() as $item) {
-                $this->output->info("{$item->getDate()} !!!");
                 $amount = round((float)$item->getAmount(), 2);
-                if ($amount > 0 && !$item->isOwnerTransaction()) {
+                if ($amount > 0 && !$item->isOwnerTransaction() && !empty($item->getDate())) {
                     $code = $item->extractCode($item->getComment());
                     $userId = $userCodesService->getUserIdByCode($code);
                     if (!$userId) {
-                        $this->output->info("+$code $userId continue");
                         continue;
                     }
                     $createdAt = new Carbon(strtotime($item->getDate()));
@@ -51,7 +49,6 @@ class ValidateDonatesCommand extends Command
                         ->where('user_id', '=', $userId)
                         ->exists();
                     if ($donateExist) {
-                        $this->output->info("-$donateExist continue");
                         continue;
                     }
                     $donate = Donate::create([
@@ -61,7 +58,6 @@ class ValidateDonatesCommand extends Command
                         'fundraising_id' => $fundraisingId,
                         'created_at'     => $createdAt,
                     ]);
-                    $this->output->info('Validated object: ' . $donate->toJson());
                     $telegramId = User::find($userId)->getTelegramId();
                     if ($telegramId) {
                         $strtr = strtr('Ваш внесок в :amountгрн. за :date було завалідовано! Подивитися звіт: :url', [
