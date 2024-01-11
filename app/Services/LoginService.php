@@ -44,7 +44,6 @@ class LoginService
         $telegramId = $data['id'] ?? 0;
         $user       = User::where('telegram_id', $telegramId)->first();
         $avatar     = '/images/avatars/avatar.jpeg';
-        $fatherId   = Cache::pull('fg:' . sha1(request()->userAgent() . implode(request()->ips())));
         if (!$user) {
             $username = $data['username'] ?? $this->generateUniqueUserName();
             if ($tryGetPhoto) {{
@@ -69,7 +68,7 @@ class LoginService
                 'is_premium'  => $data['is_premium'] ?? false,
                 'avatar'      => $avatar,
             ]);
-            if ($fatherId) {
+            if ($fatherId = Cache::pull('referral_fg:' . sha1(request()->userAgent() . implode(request()->ips())))) {
                 Referral::create([
                     'user_id' => $fatherId,
                     'referral_id' => $user->getId(),
