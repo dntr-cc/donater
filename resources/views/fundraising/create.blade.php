@@ -298,7 +298,7 @@
                     link: $('#link').val(),
                     page: $('#page').val(),
                     avatar: $('#avatar').val(),
-                    description: window.tinymce.get('description').getContent() || '<p></p>',
+                    description: window.tinymce.get('description').getContent().replace('<img ', '<img style="max-width: 100%;" ') || '<p></p>',
                     spreadsheet_id: getSpreadsheetId($('#spreadsheet_id').val()),
                 },
                 headers: {

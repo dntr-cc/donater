@@ -72,4 +72,19 @@ class PrizeController extends Controller
 
         return response()->json();
     }
+
+    /**
+     * @param Prize $prize
+     * @return JsonResponse
+     */
+    public function raffle(Prize $prize): JsonResponse
+    {
+        $this->authorize('update', $prize);
+
+        $winners = $prize->getFundraising()
+            ->rafflesPredictCollection()
+            ->raffle($prize, true)->saveWinners($prize);
+
+        return new JsonResponse(['html' => $winners->winnersToHtml(), 'csrf' => $this->getNewCSRFToken()]);
+    }
 }

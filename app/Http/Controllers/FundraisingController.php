@@ -136,16 +136,6 @@ class FundraisingController extends Controller
         return response()->json();
     }
 
-    public function rafflesPredict(Request $request, Fundraising $fundraising)
-    {
-        $this->authorize('update', $fundraising);
-
-        return new JsonResponse([
-            'csrf' => $this->getNewCSRFToken(),
-            'html' => $fundraising->rafflesPredictCollection()->toHtml($request->get('type'), (int)$request->get('price'), (int)$request->get('winners')),
-        ]);
-    }
-
     public function addPrize(Fundraising $fundraising, Prize $prize)
     {
         $this->authorize('update', $fundraising);

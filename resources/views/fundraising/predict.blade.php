@@ -1,5 +1,6 @@
 @php use App\Models\Donate; @endphp
 @php /** @var \App\Collections\RaffleUserCollection $raffleUserCollection */@endphp
+@php /** @var \App\Models\Prize $prize */@endphp
 <div class="table-responsive">
     <table class="table table-sm table-striped table-bordered">
         <thead class="table-dark">
@@ -12,7 +13,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($raffleUserCollection->raffle($type, $price, $winners)->all() as $it => $raffleUser)
+        @foreach($raffleUserCollection->raffle($prize)->all() as $it => $raffleUser)
             <tr>
                 <th scope="row">{{ $it + 1 }}</th>
                 <td><a href="{{ $raffleUser->getUser()->getUserLink() }}" class="">

@@ -31,6 +31,14 @@
                 <div>
                     {!! $fundraising->getDescription() !!}
                 </div>
+                @foreach($fundraising->getPrizes() as $pIt => $prize)
+                    @foreach($prize->getWinners() as $wIt => $winner)
+                        <div class="m-3 lead text-danger">
+                            Приз #{{ $pIt + 1 }}, переможець #{{ $wIt + 1 }}: {!! $winner->getWinner()->getUserHref() !!}
+                        </div>
+                    @endforeach
+                @endforeach()
+
                 <div class="mt-3"></div>
                 @guest
                     <p class="lead"><a href="{{ route('login') }}" class="">Авторизуйтеся</a> за допомогою телеграму щоб отримати код донатера</p>
