@@ -54,4 +54,14 @@ class UserCode extends Model
 
         return $this;
     }
+
+    public function getCreatedAt(): Carbon
+    {
+        return $this->created_at;
+    }
+
+    public function isOldCode(): bool
+    {
+        return $this->getCreatedAt()->getTimestamp() < strtotime('2024-01-04 00:00:00');
+    }
 }
