@@ -63,7 +63,7 @@ class UserCodeService
     public function getUserDonateCode(int $userId): string
     {
         $item = UserCode::where(['user_id' => $userId])->first();
-        if (!$item || mb_strlen($item?->getHash() ?? '') !== self::CODE_LENGTH) {
+        if (!$item || $item?->isOldCode()) {
             $item = $this->createUserCode($userId, $this->createCode());
         }
 
