@@ -27,9 +27,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('fundraising.actual') }}" class="nav-link text-white">
-                            <i class="bi bi-exclamation-triangle d-inline mx-auto mb-1"></i>
-                            Актуальні збори
+                        <a href="{{ route('volunteers') }}" class="dropdown-item">
+                            <i class="bi bi-star-fill d-inline mx-auto mb-1"></i>
+                            Волонтери
                         </a>
                     </li>
                     <li class="nav-item dropdown">
@@ -55,12 +55,6 @@
                                 <a href="{{ route('users') }}" class="dropdown-item">
                                     <i class="bi bi-people-fill d-inline mx-auto mb-1"></i>
                                     Користувачі
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('volunteers') }}" class="dropdown-item">
-                                    <i class="bi bi-star-fill d-inline mx-auto mb-1"></i>
-                                    Волонтери
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider" /></li>
