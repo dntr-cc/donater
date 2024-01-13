@@ -27,7 +27,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('volunteers') }}" class="dropdown-item">
+                        <a href="{{ route('volunteers') }}" class="nav-link text-white">
                             <i class="bi bi-star-fill d-inline mx-auto mb-1"></i>
                             Волонтери
                         </a>
