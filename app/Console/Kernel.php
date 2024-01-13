@@ -17,14 +17,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        foreach (Subscribe::all() as $subscribe) {
+            $schedule->command('subscribe:process ' . $subscribe->getId())->daily()->at($subscribe->getScheduledAt());
+        }
         foreach (Fundraising::all() as $item) {
             /** @uses CacheFundraisingCommand::class */
             $schedule->command('fundraising:cache ' . $item->getId())->everyMinute();
             /** @uses ValidateDonatesCommand::class */
             $schedule->command('validate:donates '  . $item->getId())->everyMinute();
-        }
-        foreach (Subscribe::all() as $subscribe) {
-            $schedule->command('subscribe:process ' . $subscribe->getId())->daily()->at($subscribe->getScheduledAt());
         }
     }
 
