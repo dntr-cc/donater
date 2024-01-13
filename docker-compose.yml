@@ -64,7 +64,7 @@ services:
             - .env
         volumes:
             - "sail-postgres:/var/lib/postgresql/data"
-            - ./tests/data/init.sql:/docker-entrypoint-initdb.d/1-schema.sql
+#            - ./tests/data/init.sql:/docker-entrypoint-initdb.d/1-schema.sql
         environment:
             - POSTGRES_USER=${DB_USERNAME}
             - POSTGRES_PASSWORD=${DB_PASSWORD}

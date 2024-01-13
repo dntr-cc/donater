@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Models\Fundraising;
+use App\Models\Subscribe;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -21,6 +22,9 @@ class Kernel extends ConsoleKernel
             $schedule->command('fundraising:cache ' . $item->getId())->everyMinute();
             /** @uses ValidateDonatesCommand::class */
             $schedule->command('validate:donates '  . $item->getId())->everyMinute();
+        }
+        foreach (Subscribe::all() as $subscribe) {
+            $schedule->command('subscribe:process ' . $subscribe->getId())->daily()->at($subscribe->getScheduledAt());
         }
     }
 

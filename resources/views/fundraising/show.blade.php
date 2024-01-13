@@ -12,7 +12,7 @@
 @php $withPrizes = true; @endphp
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
-@php $owner = $fundraising->owner()->get()->first(); @endphp
+@php $owner = $fundraising->volunteer()->get()->first(); @endphp
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>
@@ -34,14 +34,16 @@
                 @foreach($fundraising->getPrizes() as $pIt => $prize)
                     @foreach($prize->getWinners() as $wIt => $winner)
                         <div class="m-3 lead text-danger">
-                            Приз #{{ $pIt + 1 }}, переможець #{{ $wIt + 1 }}: {!! $winner->getWinner()->getUserHref() !!}
+                            Приз #{{ $pIt + 1 }}, переможець #{{ $wIt + 1 }}
+                            : {!! $winner->getWinner()->getUserHref() !!}
                         </div>
                     @endforeach
                 @endforeach()
 
                 <div class="mt-3"></div>
                 @guest
-                    <p class="lead"><a href="{{ route('login') }}" class="">Авторизуйтеся</a> за допомогою телеграму щоб отримати код донатера</p>
+                    <p class="lead"><a href="{{ route('login') }}" class="">Авторизуйтеся</a> за допомогою телеграму щоб
+                        отримати код донатера</p>
                 @else
                     <div class="d-flex justify-content-center mb-2 px-2 py-2">
                         <div class="form-floating input-group">
@@ -88,40 +90,40 @@
             <div class="tab-pane fade show active" id="donates-all" role="tabpanel" aria-labelledby="donates-all">
                 <div class="table-responsive">
                     @if(!empty($rows))
-                    <table class="table table-sm table-striped table-bordered">
-                        <thead class="table-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Дата</th>
-                            <th scope="col">Користувач</th>
-                            <th scope="col">Коментар</th>
-                            <th scope="col">Сума</th>
-                            <th scope="col">В банці</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @php $count = $rows->count(); @endphp
-                        @foreach($rows->all() as $row)
-                            @php $donater = $row->getDonater($row->getComment()) @endphp
-                            @php $donater ? $donaters->push($donater) : '' @endphp
+                        <table class="table table-sm table-striped table-bordered">
+                            <thead class="table-dark">
                             <tr>
-                                <th scope="row">{{ $count-- }}</th>
-                                <td>{{ $row->getDate() }}</td>
-                                <td>
-                                    @if($donater)
-                                        Від: {!! $donater->getUserHref()  !!}
-                                    @elseif($row->isOwnerTransaction())
-                                        Від: Власник банки
-                                    @else
-                                        Від: 🐈‍⬛
-                                    @endif
-                                </td>
-                                <td class="font-x-small">{{ $row->getComment() }}</td>
-                                <td>{{ $row->getAmount() }}</td>
-                                <td>{{ $row->getSum() }}</td>
+                                <th scope="col">#</th>
+                                <th scope="col">Дата</th>
+                                <th scope="col">Користувач</th>
+                                <th scope="col">Коментар</th>
+                                <th scope="col">Сума</th>
+                                <th scope="col">В банці</th>
                             </tr>
-                        @endforeach
-                    </table>
+                            </thead>
+                            <tbody>
+                            @php $count = $rows->count(); @endphp
+                            @foreach($rows->all() as $row)
+                                @php $donater = $row->getDonater($row->getComment()) @endphp
+                                @php $donater ? $donaters->push($donater) : '' @endphp
+                                <tr>
+                                    <th scope="row">{{ $count-- }}</th>
+                                    <td>{{ $row->getDate() }}</td>
+                                    <td>
+                                        @if($donater)
+                                            Від: {!! $donater->getUserHref()  !!}
+                                        @elseif($row->isOwnerTransaction())
+                                            Від: Власник банки
+                                        @else
+                                            Від: 🐈‍⬛
+                                        @endif
+                                    </td>
+                                    <td class="font-x-small">{{ $row->getComment() }}</td>
+                                    <td>{{ $row->getAmount() }}</td>
+                                    <td>{{ $row->getSum() }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
                     @else
                         <h6>Google Spreadsheet Api повернуло помилку. Повторіть пізніше.</h6>
                     @endif
@@ -134,21 +136,22 @@
                 @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3'))
             </div>
             @foreach($fundraising->getPrizes() as $it => $prize)
-                <div class="tab-pane fade" id="donates-raffle{{ $it }}" role="tabpanel" aria-labelledby="donates-tabs-raffle">
+                <div class="tab-pane fade" id="donates-raffle{{ $it }}" role="tabpanel"
+                     aria-labelledby="donates-tabs-raffle">
                     @include('layouts.raffle', compact('fundraising', 'prize'))
                 </div>
             @endforeach
         </div>
     </div>
-        @auth
-            <script type="module">
-                let copyCode = $('#copyCode');
-                copyCode.on('click', event => {
-                    event.preventDefault();
-                    copyContent($('#userCode').val());
-                    return false;
-                });
-                toast('Код скопійовано', copyCode);
-            </script>
-        @endauth
+    @auth
+        <script type="module">
+            let copyCode = $('#copyCode');
+            copyCode.on('click', event => {
+                event.preventDefault();
+                copyContent($('#userCode').val());
+                return false;
+            });
+            toast('Код скопійовано', copyCode);
+        </script>
+    @endauth
 @endsection

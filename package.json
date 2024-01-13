@@ -21,6 +21,7 @@
         "jquery": "^3.7.1",
         "limax": "^4.1.0",
         "mdb-ui-kit": "^7.1.0",
+        "pickerjs": "^1.2.1",
         "tinymce": "^6.8.0"
     }
 }

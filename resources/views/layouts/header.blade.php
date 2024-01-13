@@ -6,8 +6,9 @@
                 <div class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
                     <a class="text-white text-decoration-none"
                        href="{{ url('/') }}">
-                        <nobr>🍩 donater.com.ua</nobr>
+                        <nobr>🍩 Донатити будуть всі</nobr>
                     </a>
+
 {{--                    <form class="d-flex align-items-right px-3">--}}
 {{--                        <input type="search" class="form-control" placeholder="Пошук донатерів" aria-label="Search">--}}
 {{--                    </form>--}}

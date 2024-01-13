@@ -16,6 +16,8 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
+    public const string VOLUNTEERS = 'Волонтери';
+
     public function show(User $user)
     {
         $rows = $charts = $charts2 = $charts3 = null;
@@ -61,7 +63,7 @@ class UserController extends Controller
     public function volunteers(): View
     {
         $users = User::query()->withWhereHas('fundraisings')->paginate(9)->fragment('volunteers');
-        $whoIs = 'Волонтери';
+        $whoIs = self::VOLUNTEERS;
 
         return view('users', compact('users', 'whoIs'));
     }

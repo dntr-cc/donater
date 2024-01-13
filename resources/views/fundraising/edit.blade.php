@@ -41,7 +41,8 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="name"
-                                                           value="{{ $fundraising->getName() }}" required maxlength="50">
+                                                           value="{{ $fundraising->getName() }}" required
+                                                           maxlength="50">
                                                     <label for="name">
                                                         Назва (до 50 символів)
                                                     </label>
@@ -61,7 +62,7 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="link"
-                                                           value="{{ $fundraising->getLink() }}" required>
+                                                           value="{{ $fundraising->getJarLink() }}" required>
                                                     <label for="link">
                                                         Посилання на монобанку
                                                     </label>

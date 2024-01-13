@@ -7,7 +7,7 @@
 @php $withPrizes = $withPrizes ?? false; @endphp
 
 @if($withJarLink)
-    <a href="{{ $fundraising->getLink() }}" target="_blank" class="btn m-1 {{ $additionalClasses }}">
+    <a href="{{ $fundraising->getJarLink() }}" target="_blank" class="btn m-1 {{ $additionalClasses }}">
         <i class="bi bi-bank"></i>
         Банка</a>
 @endif
@@ -72,18 +72,21 @@
                                 <div class="card m-2">
                                     <div class="row no-gutters">
                                         <div class="col-auto">
-                                            <img src="{{ url($prize->getAvatar()) }}" class="img-fluid" style="max-width: 200px" alt="">
+                                            <img src="{{ url($prize->getAvatar()) }}" class="img-fluid"
+                                                 style="max-width: 200px" alt="">
                                         </div>
                                         <div class="col">
                                             <div class="card-block px-2">
                                                 <h4 class="card-title mt-2">{{ $prize->getName() }}</h4>
-                                                <p class="card-text">Створив: {!! $prize->getDonater()->getUserHref() !!}</p>
+                                                <p class="card-text">
+                                                    Створив: {!! $prize->getDonater()->getUserHref() !!}</p>
                                                 <a href="{{ route('prize.show', ['prize' => $prize->getId()])}}"
                                                    class="btn btn-xs m-1">
                                                     <i class="bi bi-eye"></i>
                                                     Подробиці
                                                 </a>
-                                                <button class="btn btn-xs btn-danger del-prize" data-id="{{ $prize->getId() }}">
+                                                <button class="btn btn-xs btn-danger del-prize"
+                                                        data-id="{{ $prize->getId() }}">
                                                     Видалити з вашого збору
                                                 </button>
                                             </div>
@@ -91,7 +94,8 @@
                                     </div>
                                     <div class="card-footer w-100 text-muted">
                                         Умови: {{ \App\DTOs\RaffleUser::TYPES[$prize->getRaffleType() ?? ''] ?? ''}}.
-                                        Переможців: {{ $prize->getRaffleWinners() }}. Ціна квитка (якщо треба): {{ $prize->getRafflePrice() }}
+                                        Переможців: {{ $prize->getRaffleWinners() }}. Ціна квитка (якщо
+                                        треба): {{ $prize->getRafflePrice() }}
                                     </div>
                                 </div>
                             @endforeach
@@ -105,18 +109,21 @@
                                 <div class="card m-2">
                                     <div class="row no-gutters">
                                         <div class="col-auto">
-                                            <img src="{{ url($prize->getAvatar()) }}" class="img-fluid" style="max-width: 200px" alt="">
+                                            <img src="{{ url($prize->getAvatar()) }}" class="img-fluid"
+                                                 style="max-width: 200px" alt="">
                                         </div>
                                         <div class="col">
                                             <div class="card-block px-2">
                                                 <h4 class="card-title mt-2">{{ $prize->getName() }}</h4>
-                                                <p class="card-text">Створив: {!! $prize->getDonater()->getUserHref() !!}</p>
+                                                <p class="card-text">
+                                                    Створив: {!! $prize->getDonater()->getUserHref() !!}</p>
                                                 <a href="{{ route('prize.show', ['prize' => $prize->getId()])}}"
                                                    class="btn btn-xs m-1">
                                                     <i class="bi bi-eye"></i>
                                                     Подробиці
                                                 </a>
-                                                <button class="btn btn-xs btn-success add-prize" data-id="{{ $prize->getId() }}">
+                                                <button class="btn btn-xs btn-success add-prize"
+                                                        data-id="{{ $prize->getId() }}">
                                                     Додати до вашого збору
                                                 </button>
                                             </div>
@@ -124,7 +131,8 @@
                                     </div>
                                     <div class="card-footer w-100 text-muted">
                                         Умови: {{ \App\DTOs\RaffleUser::TYPES[$prize->getRaffleType() ?? ''] ?? ''}}.
-                                        Переможців: {{ $prize->getRaffleWinners() }}. Ціна квитка (якщо треба): {{ $prize->getRafflePrice() }}
+                                        Переможців: {{ $prize->getRaffleWinners() }}. Ціна квитка (якщо
+                                        треба): {{ $prize->getRafflePrice() }}
                                     </div>
                                 </div>
                             @endforeach
