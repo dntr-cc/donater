@@ -10,9 +10,9 @@ use Illuminate\Http\JsonResponse;
 
 class SubscribeController extends Controller
 {
-    public const string SUBSCRIPTION_CREATE_MESSAGE = 'Створена нова підписка! Очікуйте :amount від @:donater кожен день в :time';
-    public const string SUBSCRIPTION_UPDATE_MESSAGE = 'Підписка буда змінена! Очікуйте :amount від @:donater кожен день в :time';
-    public const string SUBSCRIPTION_DELETED_MESSAGE = 'Підписка буда видалена! Ви більше не будете отримувати :amount від @:donater кожен день в :time';
+    public const string SUBSCRIPTION_CREATE_MESSAGE = 'Створена нова підписка\! Очікуйте :amount від @:donater кожен день в :time';
+    public const string SUBSCRIPTION_UPDATE_MESSAGE = 'Підписка буда змінена\! Очікуйте :amount від @:donater кожен день в :time';
+    public const string SUBSCRIPTION_DELETED_MESSAGE = 'Підписка буда видалена\! Ви більше не будете отримувати :amount від @:donater кожен день в :time';
 
     public function store(SubscribeRequestCreate $request)
     {
