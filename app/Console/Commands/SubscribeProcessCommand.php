@@ -62,6 +62,7 @@ class SubscribeProcessCommand extends Command
                 '  ' => '',
                 ':volunteerKey' => $volunteer->getUsername(),
                 ':jarLink' => $randomFundraising->getJarLink(),
+                ':amount' => $subscribe->getAmount(),
                 ':donaterCode' => $donater->getUserCode(),
             ]);
             $donater->sendBotMessage($messsage);
