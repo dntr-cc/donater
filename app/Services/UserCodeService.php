@@ -57,12 +57,12 @@ class UserCodeService
 
     public function isUsedDonateCode(string $hash): bool
     {
-        return UserCode::where(['hash' => $hash])->exists();
+        return UserCode::hasHash($hash);
     }
 
     public function getUserDonateCode(int $userId): string
     {
-        $item = UserCode::where(['user_id' => $userId])->first();
+        $item = $this->getCode($userId);
         if (!$item || $item?->isOldCode()) {
             $item = $this->createUserCode($userId, $this->createCode());
         }
@@ -85,5 +85,14 @@ class UserCodeService
         Cache::set($key, $userId, 60 * 60 * 24);
 
         return $userId;
+    }
+
+    /**
+     * @param int $userId
+     * @return UserCode
+     */
+    public function getCode(int $userId): UserCode
+    {
+        return UserCode::getUserCode($userId);
     }
 }

@@ -1,6 +1,8 @@
 @php /** @var \Illuminate\Support\Collection|\App\Models\User[] $users */ @endphp
 @php $it = 0; @endphp
+@php $authUser = auth()?->user(); @endphp
 @php $withoutPagination = $withoutPagination ?? false; @endphp
+@php $subscribeAllowed = $subscribeAllowed ?? false; @endphp
 @forelse($users->filter()->all() as $user)
     @if(0 === $it || 0 === $it % 3)
         <div class="col-lg-12">
@@ -40,6 +42,10 @@
                                 </span>
                                 @endif
                             </p>
+                            @if($subscribeAllowed && $authUser)
+                                @php $volunteer = $user; @endphp
+                                @include('subscribe.button', compact('volunteer', 'authUser'))
+                            @endif
                         </div>
                     </div>
                 </div>

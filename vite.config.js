@@ -8,6 +8,8 @@ export default defineConfig({
             'resources/js/app.js',
             'resources/js/tabs.js',
             'resources/js/tinymce.js',
+            'resources/js/pickerjs.js',
+            'resources/sass/pickerjs.scss',
             'resources/sass/app.scss',
         ]),
     ],
@@ -19,6 +21,7 @@ export default defineConfig({
             'tinymce/plugins/table': path.resolve(__dirname, 'node_modules/tinymce/plugins/table/plugin.js'),
             'tinymce/plugins/media': path.resolve(__dirname, 'node_modules/tinymce/plugins/media/plugin.js'),
             'mdb-ui-kit': path.resolve(__dirname, 'node_modules/mdb-ui-kit'),
+            'pickerjs': path.resolve(__dirname, 'node_modules/pickerjs'),
         }
     },
     server: {

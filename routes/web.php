@@ -121,4 +121,8 @@ Route::get('/prize/{prize}/edit', [App\Http\Controllers\PrizeController::class, 
 Route::patch('/prize/{prize}/edit', [App\Http\Controllers\PrizeController::class, 'update'])->name('prize.update');
 Route::post('/prize/{prize}/raffle', [App\Http\Controllers\PrizeController::class, 'raffle'])->name('prize.raffle');
 
+Route::post('/subscribe', [App\Http\Controllers\SubscribeController::class, 'store'])->name('subscribe.create');
+Route::patch('/subscribe/{subscribe}', [App\Http\Controllers\SubscribeController::class, 'update'])->name('subscribe.update');
+Route::delete('/subscribe/{subscribe}', [App\Http\Controllers\SubscribeController::class, 'destroy'])->name('subscribe.delete');
+
 

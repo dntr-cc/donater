@@ -47,31 +47,31 @@
             <div class="col">
                 <div class="card mb-4 rounded-3 shadow-sm">
                     <div class="card-header py-3 text-bg-success border-success-subtle">
-                        <h4 class="my-0 fw-semibold text-center">ЗРОБИТЬ ДОНАТ</h4>
+                        <h4 class="my-0 fw-semibold text-center">ПІДПИШІТЬСЯ НА СВОГО ВОЛОНТЕРА</h4>
                     </div>
                     <div class="card-body">
                         <ol class="mt-3 mb-4">
                             <li class="mt-4">
-                                Відкриваєте свою сторінку
-                                <a href="https://donater.com.ua/my" target="_blank" class="">donater.com.ua/my</a>
+                                Відкриваєте свою сторінку з
+                                <a href="{{ route('volunteers') }}" target="_blank" class="">волонтерами</a>
                             </li>
                             <li class="mt-4">
-                                <span class="flex">
-                                    Копіюєте код донату, натиснувши на кнопку
-                                    <button id="copyCode" class="me-4 btn btn-sm btn-outline-secondary"
-                                            onclick="return false;">
-                                        <i class="bi bi-copy"></i>
-                                    </button>
-                                </span>
+                                Знайдіть свого волонтера
                             </li>
                             <li class="mt-4">
-                                Обираєте збір
+                                Натисніть на <button type="button" class="btn btn-outline-success">
+                                    🍩 <i class="bi bi-currency-exchange"></i>
+                                </button>
                             </li>
                             <li class="mt-4">
-                                Відкриваєте банку по посиланню (відкриється в новій вкладці)
+                                Налаштуйте суму та час нагадування донату
                             </li>
                             <li class="mt-4">
-                                В коментар до донату додаєте свій код
+                                Кожень день очікуйте в назначений час повідомлення в бота. Там буде ваш код донатера та посилання на
+                                банку збору вашого волонтера
+                            </li>
+                            <li class="mt-4">
+                                Зробіть донат, в коментарі додайте свій код донатера
                             </li>
                         </ol>
                     </div>

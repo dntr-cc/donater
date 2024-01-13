@@ -64,4 +64,14 @@ class UserCode extends Model
     {
         return $this->getCreatedAt()->getTimestamp() < strtotime('2024-01-04 00:00:00');
     }
+
+    public static function hasHash(string $hash): bool
+    {
+        return UserCode::query()->where(['hash' => $hash])->exists();
+    }
+
+    public static function getUserCode(int $userId): UserCode
+    {
+        return UserCode::query()->where(['user_id' => $userId])->first();
+    }
 }

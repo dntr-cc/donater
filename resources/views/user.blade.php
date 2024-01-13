@@ -1,4 +1,5 @@
 @php use App\Models\Donate; @endphp
+@php use App\Models\Subscribe; @endphp
 @php use App\Models\User; @endphp
 @php use App\Models\UserLink; @endphp
 @php use App\Models\UserSetting; @endphp
@@ -6,10 +7,12 @@
 @php /** @var User $user */ @endphp
 @php /** @var Donate $donate */ @endphp
 @php /** @var Fundraising $fundraising */ @endphp
-@php /** @var UserLink $link */ @endphp
+@php /** @var UserLink $userLink */ @endphp
+@php /** @var Subscribe $subscribe */ @endphp
 @php $withZvitLink = true; @endphp
 @php $additionalClasses = 'btn-xs'; @endphp
 @php $donates = $user->getDonates(); @endphp
+@php $authUser = auth()?->user(); @endphp
 @extends('layouts.base')
 @section('page_title', strtr(':fullName (:username) - користувач сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]))
 @section('page_description', strtr(':fullName (:username) - користувач сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]))
@@ -71,7 +74,7 @@
                                             <i class="bi bi-copy"></i></button>
                                     </div>
                                 </div>
-                                @if (auth()?->user()?->can('update', $user))
+                                @can('update', $user)
                                     <div class="d-flex justify-content-center mb-2">
                                         <button class="btn btn-outline-dark" data-bs-toggle="modal"
                                                 data-bs-target="#userEditSettingsModal">
@@ -88,18 +91,18 @@
                                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                             <h4>Запрошені користувачі</h4>
                                         </li>
-                                    @foreach($items as $item)
-                                        @php
-                                            /* @var \App\Models\Referral $item */
-                                            $referral = User::find($item->getReferralId());
-                                        @endphp
-                                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                            <i class="bi-arrow-right-short mb-1"></i>
-                                            <p class="mb-0">
-                                                {!! $referral->getUserHref() !!}
-                                            </p>
-                                        </li>
-                                    @endforeach
+                                        @foreach($items as $item)
+                                            @php
+                                                /* @var \App\Models\Referral $item */
+                                                $referral = User::find($item->getReferralId());
+                                            @endphp
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                                <i class="bi-arrow-right-short mb-1"></i>
+                                                <p class="mb-0">
+                                                    {!! $referral->getUserHref() !!}
+                                                </p>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             </div>
@@ -109,19 +112,19 @@
                                 <ul class="list-group list-group-flush rounded-3">
                                     <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <h4>Посилання</h4>
-                                        @if (auth()?->user()?->can('update', $user))
+                                        @can('update', $user)
                                             <button data-bs-toggle="modal" data-bs-target="#createLinkModal"
                                                     id="addDonation" class="btn">
                                                 <i class="bi bi-plus-circle-fill"></i>
                                             </button>
                                         @endcan
                                     </li>
-                                    @foreach($user->getLinks()->all() as $link)
+                                    @foreach($user->getLinks()->all() as $userLink)
                                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                            <i class="{{ $link->getIcon() }} fa-lg"></i>
+                                            <i class="{{ $userLink->getIcon() }} fa-lg"></i>
                                             <p class="mb-0">
-                                                <a href="{{ $link->getLink() }}">{{ $link->getName() }}</a>
-                                                <i data-id="{{ $link->getId() }}"
+                                                <a href="{{ $userLink->getLink() }}">{{ $userLink->getName() }}</a>
+                                                <i data-id="{{ $userLink->getId() }}"
                                                    class="mx-2 bi bi-x-octagon text-danger delete-link">
                                                 </i>
                                             </p>
@@ -130,6 +133,25 @@
                                 </ul>
                             </div>
                         </div>
+                        @can('update', $user)
+                            <div class="card mt-4 mb-4 mb-lg-0">
+                                <div class="card-body p-0">
+                                    <ul class="list-group list-group-flush rounded-3">
+                                        <li class="list-group-item p-3">
+                                            <h4>Підписки на волонтерів</h4>
+                                        </li>
+                                        @foreach($user->getSubscribes()->all() as $subscribe)
+                                            <div class="list-group-item d-flex justify-content-between align-items-start">
+                                                @php $volunteer = $subscribe->getVolunteer(); @endphp
+                                                <p>{!! $volunteer->getUserHref() !!}</p>
+                                                @include('subscribe.button', compact('volunteer', 'authUser'))
+                                            </div>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                            @include('subscribe.modal')
+                        @endcan
                     </div>
                     <div class="col-lg-8">
                         @if($user->getFundraisings()->count() > 0 || !(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_FUNDRAISING)))
@@ -163,7 +185,7 @@
                                 </div>
                             </div>
                         @endif
-                            @if($user->withPrizes()->prizes->count() > 0 || !(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_PRIZES)))
+                        @if($user->withPrizes()->prizes->count() > 0 || !(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_PRIZES)))
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="row">
@@ -186,7 +208,8 @@
                                                     {{ $prize->getName() }}
                                                 </div>
                                                 <div>
-                                                    <a href="{{ route('prize.edit', compact('prize')) }}" class="btn btn-xs m-1">
+                                                    <a href="{{ route('prize.edit', compact('prize')) }}"
+                                                       class="btn btn-xs m-1">
                                                         <i class="bi bi-pencil-fill"></i>
                                                         Редагування
                                                     </a>
@@ -256,21 +279,17 @@
                                     <div class="modal-body">
                                         <p>
                                             donater.com.ua це платформа, яка зроблена для волонтерів допомагати робити
-                                            збори
-                                            більш прозорими. Благодійники можуть вказувати свій унікальний код донатера,
-                                            це
-                                            допомогає потім через виписку метчіти донати з користувачами сайту. Таким
-                                            чином
-                                            це дає волонтерам додаткові можливості, такі як розіграші серед донаторів з
-                                            різними
-                                            налаштуваннями, аналітика по збору, чи загалом по всім зборам, тощо.
+                                            збори більш прозорими. Благодійники можуть вказувати свій унікальний код
+                                            донатера, це дозволяє потім через виписку метчіти донати з користувачами
+                                            сайту. Таким чином це дає волонтерам додаткові можливості, такі як розіграші
+                                            серед донаторів з різними налаштуваннями, аналітика по збору, чи загалом по
+                                            всім зборам тощо. Також це дозволяє робити підписку на волонтера, яка
+                                            значить що донатер/ка буде вносити фіксовану суму на ваши збори. З часом це
+                                            буде допомогати планувати збори, будувати звіти P&L, Cash Flow, BS тощо
                                         </p>
                                         <p>
-                                            Наразі сайт в відкритому бета-тесті, найближчим часом планується реалізувати
-                                            нагадування для донаторів, функціонал розіграшів, можливість донаторів
-                                            робити
-                                            розіграш на вашому зборі без вашої участі, щоб підпушити ваш збір.
-                                            Приблизний план розвитку є в розділі Roadmap
+                                            Наразі сайт у відкритому бета-тесті. Плани розвитку сайту можна почитати в
+                                            розділі <a href="{{ route('roadmap') }}" class="">Roadmap</a>.
                                         </p>
                                     </div>
                                     <div class="modal-footer justify-content-between">
@@ -286,7 +305,7 @@
                 </div>
             </div>
         </div>
-        @auth
+        @can('update', $user)
             <div class="modal fade" id="createLinkModal" tabindex="-1" aria-labelledby="createLinkModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
@@ -414,7 +433,7 @@
                                 @foreach(\App\Models\UserSetting::SETTINGS_MAP as $key => $name)
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" value="" id="{{ $key }}"
-                                           @if($user->settings->hasSetting($key))
+                                               @if($user->settings->hasSetting($key))
                                                    checked
                                             @endif
                                         >
@@ -435,7 +454,7 @@
                     </div>
                 </div>
             </div>
-        @endauth
+        @endcan
         <script type="module">
             @if($dntr)
             let welcome = Modal.getOrCreateInstance(document.getElementById('welcomeVolunteerModal'));
@@ -456,7 +475,7 @@
             });
             toast('Код скопійовано', copyCode);
 
-            @auth
+            @can('update', $user)
             $('#linkIcon').click(() => {
                 $('#icon-preview').attr('class', $('#linkIcon option:selected').val());
             });
@@ -586,6 +605,6 @@
                 });
                 return false;
             });
-            @endauth
+            @endcan
         </script>
 @endsection

@@ -93,7 +93,7 @@ class Fundraising extends Model
     /**
      * @return HasOne|User
      */
-    public function owner(): HasOne
+    public function volunteer(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
@@ -127,7 +127,7 @@ class Fundraising extends Model
         return $this;
     }
 
-    public function getLink(): string
+    public function getJarLink(): string
     {
         return $this->link;
     }
@@ -278,5 +278,10 @@ class Fundraising extends Model
                 ->pluck('user_id')
                 ->toArray()
         );
+    }
+
+    public static function getRandom(): self
+    {
+        return self::query()->where('is_enabled', '=', 'true')->get()->random();
     }
 }

@@ -13,6 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 /**
  * @property int $id
@@ -334,5 +335,43 @@ class User extends Authenticatable
     public function withPrizes(): self
     {
         return self::with('prizes')->where('id', '=', $this->getId())->first();
+    }
+
+    public function getSubscribe(int $userId): ?Subscribe
+    {
+        return Subscribe::query()->where('volunteer_id', '=', $this->getId())
+            ->where('user_id', '=', $userId)->first();
+    }
+
+    /**
+     * @param int $userId
+     * @return Collection|Subscribe[]
+     */
+    public function getSubscribes(): Collection
+    {
+        return Subscribe::query()->where('user_id', '=', $this->getId())->get();
+    }
+
+    public function sendBotMessage(string $message): void
+    {
+        Telegram::sendMessage([
+            'chat_id' => $this->getTelegramId(),
+            'text' => $message,
+            'parse_mode' => 'MarkdownV2',
+        ]);
+    }
+
+    public function getRandomFundraising(): ?Fundraising
+    {
+        if ($this->fundraisings->isEmpty()) {
+            return null;
+        }
+        $fundraisings = $this->getFundraisings()->filter(fn(Fundraising $fundraising) => $fundraising->isEnabled());
+        if ($fundraisings->isEmpty()) {
+            return null;
+        }
+
+
+        return $fundraisings->random();
     }
 }
