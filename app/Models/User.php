@@ -37,6 +37,26 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $with = ['donates', 'fundraisings', 'links', 'settings', 'prizes'];
+    public const array ESCAPE_MAP = [
+        '_' => '\_',
+        '*' => '\*',
+        '[' => '\[',
+        ']' => '\]',
+        '(' => '\(',
+        ')' => '\)',
+        '~' => '\~',
+//        '`' => '\`',
+        '>' => '\>',
+        '#' => '\#',
+        '+' => '\+',
+        '-' => '\-',
+        '=' => '\=',
+        '|' => '\|',
+        '{' => '\{',
+        '}' => '\}',
+        '.' => '\.',
+        '!' => '\!',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -356,7 +376,7 @@ class User extends Authenticatable
     {
         Telegram::sendMessage([
             'chat_id' => $this->getTelegramId(),
-            'text' => $message,
+            'text' => strtr($message, self::ESCAPE_MAP),
             'parse_mode' => 'MarkdownV2',
         ]);
     }
