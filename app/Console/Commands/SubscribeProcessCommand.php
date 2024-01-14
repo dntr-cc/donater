@@ -51,15 +51,17 @@ class SubscribeProcessCommand extends Command
                     Не забудьте в коментарі додати ваш код донатера `:donaterCode`
                     MD, [':volunteerKey' => $volunteer->getUsername()]), [':newVolunteerKey' => ':volunteerKey']);
                 $volunteer = $randomFundraising->volunteer()->get()->first();
+            } elseif (!$randomFundraising) {
+                return;
             }
-            $messsage = strtr($template, [
+            $message = strtr($template, [
                 '  ' => '',
                 ':volunteerKey' => $volunteer->getUsername(),
                 ':jarLink' => $randomFundraising->getJarLink() . '?t=' . $donater->getUserCode() . '&a=' . $subscribe->getAmount(),
                 ':amount' => $subscribe->getAmount(),
                 ':donaterCode' => $donater->getUserCode(),
             ]);
-            $donater->sendBotMessage($messsage);
+            $donater->sendBotMessage($message);
         }
     }
 }
