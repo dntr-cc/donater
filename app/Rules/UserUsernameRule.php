@@ -19,6 +19,14 @@ class UserUsernameRule implements InvokableRule
     public
     function __invoke($attribute, $value, $fail)
     {
+        if (mb_strlen($value) < 3) {
+            $fail('Username is forbidden');
+        }
+        foreach (['admin', 'administrator', 'moderator', 'support'] as $forbidden) {
+            if (str_contains(mb_strtolower($value), $forbidden)) {
+                $fail('Username is forbidden');
+            }
+        }
         if (User::query()->where('username', '=', $value)->count() > 0) {
             $fail('Username is forbidden');
         }
