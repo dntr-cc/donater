@@ -10,8 +10,6 @@ use DatePeriod;
 use DateTime;
 use Illuminate\Support\Collection;
 
-use function PHPUnit\Framework\matches;
-
 /**
  * @property array|Row[] $items
  * @method Row|null first(callable $callback = null, $default = null)
@@ -31,26 +29,6 @@ class RowCollection extends Collection
         }
 
         return $this->items;
-    }
-
-    public function hasUniqHash(string $getUniqHash): bool
-    {
-        return (bool)$this->filter(static function (Row $row) use ($getUniqHash) {
-            return str_contains($row->getComment(), $getUniqHash);
-        })->count();
-    }
-
-    /**
-     * @param string $getUniqHash
-     * @return float
-     */
-    public function getAmountByUniqHash(string $getUniqHash): float
-    {
-        return floatval(
-            $this->filter(static function (Row $row) use ($getUniqHash) {
-                return str_contains($row->getComment(), $getUniqHash);
-            })?->first()?->getAmount() ?? 0.00
-        );
     }
 
     public function perDay(): ?array

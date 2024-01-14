@@ -73,7 +73,7 @@ class Row
     {
         $code = $this->extractCode($comment);
         /** @var Donate $donate */
-        $donate = $this->donates[$code] ?? null;
+        $donate = $this->donates[$code] ?? $this->donates[mb_strtolower($code)] ?? null;
         if ($donate) {
             return User::find($donate->getUserId());
         }
@@ -93,7 +93,7 @@ class Row
     public function extractCode(string $comment): string
     {
         $matches1 = $matches2 = $matches3 = [];
-        preg_match('/dntr.cc\/[a-zA-Z0-9]{5}/', $comment, $matches1);
+        preg_match('/dntr.cc\/[a-zA-Z0-9]+/', $comment, $matches1);
         preg_match('/[a-zA-Z0-9]{14}[.][0-9]{8}/', $comment, $matches2);
         preg_match('/[a-zA-Z0-9]{13}/', $comment, $matches3);
         $matches1 = explode('/', $matches1[0] ?? '');
