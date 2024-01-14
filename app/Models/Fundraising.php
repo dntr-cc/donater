@@ -258,8 +258,9 @@ class Fundraising extends Model
         $userPrizes = $this->getUserPrizes();
         $fundraiserPrizes = $this->getFundraiserPrizes();
         $availablePrizes = $this->getAvailablePrizesForAll();
+        $availablePrizesSubscribers = $this->getAvailablePrizesForMe();
 
-        return $availablePrizes->merge($userPrizes->merge($fundraiserPrizes->all())->all());
+        return $availablePrizesSubscribers->merge($availablePrizes->merge($userPrizes->merge($fundraiserPrizes->all())->all())->all());
     }
 
     private function getUserPrizes(): Collection
@@ -290,6 +291,17 @@ class Fundraising extends Model
             ->whereNull('fundraising_id')
             ->where('user_id', '!=', $this->getUserId())
             ->where('available_type', '=', Prize::FOR_ALL)
+            ->where('available_status', '=', Prize::STATUS_NEW)
+            ->where('is_enabled', '=', true)
+            ->get();
+    }
+
+    private function getAvailablePrizesForMe(): Collection
+    {
+        return Prize::query()
+            ->whereNull('fundraising_id')
+            ->whereIn('user_id', Subscribe::query()->where('volunteer_id', '=', $this->getUserId()))->get()->pluck('user_id')->toArray()
+            ->where('available_type', '=', Prize::FOR_SUBSCRIBED_VOLUNTEERS)
             ->where('available_status', '=', Prize::STATUS_NEW)
             ->where('is_enabled', '=', true)
             ->get();
