@@ -67,7 +67,7 @@ class UserCode extends Model
 
     public static function hasHash(string $hash): bool
     {
-        return UserCode::query()->where(['hash' => $hash])->exists();
+        return UserCode::query()->where(['hash' => $hash])->orWhere('hash', '=', mb_strtolower($hash))->exists();
     }
 
     public static function getUserCode(int $userId): UserCode

@@ -151,6 +151,8 @@
         });
         toast('Email скопійовано', copyEmail);
 
+        let updateFundraisingButton = $('#updateFundraising');
+
         document.querySelector('#file').addEventListener('change', event => {
             event.preventDefault();
             let formData = new FormData();
@@ -183,6 +185,7 @@
         });
         document.querySelector('#key').addEventListener('change', event => {
             event.preventDefault();
+            updateFundraisingButton.attr('disabled', true);
             let key = $('#key');
             const regex = /^[a-zA-Z0-9_-]+$/g;
             if (regex.test(key.val())) {
@@ -202,6 +205,7 @@
                 },
                 success: data => {
                     key.removeClass('is-invalid').addClass('is-valid');
+                    updateFundraisingButton.attr('disabled', false);
                     $('meta[name="csrf-token"]').attr('content', data.csrf);
                 },
                 error: data => {
@@ -213,6 +217,7 @@
         });
         document.querySelector('#name').addEventListener('change', event => {
             event.preventDefault();
+            updateFundraisingButton.attr('disabled', true);
             let name = $('#name');
             if (name.val().length > 0) {
                 name.removeClass('is-invalid').addClass('is-valid');
@@ -220,6 +225,7 @@
                 let element = document.querySelector('#key');
                 element.value = value;
                 element.dispatchEvent(new Event('change'));
+                updateFundraisingButton.attr('disabled', false);
             } else {
                 name.removeClass('is-valid').addClass('is-invalid');
             }
@@ -227,10 +233,12 @@
         });
         document.querySelector('#link').addEventListener('change', event => {
             event.preventDefault();
+            updateFundraisingButton.attr('disabled', true);
             let link = $('#link');
             const regex = /(https:\/\/|http:\/\/)?send.monobank.ua\/jar\/[a-zA-Z0-9]{8,12}/g;
             if (link.val().match(regex)) {
                 link.removeClass('is-invalid').addClass('is-valid');
+                updateFundraisingButton.attr('disabled', false);
             } else {
                 link.removeClass('is-valid').addClass('is-invalid');
             }
@@ -238,9 +246,11 @@
         });
         document.querySelector('#page').addEventListener('change', event => {
             event.preventDefault();
+            updateFundraisingButton.attr('disabled', true);
             let page = $('#page');
             if (window.isValidUrl(page.val())) {
                 page.removeClass('is-invalid').addClass('is-valid');
+                updateFundraisingButton.attr('disabled', false);
             } else {
                 page.removeClass('is-valid').addClass('is-invalid');
             }
@@ -256,6 +266,7 @@
 
         document.querySelector('#spreadsheet_id').addEventListener('change', event => {
             event.preventDefault();
+            updateFundraisingButton.attr('disabled', true);
             let id = '';
             let spreadsheet_id = $('#spreadsheet_id');
             const regex = /(https:\/\/)?docs.google.com\/spreadsheets\/d\/[a-zA-Z0-9-_]+(\/|\/edit|\/edit#gid=0)/g;
@@ -277,6 +288,7 @@
                 success: data => {
                     spreadsheet_id.removeClass('is-invalid').addClass('is-valid');
                     $('meta[name="csrf-token"]').attr('content', data.csrf);
+                    updateFundraisingButton.attr('disabled', false);
                 },
                 error: data => {
                     spreadsheet_id.removeClass('is-valid').addClass('is-invalid');
@@ -286,7 +298,7 @@
             return false;
         });
 
-        $('#updateFundraising').on('click', function (e) {
+        updateFundraisingButton.on('click', function (e) {
             e.preventDefault();
             if ($('.is-invalid').length > 0) {
                 let empty = $("<a>");

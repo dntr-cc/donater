@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/{code}', static function (string $code) {
     $str = '//donater.com.ua';
-    $item = \App\Models\UserCode::query()->where('hash', '=', $code)->first();
+    $item = \App\Models\UserCode::query()->where('hash', '=', $code)
+        ->orWhere('hash', '=', mb_strtolower($code))->first();
     if ($item) {
         $user = \App\Models\User::find($item->getUserId());
         if ($user) {

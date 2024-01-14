@@ -21,7 +21,7 @@ class UserCodeService
 
     public function createCode(string $prefix = self::DONATE_PREFIX): string
     {
-        $vocabulary = array_merge(range('a', 'z'), range('A', 'Z'), range(0, 9));
+        $vocabulary = array_merge(range('a', 'z'), range(0, 9));
         $vocabularyIndexes = count($vocabulary) - 1;
         $hash = '';
         do {
@@ -77,7 +77,7 @@ class UserCodeService
             return (int)Cache::get($key);
         }
 
-        $item = UserCode::query()->where('hash', '=', $code)->first();
+        $item = $this->getUserCodeItem($code);
         if (!$item) {
             return 0;
         }
@@ -94,5 +94,15 @@ class UserCodeService
     public function getCode(int $userId): UserCode
     {
         return UserCode::getUserCode($userId);
+    }
+
+    /**
+     * @param string $code
+     * @return UserCode
+     */
+    public function getUserCodeItem(string $code): UserCode
+    {
+        return UserCode::query()->where('hash', '=', $code)
+            ->orWhere('hash', '=', mb_strtolower($code))->first();
     }
 }
