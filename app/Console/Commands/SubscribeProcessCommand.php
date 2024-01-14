@@ -53,7 +53,7 @@ class SubscribeProcessCommand extends Command
 
                     Не забудьте в коментарі додати ваш код донатера `:donaterCode`
                     MD, [':volunteerKey' => $volunteer->getUsername()]), [':newVolunteerKey' => ':volunteerKey']);
-                $volunteer = $randomFundraising->volunteer()->get()->first();
+                $volunteer = $randomFundraising->getVolunteer();
             }
             $message = strtr($template, [
                 '  ' => '',

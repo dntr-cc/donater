@@ -32,39 +32,17 @@
                             Волонтери
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a
-                            data-mdb-dropdown-init
-                            class="nav-link dropdown-toggle text-white"
-                            href="#"
-                            id="navbarDropdown"
-                            role="button"
-                            aria-expanded="false"
-                        >
-                            <i class="bi bi-patch-check d-inline mx-auto mb-1"></i> Розділи сайту
+                    <li class="">
+                        <a href="{{ route('users') }}" class="nav-link text-white">
+                            <i class="bi bi-people-fill d-inline mx-auto mb-1"></i>
+                            Користувачі
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a href="{{ route('donates') }}" class="dropdown-item">
-                                    <i class="bi bi-lightning-fill d-inline mx-auto mb-1"></i>
-                                    Донати
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li class="">
-                                <a href="{{ route('users') }}" class="dropdown-item">
-                                    <i class="bi bi-people-fill d-inline mx-auto mb-1"></i>
-                                    Користувачі
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li>
-                                <a href="{{ route('prizes') }}" class="dropdown-item">
-                                    <i class="bi bi-gift d-inline mx-auto mb-1"></i>
-                                    Призи
-                                </a>
-                            </li>
-                        </ul>
+                    </li>
+                    <li>
+                        <a href="{{ route('prizes') }}" class="nav-link text-white">
+                            <i class="bi bi-gift d-inline mx-auto mb-1"></i>
+                            Призи
+                        </a>
                     </li>
                     <li class="nav-item dropdown">
                         <a
@@ -89,6 +67,13 @@
                                 <a href="{{ route('roadmap') }}" class="dropdown-item">
                                     <i class="bi bi-sign-turn-right-fill d-inline mx-auto mb-1"></i>
                                     Roadmap
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a href="{{ route('donates') }}" class="dropdown-item">
+                                    <i class="bi bi-lightning-fill d-inline mx-auto mb-1"></i>
+                                    Донати
                                 </a>
                             </li>
                         </ul>

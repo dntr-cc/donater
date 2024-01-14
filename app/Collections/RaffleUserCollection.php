@@ -81,7 +81,7 @@ class RaffleUserCollection extends Collection
 
     public function winnersToHtml(): string
     {
-        $template = '<p>Переможець #:number: :winner</p>';
+        $template = Winner::WINNER_TEMPLATE;
         $result = '';
         foreach ($this->all() as $it => $winner) {
             $result .= strtr($template, [

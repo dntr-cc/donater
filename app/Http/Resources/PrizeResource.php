@@ -20,7 +20,6 @@ class PrizeResource extends JsonResource
             'raffle_price'   => $this->raffle_price,
             'avatar'         => $this->avatar,
             'available_type' => $this->available_type,
-            'available_for'  => $this->available_for,
             'created_at'     => $this->created_at,
             'updated_at'     => $this->updated_at,
         ];

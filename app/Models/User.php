@@ -378,6 +378,10 @@ class User extends Authenticatable
 
     public function sendBotMessage(string $message): void
     {
+        if (str_contains(config('app.url'), 'localhost')) {
+            \Log::critical($message);
+            return;
+        }
         Telegram::sendMessage([
             'chat_id' => $this->getTelegramId(),
             'text' => strtr($message, self::ESCAPE_MAP),

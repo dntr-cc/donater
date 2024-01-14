@@ -18,6 +18,8 @@ use Throwable;
 
 class FundraisingController extends Controller
 {
+    public const string PRIZE_ADDED_TO_FUNDRAISING_URL_CONFIRMATION = 'Ваш приз ":prize" додали до збору :fundraisingUrl. Зайдіть в свій кабінет та підтвердіть чи скасуйте запит. :url';
+
     public function store(FundraisingRequest $request)
     {
         $this->authorize('create', Fundraising::class);
@@ -140,7 +142,18 @@ class FundraisingController extends Controller
     {
         $this->authorize('update', $fundraising);
 
-        $prize->setFundraisingId($fundraising->getId())->save();
+        $isSelf = $fundraising->getUserId() === $prize->getUserId();
+        $prize->setFundraisingId($fundraising->getId())
+            ->setAvailableStatus($isSelf ? Prize::STATUS_GRANTED : Prize::STATUS_WAITING)->save();
+        if (!$isSelf) {
+            $prize->getDonater()->sendBotMessage(
+                strtr(self::PRIZE_ADDED_TO_FUNDRAISING_URL_CONFIRMATION, [
+                    ':prize' => $prize->getName(),
+                    ':fundraisingUrl' => route('fundraising.show', compact('fundraising')),
+                    ':url' => route('my'),
+                ])
+            );
+        }
 
         return new JsonResponse(['url' => route('fundraising.show', compact('fundraising'))]);
     }
@@ -149,7 +162,7 @@ class FundraisingController extends Controller
     {
         $this->authorize('update', $fundraising);
 
-        $prize->setFundraisingId()->save();
+        $prize->setFundraisingId()->setAvailableStatus(Prize::STATUS_NEW)->save();
 
         return new JsonResponse(['url' => route('fundraising.show', compact('fundraising'))]);
     }

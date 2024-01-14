@@ -100,6 +100,46 @@
                                 </div>
                             @endforeach
                             @php
+                                $bookedPrizes = $fundraising->getBookedPrizes();
+                            @endphp
+                            <p class="lead">
+                                Очікують підтвердження: {{ $bookedPrizes->count() }}
+                            </p>
+                            @foreach($bookedPrizes as $prize)
+                                <div class="card m-2">
+                                    <div class="row no-gutters">
+                                        <div class="col-auto">
+                                            <img src="{{ url($prize->getAvatar()) }}" class="img-fluid"
+                                                 style="max-width: 200px" alt="">
+                                        </div>
+                                        <div class="col">
+                                            <div class="card-block px-2">
+                                                <h4 class="card-title mt-2">{{ $prize->getName() }}</h4>
+                                                <p class="card-text">
+                                                    Створив: {!! $prize->getDonater()->getUserHref() !!}</p>
+                                                <a href="{{ route('prize.show', ['prize' => $prize->getId()])}}"
+                                                   class="btn btn-xs m-1">
+                                                    <i class="bi bi-eye"></i>
+                                                    Подробиці
+                                                </a>
+                                                <span class="btn btn-xs btn-warning">
+                                                    Очікує підтвердження
+                                                </span>
+                                                <button class="btn btn-xs btn-danger del-prize"
+                                                        data-id="{{ $prize->getId() }}">
+                                                    Видалити з вашого збору
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer w-100 text-muted">
+                                        Умови: {{ \App\DTOs\RaffleUser::TYPES[$prize->getRaffleType() ?? ''] ?? ''}}.
+                                        Переможців: {{ $prize->getRaffleWinners() }}. Ціна квитка (якщо
+                                        треба): {{ $prize->getRafflePrice() }}
+                                    </div>
+                                </div>
+                            @endforeach
+                            @php
                                 $availablePrizes = $fundraising->getAvailablePrizes();
                             @endphp
                             <p class="lead">

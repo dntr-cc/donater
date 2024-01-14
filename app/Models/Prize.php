@@ -24,7 +24,7 @@ use Illuminate\Support\Collection;
  * @property int $raffle_winners
  * @property float $raffle_price
  * @property string $available_type
- * @property array $available_for
+ * @property string $available_status
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
@@ -36,13 +36,16 @@ class Prize extends Model
     use SoftDeletes, HasFactory;
 
     public const array AVAILABLE_TYPES = [
-        self::ONLY_FOR_ME      => 'Тільки для моїх зборів',
-        self::FOR_ALL          => 'Для всіх волонтерів',
-//        self::FOR_CHOSEN_USERS => 'Тільки для обраних волонтерів',
+        self::ONLY_FOR_ME               => 'Тільки для моїх зборів',
+        self::FOR_ALL                   => 'Для всіх волонтерів',
+        self::FOR_SUBSCRIBED_VOLUNTEERS => 'Тільки для моїх волонтерів (підписка)',
     ];
     public const string ONLY_FOR_ME = 'only_for_me';
     public const string FOR_ALL = 'for_all';
-    public const string FOR_CHOSEN_USERS = 'for_chosen_users';
+    public const string FOR_SUBSCRIBED_VOLUNTEERS = 'for_subscribed_volunteers';
+    public const string STATUS_NEW = 'new';
+    public const string STATUS_WAITING = 'waiting';
+    public const string STATUS_GRANTED = 'granted';
     protected $fillable = [
         'name',
         'description',
@@ -53,12 +56,8 @@ class Prize extends Model
         'raffle_winners',
         'raffle_price',
         'available_type',
-        'available_for',
+        'available_status',
         'is_enabled',
-    ];
-
-    protected $casts = [
-        'available_for' => 'array',
     ];
 
     protected static function boot(): void
@@ -87,6 +86,11 @@ class Prize extends Model
     public function getDonater(): User
     {
         return self::with('donater')->where('id', '=', $this->getId())->first()->donater;
+    }
+
+    public function getVolunteer(): User
+    {
+        return self::with('fundraising')->where('id', '=', $this->getId())->first()->fundraising->getVolunteer();
     }
 
     /**
@@ -145,7 +149,7 @@ class Prize extends Model
 
     public function setFundraisingId(int $fundraisingId = null): Prize
     {
-        if (null === $fundraisingId && !$this->isEnabled()) {
+        if (null === $fundraisingId && !$this->isEnabled() && self::STATUS_WAITING === $this->getAvailableStatus()) {
             return $this;
         }
         $this->fundraising_id = $fundraisingId;
@@ -218,18 +222,6 @@ class Prize extends Model
         return $this;
     }
 
-    public function getAvailableFor(): array
-    {
-        return $this->available_for;
-    }
-
-    public function setAvailableFor(array $available_for): Prize
-    {
-        $this->available_for = $available_for;
-
-        return $this;
-    }
-
     public function getCreatedAt(): Carbon
     {
         return $this->created_at;
@@ -286,6 +278,23 @@ class Prize extends Model
     public function setEnabled(bool $isEnabled): Prize
     {
         $this->is_enabled = $isEnabled;
+
+        return $this;
+    }
+
+    public function getAvailableStatus(): string
+    {
+        return $this->available_status;
+    }
+
+    public function isNeedApprove(): bool
+    {
+        return self::STATUS_WAITING === $this->getAvailableStatus();
+    }
+
+    public function setAvailableStatus(string $availableStatus): Prize
+    {
+        $this->available_status = $availableStatus;
 
         return $this;
     }

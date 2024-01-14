@@ -210,7 +210,6 @@
                     raffle_winners: $('#winners').val(),
                     raffle_price: $('#price').val(),
                     available_type: $('input[name="available_type"]:checked').attr('id'),
-                    available_for: null,
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -106,17 +106,24 @@ Route::get('/prizes', static fn() => view('prize.index', ['prizes' => Prize::que
     ->paginate(3)]))->name('prizes');
 Route::get('/prizes/free', static fn() => view('prize.index', ['prizes' => Prize::query()
     ->where('is_enabled', '=', true)
+    ->where('available_status', '=', Prize::STATUS_NEW)
     ->whereNull('fundraising_id')
     ->paginate(3)]))->name('prizes.free');
 Route::get('/prizes/booked', static fn() => view('prize.index', ['prizes' => Prize::query()
     ->where('is_enabled', '=', true)
     ->whereNotNull('fundraising_id')
     ->paginate(3)]))->name('prizes.booked');
+Route::get('/prizes/spent', static fn() => view('prize.index', ['prizes' => Prize::query()
+    ->where('is_enabled', '=', false)
+    ->whereNotNull('fundraising_id')
+    ->paginate(3)]))->name('prizes.spent');
 Route::post('/prize', [App\Http\Controllers\PrizeController::class, 'store'])->name('prize.create');
 Route::post('/prize/avatar', [App\Http\Controllers\PrizeController::class, 'storeAvatar'])->name('prize.avatar');
 Route::get('/prize/new', [App\Http\Controllers\PrizeController::class, 'create'])->name('prize.new');
 Route::get('/prize/{prize}', [App\Http\Controllers\PrizeController::class, 'show'])->name('prize.show');
 Route::get('/prize/{prize}/edit', [App\Http\Controllers\PrizeController::class, 'edit'])->name('prize.edit');
+Route::get('/prize/{prize}/approve', [App\Http\Controllers\PrizeController::class, 'approve'])->name('prize.approve');
+Route::get('/prize/{prize}/decline', [App\Http\Controllers\PrizeController::class, 'decline'])->name('prize.decline');
 Route::patch('/prize/{prize}/edit', [App\Http\Controllers\PrizeController::class, 'update'])->name('prize.update');
 Route::post('/prize/{prize}/raffle', [App\Http\Controllers\PrizeController::class, 'raffle'])->name('prize.raffle');
 

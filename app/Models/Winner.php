@@ -21,6 +21,8 @@ class Winner extends Model
         'prize_id',
     ];
 
+    public const string WINNER_TEMPLATE = '<p>Переможець #:number: :winner</p>';
+
     public function winner(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
