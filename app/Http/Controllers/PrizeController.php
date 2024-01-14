@@ -79,9 +79,10 @@ class PrizeController extends Controller
     {
         $this->authorize('update', $prize);
 
+        $volunteer = $prize->getVolunteer();
         $prize->setAvailableStatus(Prize::STATUS_NEW)
             ->setFundraisingId()->save();
-        $prize->getVolunteer()->sendBotMessage(
+        $volunteer->sendBotMessage(
             strtr('Запит на приз ":prize" було скасовано', [':prize' => $prize->getName()])
         );
 
