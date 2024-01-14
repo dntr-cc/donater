@@ -56,6 +56,9 @@
                                 @endif
                                 <h4 class="m-3 text-muted">{{ $user->getAtUsername() }}</h4>
                                 <h6 class="m-3 text-muted">Дата реєстрації {{ $user->getCreatedAt() }}</h6>
+                                @if($ref = \App\Models\Referral::query()->where('referral_id', '=', $user->getId())->get()->first())
+                                <h6 class="m-3 text-muted">по запрошенню {!! $ref->getInviter()->getUserHref() !!}</h6>
+                                @endif
                                 <div class="d-flex justify-content-center mb-2">
                                     <div class="form-floating input-group">
                                         <input type="text" class="form-control" id="userLink"
@@ -75,15 +78,45 @@
                                     </div>
                                 </div>
                                 @can('update', $user)
-                                    <div class="d-flex justify-content-center mb-2">
-                                        <button class="btn btn-outline-dark" data-bs-toggle="modal"
+                                    <div class="d-flex justify-content-center align-items-center mb-2">
+                                        <button class="btn m-1 btn-outline-dark" data-bs-toggle="modal"
                                                 data-bs-target="#userEditSettingsModal">
                                             Налаштування
                                         </button>
+                                        @if($authUser && $user->fundraisings->count() > 0)
+                                            @php $volunteer = $user; @endphp
+                                            <div class="mt-1">
+                                                @include('subscribe.button', compact('volunteer', 'authUser'))
+                                            </div>
+                                        @endif
                                     </div>
                                 @endif
+
                             </div>
                         </div>
+                        @if($user->fundraisings->count() > 0 && !$user->getSubscribers()->isEmpty())
+                            <div class="card mb-4 mb-lg-0">
+                                <div class="card-body p-0">
+                                    <ul class="list-group list-group-flush rounded-3">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                            <h4>Серійні донатери</h4>
+                                        </li>
+                                        @foreach($user->getSubscribers() as $subscriber)
+                                            @php
+                                                /* @var \App\Models\Subscribe $subscriber */
+                                                $donater = $subscriber->getDonater();
+                                            @endphp
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                                <i class="bi-arrow-right-short mb-1"></i>
+                                                <p class="mb-0">
+                                                    {!! $donater->getUserHref() !!}
+                                                </p>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        @endif
                         @if(false === $user->settings->hasSetting(UserSetting::DONT_SHOW_REFERRALS) && $items = $user->refs()->get()->all())
                             <div class="card mb-4 mb-lg-0">
                                 <div class="card-body p-0">

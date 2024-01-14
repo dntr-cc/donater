@@ -42,7 +42,7 @@
                                 </span>
                                 @endif
                             </p>
-                            @if($subscribeAllowed && $authUser)
+                            @if($subscribeAllowed && $authUser && $user->fundraisings->count() > 0)
                                 @php $volunteer = $user; @endphp
                                 @include('subscribe.button', compact('volunteer', 'authUser'))
                             @endif
