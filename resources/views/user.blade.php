@@ -241,6 +241,22 @@
                                                     {{ $prize->getName() }}
                                                 </div>
                                                 <div>
+                                                    @if($prize->isNeedApprove())
+                                                        Збір: <a href="{{ url(route('fundraising.show', ['fundraising' => $prize->fundraising->getKey()])) }}"
+                                                                 class="">
+                                                            {{ $prize->fundraising->getName() }}
+                                                        </a>
+                                                        <a href="{{ route('prize.decline', compact('prize')) }}"
+                                                           class="btn btn-xs btn-danger sm-1">
+                                                            <i class="bi bi-check-circle-fill"></i>
+                                                            Скаcувати
+                                                        </a>
+                                                        <a href="{{ route('prize.approve', compact('prize')) }}"
+                                                           class="btn btn-xs btn-success m-1">
+                                                            <i class="bi bi-check-circle-fill"></i>
+                                                            Підтвердити
+                                                        </a>
+                                                    @endif
                                                     <a href="{{ route('prize.edit', compact('prize')) }}"
                                                        class="btn btn-xs m-1">
                                                         <i class="bi bi-pencil-fill"></i>

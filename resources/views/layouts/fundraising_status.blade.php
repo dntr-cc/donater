@@ -1,7 +1,7 @@
 @php /** @var App\Models\Fundraising $fundraising */ @endphp
 @php $withOwner = $withOwner ?? false; @endphp
 @php $additionalClasses = $additionalClasses ?? ''; @endphp
-@php $owner = $fundraising->volunteer()->first(); @endphp
+@php $owner = $fundraising->getVolunteer(); @endphp
 @php $href = route('fundraising.show', ['fundraising' => $fundraising->getKey()]); @endphp
 @if($fundraising->isEnabled())
     <a href="{{ $href }}" class="btn btn-success {{ $additionalClasses }}">ЗБІР ТРИВАЄ</a>

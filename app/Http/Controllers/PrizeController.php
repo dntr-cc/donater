@@ -61,7 +61,31 @@ class PrizeController extends Controller
         $prize->update($request->validated());
 
         return new JsonResponse(['url' => route('my')]);
+    }
 
+    public function approve(Prize $prize)
+    {
+        $this->authorize('update', $prize);
+
+        $prize->setAvailableStatus(Prize::STATUS_GRANTED)->save();
+        $prize->getVolunteer()->sendBotMessage(
+            strtr('Запит на приз ":prize" було підтверджено', [':prize' => $prize->getName()])
+        );
+
+        return back();
+    }
+
+    public function decline(Prize $prize)
+    {
+        $this->authorize('update', $prize);
+
+        $prize->setAvailableStatus(Prize::STATUS_NEW)
+            ->setFundraisingId()->save();
+        $prize->getVolunteer()->sendBotMessage(
+            strtr('Запит на приз ":prize" було скасовано', [':prize' => $prize->getName()])
+        );
+
+        return back();
     }
 
     public function destroy(Prize $prize)

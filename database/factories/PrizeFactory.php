@@ -22,7 +22,6 @@ class PrizeFactory extends Factory
             'raffle_price'   => $this->faker->randomFloat(),
             'avatar'         => $this->faker->word(),
             'available_type' => $this->faker->word(),
-            'available_for'  => $this->faker->words(),
             'created_at'     => Carbon::now(),
             'updated_at'     => Carbon::now(),
         ];

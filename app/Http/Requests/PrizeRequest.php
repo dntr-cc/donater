@@ -17,7 +17,6 @@ class PrizeRequest extends FormRequest
             'raffle_winners' => ['required', 'integer'],
             'raffle_price'   => ['required', 'numeric'],
             'available_type' => ['required'],
-            'available_for'  => ['nullable'],
         ];
     }
 

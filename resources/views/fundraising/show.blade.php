@@ -12,7 +12,7 @@
 @php $withPrizes = true; @endphp
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
-@php $owner = $fundraising->volunteer()->get()->first(); @endphp
+@php $owner = $fundraising->getVolunteer(); @endphp
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>

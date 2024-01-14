@@ -12,6 +12,10 @@
                 <i class="bi bi-gift-fill"></i>
                 Зайняті призи
             </a>
+            <a href="{{route('prizes.spent')}}" class="btn ">
+                <i class="bi bi-gift-fill"></i>
+                Розіграні призи
+            </a>
             @auth()
                 <a href="{{route('prize.new')}}" class="btn ">
                     <i class="bi bi-plus-circle-fill"></i>
@@ -50,6 +54,13 @@
                                 ВІЛЬНИЙ ЛОТ
                             @endif
                             </span></p>
+                            <div class="mt-3 lead text-danger">
+                                @if(!$prize->isEnabled())
+                                    @foreach($prize->getWinners() as $it => $winner)
+                                        {!! strtr(App\Models\Winner::WINNER_TEMPLATE, [':number' => $it + 1, ':winner' => $winner->getWinner()->getUserHref()])  !!}
+                                    @endforeach
+                                @endif
+                            </div>
                         <p class="card-text">Створив: {!! $prize->getDonater()->getUserHref() !!}</p>
                         <p class="card-text">
                             <b>Умови:</b> {{ \App\DTOs\RaffleUser::TYPES[$prize->getRaffleType() ?? ''] ?? ''}}.
@@ -60,12 +71,6 @@
                         <p class="card-text"><b>Переможців:</b> {{ $prize->getRaffleWinners() }}.</p>
                         <p class="card-text"><b>Ціна квитка (якщо треба):</b> {{ $prize->getRafflePrice() }}</p>
                         {!! $prize->getDescription() !!}
-                        @auth()
-                            <a href="{{route('prize.new')}}" class="btn ">
-                                <i class="bi bi-plus-circle-fill"></i>
-                                Створити
-                            </a>
-                        @endauth
                         @if (auth()?->user()?->can('update', $prize))
                             <a href="{{ route('prize.edit', compact('prize')) }}" class="btn m-1 ">
                                 <i class="bi bi-pencil-fill"></i>
