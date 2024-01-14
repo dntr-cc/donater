@@ -49,7 +49,7 @@ class SubscribeProcessCommand extends Command
                 $template = strtr(strtr(<<<'MD'
                     Ваш волонтер @:volunteerKey не має відкритого збору. Ми пропонуємо вам зробити донат @:newVolunteerKey в розмірі :amount грн.
 
-                    Будь ласка, зробіть донат по посиланню :jarLink
+                    Будь ласка, зробіть донат за посиланням :jarLink
 
                     Не забудьте в коментарі додати ваш код донатера `:donaterCode`
                     MD, [':volunteerKey' => $volunteer->getUsername()]), [':newVolunteerKey' => ':volunteerKey']);
