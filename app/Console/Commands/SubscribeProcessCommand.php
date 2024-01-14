@@ -37,10 +37,7 @@ class SubscribeProcessCommand extends Command
 
                 Будь ласка, зробіть донат по посиланню :jarLink
 
-                Не забудьте в коментарі додати ваш код донатера
-                ```
-                :donaterCode
-                ```
+                Не забудьте в коментарі додати ваш код донатера `:donaterCode`
                 MD;
             /** @var Fundraising $randomFundraising */
             $randomFundraising = $volunteer->getRandomFundraising();
