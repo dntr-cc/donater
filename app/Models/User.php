@@ -30,7 +30,6 @@ use Telegram\Bot\Laravel\Facades\Telegram;
  * @property Collection|Prize[] $prizes
  * @property Collection|UserLink[] $links
  * @property UserSettingsCollection|UserSetting[] $settings
- * @property int $approved_donates_count
  */
 class User extends Authenticatable
 {
@@ -346,7 +345,7 @@ class User extends Authenticatable
     public function getUserHref(): string
     {
         return <<<HTML
-            <a href="{$this->getUserLink()}" class="">
+            <a href="{$this->getUserLink()}">
                 {$this->getFullName()} ({$this->getAtUsername()})
             </a>
             HTML;
@@ -361,6 +360,11 @@ class User extends Authenticatable
     {
         return Subscribe::query()->where('volunteer_id', '=', $this->getId())
             ->where('user_id', '=', $userId)->first();
+    }
+
+    public function getSubscribers(): Collection
+    {
+        return Subscribe::query()->where('volunteer_id', '=', $this->getId())->get();
     }
 
     /**
