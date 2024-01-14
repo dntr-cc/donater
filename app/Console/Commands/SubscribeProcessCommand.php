@@ -41,6 +41,9 @@ class SubscribeProcessCommand extends Command
                 MD;
             /** @var Fundraising $randomFundraising */
             $randomFundraising = $volunteer->getRandomFundraising();
+            if (!$randomFundraising && !$subscribe->isUseRandom()) {
+                return;
+            }
             if (!$randomFundraising && $subscribe->isUseRandom()) {
                 $randomFundraising = Fundraising::getRandom();
                 $template = strtr(strtr(<<<'MD'
@@ -51,8 +54,6 @@ class SubscribeProcessCommand extends Command
                     Не забудьте в коментарі додати ваш код донатера `:donaterCode`
                     MD, [':volunteerKey' => $volunteer->getUsername()]), [':newVolunteerKey' => ':volunteerKey']);
                 $volunteer = $randomFundraising->volunteer()->get()->first();
-            } elseif (!$randomFundraising) {
-                return;
             }
             $message = strtr($template, [
                 '  ' => '',
