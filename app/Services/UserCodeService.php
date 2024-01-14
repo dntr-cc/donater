@@ -89,9 +89,9 @@ class UserCodeService
 
     /**
      * @param int $userId
-     * @return UserCode
+     * @return UserCode|null
      */
-    public function getCode(int $userId): UserCode
+    public function getCode(int $userId): ?UserCode
     {
         return UserCode::getUserCode($userId);
     }

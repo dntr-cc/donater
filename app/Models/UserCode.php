@@ -70,7 +70,7 @@ class UserCode extends Model
         return UserCode::query()->where(['hash' => $hash])->orWhere('hash', '=', mb_strtolower($hash))->exists();
     }
 
-    public static function getUserCode(int $userId): UserCode
+    public static function getUserCode(int $userId): ?UserCode
     {
         return UserCode::query()->where(['user_id' => $userId])->first();
     }
