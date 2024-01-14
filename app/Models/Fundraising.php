@@ -298,9 +298,10 @@ class Fundraising extends Model
 
     private function getAvailablePrizesForMe(): Collection
     {
+
         return Prize::query()
             ->whereNull('fundraising_id')
-            ->whereIn('user_id', Subscribe::query()->where('volunteer_id', '=', $this->getUserId()))->get()->pluck('user_id')->toArray()
+            ->whereIn('user_id', Subscribe::query()->where('volunteer_id', '=', $this->getUserId())->get()->pluck('user_id')->toArray())
             ->where('available_type', '=', Prize::FOR_SUBSCRIBED_VOLUNTEERS)
             ->where('available_status', '=', Prize::STATUS_NEW)
             ->where('is_enabled', '=', true)
