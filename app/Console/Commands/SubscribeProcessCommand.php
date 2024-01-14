@@ -61,7 +61,7 @@ class SubscribeProcessCommand extends Command
             $messsage = strtr($template, [
                 '  ' => '',
                 ':volunteerKey' => $volunteer->getUsername(),
-                ':jarLink' => $randomFundraising->getJarLink(),
+                ':jarLink' => $randomFundraising->getJarLink() . '?t=' . $donater->getUserCode(),
                 ':amount' => $subscribe->getAmount(),
                 ':donaterCode' => $donater->getUserCode(),
             ]);
