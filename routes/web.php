@@ -47,20 +47,19 @@ Route::get('/deploy', static function () {
 
 Route::get('/', static fn() => view('welcome'))->name('welcome');
 Route::get('/analytics', static function () {
-    $rows = $charts = $charts2 = $charts3 = null;
-    try {
-        $rows = new RowCollection();
-        $service = app(GoogleServiceSheets::class);
-        foreach (Fundraising::all() as $fundraising) {
+    $rows = new RowCollection();
+    $service = app(GoogleServiceSheets::class);
+    foreach (Fundraising::all() as $fundraising) {
+        try {
             $rows->push(...$service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->all());
+        } catch (Throwable $throwable) {
+            Log::critical($throwable->getMessage(), ['fundraising' => $fundraising->toArray(), 'trace' => $throwable->getTraceAsString()]);
         }
-        $chartsService = app(ChartService::class);
-        $charts = $chartsService->getChartPerDay($rows);
-        $charts2 = $chartsService->getChartPerAmount($rows);
-        $charts3 = $chartsService->getChartPerSum($rows);
-    } catch (Throwable $throwable) {
-        Log::critical($throwable->getMessage(), ['trace' => $throwable->getTraceAsString()]);
     }
+    $chartsService = app(ChartService::class);
+    $charts = $chartsService->getChartPerDay($rows);
+    $charts2 = $chartsService->getChartPerAmount($rows);
+    $charts3 = $chartsService->getChartPerSum($rows);
 
     return view('analytics', compact('rows', 'charts', 'charts2', 'charts3'));
 })->name('analytics');
