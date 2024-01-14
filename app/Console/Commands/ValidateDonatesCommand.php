@@ -40,6 +40,9 @@ class ValidateDonatesCommand extends Command
                 $amount = round((float)$item->getAmount(), 2);
                 if ($amount > 0 && !$item->isOwnerTransaction() && !empty($item->getDate())) {
                     $code = $item->extractCode($item->getComment());
+                    if (empty($code)) {
+                        continue;
+                    }
                     $userId = $userCodesService->getUserIdByCode($code);
                     if (!$userId) {
                         continue;

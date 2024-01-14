@@ -98,9 +98,9 @@ class UserCodeService
 
     /**
      * @param string $code
-     * @return UserCode
+     * @return ?UserCode
      */
-    public function getUserCodeItem(string $code): UserCode
+    public function getUserCodeItem(string $code): ?UserCode
     {
         return UserCode::query()->where('hash', '=', $code)
             ->orWhere('hash', '=', mb_strtolower($code))->first();
