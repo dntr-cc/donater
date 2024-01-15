@@ -39,7 +39,6 @@
                         </div>
                     @endforeach
                 @endforeach()
-
                 <div class="mt-3"></div>
                 @guest
                     <p class="lead"><a href="{{ route('login') }}" class="">Авторизуйтеся</a> за допомогою телеграму щоб

@@ -25,7 +25,15 @@
         Подробиці
     </a>
 @endif
-@if(request()->user()?->can('update', $fundraising))
+@can('update', $fundraising)
+    <a id="mono" class="btn m-1 {{ $additionalClasses }}">
+        <i class="bi bi-screwdriver"></i>
+            Запит в моно
+    </a>
+{{--    <a id="anal" class="btn m-1 {{ $additionalClasses }}">--}}
+{{--        <i class="bi bi-search-heart-fill"></i>--}}
+{{--            Аналітика текстом--}}
+{{--    </a>--}}
     <a href="{{route('fundraising.edit', ['fundraising' => $fundraising->getKey()])}}"
        class="btn m-1 {{ $additionalClasses }}">
         <i class="bi bi-pencil-fill"></i>
@@ -223,4 +231,26 @@
             });
         </script>
     @endif
-@endif
+    <script type="module">
+        let mono = `
+Добрий день. Мені треба виписки по банці для сайту donater.com.ua
+
+- {{ $fundraising->getJarLink(false) }}
+
+Формат виписки
+- за весь період
+- в форматі xls/xlsx
+- колонки: Дата та час, Категорія(разове поповнення чи по посиланню), Опис (від платника), Коментарі, Сума, Валюта, Залишок на банці. Саме в такому порядку, це важливо
+
+Буду очікувати на пошту чи в мессенджер.
+
+Дякую.
+`;
+        $('#mono').on('click', event => {
+            event.preventDefault();
+            copyContent(mono);
+            toast('Запит в підтримку скопійовано', $('#mono'));
+            return false;
+        });
+    </script>
+@endcan
