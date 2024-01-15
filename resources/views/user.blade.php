@@ -77,12 +77,13 @@
                                             <i class="bi bi-copy"></i></button>
                                     </div>
                                 </div>
-                                @can('update', $user)
                                     <div class="d-flex justify-content-center align-items-center mb-2">
-                                        <button class="btn m-1 btn-outline-dark" data-bs-toggle="modal"
-                                                data-bs-target="#userEditSettingsModal">
-                                            Налаштування
-                                        </button>
+                                        @can('update', $user)
+                                            <button class="btn m-1 btn-outline-dark" data-bs-toggle="modal"
+                                                    data-bs-target="#userEditSettingsModal">
+                                                Налаштування
+                                            </button>
+                                        @endif
                                         @if($authUser && $user->fundraisings->count() > 0)
                                             @php $volunteer = $user; @endphp
                                             <div class="mt-1">
@@ -90,18 +91,20 @@
                                             </div>
                                         @endif
                                     </div>
-                                @endif
 
                             </div>
                         </div>
                         @if($user->fundraisings->count() > 0 && !$user->getSubscribers()->isEmpty())
+                            @php
+                                $subscribers = $user->getSubscribers();
+                            @endphp
                             <div class="card mb-4 mb-lg-0">
                                 <div class="card-body p-0">
                                     <ul class="list-group list-group-flush rounded-3">
                                         <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                             <h4>Серійні донатери</h4>
                                         </li>
-                                        @foreach($user->getSubscribers() as $subscriber)
+                                        @foreach($subscribers as $subscriber)
                                             @php
                                                 /* @var \App\Models\Subscribe $subscriber */
                                                 $donater = $subscriber->getDonater();
