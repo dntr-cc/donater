@@ -23,7 +23,7 @@ class StartCommand extends Command
     {
         // Check if the start command has been issued with a login code
         $message = $this->getUpdate()->getMessage();
-        $text = $message->getText();
+        $text = str_replace('/start ', '', $message->getText());
         if (!empty($text)) {
             $isExist = Cache::pull('login:start:' . $text);
 
