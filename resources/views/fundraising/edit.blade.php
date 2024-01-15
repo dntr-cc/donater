@@ -62,7 +62,7 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="link"
-                                                           value="{{ $fundraising->getJarLink() }}" required>
+                                                           value="{{ $fundraising->getJarLink(false) }}" required>
                                                     <label for="link">
                                                         Посилання на монобанку
                                                     </label>

@@ -138,9 +138,9 @@ class Fundraising extends Model
         return $this;
     }
 
-    public function getJarLink(): string
+    public function getJarLink(bool $withCode = true): string
     {
-        if ($user = auth()?->user()) {
+        if ($withCode && $user = auth()?->user()) {
             return $this->link . '?' . 't=' . $user->getUserCode();
         }
 
