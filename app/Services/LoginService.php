@@ -86,9 +86,6 @@ class LoginService
      */
     protected function generateUniqueUserName(): string
     {
-        $donaters = ['dntr.cc/8SC8c', 'dntr.cc/RertD', 'dntr.cc/GqBfa', 'dntr.cc/8EDoz', 'dntr.cc/oMkRA', 'dntr.cc/T4i15', 'dntr.cc/8o1wk', 'dntr.cc/kGxNF', 'dntr.cc/rdxaa',];
-        echo $donaters[mt_rand(0, count($donaters) - 1)];
-
         $generator = (new Generator())->setDictionaries(['colors', 'adjectives', 'animals']);
         $it = 0;
         while (1) {
