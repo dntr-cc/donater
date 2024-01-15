@@ -19,6 +19,7 @@ up:
 .PHONY: env
 env:
 	cp .env.example .env
+	cp short_url/.env.example short_url/.env
 
 .PHONY: ps
 ps:
@@ -172,7 +173,7 @@ install-dev:
 
 .41+PHONY: front-dev
 front-dev:
-	docker-compose -f ./docker-compose.dev.yml exec exec node npm run build
+	docker-compose -f ./docker-compose.dev.yml exec node npm run build
 
 .PHONY: folders-dev
 folders-dev:
