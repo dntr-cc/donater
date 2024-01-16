@@ -62,7 +62,7 @@ class SubscribeProcessCommand extends Command
                 ':amount' => $subscribe->getAmount(),
                 ':donaterCode' => $donater->getUserCode(),
             ]);
-            $callToAction = "\n\nВи можете скопіювати запрошення для ваших друзів робити як ви нижче (копіює по кліку)\n\n`Я підтримую :volunteer щоденним донатом. Мені в телеграм кожен день приходить посилання в обраний мною час. Прошу вас робити так само. Запрошую: :invite`"
+            $callToAction = "\n\nВи можете скопіювати запрошення для ваших друзів робити як ви нижче (копіює по кліку)\n\n`Я підтримую :volunteer щоденним донатом. Мені в телеграм кожен день приходить посилання в обраний мною час. Прошу вас робити так само. Запрошую: :invite`";
             $filledCallToAction = strtr($callToAction, [
                 ':volunteer' => $volunteer->getUserLink(),
                 ':invite'    => $donater->getUserCode(),
