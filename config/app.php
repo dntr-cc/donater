@@ -216,4 +216,5 @@ return [
     ])->toArray(),
 
     'admins_ids' => explode(',', env('ADMINS', '')),
+    'volunteer_chat_link' => env('VOLUNTEER_CHAT_LINK', ''),
 ];

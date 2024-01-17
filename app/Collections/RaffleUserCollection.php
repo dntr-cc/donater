@@ -160,7 +160,8 @@ class RaffleUserCollection extends Collection
             try {
                 $winnersIdsFilter = array_merge($winnersIdsFilter, [$winner->getId()]);
                 $raffleNumbers = $this->getRaffleNumbers($result, $price, $winnersIdsFilter);
-                $fundraisingName = $prize->fundraising()->first()->getName();
+                $prizeFundraising = $prize->fundraising()->first();
+                $fundraisingName = $prizeFundraising->getName();
                 $prizeName = $prize->getName();
                 Telegram::sendMessage([
                     'chat_id' => $winner?->getTelegramId(),
@@ -172,11 +173,11 @@ class RaffleUserCollection extends Collection
                 ]);
                 try {
                     Telegram::sendMessage([
-                        'chat_id' => $winner?->getTelegramId(),
+                        'chat_id' => $prizeFundraising?->getVolunteer()->getTelegramId(),
                         'text' => strtr(self::FUNDRAISING_OWNER_MESSAGE, [
                             ':fundraising' => $fundraisingName,
                             ':prize' => $prizeName,
-                            ':winner' => $winner->getUserHref(),
+                            ':winner' => $winner->getUserLink(),
                         ])
                     ]);
                 } catch (\Throwable $throwable) {

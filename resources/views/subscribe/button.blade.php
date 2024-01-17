@@ -14,6 +14,6 @@
             data-bs-sum="{{ ($subscribe?->getAmount() ?? 33) * 30 }}"
             data-bs-scheduled-at="{{ $subscribe?->getScheduledAt() ?? '10:00' }}"
             data-bs-use-random="{{ $subscribe?->isUseRandom() ? '1' : '0' }}">
-        🍩 <i class="bi bi-currency-exchange"></i>
+        🍩 <i class="bi bi-currency-exchange"></i> Підписатися
     </button>
 </p>

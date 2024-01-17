@@ -31,6 +31,14 @@ class FundraisingController extends Controller
         }
 
         $fundraising = Fundraising::create($attributes);
+        $volunteer = $fundraising->getVolunteer();
+        if (1 === $volunteer->getFundraisings()->count()) {
+            $volunteer->sendBotMessage(
+                'Вітаю! Ви створили свій перший збір. Долучайтеся до чату волонтерів нашого сайту ' .
+                config('app.volunteer_chat_link') . ' Там волонтери шерять свій досвід, можуть задати питання, ' .
+                ' попросити оперативно виправити знайдену багу тощо'
+            );
+        }
 
         return new JsonResponse(['url' => route('fundraising.show', compact('fundraising'))]);
     }
