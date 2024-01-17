@@ -60,7 +60,7 @@
                             </li>
                             <li class="mt-4">
                                 Натисніть на <button type="button" class="btn btn-outline-success">
-                                    🍩 <i class="bi bi-currency-exchange"></i>
+                                    🍩 <i class="bi bi-currency-exchange"></i> Підписатися
                                 </button>
                             </li>
                             <li class="mt-4">
