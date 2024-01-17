@@ -9,6 +9,7 @@ use DateInterval;
 use DatePeriod;
 use DateTime;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * @property array|Row[] $items
@@ -116,5 +117,37 @@ class RowCollection extends Collection
         }
 
         return $result;
+    }
+
+    public function analyticsToText(string $additionalTitle = ''): string
+    {
+        $perDays = $this->perDay();
+        if (count($perDays) === 0) {
+            return '';
+        }
+
+        $text = 'Аналітика' ;
+        if ($additionalTitle) {
+            $text .= $additionalTitle;
+        }
+        $text .= PHP_EOL . PHP_EOL;
+        $text .= 'Донати по дням:'. PHP_EOL;
+        foreach ($perDays as $day => $data) {
+            $text .= "$day: зібрали {$data['amount']}, що є {$data['percent']}% від всієї суми\n";
+        }
+
+        $perAmount = $this->perAmount();
+        $text .= PHP_EOL . 'Донати по сумі:'. PHP_EOL;
+        foreach ($perAmount as $type => $count) {
+            $text .= Str::ucfirst($type) . ": $count шт.\n";
+        }
+
+        $perSum = $this->perSum();
+        $text .= PHP_EOL . 'Сума донатів по сумі:' . PHP_EOL;
+        foreach ($perSum as $type => $sum) {
+            $text .= Str::ucfirst($type) . ": разом $sum грн.\n";
+        }
+
+        return $text;
     }
 }

@@ -25,7 +25,6 @@ services:
     volumes:
       - '.:/var/www/html'
       - './supervisor/deploy.php.conf:/etc/supervisor/conf.d/deploy.php.conf'
-      - './supervisor/schedule.conf:/etc/supervisor/conf.d/schedule.conf'
     networks:
       - sail
     depends_on:
