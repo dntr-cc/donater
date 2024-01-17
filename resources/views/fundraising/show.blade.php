@@ -13,6 +13,7 @@
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
 @php $owner = $fundraising->getVolunteer(); @endphp
+@php $additionalAnalyticsText = ' по збору ' . $fundraising->getName(); @endphp
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>
@@ -54,7 +55,7 @@
                         </div>
                     </div>
                 @endguest
-                @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes'))
+                @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'rows'))
             </div>
         </div>
         <ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">
@@ -132,7 +133,7 @@
                 @include('fundraising.donaters', compact('fundraising'))
             </div>
             <div class="tab-pane fade" id="donates-analytics" role="tabpanel" aria-labelledby="donates-tabs-analytics">
-                @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3'))
+                @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3', 'additionalAnalyticsText'))
             </div>
             @foreach($fundraising->getPrizes() as $it => $prize)
                 <div class="tab-pane fade" id="donates-raffle{{ $it }}" role="tabpanel"

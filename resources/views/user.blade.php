@@ -13,6 +13,8 @@
 @php $additionalClasses = 'btn-xs'; @endphp
 @php $donates = $user->getDonates(); @endphp
 @php $authUser = auth()?->user(); @endphp
+@php $additionalAnalyticsText = ' по користувачу ' . $user->getUserLink(); @endphp
+
 @extends('layouts.base')
 @section('page_title', strtr(':fullName (:username) - користувач сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]))
 @section('page_description', strtr(':fullName (:username) - користувач сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]))
@@ -308,7 +310,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12 px-2 py-2">
-                                                @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3'))
+                                                @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3', 'additionalAnalyticsText'))
                                             </div>
                                         </div>
                                     </div>

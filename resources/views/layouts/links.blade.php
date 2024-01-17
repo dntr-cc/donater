@@ -5,6 +5,7 @@
 @php $withPageLink = $withPageLink ?? false; @endphp
 @php $additionalClasses = $additionalClasses ?? ''; @endphp
 @php $withPrizes = $withPrizes ?? false; @endphp
+@php $rows = $rows ?? false; @endphp
 
 @if($withJarLink)
     <a href="{{ $fundraising->getJarLink() }}" target="_blank" class="btn m-1 {{ $additionalClasses }}">
@@ -30,10 +31,6 @@
         <i class="bi bi-screwdriver"></i>
             Запит в моно
     </a>
-{{--    <a id="anal" class="btn m-1 {{ $additionalClasses }}">--}}
-{{--        <i class="bi bi-search-heart-fill"></i>--}}
-{{--            Аналітика текстом--}}
-{{--    </a>--}}
     <a href="{{route('fundraising.edit', ['fundraising' => $fundraising->getKey()])}}"
        class="btn m-1 {{ $additionalClasses }}">
         <i class="bi bi-pencil-fill"></i>
@@ -232,7 +229,7 @@
         </script>
     @endif
     <script type="module">
-        let mono = `
+        let monoText = `
 Добрий день. Мені треба виписки по банці для сайту donater.com.ua
 
 - {{ $fundraising->getJarLink(false) }}
@@ -246,11 +243,12 @@
 
 Дякую.
 `;
-        $('#mono').on('click', event => {
+        let buttonMono = $('#mono');
+        buttonMono.on('click', event => {
             event.preventDefault();
-            copyContent(mono);
-            toast('Запит в підтримку скопійовано', $('#mono'));
+            copyContent(monoText);
             return false;
         });
+        toast('Запит в підтримку скопійовано', buttonMono);
     </script>
 @endcan
