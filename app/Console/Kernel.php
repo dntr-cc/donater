@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
             /** @uses ValidateDonatesCommand::class */
             $schedule->command('validate:donates '  . $item->getId())->everyMinute();
         }
+        $schedule->command('subscribe:reminder')->weeklyOn(6, '19:00');
     }
 
     /**
