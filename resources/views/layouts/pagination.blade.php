@@ -1,7 +1,6 @@
 @php use Illuminate\Pagination\CursorPaginator; @endphp
 @php /** @var CursorPaginator $paginator */ @endphp
 
-
 @if ($paginator->hasPages())
     <nav class="d-flex justify-items-center">
         <div class="container">

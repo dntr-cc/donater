@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Collections\RowCollection;
 use App\Http\Requests\UserRequest;
-use App\Models\Fundraising;
 use App\Models\User;
 use App\Services\ChartService;
 use App\Services\FileService;
@@ -17,6 +16,7 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     public const string VOLUNTEERS = 'Волонтери';
+    public const int PER_PAGE = 12;
 
     public function show(User $user)
     {
@@ -49,7 +49,7 @@ class UserController extends Controller
 
     public function index(): View
     {
-        $users = User::paginate(9)->fragment('users');
+        $users = User::paginate(self::PER_PAGE)->onEachSide(1);
         $whoIs = 'Користувачі';
 
         return view('users', compact('users', 'whoIs'));
@@ -62,7 +62,7 @@ class UserController extends Controller
      */
     public function volunteers(): View
     {
-        $users = User::query()->withWhereHas('fundraisings')->paginate(9)->fragment('volunteers');
+        $users = User::query()->withWhereHas('fundraisings')->paginate(self::PER_PAGE)->onEachSide(1);
         $whoIs = self::VOLUNTEERS;
 
         return view('users', compact('users', 'whoIs'));

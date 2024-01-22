@@ -122,29 +122,6 @@
                                 </div>
                             </div>
                         @endif
-                        @if(false === $user->settings->hasSetting(UserSetting::DONT_SHOW_REFERRALS) && $items = $user->refs()->get()->all())
-                            <div class="card mb-4 mb-lg-0">
-                                <div class="card-body p-0">
-                                    <ul class="list-group list-group-flush rounded-3">
-                                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                            <h4>Запрошені користувачі</h4>
-                                        </li>
-                                        @foreach($items as $item)
-                                            @php
-                                                /* @var \App\Models\Referral $item */
-                                                $referral = User::find($item->getReferralId());
-                                            @endphp
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                                <i class="bi-arrow-right-short mb-1"></i>
-                                                <p class="mb-0">
-                                                    {!! $referral->getUserHref() !!}
-                                                </p>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        @endif
                         <div class="card mt-4 mb-4 mb-lg-0">
                             <div class="card-body p-0">
                                 <ul class="list-group list-group-flush rounded-3">
@@ -238,7 +215,7 @@
                                         </div>
                                     </div>
                                     <hr>
-                                    @foreach($user->withPrizes()->prizes as $it => $prize)
+                                    @foreach($user->withPrizes()->prizes->filter(fn ($prize) => $prize->isEnabled()) as $it => $prize)
                                         <div class="row">
                                             <div
                                                 class="col-sm-12 d-flex justify-content-between align-items-start">
