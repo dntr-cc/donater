@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        foreach (Subscribe::all() as $subscribe) {
+        foreach (Subscribe::query()->withoutTrashed()->get()->all() as $subscribe) {
             $schedule->command('subscribe:process ' . $subscribe->getId())->daily()->at($subscribe->getScheduledAt());
         }
         foreach (Fundraising::all() as $item) {
