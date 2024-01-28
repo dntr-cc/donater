@@ -22,11 +22,11 @@ class Kernel extends ConsoleKernel
         }
         foreach (Fundraising::all() as $item) {
             /** @uses CacheFundraisingCommand::class */
-            $schedule->command('fundraising:cache ' . $item->getId())->everyMinute();
+            $schedule->command('fundraising:cache ' . $item->getId())->everyFiveMinutes();
             /** @uses ValidateDonatesCommand::class */
-            $schedule->command('validate:donates '  . $item->getId())->everyMinute();
+            $schedule->command('validate:donates '  . $item->getId())->everyFiveMinutes();
         }
-        $schedule->command('subscribe:reminder')->weeklyOn(6, '19:00');
+        $schedule->command('subscribe:reminder')->weeklyOn(7, '19:00');
     }
 
     /**
