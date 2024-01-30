@@ -16,7 +16,7 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     public const string VOLUNTEERS = 'Волонтери';
-    public const int PER_PAGE = 12;
+    public const int PER_PAGE = 15;
 
     public function show(User $user)
     {

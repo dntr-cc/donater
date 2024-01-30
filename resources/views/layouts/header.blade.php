@@ -15,6 +15,12 @@
                 </div>
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                     <li>
+                        <a href="https://forms.gle/BzYqFsaouufsZVAh9" class="nav-link text-white">
+                            <i class="bi bi-cup-hot-fill d-inline mx-auto mb-1"></i>
+                            Мерч
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('analytics') }}" class="nav-link text-white">
                             <i class="bi bi-pie-chart-fill d-inline mx-auto mb-1"></i>
                             Аналітика
