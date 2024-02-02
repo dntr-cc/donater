@@ -38,7 +38,7 @@ class ValidateDonatesCommand extends Command
             $rows = $this->service->getRowCollection($fundraising->getSpreadsheetId(), $fundraisingId);
             foreach ($rows->all() as $item) {
                 $amount = round((float)$item->getAmount(), 2);
-                if ($amount > 0 && !$item->isOwnerTransaction() && !empty($item->getDate())) {
+                if ($amount > 0 && !$item->isOwnerTransaction() && preg_match('/^[0-9]{2}.[0-9]{2}.[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $item->getDate())) {
                     $code = $item->extractCode($item->getComment());
                     if (empty($code)) {
                         continue;
