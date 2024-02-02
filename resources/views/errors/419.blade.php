@@ -1,5 +1,5 @@
-@extends('errors::minimal')
+@extends('layouts.base')
 
-@section('title', __('Page Expired'))
-@section('code', '419')
-@section('message', __('Page Expired'))
+@section('content')
+    <h2>Поверніться назад та оновить сторінку перед повтором дії</h2>
+@endsection

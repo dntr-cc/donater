@@ -1,5 +1,6 @@
-@extends('errors::minimal')
+@extends('layouts.base')
 
-@section('title', __('Unauthorized'))
-@section('code', '401')
-@section('message', __('Unauthorized'))
+@section('content')
+    <h2>Треба авторизація</h2>
+@endsection
+

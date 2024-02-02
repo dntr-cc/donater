@@ -1,6 +1,6 @@
 @extends('layouts.base')
-@section('page_title', 'Створити новий збір - donater.com.ua')
-@section('page_description', 'Створити новий збір - donater.com.ua')
+@section('page_title', strtr('Редагувати ":fundraising" - donater.com.ua', [':fundraising' => $fundraising->getName()]))
+@section('page_description', strtr('Редагувати ":fundraising" - donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @push('head-scripts')
     @vite(['resources/js/tinymce.js'])
 @endpush

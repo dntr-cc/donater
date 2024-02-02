@@ -1,5 +1,5 @@
-@extends('errors::minimal')
+@extends('layouts.base')
 
-@section('title', __('Server Error'))
-@section('code', '500')
-@section('message', __('Server Error'))
+@section('content')
+    <h2>Помилка серверу</h2>
+@endsection
