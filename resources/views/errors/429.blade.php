@@ -1,5 +1,5 @@
-@extends('errors::minimal')
+@extends('layouts.base')
 
-@section('title', __('Too Many Requests'))
-@section('code', '429')
-@section('message', __('Too Many Requests'))
+@section('content')
+    <h2>Забагато запросів, заборонено</h2>
+@endsection

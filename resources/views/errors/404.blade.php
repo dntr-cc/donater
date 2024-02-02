@@ -1,5 +1,6 @@
-@extends('errors::minimal')
+@extends('layouts.base')
 
-@section('title', __('Not Found'))
-@section('code', '404')
-@section('message', __('Not Found'))
+@section('content')
+    <h2>Сторінка не знайдена</h2>
+@endsection
+

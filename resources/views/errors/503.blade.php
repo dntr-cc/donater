@@ -1,5 +1,6 @@
-@extends('errors::minimal')
+@extends('layouts.base')
 
-@section('title', __('Service Unavailable'))
-@section('code', '503')
-@section('message', __('Service Unavailable'))
+@section('content')
+    <h2>Зачекайте, будь ласка, сайт оновлюється...</h2>
+@endsection
+
