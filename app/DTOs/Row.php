@@ -36,7 +36,7 @@ class Row
 
     public function getDate(): string
     {
-        return $this->date;
+        return trim($this->date);
     }
 
     public function getCategory(): string
