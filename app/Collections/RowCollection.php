@@ -17,6 +17,12 @@ use Illuminate\Support\Str;
  */
 class RowCollection extends Collection
 {
+    public const string UAH_10 = 'сума донатів до 10 грн.';
+    public const string UAH_100 = 'сума донатів до 100 грн.';
+    public const string UAH_500 = 'сума донатів до 500 грн.';
+    public const string UAH_1000 = 'сума донатів до 1000 грн.';
+    public const string UAH_1000_PLUS = 'сума донатів 1000+ грн.';
+
     /**
      * @return array|Row[]
      */
@@ -71,17 +77,16 @@ class RowCollection extends Collection
 
     public function perAmount(): ?array
     {
-        $result = [];
+        $result = $this->getEmptyResult();
         foreach ($this->all() as $item) {
             if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
                 $amount = (float)$item->getAmount();
                 $type = match (true) {
-                    $amount === 0.00 => null,
-                    $amount <= 10 => 'донат до 10 грн.',
-                    $amount <= 100 => 'донат до 100 грн.',
-                    $amount <= 500 => 'донат до 500 грн.',
-                    $amount <= 1000 => 'донат до 1000 грн.',
-                    $amount > 1000 => 'донати 1000+ грн.',
+                    $amount <= 10 => self::UAH_10,
+                    $amount <= 100 => self::UAH_100,
+                    $amount <= 500 => self::UAH_500,
+                    $amount <= 1000 => self::UAH_1000,
+                    $amount > 1000 => self::UAH_1000_PLUS,
                     default => null,
                 };
                 if ($type) {
@@ -96,17 +101,16 @@ class RowCollection extends Collection
 
     public function perSum(): ?array
     {
-        $result = [];
+        $result = $this->getEmptyResult();
         foreach ($this->all() as $item) {
             if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
                 $amount = (float)$item->getAmount();
                 $type = match (true) {
-                    $amount === 0.00 => null,
-                    $amount <= 10 => 'сума донатів до 10 грн.',
-                    $amount <= 100 => 'сума донатів до 100 грн.',
-                    $amount <= 500 => 'сума донатів до 500 грн.',
-                    $amount <= 1000 => 'сума донатів до 1000 грн.',
-                    $amount > 1000 => 'сума донатів 1000+ грн.',
+                    $amount <= 10 => self::UAH_10,
+                    $amount <= 100 => self::UAH_100,
+                    $amount <= 500 => self::UAH_500,
+                    $amount <= 1000 => self::UAH_1000,
+                    $amount > 1000 => self::UAH_1000_PLUS,
                     default => null,
                 };
                 if ($type) {
@@ -126,18 +130,18 @@ class RowCollection extends Collection
             return '';
         }
 
-        $text = 'Аналітика' ;
+        $text = 'Аналітика';
         if ($additionalTitle) {
             $text .= $additionalTitle;
         }
         $text .= PHP_EOL . PHP_EOL;
-        $text .= 'Донати по дням:'. PHP_EOL;
+        $text .= 'Донати по дням:' . PHP_EOL;
         foreach ($perDays as $day => $data) {
             $text .= "$day: зібрали {$data['amount']}, що є {$data['percent']}% від всієї суми\n";
         }
 
         $perAmount = $this->perAmount();
-        $text .= PHP_EOL . 'Донати по сумі:'. PHP_EOL;
+        $text .= PHP_EOL . 'Донати по сумі:' . PHP_EOL;
         foreach ($perAmount as $type => $count) {
             $text .= Str::ucfirst($type) . ": $count шт.\n";
         }
@@ -149,5 +153,19 @@ class RowCollection extends Collection
         }
 
         return $text;
+    }
+
+    /**
+     * @return int[]
+     */
+    protected function getEmptyResult(): array
+    {
+        return [
+            self::UAH_10        => 0,
+            self::UAH_100       => 0,
+            self::UAH_500       => 0,
+            self::UAH_1000      => 0,
+            self::UAH_1000_PLUS => 0,
+        ];
     }
 }
