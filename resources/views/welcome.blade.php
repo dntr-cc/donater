@@ -1,6 +1,6 @@
 @extends('layouts.base')
-@section('page_title', 'donater.com.ua - Інтернет спільнота реальних людей, які донатять на Сили Оборони України.')
-@section('page_description', 'donater.com.ua - Інтернет спільнота реальних людей, які донатять на Сили Оборони України.')
+@section('page_title', 'donater.com.ua - Донатити будуть всі')
+@section('page_description', 'donater.com.ua - Донатити будуть всі. Телеграм бот для нагадувань донатів своїм волонтерам.')
 
 @section('content')
     <div class="container my-5">
