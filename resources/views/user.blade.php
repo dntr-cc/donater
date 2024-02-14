@@ -90,6 +90,7 @@
                                             @php $volunteer = $user; @endphp
                                             <div class="mt-1">
                                                 @include('subscribe.button', compact('volunteer', 'authUser'))
+                                                @include('subscribe.modal')
                                             </div>
                                         @endif
                                     </div>
@@ -165,7 +166,6 @@
                                     </ul>
                                 </div>
                             </div>
-                            @include('subscribe.modal')
                         @endcan
                     </div>
                     <div class="col-lg-8">
