@@ -63,6 +63,18 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
+                                <a href="https://t.me/donatercomua" class="dropdown-item">
+                                    <i class="bi bi-telegram d-inline mx-auto mb-1"></i>
+                                    Телеграм
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://telegra.ph/donatercomua---podroboc%D1%96-proektu-01-23" class="dropdown-item">
+                                    <i class="bi bi-three-dots-vertical d-inline mx-auto mb-1"></i>
+                                    Опис (10хв читання)
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('faq') }}" class="dropdown-item">
                                     <i class="bi bi-question-circle-fill d-inline mx-auto mb-1"></i>
                                     Довідка
