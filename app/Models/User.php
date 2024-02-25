@@ -99,6 +99,14 @@ class User extends Authenticatable
     /**
      * @return HasMany
      */
+    public function allDonates(): HasMany
+    {
+        return $this->hasMany(Donate::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
     public function fundraisings(): HasMany
     {
         return $this->hasMany(Fundraising::class, 'user_id', 'id');
@@ -311,7 +319,7 @@ class User extends Authenticatable
 
     public function getDonateCount(): int
     {
-        return $this->donates->count();
+        return self::with('allDonates')->where('id', '=', $this->getId())->first()?->donates->count();
     }
 
     public function getPrizesCount(): int
