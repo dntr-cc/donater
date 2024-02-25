@@ -35,7 +35,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $with = ['donates', 'fundraisings', 'links', 'settings', 'prizes'];
+    protected $with = ['fundraisings', 'links', 'settings'];
     public const array ESCAPE_MAP = [
         '_' => '\_',
         '*' => '\*',
@@ -299,14 +299,9 @@ class User extends Authenticatable
         return $this->updated_at;
     }
 
-    public function getNotValidatedDonatesCount(): int
-    {
-        return $this->getDonates()->count() - $this->getDonateCount();
-    }
-
     public function getDonates(): Collection|array
     {
-        return $this->donates;
+        return self::with('donates')->where('id', '=', $this->getId())->limit(10)->first()?->donates;
     }
 
     public function getFundraisings(): Collection|array
