@@ -30,6 +30,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
  * @property Collection|Prize[] $prizes
  * @property Collection|UserLink[] $links
  * @property UserSettingsCollection|UserSetting[] $settings
+ * @property int $donates_all_count
  */
 class User extends Authenticatable
 {
@@ -75,6 +76,10 @@ class User extends Authenticatable
     {
         parent::boot();
 
+        static::addGlobalScope('donates_all_count', static function (Builder $builder) {
+            $builder->withCount('donatesAll');
+        });
+
         static::addGlobalScope(static function (Builder $builder) {
             $builder->orderBy('id', 'desc');
         });
@@ -94,6 +99,14 @@ class User extends Authenticatable
     public function donates(): HasMany
     {
         return $this->hasMany(Donate::class, 'user_id', 'id')->limit(10);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function donatesAll(): HasMany
+    {
+        return $this->hasMany(Donate::class, 'user_id', 'id');
     }
 
     /**
@@ -311,7 +324,7 @@ class User extends Authenticatable
 
     public function getDonateCount(): int
     {
-        return $this->donates->count();
+        return $this->donates_all_count;
     }
 
     public function getPrizesCount(): int
