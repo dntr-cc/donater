@@ -264,7 +264,7 @@
                                         <div class="row">
                                             <div class="col-md-7">
                                                 <div class="me-auto mt-auto">
-                                                    <h4>Донати</h4>
+                                                    <h4>Донати (крайні 10)</h4>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
