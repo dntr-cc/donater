@@ -93,7 +93,7 @@ class User extends Authenticatable
      */
     public function donates(): HasMany
     {
-        return $this->hasMany(Donate::class, 'user_id', 'id');
+        return $this->hasMany(Donate::class, 'user_id', 'id')->limit(10);
     }
 
     /**
@@ -301,7 +301,7 @@ class User extends Authenticatable
 
     public function getDonates(): Collection|array
     {
-        return self::with('donates')->where('id', '=', $this->getId())->limit(10)->first()?->donates;
+        return self::with('donates')->where('id', '=', $this->getId())->first()?->donates;
     }
 
     public function getFundraisings(): Collection|array
