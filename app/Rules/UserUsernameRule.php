@@ -20,15 +20,15 @@ class UserUsernameRule implements InvokableRule
     function __invoke($attribute, $value, $fail)
     {
         if (mb_strlen($value) < 3) {
-            $fail('Username is forbidden');
+            $fail('Username закороткий. Від 3 символів.');
         }
         foreach (['admin', 'administrator', 'moderator', 'support'] as $forbidden) {
             if (str_contains(mb_strtolower($value), $forbidden)) {
-                $fail('Username is forbidden');
+                $fail('Username містить в собі заборонено слово.');
             }
         }
         if (User::query()->where('username', '=', $value)->count() > 0) {
-            $fail('Username is forbidden');
+            $fail('Username зайнятий.');
         }
     }
 }

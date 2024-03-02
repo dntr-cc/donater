@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SubscribeRequestCreate;
 use App\Http\Requests\SubscribeRequestUpdate;
 use App\Models\Subscribe;
+use App\Models\SubscribesMessage;
 use App\Models\UserSetting;
 use Illuminate\Http\JsonResponse;
 
@@ -19,6 +20,11 @@ class SubscribeController extends Controller
         $this->authorize('create', Subscribe::class);
 
         $subscribe = Subscribe::createOrRestore($request->validated());
+        SubscribesMessage::create([
+            'subscribes_id' => $subscribe->getId(),
+            'frequency' => $subscribe->getFrequency(),
+            'scheduled_at' => $subscribe->getFirstMessageAt(),
+        ]);
         $volunteer = $subscribe->getVolunteer();
         $this->notifyVolunteer($volunteer, $subscribe, self::SUBSCRIPTION_CREATE_MESSAGE);
 
@@ -30,6 +36,11 @@ class SubscribeController extends Controller
         $this->authorize('update', $subscribe);
 
         $subscribe->update($request->validated());
+        SubscribesMessage::create([
+            'subscribes_id' => $subscribe->getId(),
+            'frequency' => $subscribe->getFrequency(),
+            'scheduled_at' => $subscribe->getFirstMessageAt(),
+        ]);
         $volunteer = $subscribe->getVolunteer();
         $this->notifyVolunteer($volunteer, $subscribe, self::SUBSCRIPTION_UPDATE_MESSAGE);
 

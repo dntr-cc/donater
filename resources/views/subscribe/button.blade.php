@@ -11,9 +11,12 @@
             data-bs-url="{{ $subscribe ? route('subscribe.update', compact('subscribe')) : route('subscribe.create') }}"
             data-bs-del-url="{{ $subscribe ? route('subscribe.delete', compact('subscribe')) : '' }}"
             data-bs-amount="{{ $subscribe?->getAmount() ?? 33 }}"
-            data-bs-sum="{{ ($subscribe?->getAmount() ?? 33) * 30 }}"
-            data-bs-scheduled-at="{{ $subscribe?->getScheduledAt() ?? '10:00' }}"
+            data-bs-frequency="{{ $subscribe?->getNextSubscribesMessage()?->getFrequency() ?? \App\Models\SubscribesMessage::DAILY_NAME }}"
+            data-bs-first-message-at="{{ $subscribe?->getNextSubscribesMessage()?->getScheduledAt()->format('Y-m-d H:i') ?? date('Y-m-d H:i', strtotime('+1 hour')) }}"
             data-bs-use-random="{{ $subscribe?->isUseRandom() ? '1' : '0' }}">
         🍩 <i class="bi bi-currency-exchange"></i> {{ $subscribe ? 'Редагувати' : 'Підписатися' }}
     </button>
 </p>
+@php
+    //    dd()
+@endphp

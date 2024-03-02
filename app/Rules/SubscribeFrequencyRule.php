@@ -2,11 +2,10 @@
 
 namespace App\Rules;
 
-use App\Models\UserLink;
 use Closure;
 use Illuminate\Contracts\Validation\InvokableRule;
 
-class UserLinkIconRule implements InvokableRule
+class SubscribeFrequencyRule implements InvokableRule
 {
     /**
      * Run the validation rule.
@@ -19,8 +18,8 @@ class UserLinkIconRule implements InvokableRule
     public
     function __invoke($attribute, $value, $fail)
     {
-        if (!isset(UserLink::ICONS[$value])) {
-            $fail('Невірний атрибут іконки');
+        if (strtotime($value) < time()) {
+            $fail('Обрано дату та час в минулому');
         }
     }
 }
