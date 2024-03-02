@@ -17,9 +17,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        foreach (Subscribe::query()->withoutTrashed()->get()->all() as $subscribe) {
-            $schedule->command('subscribe:process ' . $subscribe->getId())->daily()->at($subscribe->getScheduledAt());
-        }
         foreach (Fundraising::all() as $item) {
             /** @uses CacheFundraisingCommand::class */
             $schedule->command('fundraising:cache ' . $item->getId())->everyFiveMinutes();
@@ -27,6 +24,7 @@ class Kernel extends ConsoleKernel
             $schedule->command('validate:donates '  . $item->getId())->everyFiveMinutes();
         }
         $schedule->command('subscribe:reminder')->weeklyOn(7, '14:00');
+        $schedule->command('subscribe:scheduler')->everyMinute();
     }
 
     /**

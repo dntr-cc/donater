@@ -19,9 +19,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property float $amount
  * @property Carbon $scheduled_at
  * @property bool $use_random
+ * @property string $frequency
+ * @property Carbon $first_message_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
+ * @property SubscribesMessage|null $subscribes
  */
 class Subscribe extends Model
 {
@@ -33,6 +36,12 @@ class Subscribe extends Model
         'amount',
         'scheduled_at',
         'use_random',
+        'first_message_at',
+        'frequency',
+    ];
+
+    protected $casts = [
+        'first_message_at' => 'datetime',
     ];
 
     protected function scheduledAt(): Attribute
@@ -50,6 +59,11 @@ class Subscribe extends Model
     public function volunteer(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'volunteer_id');
+    }
+
+    public function subscribes(): HasOne
+    {
+        return $this->hasOne(SubscribesMessage::class, 'subscribes_id', 'id');
     }
 
     public function getUserId(): int
@@ -132,6 +146,16 @@ class Subscribe extends Model
         return $this->deleted_at;
     }
 
+    public function getFrequency(): string
+    {
+        return $this->frequency;
+    }
+
+    public function getFirstMessageAt(): Carbon
+    {
+        return $this->first_message_at;
+    }
+
     public function getVolunteer(): User
     {
         return self::with('volunteer')->where('id', '=', $this->getId())->first()->volunteer;
@@ -140,5 +164,28 @@ class Subscribe extends Model
     public function getDonater(): User
     {
         return self::with('donater')->where('id', '=', $this->getId())->first()->donater;
+    }
+
+    public function getNextSubscribesMessage(): ?SubscribesMessage
+    {
+        return self::with('subscribes')->where('id', '=', $this->getId())->first()->subscribes;
+    }
+
+    public function getModifier(string $frequency): string
+    {
+        $days = (int)date('t');
+
+        return match (true) {
+            $frequency === SubscribesMessage::EACH_2_DAYS_NAME => SubscribesMessage::EACH_2_DAYS_VALUE,
+            $frequency === SubscribesMessage::EACH_3_DAYS_NAME => SubscribesMessage::EACH_3_DAYS_VALUE,
+            $frequency === SubscribesMessage::WEEKLY_NAME => SubscribesMessage::WEEKLY_VALUE,
+            $frequency === SubscribesMessage::MONTHLY_NAME => SubscribesMessage::MONTHLY_VALUE,
+            $frequency === SubscribesMessage::BIWEEKLY_DAYS_NAME => match ($days) {
+                31     => '+16 days',
+                30, 29 => '+15 days',
+                28 => '+14 days',
+            },
+            default => SubscribesMessage::DAILY_VALUE,
+        };
     }
 }

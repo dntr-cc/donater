@@ -22,17 +22,20 @@
                         </label>
                     </div>
                     <div class="form-floating py-1">
-                        <input type="number" class="form-control" name="sum"
-                               id="sum" value="990" disabled>
-                        <label for="sum">
-                            Прогноз витрат за 30 днів
+                        <select id="frequency" class="form-select">
+                            @foreach(\App\Models\SubscribesMessage::FREQUENCY_NAME_MAP as $key => $name)
+                                <option value="{{ $key }}">{{$name}}</option>
+                            @endforeach
+                        </select>
+                        <label for="frequency">
+                            Періодичність нагадувань
                         </label>
                     </div>
                     <div class="form-floating py-1">
-                        <input type="text" class="form-control js-time-picker" name="scheduled_at"
-                               id="scheduled_at" value="10:00">
-                        <label for="scheduled_at">
-                            Час нагадування донату від бота
+                        <input type="text" class="form-control js-time-picker" name="first_message_at"
+                               id="first_message_at" value="">
+                        <label for="first_message_at">
+                            День та час наступного нагадування донату від бота
                         </label>
                         <div class="js-mini-picker-container"></div>
                     </div>
@@ -86,8 +89,9 @@
             data: {
                 user_id: {{ auth()->user()->getId() }},
                 volunteer_id: $('#volunteer_id').val(),
+                frequency: $('#frequency').val(),
                 amount: $('#amount').val(),
-                scheduled_at: $('#scheduled_at').val(),
+                first_message_at: $('#first_message_at').val(),
                 use_random: $('#use_random').is(':checked') ? '1' : '0',
             },
             headers: {
@@ -114,10 +118,9 @@
     subscribe.addEventListener('show.bs.modal', event => {
         let button = event.relatedTarget;
         subscribe.querySelector('#volunteer_id').value = button.getAttribute('data-bs-volunteer-id');
-        subscribe.querySelector('#amount').value = button.getAttribute('data-bs-amount');
-        subscribe.querySelector('#sum').value = button.getAttribute('data-bs-sum');
-        let time = button.getAttribute('data-bs-scheduled-at');
-        subscribe.querySelector('#scheduled_at').value = time;
+        subscribe.querySelector('#frequency').value = button.getAttribute('data-bs-frequency');
+        let time = button.getAttribute('data-bs-first-message-at');
+        subscribe.querySelector('#first_message_at').value = time;
         if (picker) {
             picker.destroy();
         }
@@ -138,9 +141,9 @@
         subscribe.querySelector('#subscribe-action').setAttribute('data-del-url', button.getAttribute('data-bs-del-url'));
         subscribe.querySelector('#subscribe-action').setAttribute('data-url', button.getAttribute('data-bs-url'));
         subscribe.querySelector('#subscribe-action').setAttribute('data-action-type', actionType);
-        picker = new Picker(document.getElementById('scheduled_at'), {
+        picker = new Picker(document.getElementById('first_message_at'), {
             container: '.js-mini-picker-container',
-            format: 'HH:mm',
+            format: 'YYYY-MM-DD HH:mm',
             setDate: time,
             controls: true,
             inline: true,

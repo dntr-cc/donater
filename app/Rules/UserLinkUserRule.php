@@ -20,7 +20,7 @@ class UserLinkUserRule implements InvokableRule
     function __invoke($attribute, $value, $fail)
     {
         if (UserLink::query()->where('user_id', '=', $value)->count() > 10) {
-            $fail('Only 10 links allowed');
+            $fail('Тільки 10 посилань дозволено');
         }
     }
 }
