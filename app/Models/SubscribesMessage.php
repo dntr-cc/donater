@@ -27,7 +27,6 @@ class SubscribesMessage extends Model
     public const string EACH_3_DAYS_NAME = 'each_3_days';
     public const string WEEKLY_VALUE = '+7 day';
     public const string WEEKLY_NAME = 'weekly';
-    public const string BIWEEKLY_DAYS_VALUE = '+15 day';
     public const string BIWEEKLY_DAYS_NAME = 'biweekly';
     public const string MONTHLY_VALUE = '+1 month';
     public const string MONTHLY_NAME = 'monthly';

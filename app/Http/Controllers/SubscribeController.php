@@ -6,14 +6,15 @@ use App\Http\Requests\SubscribeRequestCreate;
 use App\Http\Requests\SubscribeRequestUpdate;
 use App\Models\Subscribe;
 use App\Models\SubscribesMessage;
+use App\Models\User;
 use App\Models\UserSetting;
 use Illuminate\Http\JsonResponse;
 
 class SubscribeController extends Controller
 {
-    public const string SUBSCRIPTION_CREATE_MESSAGE = 'Створена нова підписка! Очікуйте :amount грн. від @:donater щодня о :time';
-    public const string SUBSCRIPTION_UPDATE_MESSAGE = 'Підписка буда змінена! Очікуйте :amount грн. від @:donater щодня о :time';
-    public const string SUBSCRIPTION_DELETED_MESSAGE = 'Підписка буда видалена! Ви більше не будете отримувати :amount грн. від @:donater щодня о :time';
+    public const string SUBSCRIPTION_CREATE_MESSAGE = 'Створена нова підписка! Очікуйте :amount грн. від @:donater вперше в :first, а потім :frequency';
+    public const string SUBSCRIPTION_UPDATE_MESSAGE = 'Підписка буда змінена! Очікуйте :amount грн. від @:donate вперше в :first, а потім :frequency';
+    public const string SUBSCRIPTION_DELETED_MESSAGE = 'Підписка буда видалена! Ви більше не будете отримувати :amount грн. від @:donater';
 
     public function store(SubscribeRequestCreate $request)
     {
@@ -57,14 +58,15 @@ class SubscribeController extends Controller
         return new JsonResponse(['csrf' => $this->getNewCSRFToken()]);
     }
 
-    private function notifyVolunteer($volunteer, $subscribe, $messageTemplate)
+    private function notifyVolunteer(User $volunteer, Subscribe $subscribe, string $messageTemplate)
     {
         if (!$volunteer->settings->hasSetting(UserSetting::DONT_SEND_SUBSCRIBERS_INFORMATION)) {
             $donater = $subscribe->getDonater();
             $message = strtr($messageTemplate, [
                 ':amount' => $subscribe->getAmount(),
                 ':donater' => $donater->getUsername(),
-                ':time' => $subscribe->getScheduledAt(),
+                ':first' => $subscribe->getFirstMessageAt(),
+                ':frequency' => mb_strtolower(SubscribesMessage::FREQUENCY_NAME_MAP[$subscribe->getFrequency() ?? ''] ?? ''),
             ]);
 
             $volunteer->sendBotMessage($message);
