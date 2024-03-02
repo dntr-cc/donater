@@ -90,7 +90,6 @@
                                             @php $volunteer = $user; @endphp
                                             <div class="mt-1">
                                                 @include('subscribe.button', compact('volunteer', 'authUser'))
-                                                @include('subscribe.modal')
                                             </div>
                                         @endif
                                     </div>
@@ -486,6 +485,7 @@
                 </div>
             </div>
         @endcan
+        @include('subscribe.modal')
         <script type="module">
             @if($dntr)
             let welcome = Modal.getOrCreateInstance(document.getElementById('welcomeVolunteerModal'));
