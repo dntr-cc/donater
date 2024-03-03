@@ -81,6 +81,7 @@
         });
         return false;
     });
+    @auth
     subscribeAction.on('click', event => {
         event.preventDefault();
         $.ajax({
@@ -109,6 +110,7 @@
         });
         return false;
     });
+    @endauth
     $('#amount').on('change input', () => {
         $('#sum').val($('#amount').val() * 30);
     });
