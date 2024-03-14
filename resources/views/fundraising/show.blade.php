@@ -49,7 +49,7 @@
                         <div class="form-floating input-group">
                             <input type="text" class="form-control" id="userCode"
                                    value="{{ auth()?->user()->getUserCode() }}" disabled>
-                            <label for="userCode">Код донатера (регістр букв обов'язковий!)</label>
+                            <label for="userCode">Код донатера</label>
                             <button id="copyCode" class="btn btn-outline-secondary" onclick="return false;">
                                 <i class="bi bi-copy"></i></button>
                         </div>

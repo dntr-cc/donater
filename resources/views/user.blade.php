@@ -59,7 +59,8 @@
                                 <h4 class="m-3 text-muted">{{ $user->getAtUsername() }}</h4>
                                 <h6 class="m-3 text-muted">Дата реєстрації {{ $user->getCreatedAt() }}</h6>
                                 @if($ref = \App\Models\Referral::query()->where('referral_id', '=', $user->getId())->get()->first())
-                                <h6 class="m-3 text-muted">по запрошенню {!! $ref->getInviter()->getUserHref() !!}</h6>
+                                    <h6 class="m-3 text-muted">по
+                                        запрошенню {!! $ref->getInviter()->getUserHref() !!}</h6>
                                 @endif
                                 <div class="d-flex justify-content-center mb-2">
                                     <div class="form-floating input-group">
@@ -74,25 +75,25 @@
                                     <div class="form-floating input-group">
                                         <input type="text" class="form-control" id="userCode"
                                                value="{{ $user->getUserCode() }}" disabled>
-                                        <label for="userCode">Код донатера (регістр букв обов'язковий!)</label>
+                                        <label for="userCode">Код донатера</label>
                                         <button id="copyCode" class="btn btn-outline-secondary" onclick="return false;">
                                             <i class="bi bi-copy"></i></button>
                                     </div>
                                 </div>
-                                    <div class="d-flex justify-content-center align-items-center mb-2">
-                                        @can('update', $user)
-                                            <button class="btn m-1 btn-outline-dark" data-bs-toggle="modal"
-                                                    data-bs-target="#userEditSettingsModal">
-                                                Налаштування
-                                            </button>
-                                        @endif
-                                        @if($authUser && $user->fundraisings->count() > 0)
-                                            @php $volunteer = $user; @endphp
-                                            <div class="mt-1">
-                                                @include('subscribe.button', compact('volunteer', 'authUser'))
-                                            </div>
-                                        @endif
-                                    </div>
+                                <div class="d-flex justify-content-center align-items-center mb-2">
+                                    @can('update', $user)
+                                        <button class="btn m-1 btn-outline-dark" data-bs-toggle="modal"
+                                                data-bs-target="#userEditSettingsModal">
+                                            Налаштування
+                                        </button>
+                                    @endif
+                                    @if($authUser && $user->fundraisings->count() > 0)
+                                        @php $volunteer = $user; @endphp
+                                        <div class="mt-1">
+                                            @include('subscribe.button', compact('volunteer', 'authUser'))
+                                        </div>
+                                    @endif
+                                </div>
 
                             </div>
                         </div>
@@ -156,7 +157,8 @@
                                             <h4>Підписки на волонтерів</h4>
                                         </li>
                                         @foreach($user->getSubscribes()->all() as $subscribe)
-                                            <div class="list-group-item d-flex justify-content-between align-items-start">
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start">
                                                 @php $volunteer = $subscribe->getVolunteer(); @endphp
                                                 <p>{!! $volunteer->getUserHref() !!}</p>
                                                 @include('subscribe.button', compact('volunteer', 'authUser'))
@@ -223,8 +225,9 @@
                                                 </div>
                                                 <div>
                                                     @if($prize->isNeedApprove())
-                                                        Збір: <a href="{{ url(route('fundraising.show', ['fundraising' => $prize->fundraising->getKey()])) }}"
-                                                                 class="">
+                                                        Збір: <a
+                                                            href="{{ url(route('fundraising.show', ['fundraising' => $prize->fundraising->getKey()])) }}"
+                                                            class="">
                                                             {{ $prize->fundraising->getName() }}
                                                         </a>
                                                         <a href="{{ route('prize.decline', compact('prize')) }}"
@@ -308,14 +311,43 @@
                                 <form class="form">
                                     <div class="modal-body">
                                         <p>
-                                            donater.com.ua це платформа, яка зроблена для волонтерів допомагати робити
-                                            збори більш прозорими. Благодійники можуть вказувати свій унікальний код
-                                            донатера, це дозволяє потім через виписку метчіти донати з користувачами
-                                            сайту. Таким чином це дає волонтерам додаткові можливості, такі як розіграші
-                                            серед донаторів з різними налаштуваннями, аналітика по збору, чи загалом по
-                                            всім зборам тощо. Також це дозволяє робити підписку на волонтера, яка
-                                            значить що донатер/ка буде вносити фіксовану суму на ваши збори. З часом це
-                                            буде допомогати планувати збори, будувати звіти P&L, Cash Flow, BS тощо
+                                            donater.com.ua - платформа для волонтерів та донаторів, яка робить процес
+                                            зборів більш прозорим, а накопичення коштів на потреби ЗСУ - стабільним.
+                                        </p>
+                                        <p class="bold">
+                                            Коротко це той самий "лайк-підписка-дзвоник", де замість нового контенту вам
+                                            приходить посилання на банку вашого волонтера, з обраною вами сумою та за
+                                            вашим розкладом.
+                                        </p>
+                                        <p>
+                                            <strong>Якщо подробніше</strong>, то головна функція платформи - підписка на
+                                            волонтера з зазначенням прийнятної для донатора суми та розкладом
+                                            нагадувань. Коли волонтер має відкритий збір, то донатори, що підписалися на
+                                            нього, отримують нагадування з посиланням на банку зборів «свого» волонтера.
+                                            Таким чином донатори можуть робити регулярні внески на актуальну банку
+                                            волонтера. Що більше, нагадування вже має зашитий в посилання код донатора,
+                                            що дає можливість побачити, від кого саме з користувачів поступив внесок. А
+                                            це важливо, адже платформа надає волонтерам можливість заохочувати своїх
+                                            донаторів призами, які розігруються тільки серед донаторів сайту. До речі,
+                                            донатори теж можуть пропонувати свої призи для зборів. Від волонтера
+                                            потрібно лише додати наявний приз до себе на збір.
+                                        </p>
+                                        <p>
+                                            <strong>Та головне!</strong> Платформу створено для забезпечення регулярного
+                                            надсилання донатів. Сума значення не має. Набагато простіше планувати
+                                            виробництво FPV, якщо маєш 3000 грн в день від 1000 людей, які регулярно
+                                            надсилають 3грн (ми дуже вдячні за донат в 3грн, приводіть друзів, ми хочемо
+                                            зробити донатерами всіх, хто здатен користуватися інтернетом), чим очікувати
+                                            на фінансування від поодинокого донатора, якій може задонатити (а може й ні)
+                                            100к раз на місяць.
+                                        </p>
+                                        <p>
+                                            Повний опис всього функціоналу в форматі треда твітера - <a
+                                                href="https://x.com/setnemo/status/1749896475667026256?s=20"
+                                                target="_blank">тут</a>. А якщо
+                                            хочеться окремим лонгрідом - <a
+                                                href="https://telegra.ph/donatercomua---podroboc%D1%96-proektu-01-23"
+                                                target="_blank">тут</a>.
                                         </p>
                                         <p>
                                             Наразі сайт у відкритому бета-тесті. Плани розвитку сайту можна почитати в
