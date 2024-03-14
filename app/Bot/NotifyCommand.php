@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Bot;
 
 use App\Models\User;
+use App\Models\UserSetting;
 use Telegram\Bot\Commands\Command;
 
 class NotifyCommand extends Command
@@ -22,10 +23,14 @@ class NotifyCommand extends Command
     public function handle(): void
     {
         $chatId = $this->getUpdate()?->getChat()?->getId();
-        $blocked = [];
+        $blocked = $skipped = [];
         $it = 0;
         if (in_array($chatId, config('app.admins_ids'))) {
             foreach (User::all() as $user) {
+                if ($user->settings->hasSetting(UserSetting::DONT_SEND_MARKETING_MESSAGES)) {
+                    $skipped[] = $user->getUserLink();
+                    continue;
+                }
                 try {
                     \Telegram::sendMessage([
                         'chat_id' => $user->getTelegramId(),
@@ -36,7 +41,11 @@ class NotifyCommand extends Command
                     $blocked[] = $user->getUserLink();
                 }
             }
-            $this->replyWithMessage(['text' => 'Blocked:' . implode(', ', $blocked) . PHP_EOL . 'Send messages: ' . $it]);
+            $this->replyWithMessage(['text' =>
+                'Blocked ('. count($blocked) . '):' . implode(', ', $blocked) . PHP_EOL . PHP_EOL .
+                'Skipped ('. count($skipped) . '):' . implode(', ', $skipped) . PHP_EOL . PHP_EOL .
+                'Send messages: ' . $it
+            ]);
         }
     }
 }

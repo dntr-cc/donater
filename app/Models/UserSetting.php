@@ -22,6 +22,7 @@ class UserSetting extends Model
     public const string DONT_SHOW_CREATE_PRIZES = 'dont_show_create_prizes';
     public const string DONT_SHOW_REFERRALS = 'dont_show_referrals';
     public const string DONT_SEND_SUBSCRIBERS_INFORMATION = 'dont_send_subscribers_information';
+    public const string DONT_SEND_MARKETING_MESSAGES = 'dont_send_marketing_messages';
     protected $fillable = [
         'setting',
         'user_id',
@@ -33,6 +34,7 @@ class UserSetting extends Model
         self::DONT_SHOW_CREATE_FUNDRAISING      => 'Не показувати розділ "Збори та Фонди" (не планую створювати збори)',
         self::DONT_SHOW_CREATE_PRIZES           => 'Не показувати розділ "Призи для донаторів" (не планую створювати призи)',
         self::DONT_SHOW_REFERRALS               => 'Не показувати розділ "Запрошені користувачі"',
+        self::DONT_SEND_MARKETING_MESSAGES      => 'Не отримувати повідомлення маркетингових нагадувань чи розсилок',
         self::DONT_SEND_SUBSCRIBERS_INFORMATION => 'Як волонтер: не отримувати повідомлення про додавання/видалення/зміни підписок серійних донатерів',
     ];
 
