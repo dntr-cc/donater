@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Subscribe;
 use App\Models\User;
+use App\Models\UserSetting;
 use Illuminate\Console\Command;
 
 class SubscribeReminderCommand extends Command
@@ -16,19 +17,25 @@ class SubscribeReminderCommand extends Command
     public function handle(): void
     {
         $users = User::query()->whereNotIn('id', Subscribe::query()->get()->pluck('user_id')->toArray())->get();
-
-        $block = [];
+        $blocked = $skipped = [];
+        $it = 0;
         foreach ($users->all() as $user) {
+            if ($user->settings->hasSetting(UserSetting::DONT_SEND_MARKETING_MESSAGES)) {
+                $skipped[] = $user->getUserLink();
+                continue;
+            }
             try {
                 $user->sendBotMessage(self::MESSAGE . $user->getUserCode());
-            } catch (\Throwable $t) {
-                $block[] = $user;
+                $it++;
+            } catch (\Throwable $exception) {
+                $blocked[] = $user->getUserLink();
             }
         }
-        $txt = '';
-        foreach ($block as $b) {
-            $txt .= $b->getUserLink() . PHP_EOL;
-        }
-        User::find(1)->sendBotMessage("subscribe:reminder skipped users\n\n" . $txt);
+        User::find(1)->sendBotMessage(
+            'subscribe:reminder skipped users' . PHP_EOL . PHP_EOL .
+            'Blocked ('. count($blocked) . '):' . implode(', ', $blocked) . PHP_EOL . PHP_EOL .
+            'Skipped ('. count($skipped) . '):' . implode(', ', $skipped) . PHP_EOL . PHP_EOL .
+            'Send messages: ' . $it
+        );
     }
 }
