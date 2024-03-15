@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Donate;
 use App\Models\Fundraising;
 use App\Models\User;
+use App\Models\UserSetting;
 use App\Services\GoogleServiceSheets;
 use App\Services\UserCodeService;
 use Carbon\Carbon;
@@ -61,7 +62,11 @@ class ValidateDonatesCommand extends Command
                         'fundraising_id' => $fundraisingId,
                         'created_at'     => $createdAt,
                     ]);
-                    $telegramId = User::find($userId)->getTelegramId();
+                    $user = User::find($userId);
+                    $telegramId = $user->getTelegramId();
+                    if ($user->settings->hasSetting(UserSetting::DONT_SEND_MARKETING_MESSAGES)) {
+                        continue;
+                    }
                     if ($telegramId) {
                         $strtr = strtr('Ваш внесок в :amountгрн. за :date було завалідовано! Подивитися звіт: :url', [
                             ':amount' => $amount,
