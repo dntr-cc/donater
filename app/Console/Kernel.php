@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        foreach (Fundraising::all() as $item) {
+        foreach (Fundraising::query()->withTrashed()->get()->all() as $item) {
             /** @uses CacheFundraisingCommand::class */
             $schedule->command('fundraising:cache ' . $item->getId())->everyFiveMinutes();
             /** @uses ValidateDonatesCommand::class */
