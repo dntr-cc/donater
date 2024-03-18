@@ -25,7 +25,7 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
      */
     protected function getAllFundraisings(): array
     {
-        return Fundraising::query()->where('is_enabled', '=', false)->get()->all();
+        return Fundraising::query()->where('is_enabled', '=', true)->onlyTrashed()->get()->all();
     }
 
 
