@@ -7,31 +7,18 @@ use App\Models\User;
 
 class FundraisingRemoveCommand extends FundraisingDeactivateCommand
 {
-    public const string MESSAGE = 'Ви не закидали виписку більше 2 тижнів. Ваш збір :fundraising видалено автоматично';
-    public const string MESSAGE_ADMIN = ':fundraising видалено автоматично';
-    public const string LIMIT = '-15 days';
+    public const string MESSAGE = 'Ви не закидали виписку з донатами старше 10 днів. Ваш збір :fundraising видалено автоматично. Для відновлення вам треба закинути виписку з донатами за крайні 10 днів, тоді збір буде відновлено автоматично.';
+    public const string MESSAGE_ADMIN = ':fundraising видалено автоматично.';
+    public const string DAYS = '-10 days';
 
     protected $signature = 'fundraising:remove';
 
     protected $description = 'Command description';
 
-    protected function notifyVolunteerAndAdmin(Fundraising $fundraising): void
-    {
-        $sendMessage = ' Повідомлення доставлно волонтеру';
-        try {
-            $this->notifyVolunteer($fundraising);
-        } catch (\Throwable $t) {
-            $sendMessage = ' Повідомлення недоставлно волонтеру';
-        }
-        User::find(1)->sendBotMessage(
-            strtr(self::MESSAGE . $sendMessage, [':fundraising' => route('fundraising.show', compact('fundraising'))])
-        );
-    }
-
     protected function notifyVolunteer(Fundraising $fundraising): void
     {
         $fundraising->getVolunteer()->sendBotMessage(
-            strtr(self::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))])
+            strtr(static::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))])
         );
     }
 

@@ -25,8 +25,8 @@ class Kernel extends ConsoleKernel
         }
         $schedule->command('subscribe:reminder')->weeklyOn(7, '14:00');
         $schedule->command('subscribe:scheduler')->everySecond();
-        $schedule->command('fundraising:deactivate')->everyMinute();
-        $schedule->command('fundraising:remove')->everyMinute();
+        $schedule->command('fundraising:deactivate')->dailyAt('09:00');
+        $schedule->command('fundraising:remove')->dailyAt('23:59');
     }
 
     /**
