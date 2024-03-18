@@ -27,7 +27,7 @@ class SubscribeRequestCreate extends FormRequest
             ],
             'frequency'        => ['required', 'in:' . implode(',', array_keys(SubscribesMessage::FREQUENCY_NAME_MAP))],
             'volunteer_id'     => ['required', 'integer', 'exists:fundraisings,user_id'],
-            'amount'           => ['required', 'integer'],
+            'amount'           => ['required', 'integer', 'min:1'],
             'first_message_at' => ['required', 'date_format:Y-m-d H:i', new SubscribeFrequencyRule()],
             'use_random'       => ['boolean'],
         ];

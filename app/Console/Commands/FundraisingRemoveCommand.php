@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Models\Fundraising;
-use App\Models\User;
 
 class FundraisingRemoveCommand extends FundraisingDeactivateCommand
 {
