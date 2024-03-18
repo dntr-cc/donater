@@ -44,14 +44,4 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
     {
         return false;
     }
-
-    /**
-     * @param mixed $fundraising
-     * @param false|int $limit
-     * @return bool
-     */
-    protected function getCreatedCondition(Fundraising $fundraising, false|int $limit): bool
-    {
-        return $fundraising->getCreatedAt()->setTimezone(config('app.timezone'))->getTimestamp() > $limit;
-    }
 }
