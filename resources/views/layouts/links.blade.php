@@ -229,7 +229,7 @@
         </script>
     @endif
     <script type="module">
-        let monoText = `{{ $fundraising->getMonoRequest($this->getJarLink(false)) }}`;
+        let monoText = `{{ $fundraising->getMonoRequest($fundraising->getJarLink(false)) }}`;
         let buttonMono = $('#mono');
         buttonMono.on('click', event => {
             event.preventDefault();
