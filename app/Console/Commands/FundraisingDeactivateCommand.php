@@ -9,8 +9,8 @@ use Illuminate\Console\Command;
 
 class FundraisingDeactivateCommand extends Command
 {
-    public const string MESSAGE = 'Ви не закидали виписку з донатами старше 7 днів. Протягом 72 годин ваш збір :fundraising буде видалено автоматично. Якщо ваш збір зупинено - натисніть кнопку "ЗУПИНИТИ"';
-    public const string MESSAGE_ADMIN = ':fundraising буде видалено автоматично за 48 годин';
+    public const string MESSAGE = 'Ви не закидали виписку з донатами старше 7 днів. Протягом 72 годин ваш збір :fundraising буде видалено автоматично. Якщо ваш збір зупинено - натисніть кнопку "ЗУПИНИТИ".';
+    public const string MESSAGE_ADMIN = ':fundraising буде видалено автоматично за 48 годин.';
     public const string DAYS = '-7 days';
     protected $signature = 'fundraising:deactivate';
 
@@ -23,7 +23,7 @@ class FundraisingDeactivateCommand extends Command
         foreach ($this->getAllFundraisings() as $fundraising) {
             $needAction = $this->actionStatusStart();
             $rows = $service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
-            if (!$rows->count() && $this->getCreatedCondition($fundraising, $limit)) {
+            if (empty($rows->toArray()) && $this->getCreatedCondition($fundraising, $limit)) {
                 $needAction = $this->actionStatusEnd();
             } else {
                 foreach ($rows->all() as $item) {
@@ -102,15 +102,5 @@ class FundraisingDeactivateCommand extends Command
     protected function actionStatusEnd(): bool
     {
         return true;
-    }
-
-    /**
-     * @param mixed $fundraising
-     * @param false|int $limit
-     * @return bool
-     */
-    protected function getCreatedCondition(Fundraising $fundraising, false|int $limit): bool
-    {
-        return $fundraising->getCreatedAt()->setTimezone(config('app.timezone'))->getTimestamp() < $limit;
     }
 }
