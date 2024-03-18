@@ -22,18 +22,18 @@ class FundraisingDeactivateCommand extends Command
         foreach (Fundraising::query()->where('is_enabled', '=', true)->get()->all() as $fundraising) {
             $needDelete = false;
             $rows = $service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
-            if (!$rows->count() || $fundraising->getCreatedAt()->setTimezone(config('app.timezone'))->getTimestamp() < $limit) {
+            if (!$rows->count() && $fundraising->getCreatedAt()->setTimezone(config('app.timezone'))->getTimestamp() < $limit) {
                 $needDelete = true;
-            }
-            if (!$needDelete) {
+            } else {
                 foreach ($rows->all() as $item) {
                     $date = $item->getDate();
                     if (
                         preg_match('/^[0-9]{2}.[0-9]{2}.[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $date) &&
-                        strtotime($date) > $limit
+                        strtotime($date) < $limit
                     ) {
-                        break;
+                        $needDelete = true;
                     }
+                    break;
                 }
             }
             if ($needDelete) {
@@ -58,6 +58,7 @@ class FundraisingDeactivateCommand extends Command
         User::find(1)->sendBotMessage(
             strtr(self::MESSAGE . $sendMessage, [':fundraising' => route('fundraising.show', compact('fundraising'))])
         );
+        $this->output->info('fundraising:deactivate notifyAdmin, fundraising ' . $fundraising->getName());
     }
 
     /**
@@ -72,6 +73,7 @@ class FundraisingDeactivateCommand extends Command
         );
         $volunteer->sendBotMessage('Повідомлення для підтримки монобанку для замовлення виписки:');
         $volunteer->sendBotMessage($fundraising->getMonoRequest($fundraising->getJarLink(false)));
+        $this->output->info('fundraising:deactivate notifyVolunteer, fundraising ' . $fundraising->getName());
     }
 
     protected function doCommandGoal(Fundraising $fundraising): void
