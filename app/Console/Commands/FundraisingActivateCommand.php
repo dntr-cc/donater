@@ -9,8 +9,8 @@ use Illuminate\Console\Command;
 
 class FundraisingActivateCommand extends FundraisingDeactivateCommand
 {
-    public const string MESSAGE = 'Ви закинули актуальну виписку на видалений збір :fundraising. Збір буде відновлено автоматично';
-    public const string MESSAGE_ADMIN = ':fundraising буде відновлено автоматично';
+    public const string MESSAGE = 'Ви закинули актуальну виписку на видалений збір :fundraising. Збір буде відновлено автоматично.';
+    public const string MESSAGE_ADMIN = ':fundraising буде відновлено автоматично.';
     protected $signature = 'fundraising:activate';
 
     protected $description = 'Command description';
