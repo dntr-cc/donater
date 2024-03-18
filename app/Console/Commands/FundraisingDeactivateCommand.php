@@ -19,7 +19,7 @@ class FundraisingDeactivateCommand extends Command
     {
         $service = app(GoogleServiceSheets::class);
         $limit = strtotime('-14 days');
-        foreach (Fundraising::query()->where('is_enabled')->get()->all() as $fundraising) {
+        foreach (Fundraising::query()->where('is_enabled', '=', true)->get()->all() as $fundraising) {
             $needDelete = false;
             $rows = $service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
             if (!$rows->count() || $fundraising->getCreatedAt()->setTimezone(config('app.timezone'))->getTimestamp() < $limit) {
