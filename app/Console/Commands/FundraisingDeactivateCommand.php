@@ -23,7 +23,7 @@ class FundraisingDeactivateCommand extends Command
         foreach ($this->getAllFundraisings() as $fundraising) {
             $needAction = $this->actionStatusStart();
             $rows = $service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
-            if (empty($rows->toArray()) && $this->getCreatedCondition($fundraising, $limit)) {
+            if (empty($rows->toArray()) && $fundraising->getCreatedAt()->setTimezone(config('app.timezone'))->getTimestamp() > $limit) {
                 $needAction = $this->actionStatusEnd();
             } else {
                 foreach ($rows->all() as $item) {
