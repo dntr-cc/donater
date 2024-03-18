@@ -28,10 +28,12 @@ class RowCollection extends Collection
      */
     public function all(): array
     {
-        if ($this->items[0] ?? null) {
-            $amount = $this->items[0]->getAmount();
-            if ('Сума' === $amount || 'sum' === $amount) {
-                unset($this->items[0]);
+        foreach ($this->items as $it => $item) {
+            if (
+                'Сума' === $item->getAmount() || 'sum' === $item->getAmount() ||
+                preg_match('/^[0-9]{2}.[0-9]{2}.[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $item->getDate())
+            ) {
+                unset($this->items[$it]);
             }
         }
 
