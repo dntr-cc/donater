@@ -57,7 +57,7 @@ class FundraisingDeactivateCommand extends Command
             $sendMessage = ' Повідомлення недоставлно волонтеру';
         }
         User::find(1)->sendBotMessage(
-            strtr(self::MESSAGE . $sendMessage, ['' => route('fundraising.show', compact('fundraising'))])
+            strtr(self::MESSAGE . $sendMessage, [':fundraising' => route('fundraising.show', compact('fundraising'))])
         );
     }
 
@@ -69,7 +69,7 @@ class FundraisingDeactivateCommand extends Command
     {
         $volunteer = $fundraising->getVolunteer();
         $volunteer->sendBotMessage(
-            strtr(self::MESSAGE, ['' => route('fundraising.show', compact('fundraising'))])
+            strtr(self::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))])
         );
         $volunteer->sendBotMessage('Повідомлення для підтримки монобанку для замовлення виписки:');
         $volunteer->sendBotMessage($fundraising->getMonoRequest($fundraising->getJarLink(false)));
