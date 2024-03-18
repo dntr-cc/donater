@@ -31,7 +31,7 @@ class RowCollection extends Collection
         foreach ($this->items as $it => $item) {
             if (
                 'Сума' === $item->getAmount() || 'sum' === $item->getAmount() ||
-                preg_match('/^[0-9]{2}.[0-9]{2}.[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $item->getDate())
+                !preg_match('/^[0-9]{2}.[0-9]{2}.[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $item->getDate())
             ) {
                 unset($this->items[$it]);
             }
