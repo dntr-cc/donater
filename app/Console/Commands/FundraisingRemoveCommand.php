@@ -24,14 +24,14 @@ class FundraisingRemoveCommand extends FundraisingDeactivateCommand
             $sendMessage = ' Повідомлення недоставлно волонтеру';
         }
         User::find(1)->sendBotMessage(
-            strtr(self::MESSAGE . $sendMessage, ['' => route('fundraising.show', compact('fundraising'))])
+            strtr(self::MESSAGE . $sendMessage, [':fundraising' => route('fundraising.show', compact('fundraising'))])
         );
     }
 
     protected function notifyVolunteer(Fundraising $fundraising): void
     {
         $fundraising->getVolunteer()->sendBotMessage(
-            strtr(self::MESSAGE, ['' => route('fundraising.show', compact('fundraising'))])
+            strtr(self::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))])
         );
     }
 
