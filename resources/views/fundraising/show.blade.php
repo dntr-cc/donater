@@ -55,6 +55,15 @@
                         </div>
                     </div>
                 @endguest
+                <div class="d-flex justify-content-center mb-2 px-2 py-2">
+                    <div class="form-floating input-group">
+                        <input type="text" class="form-control" id="shortLink"
+                               value="{{ $fundraising->getShortLink() }}" disabled>
+                        <label for="userShortLink">Шорт-лінк</label>
+                        <button id="copyShortLink" class="btn btn-outline-secondary" onclick="return false;">
+                            <i class="bi bi-copy"></i></button>
+                    </div>
+                </div>
                 @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'rows'))
             </div>
         </div>
@@ -152,6 +161,13 @@
                 return false;
             });
             toast('Код скопійовано', copyCode);
+            let copyCode = $('#copyShortLink');
+            copyCode.on('click', event => {
+                event.preventDefault();
+                copyContent($('#shortLink').val());
+                return false;
+            });
+            toast('Шорт-лінк скопійовано', copyCode);
         </script>
     @endauth
 @endsection
