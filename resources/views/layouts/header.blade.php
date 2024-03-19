@@ -15,7 +15,7 @@
                 </div>
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                     <li>
-                        <a href="https://forms.gle/BzYqFsaouufsZVAh9" class="nav-link text-white">
+                        <a href="https://forms.gle/BzYqFsaouufsZVAh9" target="_blank" class="nav-link text-white">
                             <i class="bi bi-cup-hot-fill d-inline mx-auto mb-1"></i>
                             Мерч
                         </a>
@@ -63,13 +63,19 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
-                                <a href="https://t.me/donatercomua" class="dropdown-item">
+                                <a href="https://t.me/donatercomua" target="_blank" class="dropdown-item">
                                     <i class="bi bi-telegram d-inline mx-auto mb-1"></i>
-                                    Телеграм
+                                    Telegram
                                 </a>
                             </li>
                             <li>
-                                <a href="https://telegra.ph/donatercomua---podroboc%D1%96-proektu-01-23" class="dropdown-item">
+                                <a href="https://www.facebook.com/profile.php?id=61557227290492" target="_blank" class="dropdown-item">
+                                    <i class="bi bi-facebook d-inline mx-auto mb-1"></i>
+                                    Facebook
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://telegra.ph/donatercomua---podroboc%D1%96-proektu-01-23" target="_blank" class="dropdown-item">
                                     <i class="bi bi-three-dots-vertical d-inline mx-auto mb-1"></i>
                                     Опис (10хв читання)
                                 </a>
