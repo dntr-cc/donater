@@ -5,6 +5,7 @@
 @php $withPageLink = $withPageLink ?? false; @endphp
 @php $additionalClasses = $additionalClasses ?? ''; @endphp
 @php $withPrizes = $withPrizes ?? false; @endphp
+@php $shortCodes = $shortCodes ?? false; @endphp
 @php $rows = $rows ?? false; @endphp
 
 @if($withJarLink)
@@ -222,6 +223,97 @@
                     },
                     success: data => {
                         window.location.assign(data.url ?? '{{ route('my') }}');
+                    },
+                });
+                return false;
+            });
+        </script>
+    @endif
+    @if($shortCodes)
+        <a class="btn m-1 {{ $additionalClasses }}"
+           data-bs-toggle="modal"
+           data-bs-target="#fundraisingEditShortCodesModal">
+            <i class="bi bi-share"></i>
+            Шорт-лінк
+        </a>
+        <div class="modal fade" id="fundraisingEditShortCodesModal" tabindex="-1"
+             aria-labelledby="fundraisingEditShortCodesModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="fundraisingEditShortCodesModalLabel">Коротке посилання для поширення</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form class="form">
+                        <div class="modal-body">
+                            <div class="d-flex justify-content-center mb-2">
+                                <div class="form-floating input-group">
+                                    <input type="text" class="form-control" id="shortLink"
+                                           value="{{ $fundraising->getShortLink() }}" disabled>
+                                    <label for="userShortLink">Шорт-лінк</label>
+                                    <button id="copyShortLink" class="btn btn-outline-secondary" onclick="return false;">
+                                        <i class="bi bi-copy"></i></button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="basic-url" class="form-label">Замінити шорт-лінк</label>
+                                <div class="input-group">
+                                    <span class="input-group-text" id="newShortLinkPrefix">dntr.cc/f/</span>
+                                    <input type="text" class="form-control" id="newShortLink">
+                                    <button id="createShortLink" class="btn btn-outline-success" onclick="return false;">
+                                        <i class="bi bi-plus-circle-fill"></i></button>
+                                </div>
+                                <div class="form-text" id="basic-addon4">Довжина до 5-20 символів, лише латинка та цифри</div>
+                            </div>
+                            <div class="d-flex justify-content-center mb-2">
+                                <div class="form-floating input-group">
+                                    <span class="input-group-addon"></span>
+                                    <label for="newShortLink"></label>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-secondary justify-content-evenly"
+                                    data-bs-dismiss="modal">
+                                Закрити
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script type="module">
+            let copyCode = $('#copyShortLink');
+            copyCode.on('click', event => {
+                event.preventDefault();
+                copyContent($('#shortLink').val());
+                return false;
+            });
+            toast('Шорт-лінк скопійовано', copyCode);
+            $('#createShortLink').on('click', event => {
+                event.preventDefault();
+                let code = $('#newShortLink').val();
+                $.ajax({
+                    url: '{{ route('fundraising.link.create', compact('fundraising')) }}',
+                    type: "POST",
+                    data: {
+                        code: code,
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: (data) => {
+                        $('#shortLink').val($('#newShortLinkPrefix').html() + code);
+                        $('#newShortLink').val('');
+                        $('meta[name="csrf-token"]').attr('content', data.csrf);
+                    },
+                    error: data => {
+                        let empty = $("<a>");
+                        toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
+                        empty.click();
+                        $('meta[name="csrf-token"]').attr('content', data.csrf);
                     },
                 });
                 return false;

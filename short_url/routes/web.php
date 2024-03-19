@@ -13,6 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/f/{code}', static function (string $code) {
+    $str = '//donater.com.ua';
+    $item = \App\Models\FundraisingShortCode::query()->where('code', '=', $code)
+        ->orWhere('code', '=', mb_strtolower($code))->first();
+    if ($item) {
+        $fundraising = \App\Models\Fundraising::find($item->getFundraisingId());
+        if ($fundraising) {
+            $str .= '/fundraising/' . $fundraising->getKey();
+        }
+    }
+    return redirect($str)->header('Cache-Control', 'no-store, no-cache, must-revalidate');
+});
 Route::get('/{code}', static function (string $code) {
     $str = '//donater.com.ua';
     $item = \App\Models\UserCode::query()->where('hash', '=', $code)

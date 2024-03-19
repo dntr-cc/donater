@@ -10,6 +10,7 @@
 @php $withPageLink = true; @endphp
 @php $withOwner = true; @endphp
 @php $withPrizes = true; @endphp
+@php $shortCodes = true; @endphp
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
 @php $owner = $fundraising->getVolunteer(); @endphp
@@ -55,7 +56,7 @@
                         </div>
                     </div>
                 @endguest
-                @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'rows'))
+                @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'rows', 'shortCodes'))
             </div>
         </div>
         <ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">

@@ -80,6 +80,7 @@ Route::get('/fundraising/actual', static fn() => view('fundraising.index', data:
 Route::post('/fundraising', [App\Http\Controllers\FundraisingController::class, 'store'])->name('fundraising.create');
 Route::post('/fundraising/avatar', [App\Http\Controllers\FundraisingController::class, 'storeAvatar'])->name('fundraising.avatar');
 Route::post('/fundraising/key', [App\Http\Controllers\FundraisingController::class, 'checkKey'])->name('fundraising.key');
+Route::post('/fundraising/{fundraising}/link', [App\Http\Controllers\FundraisingController::class, 'createShortLink'])->name('fundraising.link.create');
 Route::post('/fundraising/spreadsheet', [App\Http\Controllers\FundraisingController::class, 'spreadsheet'])->name('fundraising.spreadsheet');
 Route::get('/fundraising/new', [App\Http\Controllers\FundraisingController::class, 'create'])->name('fundraising.new');
 Route::get('/fundraising/{fundraising}/edit', [App\Http\Controllers\FundraisingController::class, 'edit'])->name('fundraising.edit');

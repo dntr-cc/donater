@@ -62,7 +62,7 @@ class UserController extends Controller
      */
     public function volunteers(): View
     {
-        $users = User::query()->withWhereHas('fundraisings')->paginate(self::PER_PAGE)->onEachSide(1);
+        $users = User::query()->withWhereHas('fundraisings')->paginate(self::PER_PAGE * 10)->onEachSide(1);
         $whoIs = self::VOLUNTEERS;
 
         return view('users', compact('users', 'whoIs'));
