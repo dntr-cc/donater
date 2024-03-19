@@ -5,7 +5,7 @@
 @php $withPageLink = $withPageLink ?? false; @endphp
 @php $additionalClasses = $additionalClasses ?? ''; @endphp
 @php $withPrizes = $withPrizes ?? false; @endphp
-@php $shortCodes = $shortCodes ?? false; @endphp
+@php $disableShortCodes = $disableShortCodes ?? true; @endphp
 @php $rows = $rows ?? false; @endphp
 
 @if($withJarLink)
@@ -229,6 +229,7 @@
             });
         </script>
     @endif
+    @if(!$disableShortCodes)
     @can('create', [\App\Models\FundraisingShortCode::class, $fundraising])
         <a class="btn m-1 {{ $additionalClasses }}"
            data-bs-toggle="modal"
@@ -319,6 +320,7 @@
                 return false;
             });
         </script>
+    @endcan
     @endif
     <script type="module">
         let monoText = `{{ $fundraising->getMonoRequest($fundraising->getJarLink(false)) }}`;
