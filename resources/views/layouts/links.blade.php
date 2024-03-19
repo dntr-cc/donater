@@ -229,7 +229,7 @@
             });
         </script>
     @endif
-    @if($shortCodes)
+    @can('create', [\App\Models\FundraisingShortCode::class, $fundraising])
         <a class="btn m-1 {{ $additionalClasses }}"
            data-bs-toggle="modal"
            data-bs-target="#fundraisingEditShortCodesModal">
