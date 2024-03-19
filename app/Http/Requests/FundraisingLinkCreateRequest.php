@@ -9,7 +9,7 @@ class FundraisingLinkCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => ['required', 'min:5', 'max:20'],
+            'code' => ['required', 'min:5', 'max:20', 'unique:fundraising_short_codes,code'],
         ];
     }
 
