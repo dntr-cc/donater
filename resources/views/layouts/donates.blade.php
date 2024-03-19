@@ -13,8 +13,7 @@
             </th>
             <th scope="col">Збір</th>
             <th scope="col">Дата</th>
-            <th scope="col">Сума</th>
-            <th scope="col"></th>
+            <th scope="col" colspan="2">Сума</th>
         </tr>
         </thead>
         <tbody>
@@ -37,7 +36,7 @@
                 <td>{{ $donate->getCreatedAt() }}</td>
                 <td>{{ $donate->getAmount() }}</td>
                 @can('delete', $donate)
-                    <td><span class="btn btn-xs btn-outline-danger"><i  data-id="{{ $donate->getId() }}" class="mx-2 bi bi-x-octagon delete-donate"></i></span></td>
+                    <td><span class="btn btn-xs btn-outline-danger delete-donate" data-id="{{ $donate->getId() }}" ><i class="mx-2 bi bi-x-octagon"></i></span></td>
                 @endcan
             </tr>
         @endforeach
