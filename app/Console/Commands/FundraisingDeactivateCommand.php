@@ -77,7 +77,7 @@ class FundraisingDeactivateCommand extends Command
 
     protected function initDoCommandGoal(bool $action, Fundraising $fundraising): bool
     {
-        $this->output->info($fundraising->getName() . ' initiate doCommandGoal:' . $action ? 'true' : 'false');
+        $this->output->info($fundraising->getName() . ' initiate doCommandGoal:' . json_encode($action));
 
         return $this->doCommandGoal($action, $fundraising);
     }
