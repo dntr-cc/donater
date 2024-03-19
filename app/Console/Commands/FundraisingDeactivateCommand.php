@@ -84,7 +84,7 @@ class FundraisingDeactivateCommand extends Command
 
     protected function doCommandGoal(bool $action, Fundraising $fundraising): bool
     {
-        return false;
+        return !$action;
     }
 
     /**

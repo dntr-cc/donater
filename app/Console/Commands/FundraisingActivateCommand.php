@@ -19,6 +19,8 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
     protected function doCommandGoal(bool $action, Fundraising $fundraising): bool
     {
         $fundraising->restore();
+
+        return $action;
     }
 
     /**
