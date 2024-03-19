@@ -152,22 +152,24 @@
             @endforeach
         </div>
     </div>
+    <script type="module">
+
     @auth
-        <script type="module">
-            let copyCode = $('#copyCode');
-            copyCode.on('click', event => {
-                event.preventDefault();
-                copyContent($('#userCode').val());
-                return false;
-            });
-            toast('Код скопійовано', copyCode);
-            let copyCode = $('#copyShortLink');
-            copyCode.on('click', event => {
-                event.preventDefault();
-                copyContent($('#shortLink').val());
-                return false;
-            });
-            toast('Шорт-лінк скопійовано', copyCode);
-        </script>
+        let copyCode = $('#copyCode');
+        copyCode.on('click', event => {
+            event.preventDefault();
+            copyContent($('#userCode').val());
+            return false;
+        });
+        toast('Код скопійовано', copyCode);
     @endauth
+        let copyCode = $('#copyShortLink');
+        copyCode.on('click', event => {
+            event.preventDefault();
+            copyContent($('#shortLink').val());
+            return false;
+        });
+        toast('Шорт-лінк скопійовано', copyCode);
+    </script>
+
 @endsection
