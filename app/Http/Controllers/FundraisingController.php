@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FundraisingLinkCreateRequest;
 use App\Http\Requests\FundraisingRequest;
 use App\Models\Fundraising;
+use App\Models\FundraisingShortCode;
 use App\Models\Prize;
 use App\Models\UserSetting;
 use App\Services\ChartService;
 use App\Services\FileService;
+use App\Services\FundraisingShortCodeService;
 use App\Services\GoogleServiceSheets;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -173,5 +176,16 @@ class FundraisingController extends Controller
         $prize->setFundraisingId()->setAvailableStatus(Prize::STATUS_NEW)->save();
 
         return new JsonResponse(['url' => route('fundraising.show', compact('fundraising'))]);
+    }
+
+    public function createShortLink(FundraisingLinkCreateRequest $request, Fundraising $fundraising): JsonResponse
+    {
+        $this->authorize('create', [FundraisingShortCode::class, $fundraising]);
+
+        $data = $request->validated();
+        app(FundraisingShortCodeService::class)
+            ->createFundraisingShortCode($fundraising->getId(), $data['code'] ?? '');
+
+        return new JsonResponse(['csrf' => $this->getNewCSRFToken()]);
     }
 }

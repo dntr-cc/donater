@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property User $donater
  * @property User $volunteer
  * @property float $amount
- * @property Carbon $scheduled_at
  * @property bool $use_random
  * @property string $frequency
  * @property Carbon $first_message_at
@@ -43,13 +42,6 @@ class Subscribe extends Model
     protected $casts = [
         'first_message_at' => 'datetime',
     ];
-
-    protected function scheduledAt(): Attribute
-    {
-        return new Attribute(
-            get: fn ($value) => Carbon::parse($value)->format('H:i'),
-        );
-    }
 
     public function donater(): HasOne
     {

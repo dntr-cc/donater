@@ -3,7 +3,6 @@
 namespace App\Console;
 
 use App\Models\Fundraising;
-use App\Models\Subscribe;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -25,6 +24,7 @@ class Kernel extends ConsoleKernel
         }
         $schedule->command('subscribe:reminder')->weeklyOn(7, '14:00');
         $schedule->command('subscribe:scheduler')->everySecond();
+        $schedule->command('fundraising:forget-links')->everySecond();
         $schedule->command('fundraising:deactivate')->dailyAt('09:00');
         $schedule->command('fundraising:remove')->dailyAt('23:59');
         $schedule->command('fundraising:activate')->everyMinute();

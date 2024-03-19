@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Collections\DonateCollection;
+use App\Services\FundraisingShortCodeService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -65,14 +66,6 @@ class Fundraising extends Model
         static::addGlobalScope('order', static function (Builder $builder) {
             $builder->withCount('donates')->orderBy('is_enabled', 'desc')->orderBy('id', 'desc');
         });
-    }
-
-    /**
-     * @return Collection|self[]
-     */
-    public static function getActual(): Collection
-    {
-        return static::query()->where('is_enabled', '=', true)->get();
     }
 
     /**
@@ -358,5 +351,10 @@ class Fundraising extends Model
     public function getVolunteer(): User
     {
         return self::with('volunteer')->where('id', '=', $this->getId())->first()->volunteer;
+    }
+
+    public function getShortLink(): string
+    {
+        return app(FundraisingShortCodeService::class)->getShortLink($this->getId());
     }
 }
