@@ -21,10 +21,13 @@ class FundraisingRemoveCommand extends FundraisingDeactivateCommand
         );
     }
 
-    protected function doCommandGoal(bool $action, Fundraising $fundraising): void
+    protected function doCommandGoal(bool $action, Fundraising $fundraising): bool
     {
         if (!$action) {
             $fundraising->delete();
+            return true;
         }
+
+        return false;
     }
 }

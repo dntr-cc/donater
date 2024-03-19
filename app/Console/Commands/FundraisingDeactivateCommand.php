@@ -38,9 +38,8 @@ class FundraisingDeactivateCommand extends Command
             if (!$needAction && $this->isNeedActionByCreatedDate($fundraising->getCreatedAt()->setTimezone(config('app.timezone'))->getTimestamp(), $limit)) {
                 $needAction = true;
             }
-            if ($needAction) {
+            if ($this->initDoCommandGoal($needAction, $fundraising)) {
                 $this->notifyVolunteerAndAdmin($fundraising);
-                $this->initDoCommandGoal($needAction, $fundraising);
             }
         }
     }
@@ -76,15 +75,16 @@ class FundraisingDeactivateCommand extends Command
         $volunteer->sendBotMessage($fundraising->getMonoRequest($fundraising->getJarLink(false)));
     }
 
-    protected function initDoCommandGoal(bool $action, Fundraising $fundraising): void
+    protected function initDoCommandGoal(bool $action, Fundraising $fundraising): bool
     {
-        $this->output->info($fundraising->getName() . ' initiate doCommandGoal');
-        $this->doCommandGoal($action, $fundraising);
+        $this->output->info($fundraising->getName() . ' initiate doCommandGoal:' . $action ? 'true' : 'false');
+
+        return $this->doCommandGoal($action, $fundraising);
     }
 
-    protected function doCommandGoal(bool $action, Fundraising $fundraising): void
+    protected function doCommandGoal(bool $action, Fundraising $fundraising): bool
     {
-        // do nothing
+        return false;
     }
 
     /**
