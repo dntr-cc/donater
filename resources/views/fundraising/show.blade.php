@@ -163,13 +163,6 @@
         });
         toast('Код скопійовано', copyCode);
     @endauth
-        let copyCode = $('#copyShortLink');
-        copyCode.on('click', event => {
-            event.preventDefault();
-            copyContent($('#shortLink').val());
-            return false;
-        });
-        toast('Шорт-лінк скопійовано', copyCode);
     </script>
 
 @endsection
