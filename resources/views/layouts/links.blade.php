@@ -286,13 +286,6 @@
             </div>
         </div>
         <script type="module">
-            let copyCode = $('#copyShortLink');
-            copyCode.on('click', event => {
-                event.preventDefault();
-                copyContent($('#shortLink').val());
-                return false;
-            });
-            toast('Шорт-лінк скопійовано', copyCode);
             $('#createShortLink').on('click', event => {
                 event.preventDefault();
                 let code = $('#newShortLink').val();
@@ -333,3 +326,12 @@
         toast('Запит в підтримку скопійовано', buttonMono);
     </script>
 @endcan
+<script type="module">
+    let copyCode = $('#copyShortLink');
+    copyCode.on('click', event => {
+        event.preventDefault();
+        copyContent($('#shortLink').val());
+        return false;
+    });
+    toast('Шорт-лінк скопійовано', copyCode);
+</script>
