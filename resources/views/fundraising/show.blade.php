@@ -153,7 +153,6 @@
         </div>
     </div>
     <script type="module">
-
     @auth
         let copyCode = $('#copyCode');
         copyCode.on('click', event => {
