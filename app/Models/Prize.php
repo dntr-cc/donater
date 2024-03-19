@@ -83,12 +83,12 @@ class Prize extends Model
         return $this->hasMany(Winner::class, 'prize_id', 'id');
     }
 
-    public function getDonater(): User
+    public function getDonater(): ?User
     {
         return self::with('donater')->where('id', '=', $this->getId())->first()->donater;
     }
 
-    public function getVolunteer(): User
+    public function getVolunteer(): ?User
     {
         return self::with('fundraising')->where('id', '=', $this->getId())->first()->fundraising->getVolunteer();
     }
