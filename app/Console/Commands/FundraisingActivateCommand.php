@@ -16,7 +16,7 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
 
     protected $description = 'Command description';
 
-    protected function doCommandGoal(Fundraising $fundraising): void
+    protected function doCommandGoal(bool $action, Fundraising $fundraising): void
     {
         $fundraising->restore();
     }
@@ -29,20 +29,12 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
         return Fundraising::query()->where('is_enabled', '=', true)->onlyTrashed()->get()->all();
     }
 
-
     /**
-     * @return false
+     * @param int $rowsChecked
+     * @return bool
      */
-    protected function actionStatusStart(): bool
+    protected function isNeedActionByCountRow(int $rowsChecked): bool
     {
-        return true;
-    }
-
-    /**
-     * @return false
-     */
-    protected function actionStatusEnd(): bool
-    {
-        return false;
+        return (bool)$rowsChecked;
     }
 }

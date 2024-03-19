@@ -21,25 +21,26 @@ class FundraisingDeactivateCommand extends Command
         $service = app(GoogleServiceSheets::class);
         $limit = strtotime(static::DAYS);
         foreach ($this->getAllFundraisings() as $fundraising) {
-            $needAction = $this->actionStatusStart();
+            $needAction = false;
             $rows = $service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
-            if (empty($rows->toArray()) && $fundraising->getCreatedAt()->setTimezone(config('app.timezone'))->getTimestamp() > $limit) {
-                $needAction = $this->actionStatusEnd();
-            } else {
-                foreach ($rows->all() as $item) {
-                    $date = $item->getDate();
-                    if (
-                        preg_match('/^[0-9]{2}.[0-9]{2}.[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $date) &&
-                        strtotime($date) < $limit
-                    ) {
-                        $needAction = $this->actionStatusEnd();
-                    }
-                    break;
+            $rowsChecked = 0;
+            foreach ($rows->all() as $item) {
+                $date = $item->getDate();
+                if ($this->isValidDate($date, $limit)) {
+                    $needAction = true;
+                    $rowsChecked++;
                 }
+                break;
+            }
+            if ($this->isNeedActionByCountRow($rowsChecked)) {
+                $needAction = true;
+            }
+            if (!$needAction && $this->isNeedActionByCreatedDate($fundraising->getCreatedAt()->setTimezone(config('app.timezone'))->getTimestamp(), $limit)) {
+                $needAction = true;
             }
             if ($needAction) {
                 $this->notifyVolunteerAndAdmin($fundraising);
-                $this->doCommandGoal($fundraising);
+                $this->initDoCommandGoal($needAction, $fundraising);
             }
         }
     }
@@ -75,7 +76,13 @@ class FundraisingDeactivateCommand extends Command
         $volunteer->sendBotMessage($fundraising->getMonoRequest($fundraising->getJarLink(false)));
     }
 
-    protected function doCommandGoal(Fundraising $fundraising): void
+    protected function initDoCommandGoal(bool $action, Fundraising $fundraising): void
+    {
+        $this->output->info($fundraising->getName() . ' initiate doCommandGoal');
+        $this->doCommandGoal($action, $fundraising);
+    }
+
+    protected function doCommandGoal(bool $action, Fundraising $fundraising): void
     {
         // do nothing
     }
@@ -89,18 +96,32 @@ class FundraisingDeactivateCommand extends Command
     }
 
     /**
-     * @return false
+     * @param int $createdTimestamp
+     * @param int $limit
+     * @return bool
      */
-    protected function actionStatusStart(): bool
+    protected function isNeedActionByCreatedDate(int $createdTimestamp, int $limit): bool
     {
-        return false;
+        return $createdTimestamp > $limit;
     }
 
     /**
-     * @return false
+     * @param string $date
+     * @param false|int $limit
+     * @return bool
      */
-    protected function actionStatusEnd(): bool
+    protected function isValidDate(string $date, false|int $limit): bool
     {
-        return true;
+        return preg_match('/^[0-9]{2}.[0-9]{2}.[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $date) &&
+            strtotime($date) < $limit;
+    }
+
+    /**
+     * @param int $rowsChecked
+     * @return bool
+     */
+    protected function isNeedActionByCountRow(int $rowsChecked): bool
+    {
+        return 0 === $rowsChecked;
     }
 }
