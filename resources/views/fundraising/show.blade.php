@@ -10,6 +10,7 @@
 @php $withPageLink = true; @endphp
 @php $withOwner = true; @endphp
 @php $withPrizes = true; @endphp
+@php $disableShortCodes = false; @endphp
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
 @php $owner = $fundraising->getVolunteer(); @endphp
@@ -64,7 +65,7 @@
                             <i class="bi bi-copy"></i></button>
                     </div>
                 </div>
-                @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'rows'))
+                @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'rows', 'disableShortCodes'))
             </div>
         </div>
         <ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">
