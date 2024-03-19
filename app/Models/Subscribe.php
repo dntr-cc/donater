@@ -161,7 +161,7 @@ class Subscribe extends Model
         return self::with('volunteer')->where('id', '=', $this->getId())->first()->volunteer;
     }
 
-    public function getDonater(): User
+    public function getDonater(): ?User
     {
         return self::with('donater')->where('id', '=', $this->getId())->first()->donater;
     }
