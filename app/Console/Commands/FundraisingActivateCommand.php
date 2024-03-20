@@ -37,6 +37,6 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
      */
     protected function isNeedActionByCountRow(int $rowsChecked): bool
     {
-        return 0 !== $rowsChecked;
+        return $rowsChecked > 0;
     }
 }
