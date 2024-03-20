@@ -22,7 +22,7 @@ class RowCollectionService
         }
         $rows = new RowCollection();
         if (!$fundraisings || $fundraisings->isEmpty()) {
-            Cache::set($key, serialize(serialize($rows)), 10);
+            Cache::set($key, serialize($rows), 10);
             return $rows;
         }
 

@@ -11,7 +11,7 @@
                 @if($loginHash)
                 <p class="lead text-muted">Авторизуйтеся в телеграм-боті - це створить вам аккаунт на сайті.</p>
                 <p>
-                        <a href="{{ config('telegram.bots.donater-bot.url') }}?start={{ $loginHash }}" class="btn btn-primary my-2">Підключити бота</a>
+                    <a id="enableBot" href="{{ config('telegram.bots.donater-bot.url') }}?start={{ $loginHash }}" class="btn btn-primary my-2">Підключити бота</a>
                 </p>
                 @endif
                 <p class="lead text-muted">Підписуйтеся на свого волонтера, щоб задати розклад. Якщо вашого волонтера нема на сайті, запросіть його своім кодом донатера, код донатера є на вашій сторінці</p>
@@ -178,19 +178,21 @@
         </div>
     </div>
     <script type="module">
-        setInterval(() => {
-            $.ajax({
-                url: "{{ route('login') }}",
-                type: "POST",
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    loginHash: '{{ $loginHash }}',
-                },
-                success: function (data) {
-                    console.log(data);
-                    window.location.assign(data.url ?? '{{ route('my') }}');
-                },
-            });
-        }, 1000);
+        $('#enableBot').click(() => {
+            setInterval(() => {
+                $.ajax({
+                    url: "{{ route('login') }}",
+                    type: "POST",
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        loginHash: '{{ $loginHash }}',
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        window.location.assign(data.url ?? '{{ route('my') }}');
+                    },
+                });
+            }, 1000);
+        });
     </script>
 @endsection

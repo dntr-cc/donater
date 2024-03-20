@@ -335,7 +335,6 @@ class Fundraising extends Model
 
     private function getAvailablePrizesForMe(): Collection
     {
-
         return Prize::query()
             ->whereNull('fundraising_id')
             ->whereIn('user_id', Subscribe::query()->where('volunteer_id', '=', $this->getUserId())->get()->pluck('user_id')->toArray())
@@ -369,5 +368,16 @@ class Fundraising extends Model
     public function getShortLink(): string
     {
         return app(FundraisingShortCodeService::class)->getShortLink($this->getId());
+    }
+
+    public function getClassByState(): string
+    {
+        if ($this->isEnabled()) {
+            return 'bg-primary-subtle';
+        } elseif ($this->donates->count()) {
+            return 'bg-success-subtle';
+        }
+
+        return 'bg-secondary-subtle';
     }
 }
