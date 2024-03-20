@@ -54,9 +54,10 @@ class RowCollection extends Collection
                 }
                 $daysTimestamp[] = $timestamp;
                 $day = date('d/m/Y', $timestamp);
-                $perDay[$day] = $perDay[$day] ?? 0;
-                $perDay[$day] += round(floatval($item->getAmount()), 2);
-                $sum += round(floatval($item->getAmount()), 2);
+                $perDay[$day] = $perDay[$day] ?? 0.00;
+                $transactionAmount = round(floatval($item->getAmount()), 2);
+                $perDay[$day] += $transactionAmount;
+                $sum += $transactionAmount;
             }
         }
         if ($perDay) {

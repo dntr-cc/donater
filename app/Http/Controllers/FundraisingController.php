@@ -93,19 +93,15 @@ class FundraisingController extends Controller
     public function preload(Fundraising $fundraising)
     {
         $this->authorize('view', $fundraising);
-        $rows = $charts = $charts2 = $charts3 = null;
+        $rows = null;
         try {
             $rows = app(GoogleServiceSheets::class)->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
-            $chartsService = app(ChartService::class);
-            $charts = $chartsService->getChartPerDay($rows);
-            $charts2 = $chartsService->getChartPerAmount($rows);
-            $charts3 = $chartsService->getChartPerSum($rows);
         } catch (Throwable $throwable) {
             Log::critical($throwable->getMessage(), ['trace' => $throwable->getTraceAsString()]);
         }
 
         return new JsonResponse([
-            'html' => view('fundraising.preload', compact('fundraising', 'rows', 'charts', 'charts2', 'charts3'))->render(),
+            'html' => view('fundraising.preload', compact('fundraising', 'rows'))->render(),
             'csrf' => $this->getNewCSRFToken()
         ]);
     }
@@ -196,5 +192,23 @@ class FundraisingController extends Controller
             ->createFundraisingShortCode($fundraising->getId(), $data['code'] ?? '');
 
         return new JsonResponse(['csrf' => $this->getNewCSRFToken()]);
+    }
+
+    public function analytics(Fundraising $fundraising)
+    {
+        $this->authorize('view', $fundraising);
+        $rows = $charts = $charts2 = $charts3 = null;
+        try {
+            $rows = app(GoogleServiceSheets::class)->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
+            $chartsService = app(ChartService::class);
+            $charts = $chartsService->getChartPerDay($rows);
+            $charts2 = $chartsService->getChartPerAmount($rows);
+            $charts3 = $chartsService->getChartPerSum($rows);
+        } catch (Throwable $throwable) {
+            Log::critical($throwable->getMessage(), ['trace' => $throwable->getTraceAsString()]);
+        }
+
+        return view('fundraising.show-analytics', compact('fundraising', 'rows', 'charts', 'charts2', 'charts3'));
+
     }
 }

@@ -1,9 +1,9 @@
 @extends('layouts.base')
-@section('page_title', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
-@section('page_description', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
+@php $additionalAnalyticsText = ' по збору ' . $fundraising->getName(); @endphp
+@section('page_title', strtr('Аналітика по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
+@section('page_description', strtr('Аналітика по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @push('head-scripts')
     @vite(['resources/js/tabs.js'])
-    @vite(['resources/js/chartjs.js'])
 @endpush
 @php $withJarLink = true; @endphp
 @php $withPageLink = true; @endphp
@@ -65,7 +65,6 @@
                         </div>
                     @endforeach
                 @endforeach()
-                <div class="mt-3"></div>
                 @guest
                     <p class="lead"><a href="{{ route('login') }}" class="">Авторизуйтеся</a> за допомогою телеграму щоб
                         отримати код донатера</p>
@@ -82,13 +81,9 @@
                 @endguest
                 @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'disableShortCodes'))
             </div>
-        </div>
-        <div id="preload" class="preload border border-dark border-1 border-light-subtle">
-            <div class="d-flex justify-content-center ">
-                <div class="d-flex justify-content-center m-5">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
+            <div class="card">
+                <div class="card-body py-2 px-2">
+                    @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3', 'additionalAnalyticsText'))
                 </div>
             </div>
         </div>
@@ -96,40 +91,4 @@
     @auth()
         @include('subscribe.modal')
     @endauth
-    <script type="module">
-    @auth
-        let copyCode = $('#copyCode');
-        copyCode.on('click', event => {
-            event.preventDefault();
-            copyContent($('#userCode').val());
-            return false;
-        });
-        toast('Код скопійовано', copyCode);
-    @endauth
-    window.addEventListener("load", function(){
-        $.ajax({
-            url: '{{ route('fundraising.preload', compact('fundraising')) }}',
-            type: "POST",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: (data) => {
-                $('#preload').removeClass('preload border border-dark border-1 border-light-subtle').html(data.html)
-                $('meta[name="csrf-token"]').attr('content', data.csrf);
-                window.initMDBTab();
-                $('#preload script').each( (i, s) => { document.head.appendChild(s); });
-                let event1 = document.createEvent("Event");
-                event1.initEvent("DOMContentLoaded", true, true);
-                window.document.dispatchEvent(event1);
-
-            },
-            error: data => {
-                let empty = $("<a>");
-                toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
-                empty.click();
-                $('meta[name="csrf-token"]').attr('content', data.csrf);
-            },
-        });
-    });
-    </script>
 @endsection
