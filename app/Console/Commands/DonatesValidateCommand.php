@@ -12,9 +12,9 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
-class ValidateDonatesCommand extends Command
+class DonatesValidateCommand extends Command
 {
-    protected $signature = 'validate:donates {id}';
+    protected $signature = 'donates:validate {id}';
 
     protected $description = 'Command description';
     private GoogleServiceSheets $service;

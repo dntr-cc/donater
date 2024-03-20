@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class CacheFundraisingCommand extends Command
+class FundraisingCacheCommand extends Command
 {
     protected $signature = 'fundraising:cache {id}';
 
