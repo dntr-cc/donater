@@ -15,7 +15,7 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
 
     protected function doCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool
     {
-        if (!$byCountRow) {
+        if ($byCountRow) {
             $fundraising->restore();
             return true;
         }
@@ -29,5 +29,14 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
     protected function getAllFundraisings(): array
     {
         return Fundraising::query()->where('is_enabled', '=', true)->onlyTrashed()->get()->all();
+    }
+
+    /**
+     * @param int $rowsChecked
+     * @return bool
+     */
+    protected function isNeedActionByCountRow(int $rowsChecked): bool
+    {
+        return 0 !== $rowsChecked;
     }
 }
