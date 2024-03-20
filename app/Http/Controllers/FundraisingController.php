@@ -7,7 +7,6 @@ use App\Http\Requests\FundraisingRequest;
 use App\Models\Fundraising;
 use App\Models\FundraisingShortCode;
 use App\Models\Prize;
-use App\Models\UserSetting;
 use App\Services\ChartService;
 use App\Services\FileService;
 use App\Services\FundraisingShortCodeService;
@@ -87,6 +86,13 @@ class FundraisingController extends Controller
     public function show(Fundraising $fundraising)
     {
         $this->authorize('view', $fundraising);
+
+        return view('fundraising.show', compact('fundraising'));
+    }
+
+    public function preload(Fundraising $fundraising)
+    {
+        $this->authorize('view', $fundraising);
         $rows = $charts = $charts2 = $charts3 = null;
         try {
             $rows = app(GoogleServiceSheets::class)->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
@@ -98,7 +104,10 @@ class FundraisingController extends Controller
             Log::critical($throwable->getMessage(), ['trace' => $throwable->getTraceAsString()]);
         }
 
-        return view('fundraising.show', compact('fundraising', 'rows', 'charts', 'charts2', 'charts3'));
+        return new JsonResponse([
+            'html' => view('fundraising.preload', compact('fundraising', 'rows', 'charts', 'charts2', 'charts3'))->render(),
+            'csrf' => $this->getNewCSRFToken()
+        ]);
     }
 
     public function start(Fundraising $fundraising)

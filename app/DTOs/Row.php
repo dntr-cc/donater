@@ -92,6 +92,11 @@ class Row
      */
     public function extractCode(string $comment): string
     {
+        return static::getCode($comment);
+    }
+
+    public static function getCode(string $comment): string
+    {
         $matches1 = $matches2 = $matches3 = [];
         preg_match('/dntr.cc\/[a-zA-Z0-9]+/', $comment, $matches1);
         preg_match('/[a-zA-Z0-9]{14}[.][0-9]{8}/', $comment, $matches2);
@@ -99,5 +104,10 @@ class Row
         $matches1 = explode('/', $matches1[0] ?? '');
 
         return $matches1[1] ?? $matches2[0] ?? $matches3[0] ?? '';
+    }
+
+    public static function hasCode(string $comment): bool
+    {
+        return (bool)static::getCode($comment);
     }
 }

@@ -7,6 +7,7 @@ export default defineConfig({
         laravel([
             'resources/js/app.js',
             'resources/js/tabs.js',
+            'resources/js/chartjs.js',
             'resources/js/tinymce.js',
             'resources/js/pickerjs.js',
             'resources/sass/pickerjs.scss',

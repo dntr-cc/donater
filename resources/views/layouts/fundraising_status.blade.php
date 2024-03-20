@@ -10,6 +10,4 @@
 @else
     <a href="{{ $href }}" class="btn btn-secondary {{ $additionalClasses }}">СКОРО РОЗПОЧНЕТЬСЯ</a>
 @endif
-{{ $fundraising->getName() }}.@if($withOwner)
-    Збирає <a href="{{ $owner->getUserLink() }}">{{ $owner->getFullName() }} [{{ $owner->getAtUsername() }}]</a>
-@endif
+{{ $fundraising->getName() }}

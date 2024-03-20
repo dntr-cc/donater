@@ -1,9 +1,6 @@
 @extends('layouts.base')
 @section('page_title', strtr('Приз для розіграшу :prizeName - donater.com.ua', [':prizeName' => $prize->getName()]))
 @section('page_description', strtr('Приз для розіграшу :prizeName - donater.com.ua', [':prizeName' => $prize->getName()]))
-@push('head-scripts')
-    @vite(['resources/js/tabs.js'])
-@endpush
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>

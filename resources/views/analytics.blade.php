@@ -9,7 +9,7 @@
             Аналітика (всі збори на сайті)
         </h2>
         <div class="row">
-            <div class="col-md-12 px-2 py-2">
+            <div class="col-12">
                 @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3'))
             </div>
         </div>

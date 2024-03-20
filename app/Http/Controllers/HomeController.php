@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Collections\RowCollection;
 use App\Services\ChartService;
 use App\Services\GoogleServiceSheets;
+use App\Services\RowCollectionService;
 
 class HomeController extends Controller
 {
@@ -28,11 +29,8 @@ class HomeController extends Controller
         $rows = $charts = $charts2 = $charts3 = null;
         $user = auth()->user();
         if (auth()?->user()?->can('update', $user)) {
-            $rows = new RowCollection();
-            $service = app(GoogleServiceSheets::class);
-            foreach ($user->getFundraisings() as $fundraising) {
-                $rows->push(...$service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->all());
-            }
+            new RowCollection();
+            $rows = app(RowCollectionService::class)->getRowCollection($user->getFundraisings());
             $chartsService = app(ChartService::class);
             $charts = $chartsService->getChartPerDay($rows);
             $charts2 = $chartsService->getChartPerAmount($rows);

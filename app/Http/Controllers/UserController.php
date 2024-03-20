@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\ChartService;
 use App\Services\FileService;
 use App\Services\GoogleServiceSheets;
+use App\Services\RowCollectionService;
 use Cache;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     public const string VOLUNTEERS = 'Волонтери';
-    public const int PER_PAGE = 15;
+    public const int PER_PAGE = 6;
 
     public function show(User $user)
     {
@@ -26,11 +27,7 @@ class UserController extends Controller
             Cache::set('referral_fg:' . sha1(request()->userAgent() . implode(request()->ips())), $user->getId(), 60 * 60);
         }
         if (auth()?->user()?->can('update', $user)) {
-            $rows = new RowCollection();
-            $service = app(GoogleServiceSheets::class);
-            foreach ($user->getFundraisings() as $fundraising) {
-                $rows->push(...$service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->all());
-            }
+            $rows = app(RowCollectionService::class)->getRowCollection($user->getFundraisings());
             $chartsService = app(ChartService::class);
             $charts = $chartsService->getChartPerDay($rows);
             $charts2 = $chartsService->getChartPerAmount($rows);

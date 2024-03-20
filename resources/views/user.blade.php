@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="d-flex justify-content-center align-items-center mb-2">
                                     @can('update', $user)
-                                        <button class="btn m-1 btn-outline-dark" data-bs-toggle="modal"
+                                        <button class="btn m-1 btn-outline-dark {{ $additionalClasses }}" data-bs-toggle="modal"
                                                 data-bs-target="#userEditSettingsModal">
                                             Налаштування
                                         </button>

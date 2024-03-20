@@ -131,13 +131,26 @@ class Fundraising extends Model
         return $this;
     }
 
-    public function getJarLink(bool $withCode = true): string
+    public function getJarLink(bool $withCode = true, int $withAmount = null, string $addComment = null): string
     {
+        $needAddText = true;
+        $getParams = '';
+        if ($withAmount) {
+            $getParams .= 'a=' . $withAmount . '&';
+        }
         if ($withCode && $user = auth()?->user()) {
-            return $this->link . '?' . 't=' . $user->getUserCode();
+            $text = $user->getUserCode();
+            if ($addComment) {
+                $text .= ' ' . $addComment;
+                $needAddText = false;
+            }
+            $getParams .= 't=' . $text;
+        }
+        if ($addComment && $needAddText) {
+            $getParams .= 't=' . $addComment;
         }
 
-        return $this->link;
+        return $getParams ? $this->link . '?' . $getParams : $this->link;
     }
 
     public function getMonoRequest($link): string
