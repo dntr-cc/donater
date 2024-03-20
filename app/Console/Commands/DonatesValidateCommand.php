@@ -35,6 +35,9 @@ class DonatesValidateCommand extends Command
         if ($id = $this->argument('id')) {
             $userCodesService = app(UserCodeService::class);
             $fundraising = Fundraising::find($id);
+            if (!$fundraising) {
+                return;
+            }
             $fundraisingId = $fundraising->getId();
             $rows = $this->service->getRowCollection($fundraising->getSpreadsheetId(), $fundraisingId);
             foreach ($rows->all() as $item) {
