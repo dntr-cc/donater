@@ -32,6 +32,7 @@ class FundraisingDeactivateCommand extends Command
             }
             $byCountRow = $this->isNeedActionByCountRow($rowsChecked);
             $byCreatedDate = $this->isNeedActionByCreatedDate($fundraising->getCreatedAt()->setTimezone(config('app.timezone'))->getTimestamp(), $limit);
+            $this->output->info('byCountRow:' . json_encode($byCountRow) . ' byCreatedDate:' .  json_encode($byCreatedDate));
             if ($this->initDoCommandGoal($byCountRow, $byCreatedDate, $fundraising)) {
                 $this->notifyVolunteerAndAdmin($fundraising);
             }
@@ -79,10 +80,8 @@ class FundraisingDeactivateCommand extends Command
 
     protected function doCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool
     {
-        if ($byCreatedDate) {
-            if ($byCountRow) {
-                return true;
-            }
+        if ($byCreatedDate && !$byCountRow) {
+            return true;
         }
 
         return false;
