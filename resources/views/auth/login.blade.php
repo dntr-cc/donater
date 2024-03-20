@@ -42,7 +42,6 @@
                 loginHash: $('#loginCode').val(),
             },
             success: function (data) {
-                console.log(data);
                 window.location.assign(data.url ?? '{{ route('my') }}');
             },
         });

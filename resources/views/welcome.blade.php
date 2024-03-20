@@ -188,8 +188,7 @@
                         loginHash: '{{ $loginHash }}',
                     },
                     success: function (data) {
-                        console.log(data);
-                        window.location.assign(data.url ?? '{{ route('my') }}');
+                        window.location.assign('{{ route('welcome') }}');
                     },
                 });
             }, 1000);
