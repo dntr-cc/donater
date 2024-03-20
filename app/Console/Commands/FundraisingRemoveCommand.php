@@ -23,7 +23,7 @@ class FundraisingRemoveCommand extends FundraisingDeactivateCommand
 
     protected function doCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool
     {
-        if ($byCreatedDate && $byCountRow) {
+        if (!$byCountRow) {
             $fundraising->delete();
             return true;
         }
