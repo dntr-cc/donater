@@ -24,19 +24,11 @@ class FundraisingRemoveCommand extends FundraisingDeactivateCommand
     protected function doCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool
     {
         if (!$byCountRow) {
-            $fundraising->delete();
+            $fundraising->initializeSoftDeletes();
+            $fundraising->save();
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * @param int $rowsChecked
-     * @return bool
-     */
-    protected function isNeedActionByCountRow(int $rowsChecked): bool
-    {
-        return $rowsChecked > 0;
     }
 }
