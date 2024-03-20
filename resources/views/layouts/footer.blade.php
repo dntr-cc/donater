@@ -4,7 +4,7 @@
         <div class="container d-flex justify-content-between">
             <div>
                 <span class="mb-9 mb-md-0 text-body-secondary">
-                    ver.0.0.5.{{ config('app.version') }} © 2023 Artem Pakhomov with
+                    ver.0.0.6.{{ config('app.version') }} © 2023 Artem Pakhomov with
                     <a href="{{ route('volunteers') }}" class="">volunteers</a>.
                     Work with ❤️ to Ukraine, Laravel {{ Application::VERSION }}, PHP {{ phpversion() }}, Linux Alpine,
                     Docker, <a target="_blank" href="https://github.com/dntr-cc/donater" class="">GitHub</a> and GitHub Actions

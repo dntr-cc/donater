@@ -8,7 +8,7 @@
 @php $volunteerFundraisings = $volunteer->getFundraisings(); @endphp
 @php $rows = app(App\Services\RowCollectionService::class)->getRowCollection($volunteerFundraisings); @endphp
 
-<div class="border-0 mt-3 d-grid">
+<div class="mt-3 d-grid">
     <div class="row">
         <div class="col-5 p-2 d-flex align-items-center">
             <img src="{{ url($volunteer->getAvatar()) }}" class="card-img-top rounded-circle img-fluid" alt="...">

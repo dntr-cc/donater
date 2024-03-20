@@ -1,6 +1,7 @@
 @php /** @var App\Models\Fundraising $fundraising */ @endphp
 @php /** @var bool $withZvitLink */ @endphp
 @php $withZvitLink = $withZvitLink ?? false; @endphp
+@php $withAnalyticsLink = $withAnalyticsLink ?? false; @endphp
 @php $withJarLink = $withJarLink ?? false; @endphp
 @php $withPageLink = $withPageLink ?? false; @endphp
 @php $additionalClasses = $additionalClasses ?? ''; @endphp

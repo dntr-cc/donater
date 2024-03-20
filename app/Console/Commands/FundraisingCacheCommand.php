@@ -31,6 +31,9 @@ class FundraisingCacheCommand extends Command
         if ($id = $this->argument('id')) {
             try {
                 $fundraising = Fundraising::find($id);
+                if (!$fundraising) {
+                    return;
+                }
                 $this->service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId(), \App\Services\GoogleServiceSheets::RANGE_DEFAULT, false);
             } catch (Throwable $t) {
                 Log::error($t->getMessage(), ['trace' => $t->getTraceAsString()]);

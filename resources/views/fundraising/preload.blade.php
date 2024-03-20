@@ -2,7 +2,6 @@
 @php /* @var \App\Models\Fundraising $fundraising */ @endphp
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
-@php $additionalAnalyticsText = ' по збору ' . $fundraising->getName(); @endphp
 
 <ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">
     <li class="nav-item" role="presentation">
@@ -15,12 +14,6 @@
         <a data-mdb-tab-init class="nav-link" id="icons-tab-2" href="#donates-tabs-users" role="tab"
            aria-controls="donates-tabs-users" aria-selected="false">
             <i class="bi bi-lightning-fill"></i> Донатери збору
-        </a>
-    </li>
-    <li class="nav-item" role="presentation">
-        <a data-mdb-tab-init class="nav-link" id="icons-tab-4" href="#donates-analytics" role="tab"
-           aria-controls="donates-tabs-analytics" aria-selected="false">
-            <i class="bi bi-pie-chart-fill"></i> Аналітика
         </a>
     </li>
     @foreach($fundraising->getPrizes() as $it => $prize)
@@ -77,9 +70,6 @@
     </div>
     <div class="tab-pane fade" id="donates-tabs-users" role="tabpanel" aria-labelledby="donates-tabs-users">
         @include('fundraising.donaters', compact('fundraising'))
-    </div>
-    <div class="tab-pane fade" id="donates-analytics" role="tabpanel" aria-labelledby="donates-tabs-analytics">
-        @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3', 'additionalAnalyticsText'))
     </div>
     @foreach($fundraising->getPrizes() as $it => $prize)
         <div class="tab-pane fade" id="donates-raffle{{ $it }}" role="tabpanel"
