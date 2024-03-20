@@ -30,13 +30,4 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
     {
         return Fundraising::query()->where('is_enabled', '=', true)->onlyTrashed()->get()->all();
     }
-
-    /**
-     * @param int $rowsChecked
-     * @return bool
-     */
-    protected function isNeedActionByCountRow(int $rowsChecked): bool
-    {
-        return $rowsChecked > 0;
-    }
 }
