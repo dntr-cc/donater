@@ -27,11 +27,16 @@
                     <div class="form-floating input-group">
                         <input type="text" class="form-control" id="shortLink"
                                value="{{ $fundraising->getShortLink() }}" disabled>
-                        <label for="userShortLink">Шорт-лінк</label>
+                        <label for="userShortLink">Коротке посилання</label>
                         <button id="copyShortLink" class="btn btn-outline-secondary" onclick="return false;">
                             <i class="bi bi-copy"></i></button>
                     </div>
                 </div>
+                    @if($fundraising->isEnabled())
+                    <div class="mb-2 px-2 py-2 {{ $fundraising->getClassByState() }}">
+                        @include('layouts.monodonat', compact('fundraising'))
+                    </div>
+                    @endif
                 <div class="d-flex justify-content-center mb-2 px-2 py-2">
                     @include('layouts.fundraising_status_new', compact('fundraising'))
                 </div>

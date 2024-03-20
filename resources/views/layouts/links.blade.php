@@ -231,7 +231,7 @@
            data-bs-toggle="modal"
            data-bs-target="#fundraisingEditShortCodesModal">
             <i class="bi bi-share"></i>
-            Шорт-лінк
+            Коротке посилання
         </a>
         <div class="modal fade" id="fundraisingEditShortCodesModal" tabindex="-1"
              aria-labelledby="fundraisingEditShortCodesModalLabel"
@@ -248,7 +248,7 @@
                                 <div class="form-floating input-group">
                                     <input type="text" class="form-control" id="shortLink"
                                            value="{{ $fundraising->getShortLink() }}" disabled>
-                                    <label for="userShortLink">Шорт-лінк</label>
+                                    <label for="userShortLink">Коротке посилання</label>
                                     <button id="copyShortLink" class="btn btn-outline-secondary" onclick="return false;">
                                         <i class="bi bi-copy"></i></button>
                                 </div>
@@ -329,5 +329,5 @@
         copyContent($('#shortLink').val());
         return false;
     });
-    toast('Шорт-лінк скопійовано', copyCode);
+    toast('Коротке посилання скопійовано', copyCode);
 </script>
