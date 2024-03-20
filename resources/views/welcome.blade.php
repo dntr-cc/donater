@@ -1,9 +1,29 @@
 @extends('layouts.base')
 @section('page_title', 'donater.com.ua - Донатити будуть всі')
-@section('page_description', 'donater.com.ua - Донатити будуть всі. Телеграм бот для нагадувань донатів своїм волонтерам.')
-
+@section('page_description', 'donater.com.ua - Донатити будуть всі. Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на тиждень, місяць тощо.')
+@php $loginHash = auth()->user() ? null : app(App\Services\LoginService::class)->getNewLoginHash();
+@endphp
 @section('content')
     <div class="container my-5">
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1 class="jumbotron-heading">Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на тиждень, місяць тощо</h1>
+                @if($loginHash)
+                <p class="lead text-muted">Авторизуйтеся в телеграм-боті - це створить вам аккаунт на сайті.</p>
+                <p>
+                        <a href="{{ config('telegram.bots.donater-bot.url') }}?start={{ $loginHash }}" class="btn btn-primary my-2">Підключити бота</a>
+                </p>
+                @endif
+                <p class="lead text-muted">Підписуйтеся на свого волонтера, щоб задати розклад. Якщо вашого волонтера нема на сайті, запросіть його своім кодом донатера, код донатера є на вашій сторінці</p>
+                <p>
+                    <a href="{{ route('volunteers') }}" class="btn btn-outline-success my-2">Обрати волонтера</a>
+                    @auth
+                        <a href="{{ route('my') }}" class="btn btn-outline-primary my-2">Ваша сторінка</a>
+                    @endauth
+                </p>
+            </div>
+        </section>
+        <h2 class="fw-semibold text-center border-secondary-subtle m-3">Покрокова інструкція</h2>
         <div class="row row-cols-1 row-cols-md-3 mb-3">
             <div class="col">
                 <div class="card mb-4 rounded-3 shadow-sm">
@@ -18,23 +38,17 @@
                             </li>
                             <li class="mt-4">
                                 <span class="flex">
-                                    Копіюєте код, натиснувши на
-                                    <button id="copyCode" class="me-4 btn btn-sm btn-outline-secondary"
-                                            onclick="return false;">
-                                        <i class="bi bi-copy"></i>
-                                    </button>
+                                    Відкриваєте телеграм бота натиснувши на кнопку "Відкрити Телеграм"
                                 </span>
+                            </li>
+                            <li class="mt-4">
+                                Вас авторизує на сайті автоматично.
                             </li>
                             <li class="mt-4">
                                 <span class="flex">
-                                    Відкриваєте телеграм бота натиснувши на кнопку<br>
-                                    <a href="{{ config('telegram.bots.donater-bot.url') }}"
-                                       class="col-md-12 btn btn-sm btn-outline-primary"
-                                       target="_blank"><i class="bi bi-telegram"> Відкрити Телеграм</i></a>
+                                    Якщо ви робите це з різних пристроїв - використовуйте код логіну,
+                                    його треба відправити телеграм боту для авторизації на сайті
                                 </span>
-                            </li>
-                            <li class="mt-4">
-                                Відправляєте телеграм боту повідомлення з кодом
                             </li>
                             <li class="mt-4">
                                 Відкриваєте свою сторінку

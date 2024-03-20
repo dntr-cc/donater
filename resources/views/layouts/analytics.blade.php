@@ -13,13 +13,19 @@
     <div>
         {!! $charts?->render() !!}
     </div>
-    <h3 class="mt-5 mb-2">Кількість донатів по сумі</h3>
-    <div>
-        {!! $charts2?->render() !!}
-    </div>
-    <h3 class="mt-5 mb-2">Сума донатів по сумі</h3>
-    <div>
-        {!! $charts3?->render() !!}
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mt-5">Кількість донатів по сумі</h3>
+            <div>
+                {!! $charts2?->render() !!}
+            </div>
+        </div>
+        <div class="col-12">
+            <h3 class="mt-5">Сума донатів по сумі</h3>
+            <div>
+                {!! $charts3?->render() !!}
+            </div>
+        </div>
     </div>
     <script type="module">
         let analyticsText = `{{ $rows->analyticsToText($additionalAnalyticsText) }}`;

@@ -6,7 +6,6 @@
 @php $additionalClasses = $additionalClasses ?? ''; @endphp
 @php $withPrizes = $withPrizes ?? false; @endphp
 @php $disableShortCodes = $disableShortCodes ?? true; @endphp
-@php $rows = $rows ?? false; @endphp
 
 @if($withJarLink)
     <a href="{{ $fundraising->getJarLink() }}" target="_blank" class="btn m-1 {{ $additionalClasses }}">

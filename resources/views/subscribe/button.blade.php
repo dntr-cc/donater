@@ -1,7 +1,8 @@
 @php $subscribe = $volunteer->getSubscribe($authUser->getId()); @endphp
+@php $additionalClasses = $additionalClasses ?? '' @endphp
 <p class="mb-1">
     <button type="button"
-            class="btn {{ $subscribe ? 'btn-outline-primary' : 'btn-outline-success' }}"
+            class="btn {{ $subscribe ? 'btn-outline-primary' : 'btn-outline-success' }} {{ $additionalClasses }}"
             data-bs-toggle="modal"
             data-bs-target="#subscribe"
             data-bs-volunteer-id="{{ $volunteer->getId() }}"

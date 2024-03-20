@@ -193,3 +193,7 @@ body {
     padding-left: 0;
     list-style: none;
 }
+
+.progress-bar-animated-reverse {
+    animation: reverse 1s linear infinite progress-bar-stripes;
+}

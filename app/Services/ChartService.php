@@ -34,13 +34,12 @@ class ChartService
 
         return $this->chart()->name('linePerDay')
             ->type('line')
-            ->size(['width' => 400, 'height' => 200])
             ->labels(array_keys($perDay))
             ->datasets([
                 [
                     'borderColor' => "rgb(255, 99, 132)",
                     'fill'        => false,
-                    'data'        => array_map(fn(array $item, string $key) => ['x' => $key, 'y' => $item['amount']], array_values($perDay), array_keys($perDay)),
+                    'data'        => array_map(fn(array $item, string $key) => ['x' => $key, 'y' => round($item['amount'], 2)], array_values($perDay), array_keys($perDay)),
                 ],
             ])
             ->optionsRaw(
@@ -67,7 +66,6 @@ class ChartService
 
         return $this->chart()->name('piePerAmount')
             ->type('pie')
-            ->size(['width' => 400, 'height' => 200])
             ->labels(array_keys($perSum))
             ->datasets([
                 [
@@ -102,7 +100,6 @@ class ChartService
 
         return $this->chart()->name('piePerSum')
             ->type('pie')
-            ->size(['width' => 400, 'height' => 200])
             ->labels(array_keys($perSum))
             ->datasets([
                 [

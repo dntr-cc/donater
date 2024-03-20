@@ -55,8 +55,8 @@ class RowCollection extends Collection
                 $daysTimestamp[] = $timestamp;
                 $day = date('d/m/Y', $timestamp);
                 $perDay[$day] = $perDay[$day] ?? 0;
-                $perDay[$day] += floatval($item->getAmount());
-                $sum += floatval($item->getAmount());
+                $perDay[$day] += round(floatval($item->getAmount()), 2);
+                $sum += round(floatval($item->getAmount()), 2);
             }
         }
         if ($perDay) {
@@ -117,12 +117,36 @@ class RowCollection extends Collection
                 };
                 if ($type) {
                     $result[$type] = $result[$type] ?? 0;
-                    $result[$type] += $amount;
+                    $result[$type] += round($amount, 2);
                 }
             }
         }
 
         return $result;
+    }
+
+    public function allSum(): float
+    {
+        $amount = 0.00;
+        foreach ($this->all() as $item) {
+            if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
+                $amount += (float)$item->getAmount();
+            }
+        }
+
+        return round($amount, 2);
+    }
+
+    public function allSumFromOurDonates(): float
+    {
+        $amount = 0.00;
+        foreach ($this->all() as $item) {
+            if ($item->getAmount() > 0 && !$item->isOwnerTransaction() && \App\DTOs\Row::hasCode($item->getComment())) {
+                $amount += (float)$item->getAmount();
+            }
+        }
+
+        return round($amount, 2);
     }
 
     public function analyticsToText(string $additionalTitle = ''): string
