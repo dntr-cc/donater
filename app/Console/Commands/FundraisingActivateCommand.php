@@ -13,6 +13,18 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
 
     protected $description = 'Command description';
 
+
+    /**
+     * @param mixed $fundraising
+     * @return void
+     */
+    protected function notifyVolunteer(Fundraising $fundraising): void
+    {
+        $fundraising->getVolunteer()->sendBotMessage(
+            strtr(static::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))])
+        );
+    }
+
     protected function doCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool
     {
         if ($byCountRow) {
