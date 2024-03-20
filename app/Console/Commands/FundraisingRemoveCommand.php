@@ -30,4 +30,13 @@ class FundraisingRemoveCommand extends FundraisingDeactivateCommand
 
         return false;
     }
+
+    /**
+     * @param int $rowsChecked
+     * @return bool
+     */
+    protected function isNeedActionByCountRow(int $rowsChecked): bool
+    {
+        return $rowsChecked > 0;
+    }
 }
