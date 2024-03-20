@@ -11,7 +11,7 @@
                 @if($loginHash)
                 <p class="lead text-muted">Авторизуйтеся в телеграм-боті - це створить вам аккаунт на сайті.</p>
                 <p>
-                    <a id="enableBot" href="{{ config('telegram.bots.donater-bot.url') }}?start={{ $loginHash }}" class="btn btn-primary my-2">Підключити бота</a>
+                    <a id="enableBot" target="_blank" href="{{ config('telegram.bots.donater-bot.url') }}?start={{ $loginHash }}" class="btn btn-primary my-2">Підключити бота</a>
                 </p>
                 @endif
                 <p class="lead text-muted">Підписуйтеся на свого волонтера, щоб задати розклад. Якщо вашого волонтера нема на сайті, запросіть його своім кодом донатера, код донатера є на вашій сторінці</p>
