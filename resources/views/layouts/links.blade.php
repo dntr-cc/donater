@@ -210,9 +210,6 @@
             });
             $('.del-prize').on('click', event => {
                 let url = '{{ route('fundraising.show', compact('fundraising')) }}' + '/prize/' + $(event.target).attr('data-id');
-                console.log(url);
-                console.log(event.target);
-                console.log($(event.target).attr('data-id'));
                 event.preventDefault();
                 $.ajax({
                     url: url,

@@ -304,7 +304,6 @@
                 let empty = $("<a>");
                 toast('Перевірте заповнені поля, будь ласка', empty, 'text-bg-danger');
                 empty.click();
-                console.log($('#description').text())
                 return;
             }
             $.ajax({
