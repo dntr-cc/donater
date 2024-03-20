@@ -21,24 +21,18 @@ class FundraisingDeactivateCommand extends Command
         $service = app(GoogleServiceSheets::class);
         $limit = strtotime(static::DAYS);
         foreach ($this->getAllFundraisings() as $fundraising) {
-            $needAction = false;
             $rows = $service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
             $rowsChecked = 0;
             foreach ($rows->all() as $item) {
                 $date = $item->getDate();
                 if ($this->isValidDate($date, $limit)) {
-                    $needAction = true;
                     $rowsChecked++;
                 }
                 break;
             }
-            if ($this->isNeedActionByCountRow($rowsChecked)) {
-                $needAction = true;
-            }
-            if (!$needAction && $this->isNeedActionByCreatedDate($fundraising->getCreatedAt()->setTimezone(config('app.timezone'))->getTimestamp(), $limit)) {
-                $needAction = true;
-            }
-            if ($this->initDoCommandGoal($needAction, $fundraising)) {
+            $byCountRow = $this->isNeedActionByCountRow($rowsChecked);
+            $byCreatedDate = $this->isNeedActionByCreatedDate($fundraising->getCreatedAt()->setTimezone(config('app.timezone'))->getTimestamp(), $limit);
+            if ($this->initDoCommandGoal($byCountRow, $byCreatedDate, $fundraising)) {
                 $this->notifyVolunteerAndAdmin($fundraising);
             }
         }
@@ -75,17 +69,23 @@ class FundraisingDeactivateCommand extends Command
         $volunteer->sendBotMessage($fundraising->getMonoRequest($fundraising->getJarLink(false)));
     }
 
-    protected function initDoCommandGoal(bool $action, Fundraising $fundraising): bool
+    protected function initDoCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool
     {
-        $doCommandGoal = $this->doCommandGoal($action, $fundraising);
+        $doCommandGoal = $this->doCommandGoal($byCountRow, $byCreatedDate, $fundraising);
         $this->output->info($fundraising->getName() . ' initiate doCommandGoal:' . json_encode($doCommandGoal));
 
         return $doCommandGoal;
     }
 
-    protected function doCommandGoal(bool $action, Fundraising $fundraising): bool
+    protected function doCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool
     {
-        return !$action;
+        if ($byCreatedDate) {
+            if ($byCountRow) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -103,7 +103,7 @@ class FundraisingDeactivateCommand extends Command
      */
     protected function isNeedActionByCreatedDate(int $createdTimestamp, int $limit): bool
     {
-        return $createdTimestamp > $limit;
+        return $createdTimestamp < $limit;
     }
 
     /**

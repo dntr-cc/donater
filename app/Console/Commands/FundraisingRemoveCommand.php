@@ -21,9 +21,9 @@ class FundraisingRemoveCommand extends FundraisingDeactivateCommand
         );
     }
 
-    protected function doCommandGoal(bool $action, Fundraising $fundraising): bool
+    protected function doCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool
     {
-        if (!$action) {
+        if ($byCreatedDate && $byCountRow) {
             $fundraising->delete();
             return true;
         }

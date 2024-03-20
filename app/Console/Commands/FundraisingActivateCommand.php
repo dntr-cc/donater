@@ -3,9 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Models\Fundraising;
-use App\Models\User;
-use App\Services\GoogleServiceSheets;
-use Illuminate\Console\Command;
 
 class FundraisingActivateCommand extends FundraisingDeactivateCommand
 {
@@ -16,11 +13,14 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
 
     protected $description = 'Command description';
 
-    protected function doCommandGoal(bool $action, Fundraising $fundraising): bool
+    protected function doCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool
     {
-        $fundraising->restore();
+        if (!$byCountRow) {
+            $fundraising->restore();
+            return true;
+        }
 
-        return $action;
+        return false;
     }
 
     /**
@@ -29,14 +29,5 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
     protected function getAllFundraisings(): array
     {
         return Fundraising::query()->where('is_enabled', '=', true)->onlyTrashed()->get()->all();
-    }
-
-    /**
-     * @param int $rowsChecked
-     * @return bool
-     */
-    protected function isNeedActionByCountRow(int $rowsChecked): bool
-    {
-        return (bool)$rowsChecked;
     }
 }
