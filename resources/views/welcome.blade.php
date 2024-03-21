@@ -1,10 +1,11 @@
 @extends('layouts.base')
-@section('page_title', 'donater.com.ua - Донатити будуть всі')
-@section('page_description', 'donater.com.ua - Донатити будуть всі. Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на тиждень, місяць тощо.')
-@section('og_image', url('/images/index.png'))
+@section('page_title', 'Донатити будуть всі. Телеграм бот для нагадувань донатити своїм волонтерам')
+@section('page_description', 'Сервіс дозволяє отримувати донатерам повідомлення в Телеграм з актуальним посиланням на банку вашого волонтера за обраним розкладом')
+@section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
-@section('og_image_height', '470')
-@section('og_image_alt', 'donater.com.ua - Донатити будуть всі. Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на тиждень, місяць тощо.')
+@section('og_image_height', '630')
+@section('og_image_title', 'Донатити будуть всі. Телеграм бот для нагадувань донатити своїм волонтерам')
+@section('og_image_alt', 'Сервіс дозволяє отримувати донатерам повідомлення в Телеграм з актуальним посиланням на банку вашого волонтера за обраним розкладом')
 
 @php $loginHash = auth()->user() ? null : app(App\Services\LoginService::class)->getNewLoginHash();
 @endphp
