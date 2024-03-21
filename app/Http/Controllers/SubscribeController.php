@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OpenGraphRegenerateEvent;
 use App\Http\Requests\SubscribeRequestCreate;
 use App\Http\Requests\SubscribeRequestUpdate;
 use App\Models\Subscribe;
@@ -21,12 +22,8 @@ class SubscribeController extends Controller
         $this->authorize('create', Subscribe::class);
 
         $subscribe = Subscribe::createOrRestore($request->validated());
-        SubscribesMessage::create([
-            'subscribes_id' => $subscribe->getId(),
-            'frequency' => $subscribe->getFrequency(),
-            'scheduled_at' => $subscribe->getFirstMessageAt(),
-        ]);
         $volunteer = $subscribe->getVolunteer();
+        $this->subscribe($subscribe, $volunteer);
         $this->notifyVolunteer($volunteer, $subscribe, self::SUBSCRIPTION_CREATE_MESSAGE);
 
         return new JsonResponse(['csrf' => $this->getNewCSRFToken()]);
@@ -37,12 +34,8 @@ class SubscribeController extends Controller
         $this->authorize('update', $subscribe);
 
         $subscribe->update($request->validated());
-        SubscribesMessage::create([
-            'subscribes_id' => $subscribe->getId(),
-            'frequency' => $subscribe->getFrequency(),
-            'scheduled_at' => $subscribe->getFirstMessageAt(),
-        ]);
         $volunteer = $subscribe->getVolunteer();
+        $this->subscribe($subscribe, $volunteer);
         $this->notifyVolunteer($volunteer, $subscribe, self::SUBSCRIPTION_UPDATE_MESSAGE);
 
         return new JsonResponse(['csrf' => $this->getNewCSRFToken()]);
@@ -52,8 +45,11 @@ class SubscribeController extends Controller
     {
         $this->authorize('delete', $subscribe);
         $volunteer = $subscribe->getVolunteer();
+        $id = $subscribe->getDonater()->getId();
         $this->notifyVolunteer($volunteer, $subscribe, self::SUBSCRIPTION_DELETED_MESSAGE);
         $subscribe->delete();
+        OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+        OpenGraphRegenerateEvent::dispatch($id, OpenGraphRegenerateEvent::TYPE_USER);
 
         return new JsonResponse(['csrf' => $this->getNewCSRFToken()]);
     }
@@ -71,5 +67,21 @@ class SubscribeController extends Controller
 
             $volunteer->sendBotMessage($message);
         }
+    }
+
+    /**
+     * @param Subscribe $subscribe
+     * @param User $volunteer
+     * @return void
+     */
+    protected function subscribe(Subscribe $subscribe, User $volunteer): void
+    {
+        SubscribesMessage::create([
+            'subscribes_id' => $subscribe->getId(),
+            'frequency'     => $subscribe->getFrequency(),
+            'scheduled_at'  => $subscribe->getFirstMessageAt(),
+        ]);
+        OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+        OpenGraphRegenerateEvent::dispatch($subscribe->getDonater()->getId(), OpenGraphRegenerateEvent::TYPE_USER);
     }
 }

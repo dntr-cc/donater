@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Fundraising;
 
 class FundraisingActivateCommand extends FundraisingDeactivateCommand

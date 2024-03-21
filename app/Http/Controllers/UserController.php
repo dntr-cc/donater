@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Collections\RowCollection;
+use App\Events\OpenGraphRegenerateEvent;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Services\ChartService;
@@ -71,6 +72,7 @@ class UserController extends Controller
         $this->authorize('update', $user);
         $avatar = app(FileService::class)->createAvatar($request, '/images/avatars/');
         $user->update(['avatar' => $avatar]);
+        OpenGraphRegenerateEvent::dispatch($user->getId(), OpenGraphRegenerateEvent::TYPE_USER);
 
         return new JsonResponse(['url' => route('user', compact('user')), 'csrf' => $this->getNewCSRFToken()]);
     }
@@ -80,6 +82,7 @@ class UserController extends Controller
         $this->authorize('update', $user);
 
         $user->update($request->validated());
+        OpenGraphRegenerateEvent::dispatch($user->getId(), OpenGraphRegenerateEvent::TYPE_USER);
 
         return new JsonResponse(['url' => route('user', compact('user')), 'csrf' => $this->getNewCSRFToken()]);
     }

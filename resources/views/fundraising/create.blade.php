@@ -203,7 +203,7 @@
                 },
                 error: data => {
                     key.removeClass('is-valid').addClass('is-invalid');
-                    $('meta[name="csrf-token"]').attr('content', data.csrf);
+                    $('meta[name="csrf-token"]').attr('content', JSON.parse(data.responseText).csrf);
                 },
             });
             return false;
@@ -277,7 +277,7 @@
                 },
                 error: data => {
                     spreadsheet_id.removeClass('is-valid').addClass('is-invalid');
-                    $('meta[name="csrf-token"]').attr('content', data.csrf);
+                    $('meta[name="csrf-token"]').attr('content', JSON.parse(data.responseText).csrf);
                 },
             });
             return false;
@@ -315,7 +315,7 @@
                     let empty = $("<a>");
                     toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
                     empty.click();
-                    $('meta[name="csrf-token"]').attr('content', data.csrf);
+                    $('meta[name="csrf-token"]').attr('content', JSON.parse(data.responseText).csrf);
                 },
             });
             return false;
