@@ -72,7 +72,7 @@ Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
 Route::get('/zvit', static fn() => redirect(route('fundraising.all'), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/fundraising', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()->paginate(15)]))->name('fundraising.all');
+Route::get('/fundraising', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()->paginate(6)]))->name('fundraising.all');
 Route::get('/zvit/{fundraising}', fn(Fundraising $fundraising) => redirect(route('fundraising.show', compact('fundraising')), Response::HTTP_MOVED_PERMANENTLY));
 Route::get('/fundraising/actual', static fn() => view('fundraising.index', data: ['fundraisings' => Fundraising::query()->where('is_enabled', '=', true)
     ->where('created_at', '>', new Carbon\Carbon(strtotime('01.12.2023')))->paginate(5)])
