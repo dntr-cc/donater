@@ -22,7 +22,7 @@ class RowCollectionService
         }
         $rows = new RowCollection();
         if (!$fundraisings || $fundraisings->isEmpty()) {
-            Cache::set($key, serialize($rows), 10);
+            Cache::set($key, serialize($rows), 60);
             return $rows;
         }
 
@@ -30,7 +30,7 @@ class RowCollectionService
         foreach ($fundraisings as $fundraising) {
             $rows->push(...$service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->all());
         }
-        Cache::set($key, serialize($rows), 10);
+        Cache::set($key, serialize($rows), 60);
 
         return $rows;
     }
