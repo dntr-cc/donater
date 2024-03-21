@@ -23,11 +23,11 @@ class OpenGraphImageService
         $this->tmpDir = TemporaryDirectory::make();
     }
 
-    public function getUserImage(User $user): string
+    public function getUserImage(User $user, bool $getOld = true): string
     {
         $fileName = $this->getOpenGraphImageName($user->getId());
         $image = url('/images/donater.com.ua.png');
-        if ($this->filesystem->exists($fileName)) {
+        if ($getOld && $this->filesystem->exists($fileName)) {
             return $this->filesystem->url($fileName);
         }
         try {
@@ -83,19 +83,19 @@ class OpenGraphImageService
         $fundraisings = $user->getFundraisings();
         $sourcesLines = [
             [
-                ['Підписано на волонтерів:', (string)$user->getSubscribersAsSubscriber()->count()],
-                ['Зроблено донатів:', $user->getDonateCount() . 'грн.'],
-                ['Задоначено через сайт:', $user->getDonatesSumAll() . 'грн.'],
-                ['Додано призів:', $user->getPrizesCount() . 'шт.'],
+                ['Підписок на волонтерів:', (string)$user->getSubscribersAsSubscriber()->count() . ' ос.'],
+                ['Зроблено донатів:', $user->getDonateCount() . ' шт.'],
+                ['Задоначено через сайт:', $user->getDonatesSumAll() . ' грн.'],
+                ['Додано призів:', $user->getPrizesCount() . ' шт.'],
             ],
         ];
         if ($fundraisings->count()) {
             $rows = app(\App\Services\RowCollectionService::class)->getRowCollection($fundraisings);
             $sourcesLines[] = [
-                ['Підписалося користувачів:', (string)$user->getSubscribers()->count()],
-                ['Всього зборів:', $user->getFundraisings()->count()],
-                ['Загалом зібрано коштів:', $rows->allSum() . 'грн.'],
-                ['Зібрано від користувачів:', $rows->allSumFromOurDonates() . 'грн.'],
+                ['Підписалося користувачів:', (string)$user->getSubscribers()->count() . ' ос.'],
+                ['Всього зборів:', $user->getFundraisings()->count() . ' шт.'],
+                ['Загалом зібрано коштів:', $rows->allSum() . ' грн.'],
+                ['Зібрано від користувачів:', $rows->allSumFromOurDonates() . ' грн.'],
             ];
         }
         foreach ($sourcesLines as $source) {

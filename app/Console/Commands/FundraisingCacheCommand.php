@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Fundraising;
 use App\Services\GoogleServiceSheets;
 use Illuminate\Console\Command;
@@ -35,6 +36,7 @@ class FundraisingCacheCommand extends Command
                     return;
                 }
                 $this->service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId(), \App\Services\GoogleServiceSheets::RANGE_DEFAULT, false);
+                OpenGraphRegenerateEvent::dispatch($fundraising->getVolunteer()->getId(), OpenGraphRegenerateEvent::TYPE_USER);
             } catch (Throwable $t) {
                 Log::error($t->getMessage(), ['trace' => $t->getTraceAsString()]);
             }

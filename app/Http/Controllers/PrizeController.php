@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OpenGraphRegenerateEvent;
 use App\Http\Requests\PrizeRequest;
 use App\Models\Prize;
 use App\Services\FileService;
@@ -21,7 +22,8 @@ class PrizeController extends Controller
             return new JsonResponse([], Response::HTTP_UNAUTHORIZED);
         }
 
-        $prize = Prize::create($attributes);
+        Prize::create($attributes);
+        OpenGraphRegenerateEvent::dispatch((int)$attributes['user_id'], OpenGraphRegenerateEvent::TYPE_USER);
 
         return new JsonResponse(['url' => route('my')]);
     }

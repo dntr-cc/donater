@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OpenGraphRegenerateEvent;
 use App\Http\Requests\DonateRequest;
 use App\Http\Resources\DonateResource;
 use App\Models\Donate;
@@ -76,8 +77,9 @@ class DonateController extends Controller
     public function destroy(Donate $donate)
     {
         $this->authorize('delete', $donate);
-
+        $userId = $donate->withDonater()->donater->getId();
         $donate->delete();
+        OpenGraphRegenerateEvent::dispatch($userId, OpenGraphRegenerateEvent::TYPE_USER);
 
         return response()->json();
     }

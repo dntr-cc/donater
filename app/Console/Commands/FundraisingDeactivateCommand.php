@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Fundraising;
 use App\Models\User;
 use App\Services\GoogleServiceSheets;
@@ -75,6 +76,8 @@ class FundraisingDeactivateCommand extends Command
         $doCommandGoal = $this->doCommandGoal($byCountRow, $byCreatedDate, $fundraising);
         if ($doCommandGoal) {
             $this->output->warning($fundraising->getName() . ' doCommandGoal apply action!');
+            OpenGraphRegenerateEvent::dispatch($fundraising->getVolunteer()->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+
         }
 
         return $doCommandGoal;

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Donate;
 use App\Models\Fundraising;
 use App\Models\User;
@@ -66,6 +67,7 @@ class DonatesValidateCommand extends Command
                         'created_at'     => $createdAt,
                     ]);
                     $user = User::find($userId);
+                    OpenGraphRegenerateEvent::dispatch($user->getId(), OpenGraphRegenerateEvent::TYPE_USER);
                     $telegramId = $user->getTelegramId();
                     if ($user->settings->hasSetting(UserSetting::DONT_SEND_MARKETING_MESSAGES)) {
                         continue;

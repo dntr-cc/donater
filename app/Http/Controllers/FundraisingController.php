@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OpenGraphRegenerateEvent;
 use App\Http\Requests\FundraisingLinkCreateRequest;
 use App\Http\Requests\FundraisingRequest;
 use App\Models\Fundraising;
@@ -34,6 +35,8 @@ class FundraisingController extends Controller
 
         $fundraising = Fundraising::create($attributes);
         $volunteer = $fundraising->getVolunteer();
+        OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+
         if (1 === $volunteer->getFundraisings()->count()) {
             $volunteer->sendBotMessage(
                 'Вітаю! Ви створили свій перший збір. Долучайтеся до чату волонтерів нашого сайту ' .

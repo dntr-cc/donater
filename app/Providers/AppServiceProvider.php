@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\OpenGraphRegenerateEvent;
+use App\Listeners\OpenGraphRegenerate;
 use App\Services\GoogleServiceSheets;
 use Config;
 use Google_Client;
 use Google_Service_Sheets;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Str;
 use URL;
@@ -42,5 +45,9 @@ class AppServiceProvider extends ServiceProvider
         if (Str::contains(Config::get('app.url'), 'https://')) {
             URL::forceScheme('https');
         }
+        Event::listen(
+            OpenGraphRegenerateEvent::class,
+            OpenGraphRegenerate::class,
+        );
     }
 }
