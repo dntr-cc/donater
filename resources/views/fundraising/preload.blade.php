@@ -3,7 +3,7 @@
 @php $donaters = new \Illuminate\Support\Collection(); @endphp
 @php $donates = new \Illuminate\Support\Collection(); @endphp
 
-<ul class="nav nav-tabs mb-3 mt-4" id="icons" role="tablist">
+<ul class="nav nav-tabs mb-3" id="icons" role="tablist">
     <li class="nav-item" role="presentation">
         <a data-mdb-tab-init class="nav-link active" id="icons-tab-1" href="#donates-all" role="tab"
            aria-controls="donates-tabs-all" aria-selected="true">
