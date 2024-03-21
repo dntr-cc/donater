@@ -13,7 +13,15 @@
 @php $btn = true; @endphp
 @section('content')
     <div class="container px-4 py-5">
-        <h2 class="pb-2">Всі збори</h2>
+        <h2 class="pb-2">
+            Всі збори
+            @auth()
+                <a href="{{route('fundraising.new')}}" class="btn ">
+                    <i class="bi bi-plus-circle-fill"></i>
+                    Створити
+                </a>
+            @endauth
+        </h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             @foreach($fundraisings->all() as $it => $fundraising)
                 @include('fundraising.item-card', compact('fundraising'))

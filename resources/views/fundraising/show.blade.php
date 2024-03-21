@@ -1,11 +1,12 @@
 @extends('layouts.base')
-@php [$ogImageWidth, $ogImageHeight] = getimagesize(config('app.env') === 'local' ? public_path($fundraising->getAvatar()) : url($fundraising->getAvatar())); @endphp
+@php [$ogImageWidth, $ogImageHeight] = getimagesize(config('app.env') === 'local' ? public_path('/images/banners/default.png') : url($fundraising->getAvatar())); @endphp
 @section('page_title', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @section('page_description', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @section('og_image', url($fundraising->getAvatar()))
 @section('og_image_width', $ogImageWidth)
 @section('og_image_height', $ogImageHeight)
-@section('og_image_alt', $fundraising->getName())
+@section('og_image_title', $fundraising->getName())
+@section('og_image_alt', 'Створить нагадування задонатити на збір ' . $fundraising->getName() . ' на сайті donater.com.ua')
 @push('head-scripts')
     @vite(['resources/js/tabs.js'])
     @vite(['resources/js/chartjs.js'])
