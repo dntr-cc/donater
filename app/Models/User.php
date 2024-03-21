@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
@@ -415,5 +416,19 @@ class User extends Authenticatable
 
 
         return $fundraisings->random();
+    }
+
+    /**
+     * @uses \App\Models\Donate
+     * @return float
+     */
+    public function getDonatesSumAll(): float
+    {
+        return DB::query()
+            ->select(DB::raw('sum(amount) as amount'))
+            ->from('donates') // @use Donate::class
+            ->where('user_id', '=', $this->getId())
+            ->orderBy('amount', 'desc')
+            ->get()->first()?->amount ?? 0.00;
     }
 }

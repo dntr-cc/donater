@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Donate extends Model
 {
-    use SoftDeletes, HasFactory;
+    use HasFactory;
 
     protected $with = ['fundraising'];
 
