@@ -4,8 +4,6 @@
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
 @section('og_image_height', '630')
-@section('og_image_title', 'Аналітика по всім зборам на сайті donater.com.ua')
-@section('og_image_alt', 'Сума донатів в день, кількість донатів в розрізі сум донатів тощо')
 @php $additionalAnalyticsText = ' (всі збори на сайті donater.com.ua)' @endphp
 
 @section('content')

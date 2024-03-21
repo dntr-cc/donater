@@ -1,14 +1,10 @@
 @extends('layouts.base')
-@php $title = strtr('Приз :prizeName - donater.com.ua', [':prizeName' => $prize->getName()]); @endphp
-@php $description = strtr('Приз :prizeName для користувачів сайту donater.com.ua', [':prizeName' => $prize->getName()]); @endphp
-@section('page_title', $title)
-@section('page_description', $description)
+@section('page_title', strtr('Приз :prizeName - donater.com.ua', [':prizeName' => $prize->getName()]))
+@section('page_description', strtr('Приз :prizeName для користувачів сайту donater.com.ua', [':prizeName' => $prize->getName()]))
 @php [$ogImageWidth, $ogImageHeight] = getimagesize(config('app.env') === 'local' ? public_path('/images/banners/default.png') : url($fundraising->getAvatar())); @endphp
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', $ogImageWidth)
 @section('og_image_height', $ogImageHeight)
-@section('og_image_title', $title)
-@section('og_image_alt', $description)
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>

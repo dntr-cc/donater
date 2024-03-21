@@ -4,8 +4,6 @@
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
 @section('og_image_height', '630')
-@section('og_image_title', 'Всі збори волонтерів сайту donater.com.ua')
-@section('og_image_alt', 'Перелік всіх зборів, які було додано на сайт donater.com.ua. Виписки та аналітика по з')
 @php $withJarLink = true; @endphp
 @php $withZvitLink = true; @endphp
 @php $raffles = true; @endphp

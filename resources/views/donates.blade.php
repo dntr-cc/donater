@@ -4,8 +4,6 @@
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
 @section('og_image_height', '630')
-@section('og_image_title', 'Всі донати - donater.com.ua')
-@section('og_image_alt', 'Стрічка благодійних внесків від користувачів donater.com.ua')
 @php use App\Models\Donate; @endphp
 @php /* @var Donate $donate */ @endphp
 @php $donatesWithUser = true; @endphp
