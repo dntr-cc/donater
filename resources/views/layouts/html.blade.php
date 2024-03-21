@@ -10,12 +10,25 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Open Graph -->
-    <meta property="og:image" content="@yield('og_image')" />
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="@yield('page_title')">
+    <meta property="og:description" content="@yield('page_description')">
+    <meta property="og:image" content="@yield('og_image')">
     <meta property="og:image:width" content="@yield('og_image_width')" />
     <meta property="og:image:height" content="@yield('og_image_height')" />
-    <meta property="og:image:title" content="@yield('og_image_title')" />
-    <meta property="og:image:alt" content="@yield('og_image_alt')" />
+    <meta property="og:image:title" content="@yield('page_title')" />
+    <meta property="og:image:alt" content="@yield('page_description')" />
     <meta property="og:image:type" content="image/png" />
+
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="donater.com.ua">
+    <meta property="twitter:url" content="https://donater.com.ua/u/aliceinfem">
+    <meta name="twitter:title" content="@yield('page_title')">
+    <meta name="twitter:description" content="@yield('page_description')">
+    <meta name="twitter:image" content="@yield('og_image')">
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">

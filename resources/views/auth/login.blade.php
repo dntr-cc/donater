@@ -4,8 +4,6 @@
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
 @section('og_image_height', '630')
-@section('og_image_title', 'Авторизація donater.com.ua')
-@section('og_image_alt', 'Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на тиждень, місяць тощо.')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

@@ -4,9 +4,6 @@
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
 @section('og_image_height', '630')
-@section('og_image_title', 'Донатити будуть всі. Телеграм бот для нагадувань донатити своїм волонтерам')
-@section('og_image_alt', 'Сервіс дозволяє отримувати донатерам повідомлення в Телеграм з актуальним посиланням на банку вашого волонтера за обраним розкладом')
-
 @php $loginHash = auth()->user() ? null : app(App\Services\LoginService::class)->getNewLoginHash();
 @endphp
 @section('content')
