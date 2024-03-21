@@ -14,10 +14,18 @@
 @php $donates = $user->getDonates(); @endphp
 @php $authUser = auth()?->user(); @endphp
 @php $additionalAnalyticsText = ' по користувачу ' . $user->getUserLink(); @endphp
-
+@php $title = strtr(':fullName (:username) - користувач сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
+@php $description = strtr(':fullName (:username) - користувач сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
+@php $path = app(\App\Services\OpenGraphImageService::class)->getUserImage($user) @endphp
 @extends('layouts.base')
-@section('page_title', strtr(':fullName (:username) - користувач сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]))
-@section('page_description', strtr(':fullName (:username) - користувач сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]))
+@section('page_title', $title)
+@section('page_description', $description)
+@section('og_image', url($path))
+@section('og_image_width', '1200')
+@section('og_image_height', '630')
+@section('og_image_title', $title)
+@section('og_image_alt', $description)
+
 
 @section('content')
     <div class="container">

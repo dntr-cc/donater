@@ -1,15 +1,12 @@
 @extends('layouts.base')
-@php [$ogImageWidth, $ogImageHeight] = getimagesize(config('app.env') === 'local' ? public_path('/images/banners/default.png') : url($fundraising->getAvatar())); @endphp
-@section('page_title', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
+@php $title = strtr('Збір :fundraising. Збирає :volunteer', [':fundraising' => $fundraising->getName(), ':volunteer' => $fundraising->getVolunteer()->getUsernameWithFullName()]); @endphp
+@section('page_title', $title)
 @section('page_description', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
-@section('og_image', url($fundraising->getAvatar()))
-@section('og_image_width', $ogImageWidth)
-@section('og_image_height', $ogImageHeight)
-@section('og_image_title', $fundraising->getName())
+@section('og_image_title', $title)
 @section('og_image_alt', 'Створить нагадування задонатити на збір ' . $fundraising->getName() . ' на сайті donater.com.ua')
+@section('og_image', url('/images/donater.com.ua.png'))
 @push('head-scripts')
     @vite(['resources/js/tabs.js'])
-    @vite(['resources/js/chartjs.js'])
 @endpush
 @php $withJarLink = true; @endphp
 @php $withPageLink = true; @endphp

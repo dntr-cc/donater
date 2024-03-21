@@ -6,7 +6,6 @@ use App\Collections\DonateCollection;
 use App\Collections\UserSettingsCollection;
 use App\Services\UserCodeService;
 use Carbon\Carbon;
-use Database\Factories\ReferralFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -430,5 +429,10 @@ class User extends Authenticatable
             ->where('user_id', '=', $this->getId())
             ->orderBy('amount', 'desc')
             ->get()->first()?->amount ?? 0.00;
+    }
+
+    public function getVolunteerInfo(): HasMany
+    {
+        return $this->hasMany();
     }
 }

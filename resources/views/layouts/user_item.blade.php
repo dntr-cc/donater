@@ -15,7 +15,7 @@
         <div class="card-footer w-100 text-muted">
             Підписано на волонтерів: {{ $user->getSubscribersAsSubscriber()->count() }}<br>
             Зроблено донатів: {{ $user->getDonateCount() }}<br>
-            Загалом задоначено з кодом донатера: {{ $user->getDonatesSumAll() }} грн.<br>
+            Задоначено через сайт: {{ $user->getDonatesSumAll() }} грн.<br>
             Додано призів: {{  $user->getPrizesCount() }} шт.<br>
         </div>
     </div>
