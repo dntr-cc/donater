@@ -1,6 +1,11 @@
 @extends('layouts.base')
 @section('page_title', 'donater.com.ua - Донатити будуть всі')
 @section('page_description', 'donater.com.ua - Донатити будуть всі. Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на тиждень, місяць тощо.')
+@section('og_image', url('/images/index.png'))
+@section('og_image_width', '1200')
+@section('og_image_height', '470')
+@section('og_image_alt', 'donater.com.ua - Донатити будуть всі. Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на тиждень, місяць тощо.')
+
 @php $loginHash = auth()->user() ? null : app(App\Services\LoginService::class)->getNewLoginHash();
 @endphp
 @section('content')

@@ -1,6 +1,10 @@
 @extends('layouts.base')
 @section('page_title', 'Всі збори та фонди - donater.com.ua')
 @section('page_description', 'Вся звітність по Фондам та актуальним зборам коштів - donater.com.ua')
+@section('og_image', url('/images/index.png'))
+@section('og_image_width', '1200')
+@section('og_image_height', '470')
+@section('og_image_alt', 'donater.com.ua - Донатити будуть всі. Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на тиждень, місяць тощо.')
 @php $withJarLink = true; @endphp
 @php $withZvitLink = true; @endphp
 @php $raffles = true; @endphp

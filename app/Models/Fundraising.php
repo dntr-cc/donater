@@ -380,4 +380,12 @@ class Fundraising extends Model
 
         return 'bg-secondary-subtle';
     }
+
+    /**
+     * @return Collection|self[]
+     */
+    public static function active(): Collection
+    {
+        return static::all();
+    }
 }
