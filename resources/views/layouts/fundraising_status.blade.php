@@ -11,3 +11,13 @@
     <a href="{{ $href }}" class="btn btn-secondary {{ $additionalClasses }}">СКОРО РОЗПОЧНЕТЬСЯ</a>
 @endif
 {{ $fundraising->getName() }}
+<a href="{{route('fundraising.show', ['fundraising' => $fundraising->getKey()])}}"
+   class="btn btn-secondary-outline btn-xs">
+    <i class="bi bi-eye"></i>
+    Загальна інформація
+</a>
+<a href="{{route('fundraising.analytics', ['fundraising' => $fundraising->getKey()])}}"
+   class="btn btn-secondary-outline btn-xs">
+    <i class="bi bi-eye"></i>
+    Аналітика
+</a>
