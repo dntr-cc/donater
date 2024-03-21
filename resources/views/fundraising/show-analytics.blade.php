@@ -8,9 +8,6 @@
 @section('og_image_height', $ogImageHeight)
 @section('og_image_title', $fundraising->getName())
 @section('og_image_alt', 'Аналітика по збору ' . $fundraising->getName() . ' на сайті donater.com.ua')
-@push('head-scripts')
-    @vite(['resources/js/tabs.js'])
-@endpush
 @php $withJarLink = true; @endphp
 @php $withPageLink = true; @endphp
 @php $withOwner = true; @endphp

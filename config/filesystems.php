@@ -50,6 +50,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'opengraph' => [
+            'driver' => 'local',
+            'root' => base_path('public/images/opengraph'),
+            'url' => env('APP_URL').'/images/opengraph',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
 
         's3' => [
             'driver' => 's3',
