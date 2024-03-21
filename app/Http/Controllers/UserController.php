@@ -18,6 +18,7 @@ class UserController extends Controller
 {
     public const string VOLUNTEERS = 'Волонтери';
     public const int PER_PAGE = 6;
+    const string USERS = 'Користувачі';
 
     public function show(User $user)
     {
@@ -47,7 +48,7 @@ class UserController extends Controller
     public function index(): View
     {
         $users = User::paginate(self::PER_PAGE)->onEachSide(1);
-        $whoIs = 'Користувачі';
+        $whoIs = self::USERS;
 
         return view('users', compact('users', 'whoIs'));
     }

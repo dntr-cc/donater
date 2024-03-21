@@ -1,7 +1,13 @@
 @extends('layouts.base')
+@php [$ogImageWidth, $ogImageHeight] = getimagesize(config('app.env') === 'local' ? public_path('/images/banners/default.png') : url($fundraising->getAvatar())); @endphp
 @php $additionalAnalyticsText = ' по збору ' . $fundraising->getName(); @endphp
 @section('page_title', strtr('Аналітика по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @section('page_description', strtr('Аналітика по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
+@section('og_image', url($fundraising->getAvatar()))
+@section('og_image_width', $ogImageWidth)
+@section('og_image_height', $ogImageHeight)
+@section('og_image_title', $fundraising->getName())
+@section('og_image_alt', 'Аналітика по збору ' . $fundraising->getName() . ' на сайті donater.com.ua')
 @push('head-scripts')
     @vite(['resources/js/tabs.js'])
 @endpush

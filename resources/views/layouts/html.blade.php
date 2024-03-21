@@ -13,6 +13,7 @@
     <meta property="og:image" content="@yield('og_image')" />
     <meta property="og:image:width" content="@yield('og_image_width')" />
     <meta property="og:image:height" content="@yield('og_image_height')" />
+    <meta property="og:image:title" content="@yield('og_image_title')" />
     <meta property="og:image:alt" content="@yield('og_image_alt')" />
     <meta property="og:image:type" content="image/png" />
 

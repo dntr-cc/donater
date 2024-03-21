@@ -1,6 +1,6 @@
 @php $subscribe = $volunteer->getSubscribe($authUser->getId()); @endphp
 @php $additionalClasses = $additionalClasses ?? '' @endphp
-<p class="mb-1">
+<p class="mb-1"><nobr>
     <button type="button"
             class="btn {{ $subscribe ? 'btn-outline-primary' : 'btn-outline-success' }} {{ $additionalClasses }}"
             data-bs-toggle="modal"
@@ -17,6 +17,7 @@
             data-bs-use-random="{{ $subscribe?->isUseRandom() ? '1' : '0' }}">
         🍩 <i class="bi bi-currency-exchange"></i> {{ $subscribe ? 'Редагувати' : 'Підписатися' }}
     </button>
+    </nobr>
 </p>
 @php
     //    dd()

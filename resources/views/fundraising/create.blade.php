@@ -20,7 +20,7 @@
                                         <div class="d-flex justify-content-center">
                                         <span class="position-relative">
                                             <div class="card border-0 rounded-4 shadow-lg">
-                                                <img id="avatarImage" src="{{ url('/images/avatars/avatar.jpeg') }}"
+                                                <img id="avatarImage" src="{{ url('images/banners/default.png') }}"
                                                      class="bg-image-position-center"
                                                      alt="avatar">
                                             </div>
@@ -29,7 +29,7 @@
                                                 <i class="bi bi-pencil-fill font-large"></i>
                                             </label>
                                             <input id="avatar" type="text" style="display: none;" aria-label="Баннер"
-                                                   value="/images/avatars/avatar.jpeg">
+                                                   value="/images/banners/default.png">
                                             <input id="file" type="file" style="display: none;" accept="image/*">
                                         </span>
                                         </div>
@@ -162,7 +162,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: data => {
-                    let avatar = APP_URL + '/images/avatars/avatar.jpeg';
+                    let avatar = APP_URL + 'images/banners/default.png';
                     if (data.avatar) {
                         avatar = data.avatar;
                     }

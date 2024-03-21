@@ -29,7 +29,8 @@
             @endif
         </div>
         <div class="card-footer {{ $fundraising->getClassByState() }} }}">
-            @include('layouts.fundraising_status_new', compact('fundraising'))
+            @php $volunteer = $fundraising->getVolunteer() @endphp
+            @include('layouts.volunteer_item', compact('volunteer'))
         </div>
     </div>
 </div>
