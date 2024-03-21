@@ -40,7 +40,6 @@ function install_website() {
     php artisan queue:clear
     php artisan schedule:clear-cache
     date | sed 's/$/: RERUN queue/'
-    kill -9 $(ps aux | grep 'queue:listen' | awk '{ print $1 }') > /dev/null 2>&1
     date | sed 's/$/: DISABLE maintenance/'
     php artisan up
 }
