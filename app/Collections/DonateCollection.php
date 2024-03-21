@@ -35,4 +35,17 @@ class DonateCollection extends Collection
 
         return $result;
     }
+
+
+    public function allSum(): float
+    {
+        $amount = 0.00;
+        foreach ($this->all() as $item) {
+            if ($item->getAmount() > 0) {
+                $amount += (float)$item->getAmount();
+            }
+        }
+
+        return round($amount, 2);
+    }
 }

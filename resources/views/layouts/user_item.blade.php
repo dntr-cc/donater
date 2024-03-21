@@ -13,9 +13,9 @@
             </div>
         </div>
         <div class="card-footer w-100 text-muted">
-            Підписано на волонтерів: {{ $user->getSubscribers()->count() }}<br>
+            Підписано на волонтерів: {{ $user->getSubscribersAsSubscriber()->count() }}<br>
             Зроблено донатів: {{ $user->getDonateCount() }}<br>
-            Загалом задоначено з кодом донатера: {{ $user->getDonates()->sum(fn(App\Models\Donate $donate) => $donate->getAmount()) }} грн.<br>
+            Загалом задоначено з кодом донатера: {{ $user->getDonates()->allSum() }} грн.<br>
             Додано призів: {{  $user->getPrizesCount() }} шт.<br>
         </div>
     </div>
