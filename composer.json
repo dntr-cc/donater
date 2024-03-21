@@ -12,12 +12,14 @@
         "google/apiclient": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "icehouse-ventures/laravel-chartjs": "^1.0",
+        "intervention/image": "^3.5",
         "irazasyed/telegram-bot-sdk": "^3.13",
         "laravel/framework": "^11",
         "laravel/passport": "^12",
         "laravel/sanctum": "^4",
         "laravel/tinker": "^2.7",
-        "laravel/ui": "^4.2"
+        "laravel/ui": "^4.2",
+        "ext-imagick": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

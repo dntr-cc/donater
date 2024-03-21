@@ -9,6 +9,13 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Open Graph -->
+    <meta property="og:image" content="@yield('og_image')" />
+    <meta property="og:image:width" content="@yield('og_image_width')" />
+    <meta property="og:image:height" content="@yield('og_image_height')" />
+    <meta property="og:image:alt" content="@yield('og_image_alt')" />
+    <meta property="og:image:type" content="image/png" />
+
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
