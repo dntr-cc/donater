@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Collections\DonateCollection;
 use App\Collections\UserSettingsCollection;
 use App\Services\UserCodeService;
 use Carbon\Carbon;
@@ -25,7 +26,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
  * @property bool $is_premium
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property Collection|Donate[] $donates
+ * @property DonateCollection|Donate[] $donates
  * @property Collection|Fundraising[] $fundraisings
  * @property Collection|Prize[] $prizes
  * @property Collection|UserLink[] $links
@@ -373,6 +374,11 @@ class User extends Authenticatable
     public function getSubscribers(): Collection
     {
         return Subscribe::query()->where('volunteer_id', '=', $this->getId())->get();
+    }
+
+    public function getSubscribersAsSubscriber(): Collection
+    {
+        return Subscribe::query()->where('user_id', '=', $this->getId())->get();
     }
 
     /**
