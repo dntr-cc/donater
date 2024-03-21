@@ -1,10 +1,11 @@
 @extends('layouts.base')
 @section('page_title', 'Всі донати - donater.com.ua')
 @section('page_description', 'Стрічка благодійних внесків від користувачів donater.com.ua')
-@section('og_image', url('/images/index.png'))
+@section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
-@section('og_image_height', '470')
-@section('og_image_alt', 'donater.com.ua - Донатити будуть всі. Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на тиждень, місяць тощо.')
+@section('og_image_height', '630')
+@section('og_image_title', 'Всі донати - donater.com.ua')
+@section('og_image_alt', 'Стрічка благодійних внесків від користувачів donater.com.ua')
 @php use App\Models\Donate; @endphp
 @php /* @var Donate $donate */ @endphp
 @php $donatesWithUser = true; @endphp

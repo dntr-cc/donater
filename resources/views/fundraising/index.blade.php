@@ -1,10 +1,11 @@
 @extends('layouts.base')
-@section('page_title', 'Всі збори та фонди - donater.com.ua')
-@section('page_description', 'Вся звітність по Фондам та актуальним зборам коштів - donater.com.ua')
-@section('og_image', url('/images/index.png'))
+@section('page_title', 'Всі збори волонтерів сайту donater.com.ua')
+@section('page_description', 'Перелік всіх зборів, які було додано на сайт donater.com.ua. Виписки та аналітика по з')
+@section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
-@section('og_image_height', '470')
-@section('og_image_alt', 'donater.com.ua - Донатити будуть всі. Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на тиждень, місяць тощо.')
+@section('og_image_height', '630')
+@section('og_image_title', 'Всі збори волонтерів сайту donater.com.ua')
+@section('og_image_alt', 'Перелік всіх зборів, які було додано на сайт donater.com.ua. Виписки та аналітика по з')
 @php $withJarLink = true; @endphp
 @php $withZvitLink = true; @endphp
 @php $raffles = true; @endphp
