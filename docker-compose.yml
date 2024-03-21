@@ -23,6 +23,7 @@ services:
         volumes:
             - '.:/var/www/html'
             - './supervisor/deploy.php.conf:/etc/supervisor/conf.d/deploy.php.conf:ro'
+            - './supervisor/crond.php.conf:/etc/supervisor/conf.d/crond.php.conf'
         networks:
             - sail
         depends_on:
