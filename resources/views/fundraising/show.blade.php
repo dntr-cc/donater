@@ -12,7 +12,6 @@
 @php $withOwner = true; @endphp
 @php $additionalClasses = 'btn-xs'; @endphp
 @php $withVolunteer = true; @endphp
-@php $fundraisingBanner = url(app(\App\Services\OpenGraphImageService::class)->getFundraisingImage($fundraising)) @endphp
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>

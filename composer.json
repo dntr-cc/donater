@@ -20,6 +20,7 @@
         "laravel/sanctum": "^4",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
+        "p3k/emoji-detector": "*",
         "spatie/temporary-directory": "^2.2"
     },
     "require-dev": {

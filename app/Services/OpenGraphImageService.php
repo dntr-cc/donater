@@ -12,6 +12,7 @@ use ImagickPixel;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
+use function Emoji\remove_emoji;
 
 class OpenGraphImageService
 {
@@ -99,11 +100,11 @@ class OpenGraphImageService
 
         $offset = 20;
         if (!empty(trim($user->getFullName()))) {
-            $imageUsernamePath = $this->getTextImagePath('Bold', $user->getFullName(), 60, $manager);
+            $imageUsernamePath = $this->getTextImagePath('Bold', static::removeEmoji($user->getFullName()), 45, $manager);
             $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
             $offset += 65;
         }
-        $imageUsernamePath = $this->getTextImagePath('Regular', '@' . $user->getUsername(), 50, $manager);
+        $imageUsernamePath = $this->getTextImagePath('Regular', '@' . static::removeEmoji($user->getUsername()), 50, $manager);
         $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
         $offset += 65;
 
@@ -172,9 +173,9 @@ class OpenGraphImageService
 
         $offset = 20;
         $texts = [];
-        $text = $fundraising->getName();
-        if (mb_strlen($text) > 44) {
-            $x = 44;
+        $text = static::removeEmoji($fundraising->getName());
+        if (mb_strlen($text) > 25) {
+            $x = 25;
             $texts = explode("\n", wordwrap($text, $x));
         } else {
             $texts[] = $text;
@@ -199,10 +200,15 @@ class OpenGraphImageService
         $this->createMaskedAvatar($filepathScaledAvatar);
         $imageScaledAvatar = $manager->read($filepathScaledAvatar);
         $imageTemplate->place($imageScaledAvatar->scale(150, 150), 'top-left', 480, 280);
-        $imageUsernamePath = $this->getTextImagePath('Bold', 'Волонтер ' . $volunteer->getFullName(), 25, $manager);
-        $imageTemplate->place($imageUsernamePath, 'top-left', 650, 320);
-        $imageUsernamePath = $this->getTextImagePath('Bold', 'чекає на вашу підписку від 1грн в день', 25, $manager);
-        $imageTemplate->place($imageUsernamePath, 'top-left', 650, 370);
+        $offsetY = 310;
+        $imageUsernamePath = $this->getTextImagePath('Medium', 'Волонтер ' . static::removeEmoji($volunteer->getFullName()), 25, $manager);
+        $imageTemplate->place($imageUsernamePath, 'top-left', 650, $offsetY);
+        $offsetY += 35;
+        $imageUsernamePath = $this->getTextImagePath('Medium', 'чекає на вашу підписку, від 1грн в день.', 25, $manager);
+        $imageTemplate->place($imageUsernamePath, 'top-left', 650, $offsetY);
+        $offsetY += 35;
+        $imageUsernamePath = $this->getTextImagePath('Medium', 'Посиланням на банку приходить в телеграм.', 25, $manager);
+        $imageTemplate->place($imageUsernamePath, 'top-left', 650, $offsetY);
 
         $encoded = $imageTemplate->toPng();
         if ($removeOld) {
@@ -239,6 +245,7 @@ class OpenGraphImageService
         $imageText->drawImage($draw);
         $imageUsernamePath = $this->tmpDir->path('text-tmp.png');
         file_put_contents($imageUsernamePath, $imageText);
+
         return $imageUsernamePath;
     }
 
@@ -271,5 +278,10 @@ class OpenGraphImageService
         $scaledImageTextReady->save($imageUsernamePath);
 
         return $imageUsernamePath;
+    }
+
+    public static function removeEmoji(string $string): string
+    {
+        return remove_emoji($string);
     }
 }
