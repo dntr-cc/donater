@@ -46,7 +46,7 @@ class PrizeController extends Controller
 
         $avatar = app(FileService::class)->createAvatar($request, '/images/prizes/');
 
-        return new JsonResponse(['avatar' => url($avatar), 'csrf' => $this->getNewCSRFToken()]);
+        return new JsonResponse(['avatar' => $avatar, 'csrf' => $this->getNewCSRFToken()]);
     }
 
     public function edit(Prize $prize)

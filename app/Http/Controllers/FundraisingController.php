@@ -36,6 +36,7 @@ class FundraisingController extends Controller
         $fundraising = Fundraising::create($attributes);
         $volunteer = $fundraising->getVolunteer();
         OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+        OpenGraphRegenerateEvent::dispatch($fundraising->getId(), OpenGraphRegenerateEvent::TYPE_FUNDRAISING);
 
         if (1 === $volunteer->getFundraisings()->count()) {
             $volunteer->sendBotMessage(
@@ -59,7 +60,7 @@ class FundraisingController extends Controller
 
         $avatar = app(FileService::class)->createAvatar($request, '/images/banners/');
 
-        return new JsonResponse(['avatar' => url($avatar), 'csrf' => $this->getNewCSRFToken()]);
+        return new JsonResponse(['avatar' => $avatar, 'csrf' => $this->getNewCSRFToken()]);
     }
 
     public function checkKey(Request $request): JsonResponse
@@ -123,6 +124,7 @@ class FundraisingController extends Controller
         $this->authorize('update', $fundraising);
 
         $fundraising->update($request->validated());
+        OpenGraphRegenerateEvent::dispatch($fundraising->getId(), OpenGraphRegenerateEvent::TYPE_FUNDRAISING);
 
         return new JsonResponse(['url' => route('fundraising.show', compact('fundraising'))]);
     }
@@ -193,6 +195,7 @@ class FundraisingController extends Controller
         $data = $request->validated();
         app(FundraisingShortCodeService::class)
             ->createFundraisingShortCode($fundraising->getId(), $data['code'] ?? '');
+        OpenGraphRegenerateEvent::dispatch($fundraising->getId(), OpenGraphRegenerateEvent::TYPE_FUNDRAISING);
 
         return new JsonResponse(['csrf' => $this->getNewCSRFToken()]);
     }

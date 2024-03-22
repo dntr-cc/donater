@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Fundraising;
 use App\Models\User;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
@@ -25,13 +26,29 @@ class OpenGraphImageService
 
     public function getUserImage(User $user, bool $getOld = true): string
     {
-        $fileName = $this->getOpenGraphImageName($user->getId());
+        $fileName = $this->getOpenGraphUserImageName($user->getId());
         $image = url('/images/donater.com.ua.png');
         if ($getOld && $this->filesystem->exists($fileName)) {
             return $this->filesystem->url($fileName);
         }
         try {
-            $image = $this->generateOpenGraphImage($user, $fileName, $getOld);
+            $image = $this->generateOpenGraphUserImage($user, $fileName, $getOld);
+        } catch (\Throwable $throwable) {
+            \Log::critical($throwable->getMessage(), ['tarce' => $throwable->getTraceAsString()]);
+        }
+
+        return $image;
+    }
+
+    public function getFundraisingImage(Fundraising $fundraising, bool $getOld = true): string
+    {
+        $fileName = $this->getOpenGraphImageFundraisingName($fundraising->getId());
+        $image = url('/images/donater.com.ua.png');
+        if ($getOld && $this->filesystem->exists($fileName)) {
+            return $this->filesystem->url($fileName);
+        }
+        try {
+            $image = $this->generateOpenGraphFundraisingImage($fundraising, $fileName, true);
         } catch (\Throwable $throwable) {
             \Log::critical($throwable->getMessage(), ['tarce' => $throwable->getTraceAsString()]);
         }
@@ -43,9 +60,18 @@ class OpenGraphImageService
      * @param int $userId
      * @return string
      */
-    protected function getOpenGraphImageName(int $userId): string
+    protected function getOpenGraphUserImageName(int $userId): string
     {
         return strtr('open-graph-donater-com-ua-user-id-:userId.png', [':userId' => $userId]);
+    }
+
+    /**
+     * @param int $fundraisingId
+     * @return string
+     */
+    protected function getOpenGraphImageFundraisingName(int $fundraisingId): string
+    {
+        return strtr('open-graph-donater-com-ua-fundraising-id-:fundraisingId.png', [':fundraisingId' => $fundraisingId]);
     }
 
     /**
@@ -56,7 +82,7 @@ class OpenGraphImageService
      * @throws \ImagickDrawException
      * @throws \ImagickException
      */
-    private function generateOpenGraphImage(User $user, string $openGraphImageName, bool $removeOld = false): ?string
+    private function generateOpenGraphUserImage(User $user, string $openGraphImageName, bool $removeOld = false): ?string
     {
         $manager = new ImageManager(new Driver());
         $donatTmpPath = $this->tmpDir->path('donut.png');
@@ -120,6 +146,74 @@ class OpenGraphImageService
     }
 
     /**
+     * @param User $fundraising
+     * @param string $openGraphImageName
+     * @param bool $removeOld
+     * @return string|null
+     * @throws \ImagickDrawException
+     * @throws \ImagickException
+     */
+    private function generateOpenGraphFundraisingImage(Fundraising $fundraising, string $openGraphImageName, bool $removeOld = false): ?string
+    {
+        $manager = new ImageManager(new Driver());
+        $filepathScaledAvatar = $this->tmpDir->path($openGraphImageName);
+        $imageTemplate = $manager->read(base_path('public/images/opengraph/template/fund-mask.png'));
+        $imageAvatar = $manager->read(base_path('public/' . $fundraising->getAvatar()));
+        $width = $imageAvatar->width();
+        $height = $imageAvatar->height();
+        if ($width > $height) {
+            $imageAvatar = $imageAvatar->scale(width: 400);
+        } else {
+            $imageAvatar = $imageAvatar->scale(height: 400);
+        }
+        $imageAvatar->toPng()->save($filepathScaledAvatar);
+        $imageScaledAvatar = $manager->read($filepathScaledAvatar);
+        $imageTemplate->place($imageScaledAvatar, 'top-left', 20, 20);
+
+        $offset = 20;
+        $texts = [];
+        $text = $fundraising->getName();
+        if (mb_strlen($text) > 44) {
+            $x = 44;
+            $texts = explode("\n", wordwrap($text, $x));
+        } else {
+            $texts[] = $text;
+        }
+        foreach ($texts as $text) {
+            if (!trim($text)) {
+                continue;
+            }
+            $imageUsernamePath = $this->getTextImagePath('Bold', $text, 60, $manager);
+            $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
+            $offset += 50;
+        }
+
+        $offset += 20;
+        $imageUsernamePath = $this->getTextImagePath('Light', 'https://' . $fundraising->getShortLink(), 50, $manager);
+        $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
+
+        $volunteer = $fundraising->getVolunteer();
+        $imageAvatar = $manager->read(base_path('public/' . $volunteer->getAvatar()));
+        $scaledAvatar = $imageAvatar->scale(width: 380)->cover(380, 380)->toPng();
+        $scaledAvatar->save($filepathScaledAvatar);
+        $this->createMaskedAvatar($filepathScaledAvatar);
+        $imageScaledAvatar = $manager->read($filepathScaledAvatar);
+        $imageTemplate->place($imageScaledAvatar->scale(150, 150), 'top-left', 480, 280);
+        $imageUsernamePath = $this->getTextImagePath('Bold', 'Волонтер ' . $volunteer->getFullName(), 25, $manager);
+        $imageTemplate->place($imageUsernamePath, 'top-left', 650, 320);
+        $imageUsernamePath = $this->getTextImagePath('Bold', 'чекає на вашу підписку від 1грн в день', 25, $manager);
+        $imageTemplate->place($imageUsernamePath, 'top-left', 650, 370);
+
+        $encoded = $imageTemplate->toPng();
+        if ($removeOld) {
+            $this->filesystem->delete($openGraphImageName);
+        }
+        $encoded->save(base_path('public/images/opengraph/' . $openGraphImageName));
+
+        return $this->filesystem->url($openGraphImageName);
+    }
+
+    /**
      * @param string $fontType
      * @param string $text
      * @param int $fontSize
@@ -163,15 +257,15 @@ class OpenGraphImageService
     /**
      * @param string $fontType
      * @param string $text
-     * @param int $fonrSize
+     * @param int $fontSize
      * @param ImageManager $manager
      * @return string
      * @throws \ImagickDrawException
      * @throws \ImagickException
      */
-    protected function getTextImagePath(string $fontType, string $text, int $fonrSize, ImageManager $manager): string
+    protected function getTextImagePath(string $fontType, string $text, int $fontSize, ImageManager $manager): string
     {
-        $imageUsernamePath = $this->getTextImageSavedPath($fontType, $text, $fonrSize);
+        $imageUsernamePath = $this->getTextImageSavedPath($fontType, $text, $fontSize);
         $imageTextReady = $manager->read($imageUsernamePath);
         $scaledImageTextReady = $imageTextReady->toPng();
         $scaledImageTextReady->save($imageUsernamePath);
