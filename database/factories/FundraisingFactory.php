@@ -18,7 +18,7 @@ class FundraisingFactory extends Factory
             'name'       => $this->faker->realText(80),
             'link'       => $this->faker->url(),
             'page'       => $this->faker->word(),
-            'avatar'     => '/images/avatars/avatar.jpeg',
+            'avatar'     => '/images/banners/ava-fund-default.png',
             'is_enabled' => true,
             'user_id'    => User::factory()->create()->getId(),
             'created_at' => Carbon::now(),

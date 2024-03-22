@@ -160,19 +160,27 @@
                             <div class="card mt-4 mb-4 mb-lg-0">
                                 <div class="card-body p-0">
                                     <ul class="list-group list-group-flush rounded-3">
-                                        <li class="list-group-item p-3">
-                                            <h4>Підписки на волонтерів</h4>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                            <h4>
+                                                Підписки на волонтерів
+                                            </h4>
+                                            <a href="#collapseSubscribes" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                                                    aria-controls="collapseSubscribes" class="btn">
+                                                <i class="bi bi-arrow-down"></i>
+                                            </a>
                                         </li>
-                                        @foreach($user->getSubscribes()->all() as $subscribe)
-                                            <div class="col-md-12">
-                                                <div class="card m-1 mb-4">
-                                                    <div class="card-body">
-                                                        @php $volunteer = $subscribe->getVolunteer(); @endphp
-                                                        @include('layouts.volunteer_item', compact('volunteer'))
+                                        <div class="collapse" id="collapseSubscribes">
+                                            @foreach($user->getSubscribes()->all() as $subscribe)
+                                                <div class="col-md-12">
+                                                    <div class="card m-1 mb-4">
+                                                        <div class="card-body">
+                                                            @php $volunteer = $subscribe->getVolunteer(); @endphp
+                                                            @include('layouts.volunteer_item', compact('volunteer'))
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        @endforeach
+                                            @endforeach
+                                        </div>
                                     </ul>
                                 </div>
                             </div>
@@ -180,10 +188,13 @@
                         <div class="card mt-4 mb-4 mb-lg-0">
                             <div class="card-body p-0">
                                 <ul class="list-group list-group-flush rounded-3">
-                                    <li class="list-group-item p-3">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <h4>Скачати інфографіку профілю</h4>
+                                        <a href="{{ $userBanner }}" download="{{ $user->getUsername() }}.png" class="btn">
+                                            <i class="bi bi-arrow-down"></i>
+                                        </a>
                                     </li>
-                                    <a href="{{ $userBanner }}" download="{{ $user->getUsername() }}.png"><img src="{{ $userBanner }}" class="col-12"></a>
+                                    <a href="{{ $userBanner }}" target="_blank"><img src="{{ $userBanner }}" class="col-12" alt="Інфографіка профілю {{ $user->getFullName() }}"></a>
                                 </ul>
                             </div>
                         </div>

@@ -23,11 +23,13 @@
                 <div class="card mt-4 mb-4 mb-lg-0">
                     <div class="card-body p-0">
                         <ul class="list-group list-group-flush rounded-3">
-                            <li class="list-group-item p-3">
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                 <h4>Скачати банер збору</h4>
+                                <a href="{{ $fundraisingBanner }}" download="{{ $fundraising->getKey() }}.png" class="btn">
+                                    <i class="bi bi-arrow-down"></i>
+                                </a>
                             </li>
-                            <a href="{{ $fundraisingBanner }}" download="{{ $fundraising->getKey() }}.png"><img
-                                    src="{{ $fundraisingBanner }}" class="col-12"></a>
+                            <a href="{{ $fundraisingBanner }}" target="_blank"><img src="{{ $fundraisingBanner }}" class="col-12" alt="Інфографіка профілю {{ $fundraising->getName() }}"></a>
                         </ul>
                     </div>
                 </div>
