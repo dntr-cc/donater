@@ -10,7 +10,7 @@ class FundraisingRequest extends FormRequest
     {
         return [
             'key'            => ['required', 'regex:/^[a-zA-Z0-9_-]+$/i'],
-            'name'           => ['required', 'max:50'],
+            'name'           => ['required', 'max:60'],
             'link'           => ['required'],
             'page'           => ['required'],
             'avatar'         => ['required'],

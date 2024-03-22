@@ -39,9 +39,9 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="form-floating">
                                                     <input type="text" class="form-control" id="name"
-                                                           value="" required maxlength="50">
+                                                           value="" required maxlength="60">
                                                     <label for="name">
-                                                        Назва (до 50 символів)
+                                                        Назва (до 60 символів)
                                                     </label>
                                                 </div>
                                             </div>

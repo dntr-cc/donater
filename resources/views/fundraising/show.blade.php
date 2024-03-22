@@ -1,6 +1,6 @@
 @extends('layouts.base')
 @php $title = strtr('Збір :fundraising. Збирає :volunteer', [':fundraising' => $fundraising->getName(), ':volunteer' => $fundraising->getVolunteer()->getUsernameWithFullName()]); @endphp
-@php $fundraisingBanner = url(app(\App\Services\OpenGraphImageService::class)->getFundraisingImage($fundraising)) @endphp
+@php $fundraisingBanner = url(app(\App\Services\OpenGraphImageService::class)->getFundraisingImage($fundraising, true)) @endphp
 @section('page_title', $title)
 @section('page_description', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @section('og_image_title', $title)
@@ -12,7 +12,6 @@
 @php $withOwner = true; @endphp
 @php $additionalClasses = 'btn-xs'; @endphp
 @php $withVolunteer = true; @endphp
-@php $fundraisingBanner = url(app(\App\Services\OpenGraphImageService::class)->getFundraisingImage($fundraising)) @endphp
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>

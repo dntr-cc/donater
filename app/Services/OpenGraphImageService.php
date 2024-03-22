@@ -24,7 +24,7 @@ class OpenGraphImageService
         $this->tmpDir = TemporaryDirectory::make();
     }
 
-    public function getUserImage(User $user, bool $getOld = true): string
+    public function getUserImage(User $user, bool $getOld = false): string
     {
         $fileName = $this->getOpenGraphUserImageName($user->getId());
         $image = url('/images/donater.com.ua.png');
@@ -44,9 +44,9 @@ class OpenGraphImageService
     {
         $fileName = $this->getOpenGraphImageFundraisingName($fundraising->getId());
         $image = url('/images/donater.com.ua.png');
-        if ($getOld && $this->filesystem->exists($fileName)) {
-            return $this->filesystem->url($fileName);
-        }
+//        if ($getOld && $this->filesystem->exists($fileName)) {
+//            return $this->filesystem->url($fileName);
+//        }
         try {
             $image = $this->generateOpenGraphFundraisingImage($fundraising, $fileName, true);
         } catch (\Throwable $throwable) {
@@ -99,11 +99,11 @@ class OpenGraphImageService
 
         $offset = 20;
         if (!empty(trim($user->getFullName()))) {
-            $imageUsernamePath = $this->getTextImagePath('Bold', $user->getFullName(), 60, $manager);
+            $imageUsernamePath = $this->getTextImagePath('Bold', static::removeEmoji($user->getFullName()), 60, $manager);
             $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
             $offset += 65;
         }
-        $imageUsernamePath = $this->getTextImagePath('Regular', '@' . $user->getUsername(), 50, $manager);
+        $imageUsernamePath = $this->getTextImagePath('Regular', '@' . static::removeEmoji($user->getUsername()), 50, $manager);
         $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
         $offset += 65;
 
@@ -173,8 +173,8 @@ class OpenGraphImageService
         $offset = 20;
         $texts = [];
         $text = $fundraising->getName();
-        if (mb_strlen($text) > 44) {
-            $x = 44;
+        if (mb_strlen($text) > 27) {
+            $x = 27;
             $texts = explode("\n", wordwrap($text, $x));
         } else {
             $texts[] = $text;
@@ -183,7 +183,7 @@ class OpenGraphImageService
             if (!trim($text)) {
                 continue;
             }
-            $imageUsernamePath = $this->getTextImagePath('Bold', $text, 60, $manager);
+            $imageUsernamePath = $this->getTextImagePath('Bold', static::removeEmoji($text), 60, $manager);
             $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
             $offset += 50;
         }
@@ -199,10 +199,15 @@ class OpenGraphImageService
         $this->createMaskedAvatar($filepathScaledAvatar);
         $imageScaledAvatar = $manager->read($filepathScaledAvatar);
         $imageTemplate->place($imageScaledAvatar->scale(150, 150), 'top-left', 480, 280);
-        $imageUsernamePath = $this->getTextImagePath('Bold', 'Волонтер ' . $volunteer->getFullName(), 25, $manager);
-        $imageTemplate->place($imageUsernamePath, 'top-left', 650, 320);
-        $imageUsernamePath = $this->getTextImagePath('Bold', 'чекає на вашу підписку від 1грн в день', 25, $manager);
-        $imageTemplate->place($imageUsernamePath, 'top-left', 650, 370);
+        $offsetY = 310;
+        $imageUsernamePath = $this->getTextImagePath('Medium', 'Волонтер ' . static::removeEmoji($volunteer->getFullName()), 25, $manager);
+        $imageTemplate->place($imageUsernamePath, 'top-left', 650, $offsetY);
+        $offsetY += 35;
+        $imageUsernamePath = $this->getTextImagePath('Medium', 'чекає на вашу підписку, від 1грн в день.', 25, $manager);
+        $imageTemplate->place($imageUsernamePath, 'top-left', 650, $offsetY);
+        $offsetY += 35;
+        $imageUsernamePath = $this->getTextImagePath('Medium', 'Посиланням на банку приходить в телеграм.', 25, $manager);
+        $imageTemplate->place($imageUsernamePath, 'top-left', 650, $offsetY);
 
         $encoded = $imageTemplate->toPng();
         if ($removeOld) {
@@ -239,6 +244,7 @@ class OpenGraphImageService
         $imageText->drawImage($draw);
         $imageUsernamePath = $this->tmpDir->path('text-tmp.png');
         file_put_contents($imageUsernamePath, $imageText);
+
         return $imageUsernamePath;
     }
 
@@ -271,5 +277,27 @@ class OpenGraphImageService
         $scaledImageTextReady->save($imageUsernamePath);
 
         return $imageUsernamePath;
+    }
+
+    public static function removeEmoji(string $string): string
+    {
+        return trim(
+            str_replace(
+                "{%}",
+                "?",
+                str_replace(["?", "? ", " ?"],
+                    [''],
+                    mb_convert_encoding(
+                        mb_convert_encoding(
+                            str_replace("?", "{%}", $string),
+                            "ISO-8859-1",
+                            "UTF-8"
+                        ),
+                        "UTF-8",
+                        "ISO-8859-1"
+                    )
+                )
+            )
+        );
     }
 }
