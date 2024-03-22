@@ -174,8 +174,8 @@ class OpenGraphImageService
         $offset = 20;
         $texts = [];
         $text = static::removeEmoji($fundraising->getName());
-        if (mb_strlen($text) > 20) {
-            $x = 20;
+        if (mb_strlen($text) > 24) {
+            $x = 24;
             $texts = explode("\n", wordwrap($text, $x));
         } else {
             $texts[] = $text;
