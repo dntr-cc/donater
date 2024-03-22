@@ -1,7 +1,7 @@
 @extends('layouts.base')
 @section('page_title', strtr('Приз :prizeName - donater.com.ua', [':prizeName' => $prize->getName()]))
 @section('page_description', strtr('Приз :prizeName для Донатерів сайту donater.com.ua', [':prizeName' => $prize->getName()]))
-@php [$ogImageWidth, $ogImageHeight] = getimagesize(config('app.env') === 'local' ? public_path('/images/banners/default.png') : url($fundraising->getAvatar())); @endphp
+@php [$ogImageWidth, $ogImageHeight] = getimagesize(config('app.env') === 'local' ? public_path('/images/banners/ava-fund-default.png') : url($fundraising->getAvatar())); @endphp
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', $ogImageWidth)
 @section('og_image_height', $ogImageHeight)

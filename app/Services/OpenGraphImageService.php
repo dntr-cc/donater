@@ -100,9 +100,26 @@ class OpenGraphImageService
 
         $offset = 20;
         if (!empty(trim($user->getFullName()))) {
-            $imageUsernamePath = $this->getTextImagePath('Bold', static::removeEmoji($user->getFullName()), 45, $manager);
-            $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
-            $offset += 65;
+            $texts = [];
+            $text = static::removeEmoji($user->getFullName() . '!');
+            if (mb_strlen($text) > 20) {
+                $texts = explode("\n", wordwrap($text, 50));
+            } else {
+                $texts[] = $text;
+            }
+            $maxLines = 2;
+            foreach ($texts as $text) {
+                if (0 === $maxLines) {
+                    break;
+                }
+                if (!trim($text)) {
+                    continue;
+                }
+                $imageUsernamePath = $this->getTextImagePath('Bold', $text, 50, $manager);
+                $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
+                $offset += 50;
+                $maxLines--;
+            }
         }
         $imageUsernamePath = $this->getTextImagePath('Regular', '@' . static::removeEmoji($user->getUsername()), 50, $manager);
         $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
@@ -134,7 +151,7 @@ class OpenGraphImageService
                 $imageTemplate->place($imageLinePath, 'top-left', 500, $offset);
                 $offset += 30;
             }
-            $offset += 35;
+            $offset += 10;
         }
 
         $encoded = $imageTemplate->toPng();
@@ -147,7 +164,7 @@ class OpenGraphImageService
     }
 
     /**
-     * @param User $fundraising
+     * @param Fundraising $fundraising
      * @param string $openGraphImageName
      * @param bool $removeOld
      * @return string|null

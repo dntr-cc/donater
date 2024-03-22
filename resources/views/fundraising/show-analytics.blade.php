@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@php [$ogImageWidth, $ogImageHeight] = getimagesize(config('app.env') === 'local' ? public_path('/images/banners/default.png') : url($fundraising->getAvatar())); @endphp
+@php [$ogImageWidth, $ogImageHeight] = getimagesize(config('app.env') === 'local' ? public_path('/images/banners/ava-fund-default.png') : url($fundraising->getAvatar())); @endphp
 @php $additionalAnalyticsText = ' по збору ' . $fundraising->getName(); @endphp
 @section('page_title', strtr(':fundraising: aналітика руху коштів- donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @section('page_description', strtr('Аналітика по збору :fundraising з рухом коштів та відсотки донатів по сумі - donater.com.ua', [':fundraising' => $fundraising->getName()]))
