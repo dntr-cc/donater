@@ -184,13 +184,13 @@ class OpenGraphImageService
             if (!trim($text)) {
                 continue;
             }
-            $imageUsernamePath = $this->getTextImagePath('Bold', $text, 60, $manager);
+            $imageUsernamePath = $this->getTextImagePath('Bold', $text, 50, $manager);
             $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
             $offset += 50;
         }
 
         $offset += 20;
-        $imageUsernamePath = $this->getTextImagePath('Light', 'https://' . $fundraising->getShortLink(), 50, $manager);
+        $imageUsernamePath = $this->getTextImagePath('Light', 'https://' . $fundraising->getShortLink(), 40, $manager);
         $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
 
         $volunteer = $fundraising->getVolunteer();
