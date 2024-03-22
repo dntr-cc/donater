@@ -192,7 +192,7 @@ class OpenGraphImageService
         $texts = [];
         $text = static::removeEmoji($fundraising->getName());
         if (mb_strlen($text) > 20) {
-            $texts = explode("\n", wordwrap($text, 50));
+            $texts = explode("\n", wordwrap($text, 40));
         } else {
             $texts[] = $text;
         }
