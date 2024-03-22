@@ -3,31 +3,28 @@
 @php $authUser = auth()?->user(); @endphp
 @php $withoutPagination = $withoutPagination ?? false; @endphp
 @php $subscribeAllowed = $subscribeAllowed ?? false; @endphp
-@forelse($users->filter()->all() as $user)
-    @if(0 === $it || 0 === $it % 3)
-        <div class="col-lg-12">
-            <div class="row">
+
+<div class="row row-cols-1 row-cols-xl-3 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-xs-1 g-1 d-flex justify-content-between">
+    @forelse($users->all() as $user)
+        <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                @if($whoIs === \App\Http\Controllers\UserController::VOLUNTEERS)
+                    @php $volunteer = $user; @endphp
+                    @include('layouts.volunteer_item', compact('volunteer'))
+                @else
+                    @include('layouts.user_item', compact('user'))
                 @endif
-                @php ++$it @endphp
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                        @if($whoIs === \App\Http\Controllers\UserController::VOLUNTEERS)
-                            @php $volunteer = $user; @endphp
-                            @include('layouts.volunteer_item', compact('volunteer'))
-                        @else
-                            @include('layouts.user_item', compact('user'))
-                        @endif
-                        </div>
-                    </div>
-                </div>
-                @if($it && 0 === $it % 3)
             </div>
         </div>
-    @endif
-@empty
-    <p>Користувачі не знайдені</p>
-@endforelse
+        </div>
+    @empty
+        <p>{{ $whoIs }} не знайдені</p>
+    @endforelse
+</div>
+
+
+
 @if(!$withoutPagination)
     <div class="col-12">
         <div class="row">

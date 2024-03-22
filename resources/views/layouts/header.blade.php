@@ -41,7 +41,7 @@
                     <li class="">
                         <a href="{{ route('users') }}" class="nav-link text-white">
                             <i class="bi bi-people-fill d-inline mx-auto mb-1"></i>
-                            Користувачі
+                            Донатери
                         </a>
                     </li>
                     <li>

@@ -8,22 +8,19 @@
 @push('head-scripts')
     @vite(['resources/js/tabs.js'])
 @endpush
-@php $withJarLink = true; @endphp
-@php $withPageLink = true; @endphp
 @php $withOwner = true; @endphp
-@php $withPrizes = true; @endphp
-@php $disableShortCodes = false; @endphp
 @php $additionalClasses = 'btn-xs'; @endphp
+@php $withVolunteer = true; @endphp
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>
             @include('layouts.fundraising_status', compact('fundraising', 'withOwner', 'additionalClasses'))
         </h2>
         <div class="row">
-            <div class="col-md-4 px-2 py-2">
-                @include('fundraising.item-card', compact('fundraising'))
+            <div class="col-xl-4 col-lg-4 col-md-12 px-2 py-2">
+                @include('fundraising.item-card', compact('fundraising', 'withVolunteer'))
             </div>
-            <div class="col-md-8 px-2 py-2">
+            <div class="col-xl-8 col-lg-8 col-md-12 px-2 py-2">
                 <div class="card mb-2">
                     <div class="card-body">
                         <div>
@@ -53,7 +50,6 @@
                                 </div>
                             </div>
                         @endguest
-                        @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'disableShortCodes'))
                     </div>
                 </div>
                 <div class="card mb-2">

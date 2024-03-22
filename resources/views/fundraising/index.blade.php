@@ -4,11 +4,10 @@
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
 @section('og_image_height', '630')
-@php $withJarLink = true; @endphp
-@php $withZvitLink = true; @endphp
 @php $raffles = true; @endphp
 @php $withOwner = true; @endphp
 @php $additionalClasses = 'btn-sm'; @endphp
+@php $withVolunteer = true; @endphp
 @php $btn = true; @endphp
 @section('content')
     <div class="container px-4 py-5">
@@ -21,9 +20,9 @@
                 </a>
             @endauth
         </h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            @foreach($fundraisings->all() as $it => $fundraising)
-                @include('fundraising.item-card', compact('fundraising'))
+        <div class="row row-cols-1 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4">
+            @foreach($fundraisings->all() as $fundraising)
+                @include('fundraising.item-card', compact('fundraising', 'withVolunteer'))
             @endforeach
         </div>
     </div>

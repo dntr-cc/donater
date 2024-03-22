@@ -34,7 +34,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Дата</th>
-                        <th scope="col">Користувач</th>
+                        <th scope="col">Донатер</th>
                         <th scope="col">Коментар</th>
                         <th scope="col">Сума</th>
                         <th scope="col">В банці</th>

@@ -15,7 +15,7 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#faq-collapseHowToInviteSomeone" aria-expanded="false"
                                     aria-controls="faq-collapseHowToInviteSomeone">
-                                Як запросити користувача?
+                                Як запросити Донатера?
                             </button>
                         </h2>
                         <div id="faq-collapseHowToInviteSomeone" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToInviteSomeone"
@@ -47,7 +47,7 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#faq-collapseIconsMeaning" aria-expanded="false"
                                     aria-controls="faq-collapseIconsMeaning">
-                                Що значать іконки біля імені користувачів?
+                                Що значать іконки біля імені Донатерів?
                             </button>
                         </h2>
                         <div id="faq-collapseIconsMeaning" class="accordion-collapse collapse" aria-labelledby="faq-headingIconsMeaning"
@@ -58,19 +58,19 @@
                                         <span title="Створені збори" class="badge bg-golden p-1">
                                             <i class="bi bi-telegram" title="Telegram Premium"
                                                style="color: #fff;"></i>
-                                        </span> - користувач має Telegram Premium
+                                        </span> - Донатер має Telegram Premium
                                     </li>
                                     <li>
-                                        <span title="Створені збори" class="badge p-1 bg-info">33</span> - користувач
+                                        <span title="Створені збори" class="badge p-1 bg-info">33</span> - Донатер
                                         створив 33 збори на сайті
                                     </li>
                                     <li>
                                         <span title="Завалідовані донати" class="badge p-1 bg-success">22</span> -
-                                        користувач
+                                        Донатер
                                         має 22 донати (які беруться з виписок волонтерів)
                                     </li>
                                     <li>
-                                        <span title="Призи для зборів" class="badge p-1 bg-warning">11</span> - користувач
+                                        <span title="Призи для зборів" class="badge p-1 bg-warning">11</span> - Донатер
                                         додав 11 призів для розіграшів
                                     </li>
                                 </ul>

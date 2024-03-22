@@ -31,7 +31,7 @@ class OpenGraphImageService
             return $this->filesystem->url($fileName);
         }
         try {
-            $image = $this->generateOpenGraphImage($user, $fileName);
+            $image = $this->generateOpenGraphImage($user, $fileName, $getOld);
         } catch (\Throwable $throwable) {
             \Log::critical($throwable->getMessage(), ['tarce' => $throwable->getTraceAsString()]);
         }
@@ -51,11 +51,12 @@ class OpenGraphImageService
     /**
      * @param User $user
      * @param string $openGraphImageName
+     * @param bool $removeOld
      * @return string|null
      * @throws \ImagickDrawException
      * @throws \ImagickException
      */
-    private function generateOpenGraphImage(User $user, string $openGraphImageName): ?string
+    private function generateOpenGraphImage(User $user, string $openGraphImageName, bool $removeOld = false): ?string
     {
         $manager = new ImageManager(new Driver());
         $donatTmpPath = $this->tmpDir->path('donut.png');
@@ -92,10 +93,10 @@ class OpenGraphImageService
         if ($fundraisings->count()) {
             $rows = app(\App\Services\RowCollectionService::class)->getRowCollection($fundraisings);
             $sourcesLines[] = [
-                ['Підписалося користувачів:', (string)$user->getSubscribers()->count() . ' ос.'],
+                ['Підписалося Донатерів:', (string)$user->getSubscribers()->count() . ' ос.'],
                 ['Всього зборів:', $user->getFundraisings()->count() . ' шт.'],
                 ['Загалом зібрано коштів:', $rows->allSum() . ' грн.'],
-                ['Зібрано від користувачів:', $rows->allSumFromOurDonates() . ' грн.'],
+                ['Зібрано від Донатерів:', $rows->allSumFromOurDonates() . ' грн.'],
             ];
         }
         foreach ($sourcesLines as $source) {
@@ -110,6 +111,9 @@ class OpenGraphImageService
         }
 
         $encoded = $imageTemplate->toPng();
+        if ($removeOld) {
+            $this->filesystem->delete($openGraphImageName);
+        }
         $encoded->save(base_path('public/images/opengraph/' . $openGraphImageName));
 
         return $this->filesystem->url($openGraphImageName);

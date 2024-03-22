@@ -24,7 +24,6 @@ class OpenGraphRegenerate implements ShouldQueue
      */
     public function handle(OpenGraphRegenerateEvent $event): void
     {
-        \Log::critical('as');
         match ($event->getType()) {
             OpenGraphRegenerateEvent::TYPE_USER => $this->service->getUserImage(User::find($event->getId()), false),
             default => ''

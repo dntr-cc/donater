@@ -1,6 +1,6 @@
 @extends('layouts.base')
 @section('page_title', 'Всі донати - donater.com.ua')
-@section('page_description', 'Стрічка благодійних внесків від користувачів donater.com.ua')
+@section('page_description', 'Стрічка благодійних внесків від Донатерів donater.com.ua')
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
 @section('og_image_height', '630')

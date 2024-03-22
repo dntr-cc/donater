@@ -7,24 +7,24 @@
 @php $volunteerFundraisings = $volunteer->getFundraisings(); @endphp
 @php $rows = app(App\Services\RowCollectionService::class)->getRowCollection($volunteerFundraisings); @endphp
 
-    <div class="row d-flex justify-content-center">
-        <div class="col-4 p-2 d-flex align-items-center">
-            <img src="{{ url($volunteer->getAvatar()) }}" class="card-img-top rounded-circle img-fluid" alt="...">
-        </div>
-        <div class="col-4 d-flex align-items-center">
-            <div class="card-body">
-                <h5 class="card-title mb-4">Волонтер
-                <a href="{{ $volunteer->getUserLink() }}">{{ $volunteer->getFullName() }}
-                        [{{ $volunteer->getAtUsername() }}]</a></h5>
-                @auth
-                    @include('subscribe.button', compact('volunteer', 'authUser', 'additionalClasses'))
-                @endauth
-            </div>
-        </div>
-        <div class="card-footer w-100 text-muted {{ $additionalClassesColor }}">
-            Підписалося користувачів: {{ $volunteer->getSubscribers()->count() }}<br>
-            Всього зборів: {{ $volunteerFundraisings->count() }}<br>
-            Загалом зібрано коштів: {{ $rows->allSum() }} грн.<br>
-            Зібрано від користувачів: {{ $rows->allSumFromOurDonates() }} грн.<br>
-        </div>
+<div class="row row-cols-2 d-flex justify-content-between align-items-center g-1 m-0">
+    <div>
+        <img src="{{ url($volunteer->getAvatar()) }}" width="150px"
+             class="object-fit-cover-150 card-img-top rounded-circle img-fluid" alt="{{ $volunteer->getFullName() }}">
     </div>
+    <div class="card-body">
+        <h6 class="card-title mb-4"><strong>Волонтер</strong>
+            <a href="{{ $volunteer->getUserLink() }}">{{ $volunteer->getFullName() }}</a>
+            <a href="{{ $volunteer->getUserLink() }}">[{{ $volunteer->getAtUsername() }}]</a>
+        </h6>
+        @auth
+            @include('subscribe.button', compact('volunteer', 'authUser', 'additionalClasses'))
+        @endauth
+    </div>
+    <div class="card-footer w-100 text-muted {{ $additionalClassesColor }}">
+        Підписалося Донатерів: {{ $volunteer->getSubscribers()->count() }}<br>
+        Всього зборів: {{ $volunteerFundraisings->count() }}<br>
+        Загалом зібрано коштів: {{ $rows->allSum() }} грн.<br>
+        Зібрано від Донатерів: {{ $rows->allSumFromOurDonates() }} грн.<br>
+    </div>
+</div>
