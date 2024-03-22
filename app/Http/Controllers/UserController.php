@@ -72,6 +72,9 @@ class UserController extends Controller
         $avatar = app(FileService::class)->createAvatar($request, '/images/avatars/');
         $user->update(['avatar' => $avatar]);
         OpenGraphRegenerateEvent::dispatch($user->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+        foreach ($user->getFundraisings() as $fundraising) {
+            OpenGraphRegenerateEvent::dispatch($fundraising->getId(), OpenGraphRegenerateEvent::TYPE_FUNDRAISING);
+        }
 
         return new JsonResponse(['url' => route('user', compact('user')), 'csrf' => $this->getNewCSRFToken()]);
     }
@@ -82,6 +85,9 @@ class UserController extends Controller
 
         $user->update($request->validated());
         OpenGraphRegenerateEvent::dispatch($user->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+        foreach ($user->getFundraisings() as $fundraising) {
+            OpenGraphRegenerateEvent::dispatch($fundraising->getId(), OpenGraphRegenerateEvent::TYPE_FUNDRAISING);
+        }
 
         return new JsonResponse(['url' => route('user', compact('user')), 'csrf' => $this->getNewCSRFToken()]);
     }

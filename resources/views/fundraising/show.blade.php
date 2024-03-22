@@ -1,16 +1,18 @@
 @extends('layouts.base')
 @php $title = strtr('Збір :fundraising. Збирає :volunteer', [':fundraising' => $fundraising->getName(), ':volunteer' => $fundraising->getVolunteer()->getUsernameWithFullName()]); @endphp
+@php $fundraisingBanner = url(app(\App\Services\OpenGraphImageService::class)->getFundraisingImage($fundraising)) @endphp
 @section('page_title', $title)
 @section('page_description', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @section('og_image_title', $title)
 @section('og_image_alt', 'Створить нагадування задонатити на збір ' . $fundraising->getName() . ' на сайті donater.com.ua')
-@section('og_image', url('/images/donater.com.ua.png'))
+@section('og_image', url($fundraisingBanner))
 @push('head-scripts')
     @vite(['resources/js/tabs.js'])
 @endpush
 @php $withOwner = true; @endphp
 @php $additionalClasses = 'btn-xs'; @endphp
 @php $withVolunteer = true; @endphp
+@php $fundraisingBanner = url(app(\App\Services\OpenGraphImageService::class)->getFundraisingImage($fundraising)) @endphp
 @section('content')
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>
@@ -19,6 +21,17 @@
         <div class="row">
             <div class="col-xl-4 col-lg-4 col-md-12 px-2 py-2">
                 @include('fundraising.item-card', compact('fundraising', 'withVolunteer'))
+            </div>
+            <div class="card mt-4 mb-4 mb-lg-0">
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush rounded-3">
+                        <li class="list-group-item p-3">
+                            <h4>Скачати банер збору</h4>
+                        </li>
+                        <a href="{{ $fundraisingBanner }}" download="{{ $fundraising->getKey() }}.png"><img
+                                src="{{ $fundraisingBanner }}" class="col-12"></a>
+                    </ul>
+                </div>
             </div>
             <div class="col-xl-8 col-lg-8 col-md-12 px-2 py-2">
                 <div class="card mb-2">
@@ -54,15 +67,15 @@
                 </div>
                 <div class="card mb-2">
                     <div class="card-body">
-                    <div id="preload" class="preload border border-dark border-1 border-light-subtle">
-                        <div class="d-flex justify-content-center ">
-                            <div class="d-flex justify-content-center m-5">
-                                <div class="spinner-border" role="status">
-                                    <span class="visually-hidden">Loading...</span>
+                        <div id="preload" class="preload border border-dark border-1 border-light-subtle">
+                            <div class="d-flex justify-content-center ">
+                                <div class="d-flex justify-content-center m-5">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>

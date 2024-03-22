@@ -9,6 +9,7 @@ class OpenGraphRegenerateEvent
     use Dispatchable;
 
     public const string TYPE_USER = 'user';
+    public const string TYPE_FUNDRAISING = 'fundraising';
 
     protected int $id;
     protected string $type;
