@@ -101,7 +101,7 @@ class OpenGraphImageService
         $offset = 20;
         if (!empty(trim($user->getFullName()))) {
             $texts = [];
-            $text = static::removeEmoji($user->getFullName() . '!');
+            $text = static::removeEmoji($user->getFullName());
             if (mb_strlen($text) > 20) {
                 $texts = explode("\n", wordwrap($text, 50));
             } else {
