@@ -206,20 +206,32 @@
                                     <div class="row">
                                         <div class="col-sm-12 d-flex justify-content-between align-items-start">
                                             <h4>Всі збори</h4>
-                                            @if (auth()?->user()?->getId() === $user->getId())
-                                                <a href="{{route('fundraising.new')}}" class="btn ">
-                                                    <i class="bi bi-plus-circle-fill"></i>
-                                                    Створити
+                                            <div>
+                                                <a href="#collapseFundraisings" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                                                   aria-controls="collapseFundraisings" class="btn">
+                                                    <i class="bi bi-arrow-down"></i>
                                                 </a>
-                                            @endif
+                                                @if (auth()?->user()?->getId() === $user->getId())
+                                                    <a href="{{route('fundraising.new')}}" class="btn ">
+                                                        <i class="bi bi-plus-circle-fill"></i>
+                                                        Створити
+                                                    </a>
+                                                @endif
+                                            </div>
+
                                         </div>
                                     </div>
-                                    <hr>
-                                    <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4">
-                                        @foreach($user->getFundraisings()->all() as $it => $fundraising)
-                                            @include('fundraising.item-card', compact('fundraising', 'rowClasses'))
-                                        @endforeach
+
+                                    <div class="collapse" id="collapseFundraisings">
+                                        <hr>
+                                        <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4">
+                                            @foreach($user->getFundraisings()->all() as $it => $fundraising)
+                                                @include('fundraising.item-card', compact('fundraising', 'rowClasses'))
+                                            @endforeach
+                                        </div>
                                     </div>
+
+
                                 </div>
                             </div>
                         @endif
