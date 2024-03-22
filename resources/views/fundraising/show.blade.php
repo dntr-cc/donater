@@ -1,6 +1,6 @@
 @extends('layouts.base')
 @php $title = strtr('Збір :fundraising. Збирає :volunteer', [':fundraising' => $fundraising->getName(), ':volunteer' => $fundraising->getVolunteer()->getUsernameWithFullName()]); @endphp
-@php $fundraisingBanner = url(app(\App\Services\OpenGraphImageService::class)->getFundraisingImage($fundraising, true)) @endphp
+@php $fundraisingBanner = url(app(\App\Services\OpenGraphImageService::class)->getFundraisingImage($fundraising)) @endphp
 @section('page_title', $title)
 @section('page_description', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @section('og_image_title', $title)

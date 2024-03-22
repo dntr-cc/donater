@@ -12,6 +12,7 @@ use ImagickPixel;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
+use function Emoji\remove_emoji;
 
 class OpenGraphImageService
 {
@@ -24,7 +25,7 @@ class OpenGraphImageService
         $this->tmpDir = TemporaryDirectory::make();
     }
 
-    public function getUserImage(User $user, bool $getOld = false): string
+    public function getUserImage(User $user, bool $getOld = true): string
     {
         $fileName = $this->getOpenGraphUserImageName($user->getId());
         $image = url('/images/donater.com.ua.png');
@@ -44,9 +45,9 @@ class OpenGraphImageService
     {
         $fileName = $this->getOpenGraphImageFundraisingName($fundraising->getId());
         $image = url('/images/donater.com.ua.png');
-//        if ($getOld && $this->filesystem->exists($fileName)) {
-//            return $this->filesystem->url($fileName);
-//        }
+        if ($getOld && $this->filesystem->exists($fileName)) {
+            return $this->filesystem->url($fileName);
+        }
         try {
             $image = $this->generateOpenGraphFundraisingImage($fundraising, $fileName, true);
         } catch (\Throwable $throwable) {
@@ -99,7 +100,7 @@ class OpenGraphImageService
 
         $offset = 20;
         if (!empty(trim($user->getFullName()))) {
-            $imageUsernamePath = $this->getTextImagePath('Bold', static::removeEmoji($user->getFullName()), 60, $manager);
+            $imageUsernamePath = $this->getTextImagePath('Bold', static::removeEmoji($user->getFullName()), 45, $manager);
             $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
             $offset += 65;
         }
@@ -172,9 +173,9 @@ class OpenGraphImageService
 
         $offset = 20;
         $texts = [];
-        $text = $fundraising->getName();
-        if (mb_strlen($text) > 27) {
-            $x = 27;
+        $text = static::removeEmoji($fundraising->getName());
+        if (mb_strlen($text) > 25) {
+            $x = 25;
             $texts = explode("\n", wordwrap($text, $x));
         } else {
             $texts[] = $text;
@@ -183,7 +184,7 @@ class OpenGraphImageService
             if (!trim($text)) {
                 continue;
             }
-            $imageUsernamePath = $this->getTextImagePath('Bold', static::removeEmoji($text), 60, $manager);
+            $imageUsernamePath = $this->getTextImagePath('Bold', $text, 60, $manager);
             $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
             $offset += 50;
         }
@@ -281,23 +282,6 @@ class OpenGraphImageService
 
     public static function removeEmoji(string $string): string
     {
-        return trim(
-            str_replace(
-                "{%}",
-                "?",
-                str_replace(["?", "? ", " ?"],
-                    [''],
-                    mb_convert_encoding(
-                        mb_convert_encoding(
-                            str_replace("?", "{%}", $string),
-                            "ISO-8859-1",
-                            "UTF-8"
-                        ),
-                        "UTF-8",
-                        "ISO-8859-1"
-                    )
-                )
-            )
-        );
+        return remove_emoji($string);
     }
 }
