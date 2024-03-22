@@ -217,4 +217,9 @@ return [
 
     'admins_ids' => explode(',', env('ADMINS', '')),
     'volunteer_chat_link' => env('VOLUNTEER_CHAT_LINK', ''),
+    'per_page' => [
+        'users' => env('PER_PAGE_USERS', 12),
+        'volunteers' => env('PER_PAGE_VOLUNTEERS', 12),
+    ],
+
 ];

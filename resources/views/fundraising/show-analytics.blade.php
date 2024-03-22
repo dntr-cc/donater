@@ -12,6 +12,7 @@
 @php $withPrizes = true; @endphp
 @php $disableShortCodes = false; @endphp
 @php $additionalClasses = 'btn-xs'; @endphp
+@php $withVolunteer = true; @endphp
 @php $btn = false; @endphp
 @section('content')
     <div class="container px-4 py-5">
@@ -20,7 +21,7 @@
         </h2>
         <div class="row">
             <div class="col-md-4 px-2 py-2">
-                @include('fundraising.item-card', compact('fundraising', 'btn'))
+                @include('fundraising.item-card', compact('fundraising', 'btn', 'withVolunteer'))
             </div>
             <div class="col-md-8 px-2 py-2">
                 <div class="card mb-2">

@@ -18,8 +18,7 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     public const string VOLUNTEERS = 'Волонтери';
-    public const int PER_PAGE = 6;
-    const string USERS = 'Користувачі';
+    const string USERS = 'Донатери';
 
     public function show(User $user)
     {
@@ -48,7 +47,7 @@ class UserController extends Controller
 
     public function index(): View
     {
-        $users = User::paginate(self::PER_PAGE)->onEachSide(1);
+        $users = User::paginate($this->getUsersPerPage())->onEachSide(1);
         $whoIs = self::USERS;
 
         return view('users', compact('users', 'whoIs'));
@@ -61,7 +60,7 @@ class UserController extends Controller
      */
     public function volunteers(): View
     {
-        $users = User::query()->withWhereHas('fundraisings')->paginate(self::PER_PAGE * 10)->onEachSide(1);
+        $users = User::query()->withWhereHas('fundraisings')->paginate($this->getVolunteersPerPage())->onEachSide(1);
         $whoIs = self::VOLUNTEERS;
 
         return view('users', compact('users', 'whoIs'));
@@ -85,5 +84,21 @@ class UserController extends Controller
         OpenGraphRegenerateEvent::dispatch($user->getId(), OpenGraphRegenerateEvent::TYPE_USER);
 
         return new JsonResponse(['url' => route('user', compact('user')), 'csrf' => $this->getNewCSRFToken()]);
+    }
+
+    /**
+     * @return int
+     */
+    protected function getUsersPerPage(): int
+    {
+        return config('app.per_page.users') ?? 12;
+    }
+
+    /**
+     * @return int
+     */
+    protected function getVolunteersPerPage(): int
+    {
+        return config('app.per_page.volunteers') ?? 12;
     }
 }

@@ -6,7 +6,7 @@
         <thead class="table-dark">
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Користувач</th>
+            <th scope="col">Донатер</th>
             <th scope="col">Кількість внесків</th>
             <th scope="col">Сума</th>
             <th scope="col">Шанс</th>

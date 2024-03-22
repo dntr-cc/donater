@@ -9,24 +9,22 @@
 @php /** @var Fundraising $fundraising */ @endphp
 @php /** @var UserLink $userLink */ @endphp
 @php /** @var Subscribe $subscribe */ @endphp
-@php $withZvitLink = true; @endphp
 @php $additionalClasses = 'btn-xs'; @endphp
 @php $donates = $user->getDonates(); @endphp
 @php $authUser = auth()?->user(); @endphp
-@php $additionalAnalyticsText = ' по користувачу ' . $user->getUserLink(); @endphp
-@php $title = strtr(':fullName (:username) - користувач сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
-@php $description = strtr(':fullName (:username) - користувач сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
-@php $path = app(\App\Services\OpenGraphImageService::class)->getUserImage($user) @endphp
+@php $additionalAnalyticsText = ' по Донатеру ' . $user->getUserLink(); @endphp
+@php $title = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
+@php $description = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
+@php $userBanner = url(app(\App\Services\OpenGraphImageService::class)->getUserImage($user)) @endphp
 @extends('layouts.base')
 @section('page_title', $title)
 @section('page_description', $description)
-@section('og_image', url($path))
+@section('og_image', $userBanner)
 @section('og_image_width', '1200')
 @section('og_image_height', '630')
 @section('og_image_title', $title)
 @section('og_image_alt', $description)
-
-
+@php $rowClasses = 'row-cols-3 g-0 d-flex justify-content-evenly align-items-center'; @endphp
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -90,7 +88,8 @@
                                 </div>
                                 <div class="d-flex justify-content-center align-items-center mb-2">
                                     @can('update', $user)
-                                        <button class="btn m-1 btn-outline-dark {{ $additionalClasses }}" data-bs-toggle="modal"
+                                        <button class="btn m-1 btn-outline-dark {{ $additionalClasses }}"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#userEditSettingsModal">
                                             Налаштування
                                         </button>
@@ -165,17 +164,29 @@
                                             <h4>Підписки на волонтерів</h4>
                                         </li>
                                         @foreach($user->getSubscribes()->all() as $subscribe)
-                                            <div
-                                                class="list-group-item d-flex justify-content-between align-items-start">
-                                                @php $volunteer = $subscribe->getVolunteer(); @endphp
-                                                <p>{!! $volunteer->getUserHref() !!}</p>
-                                                @include('subscribe.button', compact('volunteer', 'authUser'))
+                                            <div class="col-md-12">
+                                                <div class="card m-1 mb-4">
+                                                    <div class="card-body">
+                                                        @php $volunteer = $subscribe->getVolunteer(); @endphp
+                                                        @include('layouts.volunteer_item', compact('volunteer'))
+                                                    </div>
+                                                </div>
                                             </div>
                                         @endforeach
                                     </ul>
                                 </div>
                             </div>
                         @endcan
+                        <div class="card mt-4 mb-4 mb-lg-0">
+                            <div class="card-body p-0">
+                                <ul class="list-group list-group-flush rounded-3">
+                                    <li class="list-group-item p-3">
+                                        <h4>Скачати інфографіку профілю</h4>
+                                    </li>
+                                    <a href="{{ $userBanner }}" download="{{ $user->getUsername() }}.png"><img src="{{ $userBanner }}" class="col-12"></a>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-lg-8">
                         @if($user->getFundraisings()->count() > 0 || !(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_FUNDRAISING)))
@@ -183,7 +194,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-sm-12 d-flex justify-content-between align-items-start">
-                                            <h4>Збори та Фонди</h4>
+                                            <h4>Всі збори</h4>
                                             @if (auth()?->user()?->getId() === $user->getId())
                                                 <a href="{{route('fundraising.new')}}" class="btn ">
                                                     <i class="bi bi-plus-circle-fill"></i>
@@ -193,19 +204,11 @@
                                         </div>
                                     </div>
                                     <hr>
-                                    @foreach($user->getFundraisings() as $it => $fundraising)
-                                        <div class="row">
-                                            <div
-                                                class="col-sm-12 d-flex justify-content-between align-items-start fundraising"
-                                                data-fundraising="{{ $fundraising->getKey() }}">
-                                                <div class="fw-bold">
-                                                    @include('layouts.fundraising_status', compact('fundraising', 'additionalClasses'))
-                                                    @include('layouts.links', compact('fundraising', 'withZvitLink', 'additionalClasses'))
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                    @endforeach
+                                    <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4">
+                                        @foreach($user->getFundraisings()->all() as $it => $fundraising)
+                                            @include('fundraising.item-card', compact('fundraising', 'rowClasses'))
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         @endif
@@ -323,9 +326,11 @@
                                             зборів більш прозорим, а накопичення коштів на потреби ЗСУ - стабільним.
                                         </p>
                                         <p>
-                                            <strong>Коротко це той самий "лайк-підписка-дзвоник", де замість нового контенту вам
-                                            приходить посилання на банку вашого волонтера, з обраною вами сумою та за
-                                            вашим розкладом.</strong>
+                                            <strong>Коротко це той самий "лайк-підписка-дзвоник", де замість нового
+                                                контенту вам
+                                                приходить посилання на банку вашого волонтера, з обраною вами сумою та
+                                                за
+                                                вашим розкладом.</strong>
                                         </p>
                                         <p>
                                             <strong>Якщо подробніше</strong>, то головна функція платформи - підписка на
@@ -334,7 +339,7 @@
                                             нього, отримують нагадування з посиланням на банку зборів «свого» волонтера.
                                             Таким чином донатори можуть робити регулярні внески на актуальну банку
                                             волонтера. Що більше, нагадування вже має зашитий в посилання код донатора,
-                                            що дає можливість побачити, від кого саме з користувачів поступив внесок. А
+                                            що дає можливість побачити, від кого саме з Донатерів поступив внесок. А
                                             це важливо, адже платформа надає волонтерам можливість заохочувати своїх
                                             донаторів призами, які розігруються тільки серед донаторів сайту. До речі,
                                             донатори теж можуть пропонувати свої призи для зборів. Від волонтера

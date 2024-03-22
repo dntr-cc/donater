@@ -1,62 +1,115 @@
 @php /** @var App\Models\Fundraising $fundraising */ @endphp
-@php /** @var bool $withZvitLink */ @endphp
-@php $withZvitLink = $withZvitLink ?? false; @endphp
 @php $withAnalyticsLink = $withAnalyticsLink ?? false; @endphp
 @php $withJarLink = $withJarLink ?? false; @endphp
 @php $withPageLink = $withPageLink ?? false; @endphp
-@php $additionalClasses = $additionalClasses ?? ''; @endphp
 @php $withPrizes = $withPrizes ?? false; @endphp
 @php $disableShortCodes = $disableShortCodes ?? true; @endphp
+@php $rowClasses = $rowClasses ?? ''; @endphp
+@php $additionalClasses = $additionalClasses ?? ''; @endphp
 
-@if($withJarLink)
-    <a href="{{ $fundraising->getJarLink() }}" target="_blank" class="btn m-1 {{ $additionalClasses }}">
-        <i class="bi bi-bank"></i>
-        Банка</a>
-@endif
-@if($withPageLink)
-    <a href="{{ $fundraising->getPage() }}" target="_blank" class="btn m-1 {{ $additionalClasses }}">
-        <i class="bi bi-house-door-fill"></i>
-        Сторінка збору
-    </a>
-@endif
-
-@if($withZvitLink)
-    <a href="{{route('fundraising.show', ['fundraising' => $fundraising->getKey()])}}"
-       class="btn m-1 {{ $additionalClasses }}">
-        <i class="bi bi-eye"></i>
-        Подробиці
-    </a>
-@endif
-@can('update', $fundraising)
-    <a id="mono" class="btn m-1 {{ $additionalClasses }}">
-        <i class="bi bi-screwdriver"></i>
-            Запит в моно
-    </a>
-    <a href="{{route('fundraising.edit', ['fundraising' => $fundraising->getKey()])}}"
-       class="btn m-1 {{ $additionalClasses }}">
-        <i class="bi bi-pencil-fill"></i>
-        Редагування
-    </a>
-    @if($fundraising->isEnabled())
-        <a href="{{route('fundraising.stop', ['fundraising' => $fundraising->getKey()])}}"
-           class="btn m-1 {{ $additionalClasses }}">
-            <i class="bi bi-arrow-down-circle-fill"></i>
-            Зупинити
-        </a>
-    @else
-        <a href="{{route('fundraising.start', ['fundraising' => $fundraising->getKey()])}}"
-           class="btn m-1 {{ $additionalClasses }}">
-            <i class="bi bi-arrow-up-circle-fill"></i>
-            Розпочати
+<div class="row m-2 {{ $rowClasses }}">
+    @if($withJarLink)
+        <a class="btn m-1 btn-fit-text {{ $additionalClasses }}" target="_blank"
+           href="{{ $fundraising->getJarLink() }}">
+            <nobr>
+                <i class="bi bi-bank"></i>
+                Банка
+            </nobr>
         </a>
     @endif
-    @if($withPrizes)
-        <a class="btn m-1 {{ $additionalClasses }}"
-           data-bs-toggle="modal"
-           data-bs-target="#fundraisingEditPrizesModal">
-            <i class="bi bi-gift"></i>
-            Призи
+    @if($withPageLink)
+        <a class="btn m-1 btn-fit-text {{ $additionalClasses }}" target="_blank"
+           href="{{ $fundraising->getPage() }}">
+            <nobr>
+                <i class="bi bi-house-door-fill"></i>
+                Сторінка збору
+            </nobr>
         </a>
+    @endif
+    @can('update', $fundraising)
+        <a class="btn m-1 btn-fit-text {{ $additionalClasses }}" target="_blank"
+            id="mono{{ sha1($fundraising->getKey()) }}">
+            <nobr>
+                <i class="bi bi-screwdriver"></i>
+                Запит в моно
+            </nobr>
+        </a>
+        <a class="btn m-1 btn-fit-text {{ $additionalClasses }}" target="_blank"
+           href="{{route('fundraising.edit', ['fundraising' => $fundraising->getKey()])}}">
+            <nobr>
+                <i class="bi bi-pencil-fill"></i>
+                Редагування
+            </nobr>
+        </a>
+        @if($fundraising->isEnabled())
+            <a class="btn m-1 btn-fit-text {{ $additionalClasses }}"
+               href="{{route('fundraising.stop', ['fundraising' => $fundraising->getKey()])}}">
+                <nobr>
+                    <i class="bi bi-arrow-down-circle-fill"></i>
+                    Зупинити
+                </nobr>
+            </a>
+        @else
+            <a href="{{route('fundraising.start', ['fundraising' => $fundraising->getKey()])}}"
+               class="btn m-1 btn-fit-text {{ $additionalClasses }}">
+                <nobr>
+                    <i class="bi bi-arrow-up-circle-fill"></i>
+                    Розпочати
+                </nobr>
+            </a>
+        @endif
+        @if($withPrizes)
+            <a class="btn m-1 btn-fit-text {{ $additionalClasses }}" data-bs-toggle="modal"
+               data-bs-target="#fundraisingEditPrizesModal">
+                <nobr>
+                    <i class="bi bi-gift"></i>
+                    Призи
+                </nobr>
+            </a>
+        @endif
+        @if(!$disableShortCodes)
+            @can('create', [\App\Models\FundraisingShortCode::class, $fundraising])
+                <a class="btn m-1 btn-fit-text {{ $additionalClasses }}"
+                   data-bs-toggle="modal"
+                   data-bs-target="#fundraisingEditShortCodesModal">
+                    <nobr>
+                        <i class="bi bi-share"></i>
+                        Коротке посилання
+                    </nobr>
+                </a>
+            @endcan
+        @endif
+    @endcan
+</div>
+
+{{--Default js scripts--}}
+<script type="module">
+    let copyCode = $('#copyShortLink');
+    copyCode.on('click', event => {
+        event.preventDefault();
+        copyContent($('#shortLink').val());
+        return false;
+    });
+    toast('Коротке посилання скопійовано', copyCode);
+</script>
+
+{{--Can update additional data: js--}}
+@can('update', $fundraising)
+    <script type="module">
+        let monoText{{ sha1($fundraising->getKey()) }} = `{{ $fundraising->getMonoRequest($fundraising->getJarLink(false)) }}`;
+        let buttonMono{{ sha1($fundraising->getKey()) }} = $('#mono{{ sha1($fundraising->getKey()) }}');
+        buttonMono{{ sha1($fundraising->getKey()) }}.on('click', event => {
+            event.preventDefault();
+            copyContent(monoText{{ sha1($fundraising->getKey()) }});
+            return false;
+        });
+        toast('Запит в підтримку скопійовано', buttonMono{{ sha1($fundraising->getKey()) }});
+    </script>
+@endcan
+
+{{--Prizes additional data: modal, js--}}
+@can('update', $fundraising)
+    @if($withPrizes)
         <div class="modal fade" id="fundraisingEditPrizesModal" tabindex="-1"
              aria-labelledby="fundraisingEditPrizesModalLabel"
              aria-hidden="true">
@@ -193,7 +246,6 @@
                 </div>
             </div>
         </div>
-
         <script type="module">
             $('.add-prize').on('click', event => {
                 event.preventDefault();
@@ -226,21 +278,19 @@
             });
         </script>
     @endif
-    @if(!$disableShortCodes)
+@endcan
+
+{{--Shortcodes additional data: modal, js--}}
+@if(!$disableShortCodes)
     @can('create', [\App\Models\FundraisingShortCode::class, $fundraising])
-        <a class="btn m-1 {{ $additionalClasses }}"
-           data-bs-toggle="modal"
-           data-bs-target="#fundraisingEditShortCodesModal">
-            <i class="bi bi-share"></i>
-            Коротке посилання
-        </a>
         <div class="modal fade" id="fundraisingEditShortCodesModal" tabindex="-1"
              aria-labelledby="fundraisingEditShortCodesModalLabel"
              aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="fundraisingEditShortCodesModalLabel">Коротке посилання для поширення</h1>
+                        <h1 class="modal-title fs-5" id="fundraisingEditShortCodesModalLabel">Коротке посилання для
+                            поширення</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form class="form">
@@ -250,7 +300,8 @@
                                     <input type="text" class="form-control" id="shortLink"
                                            value="{{ $fundraising->getShortLink() }}" disabled>
                                     <label for="userShortLink">Коротке посилання</label>
-                                    <button id="copyShortLink" class="btn btn-outline-secondary" onclick="return false;">
+                                    <button id="copyShortLink" class="btn btn-outline-secondary"
+                                            onclick="return false;">
                                         <i class="bi bi-copy"></i></button>
                                 </div>
                             </div>
@@ -259,10 +310,13 @@
                                 <div class="input-group">
                                     <span class="input-group-text" id="newShortLinkPrefix">dntr.cc/f/</span>
                                     <input type="text" class="form-control" id="newShortLink">
-                                    <button id="createShortLink" class="btn btn-outline-success" onclick="return false;">
+                                    <button id="createShortLink" class="btn btn-outline-success"
+                                            onclick="return false;">
                                         <i class="bi bi-plus-circle-fill"></i></button>
                                 </div>
-                                <div class="form-text" id="basic-addon4">Довжина до 5-20 символів, лише латинка та цифри</div>
+                                <div class="form-text" id="basic-addon4">Довжина до 5-20 символів, лише латинка та
+                                    цифри
+                                </div>
                             </div>
                             <div class="d-flex justify-content-center mb-2">
                                 <div class="form-floating input-group">
@@ -311,24 +365,4 @@
             });
         </script>
     @endcan
-    @endif
-    <script type="module">
-        let monoText = `{{ $fundraising->getMonoRequest($fundraising->getJarLink(false)) }}`;
-        let buttonMono = $('#mono');
-        buttonMono.on('click', event => {
-            event.preventDefault();
-            copyContent(monoText);
-            return false;
-        });
-        toast('Запит в підтримку скопійовано', buttonMono);
-    </script>
-@endcan
-<script type="module">
-    let copyCode = $('#copyShortLink');
-    copyCode.on('click', event => {
-        event.preventDefault();
-        copyContent($('#shortLink').val());
-        return false;
-    });
-    toast('Коротке посилання скопійовано', copyCode);
-</script>
+@endif

@@ -197,3 +197,14 @@ body {
 .progress-bar-animated-reverse {
     animation: reverse 1s linear infinite progress-bar-stripes;
 }
+
+.btn-fit-text {
+    display: inline-block;
+    width: auto;
+}
+
+.object-fit-cover-150 {
+    width:150px;
+    height:150px;
+    object-fit:cover
+}

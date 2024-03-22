@@ -1,9 +1,9 @@
 @extends('layouts.base')
-@section('page_title', 'Призи для користувачів сайту donater.com.ua')
-@section('page_description', 'Призи розігруються лише серед користувачів сайту, щоб заохочити донатерів стати серійними донатерами')
+@section('page_title', 'Призи для Донатерів сайту donater.com.ua')
+@section('page_description', 'Призи розігруються лише серед Донатерів сайту, щоб заохочити донатерів стати серійними донатерами')
 @section('content')
     <div class="container px-4 py-5">
-        <h2 class="pb-2 border-bottom">Призи для користувачів сайту
+        <h2 class="pb-2 border-bottom">Призи для Донатерів сайту
             <a href="{{route('prizes.free')}}" class="btn ">
                 <i class="bi bi-gift"></i>
                 Вільні призи
