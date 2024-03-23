@@ -25,6 +25,7 @@ export default defineConfig({
             'mdb-ui-kit': path.resolve(__dirname, 'node_modules/mdb-ui-kit'),
             'pickerjs': path.resolve(__dirname, 'node_modules/pickerjs'),
             'masonry': path.resolve(__dirname, 'node_modules/masonry-layout'),
+            'imagesloaded': path.resolve(__dirname, 'node_modules/imagesloaded'),
         }
     },
     server: {
