@@ -70,7 +70,7 @@
                 },
                 success: function (data) {
                     if (window.location.href === '{{ route('login') }}') {
-                        window.location.location(data.url ?? '{{ route('my') }}');
+                        window.location.assign(data.url ?? '{{ route('my') }}');
                     }
                     window.location.reload();
                 },

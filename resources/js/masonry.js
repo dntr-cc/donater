@@ -1,12 +1,10 @@
 import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 
-window.Masonry = Masonry;
-window.Masonry = imagesLoaded;
-document.querySelectorAll('.grid').forEach(element => {
-    imagesLoaded('.grid', () => {
-        new window.Masonry(element, {
-            itemSelector: '.grid-item',
+imagesLoaded('.masonry-grid', () => {
+    document.querySelectorAll('.masonry-grid').forEach(element => {
+        new Masonry(element, {
+            itemSelector: '.masonry-grid-item',
         });
     });
 });
