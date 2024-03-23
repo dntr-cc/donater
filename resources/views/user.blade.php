@@ -199,7 +199,7 @@
                                                 </a>
                                             @endif
                                         </li>
-                                        @if($user->getSubscribes()->count())
+                                        @if($subscribers->count())
                                             <div class="collapse" id="collapseSubscribers">
                                                 @foreach($subscribers as $subscriber)
                                                     <div class="col-md-12">
