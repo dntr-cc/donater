@@ -15,6 +15,7 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     public const string RETURN_AFTER_LOGIN = 'RETURN_AFTER_LOGIN';
+    public const string LOGIN_HASH = 'login_hash';
 
     public function __construct()
     {
@@ -23,18 +24,14 @@ class LoginController extends Controller
 
     public function showLoginForm(): View
     {
-        $previous = url()->previous();
-        $route = str_contains($previous, config('app.url')) ? $previous : route('my');
-        session()->put(LoginController::RETURN_AFTER_LOGIN, $route);
-
         return view('auth.login', ['loginHash' => app(LoginService::class)->getNewLoginHash()]);
     }
 
     public function login(Request $request)
     {
-        if ('http://localhost' === config('app.url')) {
+        if ('http://localhost' === config('app.url') && \request()->cookies->has('fake')) {
             $this->fakeLogin();
-            return new JsonResponse(['url' => session()->get(self::RETURN_AFTER_LOGIN, route('my'))], Response::HTTP_ACCEPTED);
+            return new JsonResponse(['url' => session()->get(self::RETURN_AFTER_LOGIN, route('my'))], Response::HTTP_OK);
         }
 
         $this->validateLogin($request);
@@ -45,7 +42,7 @@ class LoginController extends Controller
         }
         $this->guard()->login($service->getOrCreateUser($data));
 
-        return new JsonResponse(['url' => session()->get(self::RETURN_AFTER_LOGIN, route('my'))], Response::HTTP_ACCEPTED);
+        return new JsonResponse(['url' => session()->get(self::RETURN_AFTER_LOGIN, route('my'))], Response::HTTP_OK);
     }
 
     protected function validateLogin(Request $request)

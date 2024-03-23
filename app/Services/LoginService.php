@@ -20,7 +20,7 @@ class LoginService
     public function getNewLoginHash(): string
     {
         $uid = app(UserCodeService::class)->createLoginCode();
-        Cache::set(strtr(self::LOGIN_START, ['key' => $uid]), $uid, 60);
+        Cache::set(strtr(self::LOGIN_START, ['key' => $uid]), $uid, 60 * 60 * 24);
 
         return $uid;
     }
