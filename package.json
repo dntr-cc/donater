@@ -19,6 +19,7 @@
         "@npkg/tinymce-plugin": "^0.0.3-beta.22",
         "bootstrap": "^5.3.2",
         "chart.js": "^4.4.2",
+        "imagesloaded": "^5.0.0",
         "jquery": "^3.7.1",
         "limax": "^4.1.0",
         "masonry-layout": "^4.2.2",

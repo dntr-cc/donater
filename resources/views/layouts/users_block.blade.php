@@ -22,9 +22,6 @@
         <p>{{ $whoIs }} не знайдені</p>
     @endforelse
 </div>
-
-
-
 @if(!$withoutPagination)
     <div class="col-12">
         <div class="row">

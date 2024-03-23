@@ -64,7 +64,7 @@
             @elseif($prize->isEnabled() && $prize->getAvailableStatus() === \App\Models\Prize::STATUS_NEW)
                 <h5 class="text-center">Очікуйте поки цей приз волонтери додадуть на свій збір</h5>
             @endif
-            @if($authUser && $prize->fundraising && $prize->getAvailableStatus() === \App\Models\Prize::STATUS_GRANTED)
+            @if($authUser && $prize->fundraising && $prize->isEnabled() && $prize->getAvailableStatus() === \App\Models\Prize::STATUS_GRANTED)
                 <h5 class="text-center">Виграти цей приз за донат</h5>
                 @include('layouts.monodonat', ['fundraising' => $prize->fundraising])
             @endif
