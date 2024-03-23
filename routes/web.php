@@ -72,7 +72,7 @@ Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
 Route::get('/zvit', static fn() => redirect(route('fundraising.all'), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/fundraising', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()->paginate(6)]))->name('fundraising.all');
+Route::get('/fundraising', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()->paginate(config('app.per_page.funds'))]))->name('fundraising.all');
 Route::get('/zvit/{fundraising}', fn(Fundraising $fundraising) => redirect(route('fundraising.show', compact('fundraising')), Response::HTTP_MOVED_PERMANENTLY));
 Route::get('/fundraising/actual', static fn() => view('fundraising.index', data: ['fundraisings' => Fundraising::query()->where('is_enabled', '=', true)
     ->where('created_at', '>', new Carbon\Carbon(strtotime('01.12.2023')))->paginate(5)])
@@ -106,15 +106,12 @@ Route::patch('/user/{user}', [App\Http\Controllers\UserController::class, 'updat
 Route::patch('/user/{user}/settings', [App\Http\Controllers\UserSettingsController::class, 'update'])->name('user.settings');
 
 Route::get('/prizes', static fn() => view('prize.index', ['prizes' => Prize::query()
-    ->where('is_enabled', '=', true)
     ->paginate(10)]))->name('prizes');
 Route::get('/prizes/free', static fn() => view('prize.index', ['prizes' => Prize::query()
-    ->where('is_enabled', '=', true)
     ->where('available_status', '=', Prize::STATUS_NEW)
     ->whereNull('fundraising_id')
     ->paginate(10)]))->name('prizes.free');
 Route::get('/prizes/booked', static fn() => view('prize.index', ['prizes' => Prize::query()
-    ->where('is_enabled', '=', true)
     ->whereNotNull('fundraising_id')
     ->paginate(10)]))->name('prizes.booked');
 Route::get('/prizes/spent', static fn() => view('prize.index', ['prizes' => Prize::query()

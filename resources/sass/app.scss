@@ -198,6 +198,11 @@ body {
     animation: reverse 1s linear infinite progress-bar-stripes;
 }
 
+.progress-bar-as-header {
+    --bs-border-radius: none;
+    height: 100%;
+}
+
 .btn-fit-text {
     display: inline-block;
     width: auto;
@@ -208,3 +213,4 @@ body {
     height:150px;
     object-fit:cover
 }
+

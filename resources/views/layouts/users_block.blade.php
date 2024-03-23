@@ -7,7 +7,7 @@
 <div class="row row-cols-1 row-cols-xl-3 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-xs-1 g-1 d-flex justify-content-between">
     @forelse($users->all() as $user)
         <div class="col">
-        <div class="card h-100">
+        <div class="card">
             <div class="card-body">
                 @if($whoIs === \App\Http\Controllers\UserController::VOLUNTEERS)
                     @php $volunteer = $user; @endphp

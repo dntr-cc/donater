@@ -25,7 +25,7 @@ class PrizeController extends Controller
         Prize::create($attributes);
         OpenGraphRegenerateEvent::dispatch((int)$attributes['user_id'], OpenGraphRegenerateEvent::TYPE_USER);
 
-        return new JsonResponse(['url' => route('my')]);
+        return new JsonResponse(['url' => route('prizes')]);
     }
 
     public function create()

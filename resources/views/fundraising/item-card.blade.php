@@ -1,22 +1,27 @@
 @php /** @var App\Models\Fundraising $fundraising */ @endphp
 @php $btn = $btn ?? false; @endphp
+@php $name = $name ?? false; @endphp
 @php $withVolunteer = $withVolunteer ?? false; @endphp
 @php $withJarLink = true; @endphp
 @php $withPageLink = true; @endphp
-@php $withPrizes = true; @endphp
+@php $withPrizes = $withPrizes ?? true; @endphp
 @php $disableShortCodes = false; @endphp
 @php $rowClasses = 'row-cols-3 g-0 d-flex justify-content-evenly align-items-center'; @endphp
 
-<div class="col">
-    <div class="card h-100 {{ $fundraising->getClassByState() }}">
+<div class="col grid-item">
+    <div class="card {{ $fundraising->getClassByState() }}">
         <a href="{{ route('fundraising.show', compact('fundraising')) }}">
             <img src="{{ url($fundraising->getAvatar()) }}" class="card-img-top "
                  alt="{{ $fundraising->getName() }}"></a>
         <div class="m-1 mt-3 {{ $fundraising->getClassByState() }} }}">
-            @if($btn)
+            @if($btn || $name)
             <div class="text-center m-4">
+                @if($name)
                 <h3 class="mt-3">{{ $fundraising->getName() }}</h3>
-                <a class="btn btn-success text-center" href="{{ route('fundraising.show', compact('fundraising')) }}">Детали збору</a>
+                @endif
+                @if($btn)
+                    <a class="btn btn-success text-center" href="{{ route('fundraising.show', compact('fundraising')) }}">Детали збору</a>
+                @endif
             </div>
             @endif
             @if($fundraising->isEnabled())
@@ -47,9 +52,7 @@
                          style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             @endif
-            @if(true)
-                    @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'disableShortCodes'))
-            @endif
+            @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'disableShortCodes'))
         </div>
         @if($withVolunteer)
             <div class="card-footer {{ $fundraising->getClassByState() }} }}">

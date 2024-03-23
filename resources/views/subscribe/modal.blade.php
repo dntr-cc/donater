@@ -135,6 +135,7 @@
         } else {
             $('#subscribe-del').show();
         }
+        @php $current = auth()->user() @endphp
         subscribe.querySelector('#subscribe-action').textContent = btnText;
         subscribe.querySelector('#subscribe-action').classList.remove('btn-primary');
         subscribe.querySelector('#subscribe-action').classList.remove('btn-warning');
@@ -156,7 +157,7 @@
         }
         let volunteerKey = button.getAttribute('data-bs-volunteer-key');
         let actionTypeTxtTitle = isNew ? 'Підписатися' : 'Редагувати підписку';
-        let actionTypeTxtContent1 = isNew ? 'Ви хочете стати серійним донатером' : 'Ви серійний донатер/ка';
+        let actionTypeTxtContent1 = isNew ? '{{ sensitive('Ви хочете стати серійним донатером', $current) }}' : '{{ sensitive('Ви серійний донатер', $current) }}';
         let actionTypeTxtContent2 = isNew ? ' буде бачити' : ' бачить';
         let actionTypeTxtContent3 = isNew ? 'розраховувати' : 'розраховує';
         let actionTypeTxtContent4 = isNew ? 'вибрати' : 'змінити';

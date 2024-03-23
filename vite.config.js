@@ -10,6 +10,7 @@ export default defineConfig({
             'resources/js/chartjs.js',
             'resources/js/tinymce.js',
             'resources/js/pickerjs.js',
+            'resources/js/masonry.js',
             'resources/sass/pickerjs.scss',
             'resources/sass/app.scss',
         ]),
@@ -23,6 +24,7 @@ export default defineConfig({
             'tinymce/plugins/media': path.resolve(__dirname, 'node_modules/tinymce/plugins/media/plugin.js'),
             'mdb-ui-kit': path.resolve(__dirname, 'node_modules/mdb-ui-kit'),
             'pickerjs': path.resolve(__dirname, 'node_modules/pickerjs'),
+            'masonry': path.resolve(__dirname, 'node_modules/masonry-layout'),
         }
     },
     server: {

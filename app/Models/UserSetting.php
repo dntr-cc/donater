@@ -23,19 +23,21 @@ class UserSetting extends Model
     public const string DONT_SHOW_REFERRALS = 'dont_show_referrals';
     public const string DONT_SEND_SUBSCRIBERS_INFORMATION = 'dont_send_subscribers_information';
     public const string DONT_SEND_MARKETING_MESSAGES = 'dont_send_marketing_messages';
+    public const string USE_FEMININE_FORMS_WHEN_MY_ROLE_IS_CALLED = 'USE_FEMININE_FORMS_WHEN_MY_ROLE_IS_CALLED';
     protected $fillable = [
         'setting',
         'user_id',
     ];
 
     public const array SETTINGS_MAP = [
-        self::NO_RAFFLE_ENTRY                   => 'Не брати участь в розіграшах',
-        self::USE_PERCENT_INSTEAD_FRACTION      => 'Показувати відсотки замість дробі в шансах розіграшів',
-        self::DONT_SHOW_CREATE_FUNDRAISING      => 'Не показувати розділ "Всі збори" (не планую створювати збори)',
-        self::DONT_SHOW_CREATE_PRIZES           => 'Не показувати розділ "Призи для донаторів" (не планую створювати призи)',
-        self::DONT_SHOW_REFERRALS               => 'Не показувати розділ "Запрошені Донатери"',
-        self::DONT_SEND_MARKETING_MESSAGES      => 'Не отримувати повідомлення маркетингових нагадувань чи розсилок',
-        self::DONT_SEND_SUBSCRIBERS_INFORMATION => 'Як волонтер: не отримувати повідомлення про додавання/видалення/зміни підписок серійних донатерів',
+        self::NO_RAFFLE_ENTRY                           => 'Не брати участь в розіграшах',
+        self::USE_PERCENT_INSTEAD_FRACTION              => 'Показувати відсотки замість дробі в шансах розіграшів',
+        self::DONT_SHOW_CREATE_FUNDRAISING              => 'Не показувати розділ "Всі збори" (не планую створювати збори)',
+        self::DONT_SHOW_CREATE_PRIZES                   => 'Не показувати розділ "Призи для донаторів" (не планую створювати призи)',
+        self::DONT_SHOW_REFERRALS                       => 'Не показувати розділ "Запрошені Донатери"',
+        self::DONT_SEND_MARKETING_MESSAGES              => 'Не отримувати повідомлення маркетингових нагадувань чи розсилок',
+        self::DONT_SEND_SUBSCRIBERS_INFORMATION         => 'Як волонтер: не отримувати повідомлення про додавання/видалення/зміни підписок серійних донатерів',
+        self::USE_FEMININE_FORMS_WHEN_MY_ROLE_IS_CALLED => 'Використовувати фемінітиви, коли описують мою роль (волонтерка/донатерка)',
     ];
 
     public function getId(): int

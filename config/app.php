@@ -218,8 +218,9 @@ return [
     'admins_ids' => explode(',', env('ADMINS', '')),
     'volunteer_chat_link' => env('VOLUNTEER_CHAT_LINK', ''),
     'per_page' => [
+        'funds' => env('PER_PAGE_FUNDS', 12),
         'users' => env('PER_PAGE_USERS', 12),
         'volunteers' => env('PER_PAGE_VOLUNTEERS', 12),
     ],
-
+    'google_cache_time' => env('GOOGLE_CACHE_TIME', 600),
 ];

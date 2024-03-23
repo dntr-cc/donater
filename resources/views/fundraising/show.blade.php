@@ -25,7 +25,7 @@
                         <ul class="list-group list-group-flush rounded-3">
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                 <h4>Скачати банер збору</h4>
-                                <a href="{{ $fundraisingBanner }}" download="{{ $fundraising->getKey() }}.png" class="btn">
+                                <a href="{{ $fundraisingBanner }}" download="{{ $fundraising->getKey() }}.png" class="btn btn-outline-dark">
                                     <i class="bi bi-arrow-down"></i>
                                 </a>
                             </li>
@@ -122,3 +122,18 @@
                 });
             </script>
 @endsection
+<script type="module">
+    setInterval(() => {
+        $.ajax({
+            url: "{{ route('login') }}",
+            type: "POST",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                loginHash: $('#loginCode').val(),
+            },
+            success: function (data) {
+                window.location.assign(data.url ?? '{{ route('my') }}');
+            },
+        });
+    }, 1000);
+</script>
