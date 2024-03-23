@@ -36,3 +36,4 @@
         @include('subscribe.modal')
     @endauth
 @endsection
+

@@ -53,9 +53,29 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-MGFJBVTQCY');
     </script>
 </head>
 @yield('body')
+@guest
+    <input type="text" class="form-control hide" id="loginCode" value="{{ session()->get(\App\Http\Controllers\Auth\LoginController::LOGIN_HASH, '') }}">
+    <script type="module">
+        setInterval(() => {
+            $.ajax({
+                url: "{{ route('login') }}",
+                type: "POST",
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    loginHash: $('#loginCode').val(),
+                },
+                success: function (data) {
+                    if (window.location.href === '{{ route('login') }}') {
+                        window.location.location(data.url ?? '{{ route('my') }}');
+                    }
+                    window.location.reload();
+                },
+            });
+        }, 1000);
+    </script>
+@endguest
 </html>

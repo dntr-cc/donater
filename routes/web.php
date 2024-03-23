@@ -37,7 +37,7 @@ Route::get('/deploy', static function () {
     if (!$deployNotAvailable) {
         Artisan::call('down', [
             '--render' => 'layouts.pause',
-            '--refresh' => 10,
+            '--refresh' => 3,
             '--retry' => 1,
         ]);
     }
