@@ -1,6 +1,8 @@
-@php $subscribe = $volunteer->getSubscribe($authUser->getId()); @endphp
-@php $additionalClasses = $additionalClasses ?? '' @endphp
 <nobr>
+
+@auth
+    @php $subscribe = $volunteer->getSubscribe($authUser->getId()); @endphp
+    @php $additionalClasses = $additionalClasses ?? '' @endphp
     <button type="button"
             class="btn {{ $subscribe ? 'btn-outline-primary' : 'btn-outline-success' }} {{ $additionalClasses }}"
             data-bs-toggle="modal"
@@ -17,5 +19,9 @@
             data-bs-use-random="{{ $subscribe?->isUseRandom() ? '1' : '0' }}">
         🍩 <i class="bi bi-currency-exchange"></i> {{ $subscribe ? 'Редагувати' : 'Підписатися' }}
     </button>
-    </nobr>
+    @endauth
+    @guest
+        <a target="_blank" href="{{ config('telegram.bots.donater-bot.url') }}?start={{ app(App\Services\LoginService::class)->getNewLoginHash() }}" class="btn btn-primary my-2">Підписатися</a>
+    @endguest
+</nobr>
 

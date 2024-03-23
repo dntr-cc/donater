@@ -56,7 +56,7 @@ class CommandWrapper
             Cache::set('login:end:' . $text, $from->toJson(), 60);
             Telegram::sendMessage([
                 'chat_id' => $chatId,
-                'text' => 'Вхід дозволено!',
+                'text' => \App\Bot\StartCommand::AUTHORISE_SUCCESS,
             ]);
             return;
         }

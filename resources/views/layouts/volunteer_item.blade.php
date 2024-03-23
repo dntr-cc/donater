@@ -17,9 +17,7 @@
             <a href="{{ $volunteer->getUserLink() }}">{{ $volunteer->getFullName() }}</a>
             <a href="{{ $volunteer->getUserLink() }}">[{{ $volunteer->getAtUsername() }}]</a>
         </h6>
-        @auth
-            @include('subscribe.button', compact('volunteer', 'authUser', 'additionalClasses'))
-        @endauth
+        @include('subscribe.button', compact('volunteer', 'authUser', 'additionalClasses'))
     </div>
     <div class="card-footer w-100 text-muted {{ $additionalClassesColor }}">
         Підписалося Донатерів: {{ $volunteer->getSubscribers()->count() }}<br>

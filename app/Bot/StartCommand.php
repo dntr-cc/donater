@@ -9,6 +9,7 @@ use Telegram\Bot\Commands\Command;
 
 class StartCommand extends Command
 {
+    public const string AUTHORISE_SUCCESS = 'Вас авторизовано на сайті. Оновіть сторінку, якщо це не сталося автоматично';
     protected string $name = 'start';
 
     /**
@@ -31,10 +32,11 @@ class StartCommand extends Command
 
                 $from = $message?->getFrom();
                 Cache::set('login:end:' . $text, $from->toJson(), 60);
-                $this->replyWithMessage(['text' => 'Вхід дозволено!']);
+                $this->replyWithMessage(['text' => self::AUTHORISE_SUCCESS]);
                 return;
             }
+        } else {
+            $this->replyWithMessage(['text' => 'Вітаю! Введіть код з сайту для авторизації ⬇️']);
         }
-        $this->replyWithMessage(['text' => 'Вітаю! Введіть код з сайту для авторизації ⬇️']);
     }
 }
