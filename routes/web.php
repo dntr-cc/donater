@@ -106,18 +106,20 @@ Route::patch('/user/{user}', [App\Http\Controllers\UserController::class, 'updat
 Route::patch('/user/{user}/settings', [App\Http\Controllers\UserSettingsController::class, 'update'])->name('user.settings');
 
 Route::get('/prizes', static fn() => view('prize.index', ['prizes' => Prize::query()
-    ->paginate(10)]))->name('prizes');
+    ->paginate(config('app.per_page.prizes'))]))->name('prizes');
 Route::get('/prizes/free', static fn() => view('prize.index', ['prizes' => Prize::query()
+    ->where('is_enabled', '=', true)
     ->where('available_status', '=', Prize::STATUS_NEW)
     ->whereNull('fundraising_id')
-    ->paginate(10)]))->name('prizes.free');
+    ->paginate(config('app.per_page.prizes'))]))->name('prizes.free');
 Route::get('/prizes/booked', static fn() => view('prize.index', ['prizes' => Prize::query()
+    ->where('is_enabled', '=', true)
     ->whereNotNull('fundraising_id')
-    ->paginate(10)]))->name('prizes.booked');
+    ->paginate(config('app.per_page.prizes'))]))->name('prizes.booked');
 Route::get('/prizes/spent', static fn() => view('prize.index', ['prizes' => Prize::query()
     ->where('is_enabled', '=', false)
     ->whereNotNull('fundraising_id')
-    ->paginate(10)]))->name('prizes.spent');
+    ->paginate(config('app.per_page.prizes'))]))->name('prizes.spent');
 Route::post('/prize', [App\Http\Controllers\PrizeController::class, 'store'])->name('prize.create');
 Route::post('/prize/avatar', [App\Http\Controllers\PrizeController::class, 'storeAvatar'])->name('prize.avatar');
 Route::get('/prize/new', [App\Http\Controllers\PrizeController::class, 'create'])->name('prize.new');
