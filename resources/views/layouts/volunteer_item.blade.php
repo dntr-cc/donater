@@ -13,7 +13,7 @@
              class="object-fit-cover-150 card-img-top rounded-circle img-fluid" alt="{{ $volunteer->getFullName() }}">
     </div>
     <div class="card-body">
-        <h6 class="card-title mb-4"><strong>{{ ucfirst(sensitive('волонтер', $user)) }}</strong>
+        <h6 class="card-title mb-4"><strong>{{ ucfirst(sensitive('волонтер', $volunteer)) }}</strong>
             <a href="{{ $volunteer->getUserLink() }}">{{ $volunteer->getFullName() }}</a>
             <a href="{{ $volunteer->getUserLink() }}">[{{ $volunteer->getAtUsername() }}]</a>
         </h6>
