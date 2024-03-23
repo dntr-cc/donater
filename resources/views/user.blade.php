@@ -261,7 +261,7 @@
                                     <div class="collapse show" id="collapseFundraisings">
                                         <hr>
                                         <div
-                                            class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 grid">
+                                            class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
                                             @foreach($user->getFundraisings()->all() as $it => $fundraising)
                                                 @include('fundraising.item-card', compact('fundraising', 'rowClasses', 'name'))
                                             @endforeach
@@ -285,7 +285,7 @@
                                                     <i class="bi bi-arrow-up"></i>
                                                 </a>
                                                 @if (auth()?->user()?->getId() === $user->getId())
-                                                    <a href="{{route('prize.create')}}" class="btn ">
+                                                    <a href="{{route('prize.new')}}" class="btn ">
                                                         <i class="bi bi-plus-circle-fill"></i>
                                                         Створити
                                                     </a>
@@ -296,7 +296,7 @@
                                     </div>
                                     <div class="collapse show" id="collapsePrizes">
                                         <hr>
-                                        <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 grid">
+                                        <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
                                             @foreach($user->withPrizes()->prizes as $prize)
                                                 @include('prize.item-card', compact('prize', 'btn', 'withPrizeInfo'))
                                             @endforeach

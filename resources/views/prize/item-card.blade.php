@@ -3,7 +3,7 @@
 @php $withPrizeInfo = $withPrizeInfo ?? false; @endphp
 @php $authUser = auth()?->user(); @endphp
 
-<div class="col grid-item">
+<div class="col masonry-grid-item">
     <div class="card {{ $prize->getBgClassByState() }}-subtle">
         <div class="progress progress-bar-as-header">
             @if($prize->fundraising)

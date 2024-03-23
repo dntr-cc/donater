@@ -8,7 +8,7 @@
 @php $disableShortCodes = false; @endphp
 @php $rowClasses = 'row-cols-3 g-0 d-flex justify-content-evenly align-items-center'; @endphp
 
-<div class="col grid-item">
+<div class="col masonry-grid-item">
     <div class="card {{ $fundraising->getClassByState() }}">
         <a href="{{ route('fundraising.show', compact('fundraising')) }}">
             <img src="{{ url($fundraising->getAvatar()) }}" class="card-img-top "
