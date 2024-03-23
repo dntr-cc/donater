@@ -9,7 +9,10 @@
 @php /** @var Fundraising $fundraising */ @endphp
 @php /** @var UserLink $userLink */ @endphp
 @php /** @var Subscribe $subscribe */ @endphp
+@php $btn = true; @endphp
+@php $withPrizeInfo = true; @endphp
 @php $additionalClasses = 'btn-xs'; @endphp
+@php $name = true; @endphp
 @php $donates = $user->getDonates(); @endphp
 @php $authUser = auth()?->user(); @endphp
 @php $additionalAnalyticsText = ' по Донатеру ' . $user->getUserLink(); @endphp
@@ -24,6 +27,9 @@
 @section('og_image_height', '630')
 @section('og_image_title', $title)
 @section('og_image_alt', $description)
+@push('head-scripts')
+    @vite(['resources/js/masonry.js'])
+@endpush
 @php $rowClasses = 'row-cols-3 g-0 d-flex justify-content-evenly align-items-center'; @endphp
 @section('content')
     <div class="container">
@@ -86,9 +92,9 @@
                                             <i class="bi bi-copy"></i></button>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-center align-items-center mb-2">
+                                <div class="d-flex justify-content-around align-items-center mb-2">
                                     @can('update', $user)
-                                        <button class="btn m-1 btn-outline-dark {{ $additionalClasses }}"
+                                        <button class="btn btn-outline-dark {{ $additionalClasses }}"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#userEditSettingsModal">
                                             Налаштування
@@ -96,66 +102,49 @@
                                     @endif
                                     @if($authUser && $user->fundraisings->count() > 0)
                                         @php $volunteer = $user; @endphp
-                                        <div class="mt-1">
-                                            @include('subscribe.button', compact('volunteer', 'authUser'))
-                                        </div>
+                                        @include('subscribe.button', compact('volunteer', 'authUser'))
                                     @endif
                                 </div>
 
                             </div>
                         </div>
-                        @if($user->fundraisings->count() > 0 && !$user->getSubscribers()->isEmpty())
-                            @php
-                                $subscribers = $user->getSubscribers();
-                            @endphp
-                            <div class="card mb-4 mb-lg-0">
-                                <div class="card-body p-0">
-                                    <ul class="list-group list-group-flush rounded-3">
-                                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                            <h4>Серійні донатери</h4>
-                                        </li>
-                                        @foreach($subscribers as $subscriber)
-                                            @php
-                                                /* @var \App\Models\Subscribe $subscriber */
-                                                $donater = $subscriber->getDonater();
-                                            @endphp
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                                <i class="bi-arrow-right-short mb-1"></i>
-                                                <p class="mb-0">
-                                                    {!! $donater->getUserHref() !!}
-                                                </p>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        @endif
+                        {{--Links block--}}
                         <div class="card mt-4 mb-4 mb-lg-0">
                             <div class="card-body p-0">
                                 <ul class="list-group list-group-flush rounded-3">
                                     <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                        <h4>Посилання</h4>
-                                        @can('update', $user)
-                                            <button data-bs-toggle="modal" data-bs-target="#createLinkModal"
-                                                    id="addDonation" class="btn">
-                                                <i class="bi bi-plus-circle-fill"></i>
-                                            </button>
-                                        @endcan
+                                        <h4>Посилання для зв'язку</h4>
+                                        <div>
+                                            <a href="#collapseLinks" data-bs-toggle="collapse" role="button"
+                                               aria-expanded="false"
+                                               aria-controls="collapseLinks" class="btn arrow-control" data-state="up">
+                                                <i class="bi bi-arrow-up"></i>
+                                            </a>
+                                            @can('update', $user)
+                                                <button data-bs-toggle="modal" data-bs-target="#createLinkModal"
+                                                        id="addDonation" class="btn">
+                                                    <i class="bi bi-plus-circle-fill"></i>
+                                                </button>
+                                            @endcan
+                                        </div>
                                     </li>
-                                    @foreach($user->getLinks()->all() as $userLink)
-                                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                            <i class="{{ $userLink->getIcon() }} fa-lg"></i>
-                                            <p class="mb-0">
-                                                <a href="{{ $userLink->getLink() }}">{{ $userLink->getName() }}</a>
-                                                <i data-id="{{ $userLink->getId() }}"
-                                                   class="mx-2 bi bi-x-octagon text-danger delete-link">
-                                                </i>
-                                            </p>
-                                        </li>
-                                    @endforeach
+                                    <div class="collapse show" id="collapseLinks">
+                                        @foreach($user->getLinks()->all() as $userLink)
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                                <i class="{{ $userLink->getIcon() }} fa-lg"></i>
+                                                <p class="mb-0">
+                                                    <a href="{{ $userLink->getLink() }}">{{ $userLink->getName() }}</a>
+                                                    <i data-id="{{ $userLink->getId() }}"
+                                                       class="mx-2 bi bi-x-octagon text-danger delete-link">
+                                                    </i>
+                                                </p>
+                                            </li>
+                                        @endforeach
+                                    </div>
                                 </ul>
                             </div>
                         </div>
+                        {{--Subscribes block--}}
                         @can('update', $user)
                             <div class="card mt-4 mb-4 mb-lg-0">
                                 <div class="card-body p-0">
@@ -164,42 +153,88 @@
                                             <h4>
                                                 Підписки на волонтерів
                                             </h4>
-                                            <a href="#collapseSubscribes" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                                                    aria-controls="collapseSubscribes" class="btn">
-                                                <i class="bi bi-arrow-down"></i>
-                                            </a>
+                                            @if($user->getSubscribes()->count())
+                                                <a href="#collapseSubscribes" data-bs-toggle="collapse" role="button"
+                                                   aria-expanded="false"
+                                                   aria-controls="collapseSubscribes" class="btn arrow-control"
+                                                   data-state="down">
+                                                    <i class="bi bi-arrow-down"></i>
+                                                </a>
+                                            @endif
                                         </li>
-                                        <div class="collapse" id="collapseSubscribes">
-                                            @foreach($user->getSubscribes()->all() as $subscribe)
-                                                <div class="col-md-12">
-                                                    <div class="card m-1 mb-4">
-                                                        <div class="card-body">
-                                                            @php $volunteer = $subscribe->getVolunteer(); @endphp
-                                                            @include('layouts.volunteer_item', compact('volunteer'))
+                                        @if($user->getSubscribes()->count())
+                                            <div class="collapse" id="collapseSubscribes">
+                                                @foreach($user->getSubscribes()->all() as $subscribe)
+                                                    <div class="col-md-12">
+                                                        <div class="card m-1 mb-4">
+                                                            <div class="card-body">
+                                                                @php $volunteer = $subscribe->getVolunteer(); @endphp
+                                                                @include('layouts.volunteer_item', compact('volunteer'))
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
+                                                @endforeach
+                                            </div>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
                         @endcan
+                        {{--Subscribers block--}}
+                        @if($user->fundraisings->count() > 0 && !$user->getSubscribers()->isEmpty())
+                            @php
+                                $subscribers = $user->getSubscribers();
+                            @endphp
+                            <div class="card mt-4 mb-4 mb-lg-0">
+                                <div class="card-body p-0">
+                                    <ul class="list-group list-group-flush rounded-3">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                            <h4>Підписані на {{ sensitive('волонтера', $user) }}</h4>
+                                            @if($subscribers->count())
+                                                <a href="#collapseSubscribers" data-bs-toggle="collapse" role="button"
+                                                   aria-expanded="false"
+                                                   aria-controls="collapseSubscribers" class="btn arrow-control"
+                                                   data-state="down">
+                                                    <i class="bi bi-arrow-down"></i>
+                                                </a>
+                                            @endif
+                                        </li>
+                                        @if($user->getSubscribes()->count())
+                                            <div class="collapse" id="collapseSubscribers">
+                                                @foreach($subscribers as $subscriber)
+                                                    <div class="col-md-12">
+                                                        <div class="card m-1 mb-4">
+                                                            <div class="card-body">
+                                                                @include('layouts.user_item', ['user' => $subscriber->getDonater()])
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                </div>
+                            </div>
+                        @endif
+                        {{--Infobanner block--}}
                         <div class="card mt-4 mb-4 mb-lg-0">
                             <div class="card-body p-0">
                                 <ul class="list-group list-group-flush rounded-3">
                                     <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <h4>Скачати інфографіку профілю</h4>
-                                        <a href="{{ $userBanner }}" download="{{ $user->getUsername() }}.png" class="btn">
+                                        <a href="{{ $userBanner }}" download="{{ $user->getUsername() }}.png"
+                                           class="btn btn-outline-dark">
                                             <i class="bi bi-arrow-down"></i>
                                         </a>
                                     </li>
-                                    <a href="{{ $userBanner }}" target="_blank"><img src="{{ $userBanner }}" class="col-12" alt="Інфографіка профілю {{ $user->getFullName() }}"></a>
+                                    <a href="{{ $userBanner }}" target="_blank"><img src="{{ $userBanner }}"
+                                                                                     class="col-12"
+                                                                                     alt="Інфографіка профілю {{ $user->getFullName() }}"></a>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-8">
+                        {{--Fundraisings block--}}
                         @if($user->getFundraisings()->count() > 0 || !(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_FUNDRAISING)))
                             <div class="card mb-4">
                                 <div class="card-body">
@@ -207,9 +242,11 @@
                                         <div class="col-sm-12 d-flex justify-content-between align-items-start">
                                             <h4>Всі збори</h4>
                                             <div>
-                                                <a href="#collapseFundraisings" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                                                   aria-controls="collapseFundraisings" class="btn">
-                                                    <i class="bi bi-arrow-down"></i>
+                                                <a href="#collapseFundraisings" data-bs-toggle="collapse" role="button"
+                                                   aria-expanded="false"
+                                                   aria-controls="collapseFundraisings" class="btn arrow-control"
+                                                   data-state="up">
+                                                    <i class="bi bi-arrow-up"></i>
                                                 </a>
                                                 @if (auth()?->user()?->getId() === $user->getId())
                                                     <a href="{{route('fundraising.new')}}" class="btn ">
@@ -221,96 +258,52 @@
 
                                         </div>
                                     </div>
-
-                                    <div class="collapse" id="collapseFundraisings">
+                                    <div class="collapse show" id="collapseFundraisings">
                                         <hr>
-                                        <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4">
+                                        <div
+                                            class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 grid">
                                             @foreach($user->getFundraisings()->all() as $it => $fundraising)
-                                                @include('fundraising.item-card', compact('fundraising', 'rowClasses'))
+                                                @include('fundraising.item-card', compact('fundraising', 'rowClasses', 'name'))
                                             @endforeach
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         @endif
+                        {{--Prizes block--}}
                         @if($user->withPrizes()->prizes->count() > 0 || !(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_PRIZES)))
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-sm-12 d-flex justify-content-between align-items-start">
-                                            <h4>Призи для донаторів</h4>
-                                            @if (auth()?->user()?->getId() === $user->getId())
-                                                <a href="{{route('prize.new')}}" class="btn ">
-                                                    <i class="bi bi-plus-circle-fill"></i>
-                                                    Створити
+                                            <h4>Всі призи</h4>
+                                            <div>
+                                                <a href="#collapsePrizes" data-bs-toggle="collapse" role="button"
+                                                   aria-expanded="false"
+                                                   aria-controls="collapsePrizes" class="btn arrow-control"
+                                                   data-state="up">
+                                                    <i class="bi bi-arrow-up"></i>
                                                 </a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    @foreach($user->withPrizes()->prizes->filter(fn ($prize) => $prize->isEnabled()) as $it => $prize)
-                                        <div class="row">
-                                            <div
-                                                class="col-sm-12 d-flex justify-content-between align-items-start">
-                                                <div class="fw-bold">
-                                                    {{ $prize->getName() }}
-                                                </div>
-                                                <div>
-                                                    @if($prize->isNeedApprove())
-                                                        Збір: <a
-                                                            href="{{ url(route('fundraising.show', ['fundraising' => $prize->fundraising->getKey()])) }}"
-                                                            class="">
-                                                            {{ $prize->fundraising->getName() }}
-                                                        </a>
-                                                        <a href="{{ route('prize.decline', compact('prize')) }}"
-                                                           class="btn btn-xs btn-danger sm-1">
-                                                            <i class="bi bi-check-circle-fill"></i>
-                                                            Скаcувати
-                                                        </a>
-                                                        <a href="{{ route('prize.approve', compact('prize')) }}"
-                                                           class="btn btn-xs btn-success m-1">
-                                                            <i class="bi bi-check-circle-fill"></i>
-                                                            Підтвердити
-                                                        </a>
-                                                    @endif
-                                                    <a href="{{ route('prize.edit', compact('prize')) }}"
-                                                       class="btn btn-xs m-1">
-                                                        <i class="bi bi-pencil-fill"></i>
-                                                        Редагування
+                                                @if (auth()?->user()?->getId() === $user->getId())
+                                                    <a href="{{route('prize.create')}}" class="btn ">
+                                                        <i class="bi bi-plus-circle-fill"></i>
+                                                        Створити
                                                     </a>
-                                                    <a href="{{ route('prize.show', ['prize' => $prize->getId()])}}"
-                                                       class="btn btn-xs m-1">
-                                                        <i class="bi bi-eye"></i>
-                                                        Подробиці
-                                                    </a>
-                                                </div>
+                                                @endif
                                             </div>
-                                        </div>
-                                        <hr>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
-                        @if(!$donates->isEmpty())
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-7">
-                                                <div class="me-auto mt-auto">
-                                                    <h4>Донати (крайні 10)</h4>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                @include('layouts.donates', compact('donates'))
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
+                                        </div>
+                                    </div>
+                                    <div class="collapse show" id="collapsePrizes">
+                                        <hr>
+                                        <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 grid">
+                                            @foreach($user->withPrizes()->prizes as $prize)
+                                                @include('prize.item-card', compact('prize', 'btn', 'withPrizeInfo'))
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         @endif
                         @if (auth()?->user()?->can('update', $user) && $user->getFundraisings()?->count())
                             <div class="card mb-4">
@@ -705,5 +698,34 @@
                 return false;
             });
             @endcan
+
+            window.document.querySelectorAll('.arrow-control')
+                .forEach(el => el.addEventListener('click', event => {
+                    let button = $(event.target.closest('.arrow-control'));
+                    console.log(button);
+                    let state = button.attr('data-state');
+                    if (state === 'down') {
+                        button.attr('data-state', 'up');
+                        button.html('<i class="bi bi-arrow-up"></i>');
+                    } else {
+                        button.attr('data-state', 'down');
+                        button.html('<i class="bi bi-arrow-down"></i>');
+                    }
+                }));
+            @guest()
+            setInterval(() => {
+                $.ajax({
+                    url: "{{ route('login') }}",
+                    type: "POST",
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        loginHash: $('#loginCode').val(),
+                    },
+                    success: function (data) {
+                        window.location.assign(data.url ?? '{{ route('my') }}');
+                    },
+                });
+            }, 1000);
+            @endguest
         </script>
 @endsection

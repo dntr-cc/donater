@@ -26,18 +26,6 @@
             <div class="col-md-8 px-2 py-2">
                 <div class="card mb-2">
                     <div class="card-body">
-                        <div class="m-3">
-                            <a href="{{route('fundraising.show', ['fundraising' => $fundraising->getKey()])}}"
-                               class="btn btn-secondary-outline m-1 ">
-                                <i class="bi bi-eye"></i>
-                                Загальна інформація
-                            </a>
-                            <a href="{{route('fundraising.analytics', ['fundraising' => $fundraising->getKey()])}}"
-                               class="btn btn-secondary-outline m-1 ">
-                                <i class="bi bi-eye"></i>
-                                Аналітика
-                            </a>
-                        </div>
                         <div>
                             {!! $fundraising->getDescription() !!}
                         </div>

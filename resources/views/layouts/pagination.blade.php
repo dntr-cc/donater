@@ -5,7 +5,7 @@
     <nav class="d-flex justify-items-center">
         <div class="container">
             <div class="row">
-                <div class="col-12 flex-sm-fill d-sm-flex align-items-sm-center justify-content-center">
+                <div class="col-12 flex-sm-fill d-sm-flex align-items-sm-center justify-content-center mt-4">
                     <p class="small text-muted">
                         {!! __('Показано') !!}
                         <span class="fw-semibold">{{ $paginator->firstItem() }}</span>
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 flex-sm-fill d-sm-flex align-items-sm-center justify-content-center">
+                <div class="col-12 flex-sm-fill d-sm-flex align-items-sm-center justify-content-center mt-4">
                     <div>
                         <ul class="pagination">
                             {{-- Previous Page Link --}}

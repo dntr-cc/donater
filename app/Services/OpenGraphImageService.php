@@ -137,7 +137,7 @@ class OpenGraphImageService
         if ($fundraisings->count()) {
             $rows = app(\App\Services\RowCollectionService::class)->getRowCollection($fundraisings);
             $sourcesLines[] = [
-                ['Підписалося Донатерів:', (string)$user->getSubscribers()->count() . ' ос.'],
+                ['Підписалося донатерів:', (string)$user->getSubscribers()->count() . ' ос.'],
                 ['Всього зборів:', $user->getFundraisings()->count() . ' шт.'],
                 ['Загалом зібрано коштів:', $rows->allSum() . ' грн.'],
                 ['Зібрано від Донатерів:', $rows->allSumFromOurDonates() . ' грн.'],
@@ -217,7 +217,7 @@ class OpenGraphImageService
         $imageScaledAvatar = $manager->read($filepathScaledAvatar);
         $imageTemplate->place($imageScaledAvatar->scale(150, 150), 'top-left', 480, 280);
         $offsetY = 310;
-        $imageUsernamePath = $this->getTextImagePath('Medium', 'Волонтер ' . static::removeEmoji($volunteer->getFullName()), 25, $manager);
+        $imageUsernamePath = $this->getTextImagePath('Medium', ucfirst(sensitive('волонтер', $fundraising->getVolunteer())) . ' ' . static::removeEmoji($volunteer->getFullName()), 25, $manager);
         $imageTemplate->place($imageUsernamePath, 'top-left', 650, $offsetY);
         $offsetY += 35;
         $imageUsernamePath = $this->getTextImagePath('Medium', 'чекає на вашу підписку, від 1грн в день.', 25, $manager);

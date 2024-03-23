@@ -298,4 +298,50 @@ class Prize extends Model
 
         return $this;
     }
+
+    public function getBgClassByState(): string
+    {
+        if ($this->isEnabled() && $this->getAvailableStatus() === static::STATUS_NEW && !$this->getFundraisingId()) {
+            return 'bg-success';
+        } elseif ($this->isEnabled()) {
+            return 'bg-warning';
+        }
+
+        return 'bg-secondary';
+    }
+
+    public function getBtnClassByState(): string
+    {
+        if ($this->winners->count()) {
+            return 'btn-secondary';
+        } elseif ($this->fundraising) {
+            return 'btn-primary';
+        }
+
+        return 'btn-success';
+    }
+
+    public function getTextClassByState(): string
+    {
+        return 'text-white fw-bold';
+    }
+
+    public function availableFor(?User $user): bool
+    {
+        if (!$user) {
+            return false;
+        }
+        if ($user->getId() === $this->getUserId()) {
+            return true;
+        }
+        if (
+            $this->getAvailableStatus() === static::STATUS_NEW &&
+            $this->getAvailableType() === static::FOR_SUBSCRIBED_VOLUNTEERS &&
+            in_array($user->getId(),  $this->getDonater()->getSubscribes()->pluck('volunteer_id')->toArray())
+        ) {
+            return true;
+        }
+
+        return false;
+    }
 }
