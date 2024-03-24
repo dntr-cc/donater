@@ -3,7 +3,7 @@
 @section('page_description', 'Часті питання по сайту donater.com.ua')
 
 @section('content')
-    <div class="container px-4 py-5">
+    <div class="container">
         <h2 class="pb-2 border-bottom">
             Довідка
         </h2>

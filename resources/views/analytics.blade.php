@@ -7,7 +7,7 @@
 @php $additionalAnalyticsText = ' (всі збори на сайті donater.com.ua)' @endphp
 
 @section('content')
-    <div class="container px-4 py-5">
+    <div class="container">
         <h2 class="pb-2 border-bottom">
             Аналітика (всі збори на сайті)
         </h2>

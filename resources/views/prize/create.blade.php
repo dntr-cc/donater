@@ -1,6 +1,10 @@
 @extends('layouts.base')
 @section('page_title', 'Створити новий приз - donater.com.ua')
 @section('page_description', 'Створити новий приз - donater.com.ua')
+@section('breadcrumb-path')
+    <li class="breadcrumb-item"><a href="{{ route('prizes') }}">Призи</a></li>
+@endsection
+@section('breadcrumb-current', 'Створити новий приз')
 @push('head-scripts')
     @vite(['resources/js/tinymce.js'])
 @endpush

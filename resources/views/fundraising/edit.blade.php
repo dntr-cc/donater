@@ -1,6 +1,10 @@
 @extends('layouts.base')
 @section('page_title', strtr('Редагувати ":fundraising" - donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @section('page_description', strtr('Редагувати ":fundraising" - donater.com.ua', [':fundraising' => $fundraising->getName()]))
+@section('breadcrumb-path')
+    <li class="breadcrumb-item"><a href="{{ route('fundraising.all') }}">Збори</a></li>
+@endsection
+@section('breadcrumb-current', strtr('Редагувати ":fundraising"', [':fundraising' => $fundraising->getName()]))
 @push('head-scripts')
     @vite(['resources/js/tinymce.js'])
 @endpush
@@ -90,9 +94,9 @@
                                                     Також треба зробити доступ до таблиці для редагування. Треба додати
                                                     в
                                                     редактори (Editor) email
-                                                    <span id="editorEmail" class="text-warning">zbir-404114@zbir-404114.iam.gserviceaccount.com </span>
-                                                    <button id="copyEmail" class="btn btn-sm btn-outline-secondary"
-                                                            onclick="return false;">
+                                                    <span id="editorEmail" class="text-warning">zbir-404114@zbir-404114.iam.gserviceaccount.com</span>
+                                                    <button class="btn btn-sm btn-outline-secondary copy-text"
+                                                            data-message="Email" data-text="zbir-404114@zbir-404114.iam.gserviceaccount.com" onclick="return false;">
                                                         <i class="bi bi-copy"></i>
                                                     </button>
                                                 </div>
@@ -143,14 +147,6 @@
         let config = window.baseTinymceConfig;
         Object.assign(config, {init_instance_callback: editor => editor.setContent(text)});
         window.tinymce.init(config);
-        let copyEmail = $('#copyEmail');
-        copyEmail.on('click', function (e) {
-            e.preventDefault();
-            copyContent($('#editorEmail').text());
-            return false;
-        });
-        toast('Email скопійовано', copyEmail);
-
         let updateFundraisingButton = $('#updateFundraising');
 
         document.querySelector('#file').addEventListener('change', event => {

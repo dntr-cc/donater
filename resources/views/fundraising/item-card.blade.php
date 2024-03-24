@@ -20,7 +20,7 @@
                 <h3 class="mt-3">{{ $fundraising->getName() }}</h3>
                 @endif
                 @if($btn)
-                    <a class="btn btn-success text-center" href="{{ route('fundraising.show', compact('fundraising')) }}">Детали збору</a>
+                    <a class="btn btn-success text-center" href="{{ route('fundraising.show', compact('fundraising')) }}">Подивитися збір</a>
                 @endif
             </div>
             @endif
@@ -29,11 +29,9 @@
                     <div class="d-flex justify-content-center mb-2">
                         <label for="basic-url" class="form-label"></label>
                         <div class="input-group mb-3">
-                            <span class="input-group-text fw-bold {{ $fundraising->getClassByState() }}">Поширити збір: </span>
-                            <input type="text" class="form-control fw-bold {{ $fundraising->getClassByState() }}" id="shortLink"
-                                   value="https://{{ $fundraising->getShortLink() }}" disabled>
-                            <button id="copyShortLink" class="btn btn-outline-dark"
-                                    onclick="return false;">
+                            <span class="input-group-text fw-bold {{ $fundraising->getClassByState() }}">Поширити збір: {{ $fundraising->getShortLink() }}</span>
+                            <input aria-label="fade input" type="text" class="form-control fw-bold {{ $fundraising->getClassByState() }}" disabled>
+                            <button class="btn btn-outline-dark copy-text" data-message="Посилання" data-text="{{ $fundraising->getShortLink() }}" onclick="return false;">
                                 <i class="bi bi-copy"></i></button>
                         </div>
 
@@ -55,9 +53,9 @@
             @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'disableShortCodes'))
         </div>
         @if($withVolunteer)
-            <div class="card-footer {{ $fundraising->getClassByState() }} }}">
-                @php $volunteer = $fundraising->getVolunteer() @endphp
-                @include('layouts.volunteer_item', compact('volunteer'))
+            <div class="{{ $fundraising->getClassByState() }} p-3">
+                <h5 class="text-center">{{ \Illuminate\Support\Str::ucfirst(sensitive('волонтер', $fundraising->getVolunteer())) }}</h5>
+                @include('layouts.user_item', ['user' => $fundraising->getVolunteer(), 'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS , ])
             </div>
         @endif
     </div>

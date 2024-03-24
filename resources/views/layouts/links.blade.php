@@ -82,17 +82,6 @@
     @endcan
 </div>
 
-{{--Default js scripts--}}
-<script type="module">
-    let copyCode = $('#copyShortLink');
-    copyCode.on('click', event => {
-        event.preventDefault();
-        copyContent($('#shortLink').val());
-        return false;
-    });
-    toast('Коротке посилання скопійовано', copyCode);
-</script>
-
 {{--Can update additional data: js--}}
 @can('update', $fundraising)
     <script type="module">
@@ -300,8 +289,8 @@
                                     <input type="text" class="form-control" id="shortLink"
                                            value="{{ $fundraising->getShortLink() }}" disabled>
                                     <label for="userShortLink">Коротке посилання</label>
-                                    <button id="copyShortLink" class="btn btn-outline-secondary"
-                                            onclick="return false;">
+                                    <button class="btn btn-outline-secondary copy-text"
+                                            data-message="Коротке посилання" data-text="{{ $fundraising->getShortLink() }}" onclick="return false;">
                                         <i class="bi bi-copy"></i></button>
                                 </div>
                             </div>

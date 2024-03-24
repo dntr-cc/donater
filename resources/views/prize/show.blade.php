@@ -5,8 +5,12 @@
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', $ogImageWidth)
 @section('og_image_height', $ogImageHeight)
+@section('breadcrumb-path')
+    <li class="breadcrumb-item"><a href="{{ route('prizes') }}">Призи</a></li>
+@endsection
+@section('breadcrumb-current', $prize->getName())
 @section('content')
-    <div class="container px-4 py-5">
+    <div class="container">
         <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>
             Приз "{{ $prize->getName() }}"
         </h2>

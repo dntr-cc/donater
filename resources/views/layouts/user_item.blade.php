@@ -1,18 +1,17 @@
 @php use Illuminate\Support\Str; @endphp
 @php /** @var App\Models\User $user */ @endphp
-@php $additionalClasses = 'btn-sm'; @endphp
-<div class="row row-cols-2 d-flex justify-content-evenly g-1 m-2">
-    <img src="{{ url($user->getAvatar()) }}" width="150px" class="object-fit-cover-150 card-img-top rounded-circle img-fluid" alt="{{ $user->getFullName() }}">
-    <div class="card-body">
-        <h6 class="card-title mb-4"><strong>{{ Str::ucfirst(sensitive('донатер', $user)) }}</strong>
-            <a href="{{ $user->getUserLink() }}">{{ $user->getFullName() }}</a>
-            <a href="{{ $user->getUserLink() }}">[{{ $user->getAtUsername() }}]</a>
-        </h6>
-    </div>
-    <div class="card-footer w-100 text-muted">
-        Підписано на волонтерів: {{ $user->getSubscribersAsSubscriber()->count() }}<br>
-        Зроблено донатів: {{ $user->getDonateCount() }}<br>
-        Задоначено через сайт: {{ $user->getDonatesSumAll() }} грн.<br>
-        Додано призів: {{  $user->getPrizesCount() }} шт.<br>
+@php $userBanner = url(app(\App\Services\OpenGraphImageService::class)->getUserImage($user)) @endphp
+@php $whoIs = $whoIs ?? '' @endphp
+@php $additionalClasses = $additionalClasses ?? '' @endphp
+<div class="col">
+    <div class="card m-1 {{ $additionalClasses }}">
+        <a href="{{ route('user', compact('user')) }}">
+            <img src="{{ $userBanner }}.small.png" class="col-12 crop-banner" alt="Інфографіка {{ $user->getFullName() }}">
+        </a>
+        @if($whoIs === \App\Http\Controllers\UserController::VOLUNTEERS)
+            <div class="d-flex justify-content-center m-2 ">
+                @include('subscribe.button', ['volunteer' => $user, 'authUser' => auth()->user()])
+            </div>
+        @endif
     </div>
 </div>

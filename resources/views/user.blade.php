@@ -27,6 +27,11 @@
 @section('og_image_height', '630')
 @section('og_image_title', $title)
 @section('og_image_alt', $description)
+@section('breadcrumb-path')
+    <li class="breadcrumb-item"><a href="{{ route('users') }}">Донатери</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('volunteers') }}">Волонтери</a></li>
+@endsection
+@section('breadcrumb-current', '@'. $user->getUsername())
 @push('head-scripts')
     @vite(['resources/js/masonry.js'])
 @endpush
@@ -34,7 +39,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="container py-5">
+            <div class="container">
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="card mb-4"
@@ -79,7 +84,9 @@
                                         <input type="text" class="form-control" id="userLink"
                                                value="{{ $user->getUserLink() }}" disabled>
                                         <label for="userLink">Посилання на цю сторінку</label>
-                                        <button id="copyLink" class="btn btn-outline-secondary" onclick="return false;">
+                                        <button class="btn btn-outline-secondary copy-text"
+                                                data-message="Посилання"
+                                                data-text="{{ $user->getUserLink() }}" onclick="return false;">
                                             <i class="bi bi-copy"></i></button>
                                     </div>
                                 </div>
@@ -88,7 +95,10 @@
                                         <input type="text" class="form-control" id="userCode"
                                                value="{{ $user->getUserCode() }}" disabled>
                                         <label for="userCode">Код донатера</label>
-                                        <button id="copyCode" class="btn btn-outline-secondary" onclick="return false;">
+                                        <button class="btn btn-outline-secondary copy-text"
+                                                data-message="Код донатера"
+                                                data-text="{{ $user->getUserLink() }}" onclick="return false;">
+
                                             <i class="bi bi-copy"></i></button>
                                     </div>
                                 </div>
@@ -166,12 +176,7 @@
                                             <div class="collapse" id="collapseSubscribes">
                                                 @foreach($user->getSubscribes()->all() as $subscribe)
                                                     <div class="col-md-12">
-                                                        <div class="card m-1 mb-4">
-                                                            <div class="card-body">
-                                                                @php $volunteer = $subscribe->getVolunteer(); @endphp
-                                                                @include('layouts.volunteer_item', compact('volunteer'))
-                                                            </div>
-                                                        </div>
+                                                        @include('layouts.user_item', ['user' => $subscribe->getVolunteer(), 'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS])
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -203,11 +208,7 @@
                                             <div class="collapse" id="collapseSubscribers">
                                                 @foreach($subscribers as $subscriber)
                                                     <div class="col-md-12">
-                                                        <div class="card m-1 mb-4">
-                                                            <div class="card-body">
-                                                                @include('layouts.user_item', ['user' => $subscriber->getDonater()])
-                                                            </div>
-                                                        </div>
+                                                        @include('layouts.user_item', ['user' => $subscriber->getDonater()])
                                                     </div>
                                             @endforeach
                                         @endif
@@ -226,7 +227,7 @@
                                             <i class="bi bi-arrow-down"></i>
                                         </a>
                                     </li>
-                                    <a href="{{ $userBanner }}" target="_blank"><img src="{{ $userBanner }}"
+                                    <a href="{{ $userBanner }}" target="_blank"><img src="{{ $userBanner }}.small.png"
                                                                                      class="col-12"
                                                                                      alt="Інфографіка профілю {{ $user->getFullName() }}"></a>
                                 </ul>
@@ -235,19 +236,21 @@
                     </div>
                     <div class="col-lg-8">
                         {{--Fundraisings block--}}
-                        @if($user->getFundraisings()->count() > 0 || !(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_FUNDRAISING)))
+                        @if($user->getFundraisings()->count() || !(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_FUNDRAISING)))
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-sm-12 d-flex justify-content-between align-items-start">
                                             <h4>Всі збори</h4>
                                             <div>
-                                                <a href="#collapseFundraisings" data-bs-toggle="collapse" role="button"
-                                                   aria-expanded="false"
-                                                   aria-controls="collapseFundraisings" class="btn arrow-control"
-                                                   data-state="up">
-                                                    <i class="bi bi-arrow-up"></i>
-                                                </a>
+                                                @if($user->getFundraisings()->count())
+                                                    <a href="#collapseFundraisings" data-bs-toggle="collapse" role="button"
+                                                       aria-expanded="false"
+                                                       aria-controls="collapseFundraisings" class="btn arrow-control"
+                                                       data-state="up">
+                                                        <i class="bi bi-arrow-up"></i>
+                                                    </a>
+                                                @endif
                                                 @if (auth()?->user()?->getId() === $user->getId())
                                                     <a href="{{route('fundraising.new')}}" class="btn ">
                                                         <i class="bi bi-plus-circle-fill"></i>
@@ -255,7 +258,6 @@
                                                     </a>
                                                 @endif
                                             </div>
-
                                         </div>
                                     </div>
                                     <div class="collapse show" id="collapseFundraisings">
@@ -271,19 +273,22 @@
                             </div>
                         @endif
                         {{--Prizes block--}}
-                        @if($user->withPrizes()->prizes->count() > 0 || !(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_PRIZES)))
+                        @php $allPrizes = $user->withPrizes()->prizes @endphp
+                        @if($allPrizes->count() || !(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_PRIZES)))
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-sm-12 d-flex justify-content-between align-items-start">
                                             <h4>Всі призи</h4>
                                             <div>
-                                                <a href="#collapsePrizes" data-bs-toggle="collapse" role="button"
-                                                   aria-expanded="false"
-                                                   aria-controls="collapsePrizes" class="btn arrow-control"
-                                                   data-state="up">
-                                                    <i class="bi bi-arrow-up"></i>
-                                                </a>
+                                                @if($allPrizes->count())
+                                                    <a href="#collapsePrizes" data-bs-toggle="collapse" role="button"
+                                                       aria-expanded="false"
+                                                       aria-controls="collapsePrizes" class="btn arrow-control"
+                                                       data-state="up">
+                                                        <i class="bi bi-arrow-up"></i>
+                                                    </a>
+                                                @endif
                                                 @if (auth()?->user()?->getId() === $user->getId())
                                                     <a href="{{route('prize.new')}}" class="btn ">
                                                         <i class="bi bi-plus-circle-fill"></i>
@@ -296,8 +301,9 @@
                                     </div>
                                     <div class="collapse show" id="collapsePrizes">
                                         <hr>
-                                        <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
-                                            @foreach($user->withPrizes()->prizes as $prize)
+                                        <div
+                                            class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
+                                            @foreach($allPrizes as $prize)
                                                 @include('prize.item-card', compact('prize', 'btn', 'withPrizeInfo'))
                                             @endforeach
                                         </div>
@@ -552,21 +558,6 @@
             let welcome = Modal.getOrCreateInstance(document.getElementById('welcomeVolunteerModal'));
             welcome.toggle('show');
             @endif
-            let copyLink = $('#copyLink');
-            copyLink.on('click', event => {
-                event.preventDefault();
-                copyContent($('#userLink').val());
-                return false;
-            });
-            toast('Посилання скопійовано', copyLink);
-            let copyCode = $('#copyCode');
-            copyCode.on('click', event => {
-                event.preventDefault();
-                copyContent($('#userCode').val());
-                return false;
-            });
-            toast('Код скопійовано', copyCode);
-
             @can('update', $user)
             $('#linkIcon').click(() => {
                 $('#icon-preview').attr('class', $('#linkIcon option:selected').val());

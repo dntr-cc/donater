@@ -6,6 +6,10 @@
 @section('og_image_title', $title)
 @section('og_image_alt', 'Створить нагадування задонатити на збір ' . $fundraising->getName() . ' на сайті donater.com.ua')
 @section('og_image', url($fundraisingBanner))
+@section('breadcrumb-path')
+    <li class="breadcrumb-item"><a href="{{ route('fundraising.all') }}">Збори</a></li>
+@endsection
+@section('breadcrumb-current', $fundraising->getName())
 @push('head-scripts')
     @vite(['resources/js/tabs.js'])
 @endpush
@@ -13,7 +17,7 @@
 @php $additionalClasses = 'btn-xs'; @endphp
 @php $withVolunteer = true; @endphp
 @section('content')
-    <div class="container px-4 py-5">
+    <div class="container">
         <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>
             @include('layouts.fundraising_status', compact('fundraising', 'withOwner', 'additionalClasses'))
         </h2>
@@ -25,11 +29,14 @@
                         <ul class="list-group list-group-flush rounded-3">
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                 <h4>Скачати банер збору</h4>
-                                <a href="{{ $fundraisingBanner }}" download="{{ $fundraising->getKey() }}.png" class="btn btn-outline-dark">
+                                <a href="{{ $fundraisingBanner }}" download="{{ $fundraising->getKey() }}.png"
+                                   class="btn btn-outline-dark">
                                     <i class="bi bi-arrow-down"></i>
                                 </a>
                             </li>
-                            <a href="{{ $fundraisingBanner }}" target="_blank"><img src="{{ $fundraisingBanner }}" class="col-12" alt="Інфографіка профілю {{ $fundraising->getName() }}"></a>
+                            <a href="{{ $fundraisingBanner }}" target="_blank"><img src="{{ $fundraisingBanner }}.small.png"
+                                                                                    class="col-12"
+                                                                                    alt="Інфографіка {{ $fundraising->getName() }}"></a>
                         </ul>
                     </div>
                 </div>
@@ -59,7 +66,9 @@
                                     <input type="text" class="form-control" id="userCode"
                                            value="{{ auth()?->user()->getUserCode() }}" disabled>
                                     <label for="userCode">Код донатера</label>
-                                    <button id="copyCode" class="btn btn-outline-secondary" onclick="return false;">
+                                    <button class="btn btn-outline-secondary copy-text"
+                                            data-message="Код донатера"
+                                            data-text="{{ auth()?->user()->getUserCode() }}" onclick="return false;">
                                         <i class="bi bi-copy"></i></button>
                                 </div>
                             </div>
@@ -84,15 +93,6 @@
                 @include('subscribe.modal')
             @endauth
             <script type="module">
-                @auth
-                let copyCode = $('#copyCode');
-                copyCode.on('click', event => {
-                    event.preventDefault();
-                    copyContent($('#userCode').val());
-                    return false;
-                });
-                toast('Код скопійовано', copyCode);
-                @endauth
                 window.addEventListener("load", function () {
                     $.ajax({
                         url: '{{ route('fundraising.preload', compact('fundraising')) }}',

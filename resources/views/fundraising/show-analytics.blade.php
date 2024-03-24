@@ -6,6 +6,11 @@
 @section('og_image', url($fundraising->getAvatar()))
 @section('og_image_width', $ogImageWidth)
 @section('og_image_height', $ogImageHeight)
+@section('breadcrumb-path')
+    <li class="breadcrumb-item"><a href="{{ route('fundraising.all') }}">Збори</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('fundraising.show', compact('fundraising')) }}">{{ $fundraising->getName() }}</a></li>
+@endsection
+@section('breadcrumb-current', 'Аналітика')
 @php $withJarLink = true; @endphp
 @php $withPageLink = true; @endphp
 @php $withOwner = true; @endphp
@@ -15,7 +20,7 @@
 @php $withVolunteer = true; @endphp
 @php $btn = false; @endphp
 @section('content')
-    <div class="container px-4 py-5">
+    <div class="container">
         <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>
             @include('layouts.fundraising_status', compact('fundraising', 'withOwner', 'additionalClasses'))
         </h2>
@@ -47,12 +52,13 @@
                                     <input type="text" class="form-control" id="userCode"
                                            value="{{ auth()?->user()->getUserCode() }}" disabled>
                                     <label for="userCode">Код донатера</label>
-                                    <button id="copyCode" class="btn btn-outline-secondary" onclick="return false;">
+                                    <button class="btn btn-outline-secondary copy-text"
+                                            data-message="Код донатера"
+                                            data-text="{{ auth()?->user()->getUserCode() }}" onclick="return false;">
                                         <i class="bi bi-copy"></i></button>
                                 </div>
                             </div>
                         @endguest
-                        @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'disableShortCodes'))
                     </div>
                 </div>
                 <div class="card mb-2">

@@ -1,6 +1,10 @@
 @extends('layouts.base')
 @section('page_title', strtr('Редагувати ":prize" - donater.com.ua', [':fundraising' => $prize->getName()]))
 @section('page_description', strtr('Редагувати ":prize" - donater.com.ua', [':fundraising' => $prize->getName()]))
+@section('breadcrumb-path')
+    <li class="breadcrumb-item"><a href="{{ route('prizes') }}">Призи</a></li>
+@endsection
+@section('breadcrumb-current', strtr('Редагувати ":prize"', [':fundraising' => $prize->getName()]))
 @push('head-scripts')
     @vite(['resources/js/tinymce.js'])
 @endpush
