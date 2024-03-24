@@ -698,7 +698,6 @@
                 return false;
             });
             @endcan
-
             window.document.querySelectorAll('.arrow-control')
                 .forEach(el => el.addEventListener('click', event => {
                     let button = $(event.target.closest('.arrow-control'));
@@ -712,20 +711,5 @@
                         button.html('<i class="bi bi-arrow-down"></i>');
                     }
                 }));
-            @guest()
-            setInterval(() => {
-                $.ajax({
-                    url: "{{ route('login') }}",
-                    type: "POST",
-                    data: {
-                        _token: $('meta[name="csrf-token"]').attr('content'),
-                        loginHash: $('#loginCode').val(),
-                    },
-                    success: function (data) {
-                        window.location.assign(data.url ?? '{{ route('my') }}');
-                    },
-                });
-            }, 1000);
-            @endguest
         </script>
 @endsection

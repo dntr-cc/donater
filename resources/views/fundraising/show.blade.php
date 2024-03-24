@@ -122,18 +122,3 @@
                 });
             </script>
 @endsection
-<script type="module">
-    setInterval(() => {
-        $.ajax({
-            url: "{{ route('login') }}",
-            type: "POST",
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content'),
-                loginHash: $('#loginCode').val(),
-            },
-            success: function (data) {
-                window.location.assign(data.url ?? '{{ route('my') }}');
-            },
-        });
-    }, 1000);
-</script>
