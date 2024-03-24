@@ -21,7 +21,7 @@
 @php $btn = false; @endphp
 @section('content')
     <div class="container">
-        <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>
+        <h2 class="pb-2 border-bottom">
             @include('layouts.fundraising_status', compact('fundraising', 'withOwner', 'additionalClasses'))
         </h2>
         <div class="row">
