@@ -41,9 +41,10 @@
                  alt="{{ $prize->getName() }}"></a>
         <div class="m-1 mt-3 {{ $prize->getBgClassByState() }}-subtle">
             @if($authUser && $authUser->fundraisings->count())
-                @if($prize->isEnabled() && $prize->getAvailableStatus() === \App\Models\Prize::STATUS_NEW && $authUser && $prize->availableFor($authUser))
+                @php $enabledFundraisings = $authUser->fundraisings->filter(fn ($f) => $f->isEnabled()); @endphp
+                @if($enabledFundraisings->count() && $prize->isEnabled() && $prize->getAvailableStatus() === \App\Models\Prize::STATUS_NEW && $authUser && $prize->availableFor($authUser))
                     <h5 class="text-center fw-bold mt-2">Додати до вашого збору</h5>
-                    @foreach(auth()?->user()->fundraisings as $fundraising)
+                    @foreach($enabledFundraisings->all() as $fundraising)
                         <div class="row m-3">
                             <div class="col-sm-12 d-flex justify-content-between align-items-baseline">
                                 <h6 href="{{ (route('fundraising.show', ['fundraising' => $fundraising->getKey()])) }}">
