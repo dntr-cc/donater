@@ -46,7 +46,7 @@ class RowCollection extends Collection
         $sum = 0;
         $daysTimestamp = [];
         foreach ($this->all() as $item) {
-            if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
+            if ($item->getAmount() > 0 ) {
                 $date = $item->getDate();
                 $timestamp = strtotime($date);
                 if (!$timestamp) {
@@ -82,7 +82,7 @@ class RowCollection extends Collection
     {
         $result = $this->getEmptyResult();
         foreach ($this->all() as $item) {
-            if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
+            if ($item->getAmount() > 0 ) {
                 $amount = (float)$item->getAmount();
                 $type = match (true) {
                     $amount <= 10 => self::UAH_10,
@@ -106,7 +106,7 @@ class RowCollection extends Collection
     {
         $result = $this->getEmptyResult();
         foreach ($this->all() as $item) {
-            if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
+            if ($item->getAmount() > 0 ) {
                 $amount = (float)$item->getAmount();
                 $type = match (true) {
                     $amount <= 10 => self::UAH_10,
@@ -130,7 +130,7 @@ class RowCollection extends Collection
     {
         $amount = 0.00;
         foreach ($this->all() as $item) {
-            if ($item->getAmount() > 0 && !$item->isOwnerTransaction()) {
+            if ($item->getAmount() > 0 ) {
                 $amount += (float)$item->getAmount();
             }
         }
@@ -142,7 +142,7 @@ class RowCollection extends Collection
     {
         $amount = 0.00;
         foreach ($this->all() as $item) {
-            if ($item->getAmount() > 0 && !$item->isOwnerTransaction() && \App\DTOs\Row::hasCode($item->getComment())) {
+            if ($item->getAmount() > 0  && \App\DTOs\Row::hasCode($item->getComment())) {
                 $amount += (float)$item->getAmount();
             }
         }
