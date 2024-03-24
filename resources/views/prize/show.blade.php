@@ -11,7 +11,7 @@
 @section('breadcrumb-current', $prize->getName())
 @section('content')
     <div class="container">
-        <h2 class="pb-2 border-bottom"><a href="{{ url()->previous() }}" class=""><i class="bi bi-arrow-left"></i></a>
+        <h2 class="pb-2 border-bottom">
             Приз "{{ $prize->getName() }}"
         </h2>
         <div class="row">
