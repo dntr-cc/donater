@@ -224,4 +224,12 @@ return [
         'prizes' => env('PER_PAGE_PRIZES', 20),
     ],
     'google_cache_time' => env('GOOGLE_CACHE_TIME', 600),
+    'excluded_breadcrumbs' => [
+        'welcome',
+        'roadmap',
+        'donates',
+        'login',
+        'analytics',
+        'faq',
+    ],
 ];

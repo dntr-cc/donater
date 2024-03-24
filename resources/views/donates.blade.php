@@ -31,8 +31,8 @@
             <div class="">Якщо вам подобається бачити, як українці донатять - ви можете
                 завантажити любий додаток з RSS та додати собі віджет на телефон. Посилання на
                 RSS: <span id="rss" class="text-danger">{{ route('donates.rss') }}</span>
-                <button id="copyRSS" class="btn btn-sm btn-outline-secondary"
-                        onclick="return false;">
+                <button class="btn btn-sm btn-outline-secondary copy-text"
+                        data-message="RSS посилання" data-text="{{ route('donates.rss') }}" onclick="return false;">
                     <i class="bi bi-copy"></i>
                 </button>
             </div>
@@ -43,13 +43,4 @@
             {{ $donates->links('layouts.pagination', ['elements' => $donates]) }}
         </div>
     </div>
-    <script type="module">
-        let copyRSS = $('#copyRSS');
-        copyRSS.on('click', function (e) {
-            e.preventDefault();
-            copyContent($('#rss').text());
-            return false;
-        });
-        toast('RSS посилання скопійовано', copyRSS);
-    </script>
 @endsection

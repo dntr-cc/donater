@@ -1,6 +1,10 @@
 @extends('layouts.base')
 @section('page_title', 'Створити новий збір - donater.com.ua')
 @section('page_description', 'Створити новий збір - donater.com.ua')
+@section('breadcrumb-path')
+    <li class="breadcrumb-item"><a href="{{ route('fundraising.all') }}">Збори</a></li>
+@endsection
+@section('breadcrumb-current', 'Створити новий збір')
 @push('head-scripts')
     @vite(['resources/js/tinymce.js'])
 @endpush
@@ -82,8 +86,8 @@
                                                     <a href="https://docs.google.com/spreadsheets/d/1-7UQWTU2RxRtXP2d5Z6nBc2pUlqMTk7rt695n5JnTBs/edit#gid=0"
                                                        target="_blacnk">в такому форматі.</a> Будь ласка, зробіть копію цієї таблиці.  Також треба зробити доступ до таблиці для редагування. Треба додати в редактори (Editor) email
                                                     <span id="editorEmail" class="text-warning">zbir-404114@zbir-404114.iam.gserviceaccount.com</span>
-                                                    <button id="copyEmail" class="btn btn-sm btn-outline-secondary"
-                                                            onclick="return false;">
+                                                    <button class="btn btn-sm btn-outline-secondary copy-text"
+                                                            data-message="Email" data-text="zbir-404114@zbir-404114.iam.gserviceaccount.com" onclick="return false;">
                                                         <i class="bi bi-copy"></i>
                                                     </button>
                                                     Якщо ви не будете оновлювати виписку терміном в 7 днів - вам прийде
@@ -135,14 +139,6 @@
     </form>
     <script type="module">
         const APP_URL = '{!! json_encode(url('/')) !!}';
-        let copyEmail = $('#copyEmail');
-        copyEmail.on('click', function (e) {
-            e.preventDefault();
-            copyContent($('#editorEmail').text());
-            return false;
-        });
-        toast('Email скопійовано', copyEmail);
-
         document.querySelector('#file').addEventListener('change', event => {
             event.preventDefault();
             let formData = new FormData();

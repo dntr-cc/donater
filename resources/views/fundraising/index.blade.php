@@ -4,6 +4,7 @@
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
 @section('og_image_height', '630')
+@section('breadcrumb-current', 'Збори')
 @push('head-scripts')
     @vite(['resources/js/masonry.js'])
 @endpush
@@ -15,7 +16,7 @@
 @php $btn = true; @endphp
 @php $name = true; @endphp
 @section('content')
-    <div class="container px-4 py-5">
+    <div class="container">
         <h2 class="pb-2">
             Всі збори
             @auth()

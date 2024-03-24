@@ -6,6 +6,7 @@ use App\Models\Fundraising;
 use App\Models\User;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Imagick;
 use ImagickDraw;
 use ImagickPixel;
@@ -23,6 +24,15 @@ class OpenGraphImageService
     {
         $this->filesystem = Storage::disk('opengraph');
         $this->tmpDir = TemporaryDirectory::make();
+    }
+
+    public function getBanner(object $item): string
+    {
+        return match ($item::class) {
+            User::class => $this->getUserImage($item),
+            Fundraising::class => $this->getFundraisingImage($item),
+            default => ''
+        };
     }
 
     public function getUserImage(User $user, bool $getOld = true): string
@@ -159,6 +169,7 @@ class OpenGraphImageService
             $this->filesystem->delete($openGraphImageName);
         }
         $encoded->save(base_path('public/images/opengraph/' . $openGraphImageName));
+        $imageTemplate->scale(width: 400)->toPng()->save(base_path('public/images/opengraph/' . $openGraphImageName . '.small.png'));
 
         return $this->filesystem->url($openGraphImageName);
     }
@@ -217,7 +228,7 @@ class OpenGraphImageService
         $imageScaledAvatar = $manager->read($filepathScaledAvatar);
         $imageTemplate->place($imageScaledAvatar->scale(150, 150), 'top-left', 480, 280);
         $offsetY = 310;
-        $imageUsernamePath = $this->getTextImagePath('Medium', ucfirst(sensitive('волонтер', $fundraising->getVolunteer())) . ' ' . static::removeEmoji($volunteer->getFullName()), 25, $manager);
+        $imageUsernamePath = $this->getTextImagePath('Medium', Str::ucfirst(sensitive('волонтер', $fundraising->getVolunteer())) . ' ' . static::removeEmoji($volunteer->getFullName()), 25, $manager);
         $imageTemplate->place($imageUsernamePath, 'top-left', 650, $offsetY);
         $offsetY += 35;
         $imageUsernamePath = $this->getTextImagePath('Medium', 'чекає на вашу підписку, від 1грн в день.', 25, $manager);
@@ -231,6 +242,7 @@ class OpenGraphImageService
             $this->filesystem->delete($openGraphImageName);
         }
         $encoded->save(base_path('public/images/opengraph/' . $openGraphImageName));
+        $imageTemplate->scale(width: 400)->toPng()->save(base_path('public/images/opengraph/' . $openGraphImageName . '.small.png'));
 
         return $this->filesystem->url($openGraphImageName);
     }
