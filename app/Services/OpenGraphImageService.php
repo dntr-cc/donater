@@ -138,9 +138,9 @@ class OpenGraphImageService
         $offset += 65;
 
         $fundraisings = $user->getFundraisings();
-        $sourcesLines[] = $this->userStaService->getDonaterInfo($user, false);
+        $sourcesLines[] = $this->userStaService->getDonaterInfo($user, false)->getOpenGraphArray();
         if ($fundraisings->count()) {
-            $sourcesLines[] = $this->userStaService->getVolunteerInfo($user, false);
+            $sourcesLines[] = $this->userStaService->getVolunteerInfo($user, false)->getOpenGraphArray();
         }
         foreach ($sourcesLines as $source) {
             foreach ($source as [$left, $right]) {

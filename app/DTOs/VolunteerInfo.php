@@ -66,6 +66,8 @@ class VolunteerInfo
         return [
             [self::DONORS_SUBSCRIBED, $this->getSubscribers() . self::PEOPLE_SUFFIX],
             [self::TOTAL_COLLECTIONS, $this->getFundraisingsCount() . self::COUNT_SUFFIX],
+            [self::TOTAL_DONATIONS_COUNT, $this->getDonationsCountAll() . self::COUNT_SUFFIX],
+            [self::DONATIONS_COUNT, $this->getDonationsCount() . self::COUNT_SUFFIX],
             [self::TOTAL_FUNDS_RAISED, $this->getAmountSum() . self::UAH_SUFFIX],
             [self::TOTAL_DONATIONS_RECEIVED, $this->getAmountDonates() . self::COUNT_SUFFIX],
         ];
