@@ -17,7 +17,7 @@ class SubscribeSchedulerCommand extends Command
 
     public function handle(): void
     {
-        $time = (new Carbon())->setTimezone(config('app.timezone'))->modify('+1 second');
+        $time = (new Carbon())->setTimezone(config('app.timezone'))->modify('+61 second');
         foreach (Subscribe::query()->withoutTrashed()->get()->all() as $subscribe) {
             $nextMessage = $subscribe->getNextSubscribesMessage();
             if ($nextMessage->getScheduledAt() < $time) {
