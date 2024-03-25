@@ -59,7 +59,7 @@
                         </div>
                         <hr>
                     @endforeach
-                @elseif($authUser && !$prize->availableFor($authUser))
+                @elseif($authUser && !$prize->availableFor($authUser) && !$prize->fundraising)
                     <h5 class="text-center">Приз недоступний для ваших зборів</h5>
                 @endif
             @elseif($prize->isEnabled() && $prize->getAvailableStatus() === \App\Models\Prize::STATUS_NEW)
