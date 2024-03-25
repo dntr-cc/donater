@@ -20,7 +20,7 @@ class UserStatService
         $fundraisingsCount = $user->getFundraisings()->count();
         $totalAmount = $rows->allSum();
         $sumOfDonations = $rows->allSumFromOurDonates();
-        $volunteerStats = new VolunteerInfo($totalSubscribers, $fundraisingsCount, $totalAmount, $sumOfDonations);
+        $volunteerStats = new VolunteerInfo($totalSubscribers, $fundraisingsCount, $rows->countFromOurDonates(), $rows->countDonates(), $totalAmount, $sumOfDonations);
         Cache::set($this->getCacheKey('volunteer', $user->getId()), serialize($volunteerStats), 60);
 
         return $volunteerStats;

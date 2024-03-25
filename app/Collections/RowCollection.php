@@ -150,6 +150,30 @@ class RowCollection extends Collection
         return round($amount, 2);
     }
 
+    public function countFromOurDonates(): float
+    {
+        $it = 0;
+        foreach ($this->all() as $item) {
+            if ($item->getAmount() > 0  && \App\DTOs\Row::hasCode($item->getComment())) {
+                $it++;
+            }
+        }
+
+        return $it;
+    }
+
+    public function countDonates(): float
+    {
+        $it = 0;
+        foreach ($this->all() as $item) {
+            if ($item->getAmount() > 0) {
+                $it++;
+            }
+        }
+
+        return $it;
+    }
+
     public function analyticsToText(string $additionalTitle = ''): string
     {
         $perDays = $this->perDay();
