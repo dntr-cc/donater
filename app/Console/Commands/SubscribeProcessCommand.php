@@ -33,11 +33,9 @@ class SubscribeProcessCommand extends Command
             $donater = $subscribe->getDonater();
             $volunteer = $subscribe->getVolunteer();
             $template = <<<'MD'
-                Ваш волонтер @:volunteerKey чекає на ваш донат в :amount грн.
+                Ваш волонтер @:volunteerKey чекає на ваш донат в :amount грн. на збір :fundLink
 
                 Будь ласка, зробіть донат по посиланню :jarLink
-
-                Не забудьте в коментарі додати ваш код донатера `:donaterCode`
                 MD;
             /** @var Fundraising $randomFundraising */
             $randomFundraising = $volunteer->getRandomFundraising();
@@ -47,11 +45,9 @@ class SubscribeProcessCommand extends Command
             if (!$randomFundraising && $subscribe->isUseRandom()) {
                 $randomFundraising = Fundraising::getRandom();
                 $template = strtr(strtr(<<<'MD'
-                    Ваш волонтер @:volunteerKey не має відкритого збору. Ми пропонуємо вам зробити донат @:newVolunteerKey в розмірі :amount грн.
+                    Ваш волонтер @:volunteerKey не має відкритого збору. Ми пропонуємо вам зробити донат @:newVolunteerKey в розмірі :amount грн.  на збір :fundLink
 
                     Будь ласка, зробіть донат за посиланням :jarLink
-
-                    Не забудьте в коментарі додати ваш код донатера `:donaterCode`
                     MD, [':volunteerKey' => $volunteer->getUsername()]), [':newVolunteerKey' => ':volunteerKey']);
                 $volunteer = $randomFundraising->getVolunteer();
             }
@@ -60,12 +56,11 @@ class SubscribeProcessCommand extends Command
                 ':volunteerKey' => $volunteer->getUsername(),
                 ':jarLink' => $randomFundraising->getJarLink() . '?t=' . $donater->getUserCode() . '&a=' . $subscribe->getAmount(),
                 ':amount' => $subscribe->getAmount(),
-                ':donaterCode' => $donater->getUserCode(),
+                ':fundLink' => $randomFundraising->getShortLink(),
             ]);
-            $callToAction = "\n\nВи можете скопіювати запрошення для ваших друзів робити як ви нижче (копіює по кліку)\n\n`Я підтримую :volunteer щоденним донатом. Мені в телеграм кожен день приходить посилання в обраний мною час. Прошу вас робити так само. Запрошую: :invite`";
+            $callToAction = "\n\nВи можете скопіювати запрошення для ваших друзів робити як ви нижче (копіює по кліку)\n\n`Я підтримую :volunteer щоденним донатом. Мені в телеграм кожен день приходить посилання в обраний мною час. Прошу вас робити так само. Донатьте. Будь ласка ❤️`";
             $filledCallToAction = strtr($callToAction, [
-                ':volunteer' => $volunteer->getUserLink(),
-                ':invite'    => $donater->getUserCode(),
+                ':volunteer' => $randomFundraising->getShortLink(),
             ]);
             $donater->sendBotMessage($message . $filledCallToAction);
         }
