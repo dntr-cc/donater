@@ -208,10 +208,9 @@ body {
     width: auto;
 }
 
-.object-fit-cover-150 {
-    width:150px;
-    height:150px;
-    object-fit:cover
+.card-img-cover {
+    height:100%;
+    object-fit: cover;
 }
 
 .crop-banner {
