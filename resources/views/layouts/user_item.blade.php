@@ -37,7 +37,7 @@
                                 <div class="">{{ \App\DTOs\DonaterInfo::VOLUNTEER_SUBSCRIPTIONS }}</div>
                                 <div class="">{{ $donaterInfo->getSubscribes() }} ос.</div>
                             </div>
-                            <div class="col-12 d-flex d-flex justify-content-between">
+                            <div class="col-12 small d-flex d-flex justify-content-between">
                                 <div class="">{{ \App\DTOs\DonaterInfo::DONATION_COUNT }}</div>
                                 <div class="">{{ $donaterInfo->getDonationCount() }} шт.</div>
                             </div>
