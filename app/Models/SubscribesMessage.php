@@ -53,7 +53,7 @@ class SubscribesMessage extends Model
     {
         parent::boot();
 
-        static::addGlobalScope(static function (Builder $builder) {
+        static::addGlobalScope('order', static function (Builder $builder) {
             $builder->orderBy('id', 'desc');
         });
     }
