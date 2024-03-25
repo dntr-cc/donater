@@ -115,6 +115,7 @@ class FundraisingController extends Controller
         $this->authorize('update', $fundraising);
 
         $fundraising->update(['is_enabled' => true]);
+        OpenGraphRegenerateEvent::dispatch($fundraising->getId(), OpenGraphRegenerateEvent::TYPE_FUNDRAISING);
 
         return $this->getRedirectResponse($fundraising);
     }
@@ -146,6 +147,7 @@ class FundraisingController extends Controller
         $this->authorize('update', $fundraising);
 
         $fundraising->update(['is_enabled' => false]);
+        OpenGraphRegenerateEvent::dispatch($fundraising->getId(), OpenGraphRegenerateEvent::TYPE_FUNDRAISING);
 
         return $this->getRedirectResponse($fundraising);
     }
