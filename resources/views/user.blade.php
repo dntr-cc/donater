@@ -97,7 +97,7 @@
                                         <label for="userCode">Код донатера</label>
                                         <button class="btn btn-outline-secondary copy-text"
                                                 data-message="Код донатера"
-                                                data-text="{{ $user->getUserLink() }}" onclick="return false;">
+                                                data-text="{{ $user->getUserCode() }}" onclick="return false;">
 
                                             <i class="bi bi-copy"></i></button>
                                     </div>
