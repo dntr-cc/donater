@@ -21,7 +21,7 @@
             <div class="col-md-8 px-2 py-2">
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-text">Створив: {!! $prize->getDonater()->getUserHref() !!}</p>
+                        <p class="card-text">{{ \Illuminate\Support\Str::ucfirst(sensitive('створив', $prize->getDonater())) }}: {!! $prize->getDonater()->getUserHref() !!}</p>
                         <p class="card-text">
                             <b>Умови:</b> {{ \App\DTOs\RaffleUser::TYPES[$prize->getRaffleType() ?? ''] ?? ''}}.
                         </p>

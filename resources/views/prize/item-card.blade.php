@@ -72,7 +72,7 @@
         </div>
         <div class="card-footer">
             @if($withPrizeInfo)
-            <p class="card-text">Створив: {!! $prize->getDonater()->getUserHref() !!}</p>
+            <p class="card-text">{{ \Illuminate\Support\Str::ucfirst(sensitive('створив', $prize->getDonater())) }}: {!! $prize->getDonater()->getUserHref() !!}</p>
             <p class="card-text">
                 <b>Умови:</b> {{ \App\DTOs\RaffleUser::TYPES[$prize->getRaffleType() ?? ''] ?? ''}}.
             </p>
