@@ -127,7 +127,7 @@
                                             <div class="card-block px-2">
                                                 <h4 class="card-title mt-2">{{ $prize->getName() }}</h4>
                                                 <p class="card-text">
-                                                    Створив: {!! $prize->getDonater()->getUserHref() !!}</p>
+                                                    {{ \Illuminate\Support\Str::ucfirst(sensitive('створив', $prize->getDonater())) }}: {!! $prize->getDonater()->getUserHref() !!}</p>
                                                 <a href="{{ route('prize.show', ['prize' => $prize->getId()])}}"
                                                    class="btn btn-xs m-1">
                                                     <i class="bi bi-eye"></i>
