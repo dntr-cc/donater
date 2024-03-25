@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $first_message_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property Carbon $deleted_at
+ * @property Carbon|null $deleted_at
  * @property SubscribesMessage|null $subscribes
  */
 class Subscribe extends Model
@@ -133,7 +133,7 @@ class Subscribe extends Model
         return $this->updated_at;
     }
 
-    public function getDeletedAt(): Carbon
+    public function getDeletedAt(): ?Carbon
     {
         return $this->deleted_at;
     }
