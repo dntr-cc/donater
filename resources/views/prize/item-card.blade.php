@@ -65,9 +65,17 @@
             @elseif($prize->isEnabled() && $prize->getAvailableStatus() === \App\Models\Prize::STATUS_NEW)
                 <h5 class="text-center">Очікуйте поки цей приз волонтери додадуть на свій збір</h5>
             @endif
-            @if($authUser && $prize->fundraising && $prize->isEnabled() && $prize->getAvailableStatus() === \App\Models\Prize::STATUS_GRANTED)
+            @if($prize->fundraising && $prize->isEnabled() && $prize->getAvailableStatus() === \App\Models\Prize::STATUS_GRANTED)
                 <h5 class="text-center">Виграти цей приз за донат</h5>
-                @include('layouts.monodonat', ['fundraising' => $prize->fundraising])
+                @if($authUser)
+                    @include('layouts.monodonat', ['fundraising' => $prize->fundraising])
+                @else
+                    <p>
+                        <a id="enableBot" target="_blank"
+                           href="{{ config('telegram.bots.donater-bot.url') }}?start={{ session()->get(\App\Http\Controllers\Auth\LoginController::LOGIN_HASH, '') }}"
+                           class="btn btn-primary my-2">Підключити бота, задонатити, та виграти приз</a>
+                    </p>
+                @endif
             @endif
         </div>
         <div class="card-footer">
