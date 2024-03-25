@@ -12,17 +12,23 @@ class VolunteerInfo
     const string TOTAL_COLLECTIONS = 'Всього зборів:';
     const string TOTAL_FUNDS_RAISED = 'Загалом зібрано коштів:';
     const string TOTAL_DONATIONS_RECEIVED = 'Зібрано від донатерів:';
+    const string TOTAL_DONATIONS_COUNT = 'Отримано донатів з сайту:';
+    const string DONATIONS_COUNT = 'Отримано донатів:';
     protected int $subscribers;
     protected int $fundraisingsCount;
     protected float $amountSum;
     protected float $amountDonates;
+    protected int $donationsCount;
+    protected int $donationsCountAll;
 
-    public function __construct(int $subscribers, int $fundraisingsCount, float $amountSum, float $amountDonates)
+    public function __construct(int $subscribers, int $fundraisingsCount, int $donationsCount, int $donationsCountAll, float $amountSum, float $amountDonates)
     {
         $this->subscribers = $subscribers;
         $this->fundraisingsCount = $fundraisingsCount;
         $this->amountSum = $amountSum;
         $this->amountDonates = $amountDonates;
+        $this->donationsCount = $donationsCount;
+        $this->donationsCountAll = $donationsCountAll;
     }
 
     public function getSubscribers(): int
@@ -43,6 +49,16 @@ class VolunteerInfo
     public function getAmountDonates(): float
     {
         return $this->amountDonates;
+    }
+
+    public function getDonationsCount(): int
+    {
+        return $this->donationsCount;
+    }
+
+    public function getDonationsCountAll(): int
+    {
+        return $this->donationsCountAll;
     }
 
     public function getOpenGraphArray(): array
