@@ -125,11 +125,13 @@
                                     <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <h4>Посилання для зв'язку</h4>
                                         <div>
-                                            <a href="#collapseLinks" data-bs-toggle="collapse" role="button"
-                                               aria-expanded="false"
-                                               aria-controls="collapseLinks" class="btn arrow-control" data-state="up">
-                                                <i class="bi bi-arrow-up"></i>
-                                            </a>
+                                            @if($user->getLinks()->count())
+                                                <a href="#collapseLinks" data-bs-toggle="collapse" role="button"
+                                                   aria-expanded="false"
+                                                   aria-controls="collapseLinks" class="btn arrow-control" data-state="up">
+                                                    <i class="bi bi-arrow-up"></i>
+                                                </a>
+                                            @endif
                                             @can('update', $user)
                                                 <button data-bs-toggle="modal" data-bs-target="#createLinkModal"
                                                         id="addDonation" class="btn">
@@ -156,6 +158,7 @@
                         </div>
                         {{--Subscribes block--}}
                         @can('update', $user)
+                            @if($user->getSubscribes()->count())
                             <div class="card mt-4 mb-4 mb-lg-0">
                                 <div class="card-body p-0">
                                     <ul class="list-group list-group-flush rounded-3">
@@ -163,14 +166,12 @@
                                             <h4>
                                                 Підписки на волонтерів
                                             </h4>
-                                            @if($user->getSubscribes()->count())
-                                                <a href="#collapseSubscribes" data-bs-toggle="collapse" role="button"
-                                                   aria-expanded="false"
-                                                   aria-controls="collapseSubscribes" class="btn arrow-control"
-                                                   data-state="down">
-                                                    <i class="bi bi-arrow-down"></i>
-                                                </a>
-                                            @endif
+                                            <a href="#collapseSubscribes" data-bs-toggle="collapse" role="button"
+                                               aria-expanded="false"
+                                               aria-controls="collapseSubscribes" class="btn arrow-control"
+                                               data-state="down">
+                                                <i class="bi bi-arrow-down"></i>
+                                            </a>
                                         </li>
                                         @if($user->getSubscribes()->count())
                                             <div class="collapse" id="collapseSubscribes">
@@ -184,6 +185,7 @@
                                     </ul>
                                 </div>
                             </div>
+                            @endif
                         @endcan
                         {{--Subscribers block--}}
                         @if($user->fundraisings->count() > 0 && !$user->getSubscribers()->isEmpty())

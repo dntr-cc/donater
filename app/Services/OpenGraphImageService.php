@@ -19,11 +19,13 @@ class OpenGraphImageService
 {
     protected Filesystem $filesystem;
     protected TemporaryDirectory $tmpDir;
+    protected UserStatService $userStaService;
 
     public function __construct()
     {
         $this->filesystem = Storage::disk('opengraph');
         $this->tmpDir = TemporaryDirectory::make();
+        $this->userStaService = app(UserStatService::class);
     }
 
     public function getBanner(object $item): string
@@ -136,22 +138,9 @@ class OpenGraphImageService
         $offset += 65;
 
         $fundraisings = $user->getFundraisings();
-        $sourcesLines = [
-            [
-                ['Підписок на волонтерів:', (string)$user->getSubscribersAsSubscriber()->count() . ' ос.'],
-                ['Зроблено донатів:', $user->getDonateCount() . ' шт.'],
-                ['Задоначено через сайт:', $user->getDonatesSumAll() . ' грн.'],
-                ['Додано призів:', $user->getPrizesCount() . ' шт.'],
-            ],
-        ];
+        $sourcesLines[] = $this->userStaService->getDonaterInfo($user, false);
         if ($fundraisings->count()) {
-            $rows = app(\App\Services\RowCollectionService::class)->getRowCollection($fundraisings);
-            $sourcesLines[] = [
-                ['Підписалося донатерів:', (string)$user->getSubscribers()->count() . ' ос.'],
-                ['Всього зборів:', $user->getFundraisings()->count() . ' шт.'],
-                ['Загалом зібрано коштів:', $rows->allSum() . ' грн.'],
-                ['Зібрано від Донатерів:', $rows->allSumFromOurDonates() . ' грн.'],
-            ];
+            $sourcesLines[] = $this->userStaService->getVolunteerInfo($user, false);
         }
         foreach ($sourcesLines as $source) {
             foreach ($source as [$left, $right]) {

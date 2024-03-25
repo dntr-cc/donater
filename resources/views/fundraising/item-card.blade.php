@@ -55,7 +55,11 @@
         @if($withVolunteer)
             <div class="{{ $fundraising->getClassByState() }} p-3">
                 <h5 class="text-center">{{ \Illuminate\Support\Str::ucfirst(sensitive('волонтер', $fundraising->getVolunteer())) }}</h5>
-                @include('layouts.user_item', ['user' => $fundraising->getVolunteer(), 'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS , ])
+                @include('layouts.user_item', [
+                        'user' => $fundraising->getVolunteer(),
+                        'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS,
+                        'additionalClasses' => $fundraising->getClassByState(),
+                ])
             </div>
         @endif
     </div>
