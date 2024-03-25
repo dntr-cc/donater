@@ -225,6 +225,9 @@ class OpenGraphImageService
         $offsetY += 35;
         $imageUsernamePath = $this->getTextImagePath('Medium', 'Посиланням на банку приходить в телеграм.', 25, $manager);
         $imageTemplate->place($imageUsernamePath, 'top-left', 650, $offsetY);
+        if (!$fundraising->isEnabled()) {
+            $imageTemplate->place($manager->read(base_path('public/images/opengraph/template/close-fund.png')));
+        }
 
         $encoded = $imageTemplate->toPng();
         if ($removeOld) {
