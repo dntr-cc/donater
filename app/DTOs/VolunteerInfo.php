@@ -5,8 +5,8 @@ namespace App\DTOs;
 class VolunteerInfo
 {
 
-    const string PEOPLE_SUFFIX = ' ос.';
-    const string COUNT_SUFFIX = ' шт.';
+    const string PEOPLE_SUFFIX = '';
+    const string COUNT_SUFFIX = '';
     const string UAH_SUFFIX = ' ₴';
     const string DONORS_SUBSCRIBED = 'Підписалося донатерів:';
     const string TOTAL_COLLECTIONS = 'Всього зборів:';

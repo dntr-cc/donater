@@ -25,21 +25,21 @@
                             @php $volunteerInfo = $statService->getVolunteerInfo($user) @endphp
                             <div class="col-12 small mt-2 d-flex d-flex justify-content-between">
                                 <div class="">{{ \App\DTOs\VolunteerInfo::DONATIONS_COUNT }}</div>
-                                <div class="">{{ $volunteerInfo->getDonationsCountAll() }} шт.</div>
+                                <div class="">{{ $volunteerInfo->getDonationsCountAll() }}</div>
                             </div>
                             <div class="col-12 small mt-2 d-flex d-flex justify-content-between">
                                 <div class="">{{ \App\DTOs\VolunteerInfo::TOTAL_DONATIONS_COUNT }}</div>
-                                <div class="">{{ $volunteerInfo->getDonationsCount() }} шт.</div>
+                                <div class="">{{ $volunteerInfo->getDonationsCount() }}</div>
                             </div>
                         @else
                             @php $donaterInfo = $statService->getDonaterInfo($user) @endphp
                             <div class="col-12 small mt-2 d-flex d-flex justify-content-between">
                                 <div class="">{{ \App\DTOs\DonaterInfo::VOLUNTEER_SUBSCRIPTIONS }}</div>
-                                <div class="">{{ $donaterInfo->getSubscribes() }} ос.</div>
+                                <div class="">{{ $donaterInfo->getSubscribes() }}</div>
                             </div>
                             <div class="col-12 small d-flex d-flex justify-content-between">
                                 <div class="">{{ \App\DTOs\DonaterInfo::DONATION_COUNT }}</div>
-                                <div class="">{{ $donaterInfo->getDonationCount() }} шт.</div>
+                                <div class="">{{ $donaterInfo->getDonationCount() }}</div>
                             </div>
                         @endif
                     </div>
