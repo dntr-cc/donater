@@ -258,7 +258,7 @@
                                         <hr>
                                         <div
                                             class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
-                                            @php $userDonates = $user->getDonates(); @endphp
+                                            @php $userDonates = $user->getDonatesAll(); @endphp
                                             @foreach($userDonates->getVolunteerIds() as $id)
                                                 @include('item-donates', ['masonry' => 'masonry-grid-item', 'donates' => $userDonates, 'user' => User::find($id)])
                                             @endforeach
