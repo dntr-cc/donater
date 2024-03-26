@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Subscribe;
+use App\Models\Fundraising;
 use App\Models\SubscribesMessage;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -23,10 +24,14 @@ class SubscribeSchedulerCommand extends Command
             if ($nextMessage->getScheduledAt() < $time) {
                 Log::info('subscribe:process ' . $subscribe->getId());
                 Artisan::call('subscribe:process ' . $subscribe->getId());
+                $openFundraisings = $subscribe->getVolunteer()->getFundraisings()
+                    ->filter(fn(Fundraising $fundraising) => $fundraising->isEnabled())
+                    ->count();
                 SubscribesMessage::create([
                     'subscribes_id' => $subscribe->getId(),
                     'frequency' => $nextMessage->getFrequency(),
                     'scheduled_at' => $nextMessage->getScheduledAt()->modify($subscribe->getModifier($nextMessage->getFrequency())),
+                    'has_open_fundraisings' => (bool)$openFundraisings,
                 ]);
             }
         }

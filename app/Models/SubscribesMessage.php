@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $subscribes_id
  * @property string $frequency
+ * @property bool $has_open_fundraisings
  * @property Carbon $scheduled_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -43,6 +44,7 @@ class SubscribesMessage extends Model
         'subscribes_id',
         'frequency',
         'scheduled_at',
+        'has_open_fundraisings',
     ];
 
     protected $casts = [
@@ -81,5 +83,10 @@ class SubscribesMessage extends Model
     public function getUpdatedAt(): Carbon
     {
         return $this->updated_at;
+    }
+
+    public function isHasOpenFundraisings(): bool
+    {
+        return $this->has_open_fundraisings;
     }
 }
