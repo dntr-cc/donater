@@ -41,7 +41,7 @@ class DonateCollection extends Collection
     {
         $result = [];
         foreach ($this->all() as $donate) {
-            $result[] = $donate->getFundraising()->getVolunteer()->getId();
+            $result[] = $donate->getFundraising()->getUserId();
         }
 
         return array_unique($result);
