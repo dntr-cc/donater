@@ -12,8 +12,8 @@ class VolunteerInfo
     const string TOTAL_COLLECTIONS = 'Всього зборів:';
     const string TOTAL_FUNDS_RAISED = 'Загалом зібрано коштів:';
     const string TOTAL_DONATIONS_RECEIVED = 'Зібрано від донатерів:';
-    const string TOTAL_DONATIONS_COUNT = 'Отримано донатів з сайту:';
-    const string DONATIONS_COUNT = 'Отримано донатів:';
+    const string TOTAL_DONATIONS_COUNT = 'Отримано донатів:';
+    const string DONATIONS_COUNT = 'Отримано донатів з сайту:';
     protected int $subscribers;
     protected int $fundraisingsCount;
     protected float $amountSum;
@@ -69,7 +69,7 @@ class VolunteerInfo
             [self::TOTAL_DONATIONS_COUNT, $this->getDonationsCountAll() . self::COUNT_SUFFIX],
             [self::DONATIONS_COUNT, $this->getDonationsCount() . self::COUNT_SUFFIX],
             [self::TOTAL_FUNDS_RAISED, $this->getAmountSum() . self::UAH_SUFFIX],
-            [self::TOTAL_DONATIONS_RECEIVED, $this->getAmountDonates() . self::COUNT_SUFFIX],
+            [self::TOTAL_DONATIONS_RECEIVED, $this->getAmountDonates() . self::UAH_SUFFIX],
         ];
     }
 }
