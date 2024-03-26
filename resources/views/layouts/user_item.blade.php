@@ -24,11 +24,11 @@
                             @include('subscribe.button', ['volunteer' => $user, 'authUser' => auth()->user(), 'additionalClasses' => 'btn-xs'])
                             @php $volunteerInfo = $statService->getVolunteerInfo($user) @endphp
                             <div class="col-12 small mt-2 d-flex d-flex justify-content-between">
-                                <div class="">{{ \App\DTOs\VolunteerInfo::DONATIONS_COUNT }}</div>
+                                <div class="">{{ \App\DTOs\VolunteerInfo::TOTAL_DONATIONS_COUNT }}</div>
                                 <div class="">{{ $volunteerInfo->getDonationsCountAll() }}</div>
                             </div>
                             <div class="col-12 small mt-2 d-flex d-flex justify-content-between">
-                                <div class="">{{ \App\DTOs\VolunteerInfo::TOTAL_DONATIONS_COUNT }}</div>
+                                <div class="">{{ \App\DTOs\VolunteerInfo::DONATIONS_COUNT }}</div>
                                 <div class="">{{ $volunteerInfo->getDonationsCount() }}</div>
                             </div>
                         @else
