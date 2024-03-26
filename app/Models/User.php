@@ -326,7 +326,7 @@ class User extends Authenticatable
         return self::with('donates')->where('id', '=', $this->getId())->first()?->donates;
     }
 
-    public function getDonatesAll(): Collection|DonateCollection|array
+    public function getDonatesAll(): Collection|DonateCollection|array|null
     {
         return self::with('donatesAll')->where('id', '=', $this->getId())->first()?->donates_all;
     }

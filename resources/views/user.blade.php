@@ -238,7 +238,8 @@
                     </div>
                     <div class="col-lg-8">
                         {{--Donates block--}}
-                        @if($user->getDonatesSumAll())
+                        @php $userDonates = $user->getDonatesAll(); @endphp
+                        @if($userDonates)
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="row">
@@ -258,7 +259,6 @@
                                         <hr>
                                         <div
                                             class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
-                                            @php $userDonates = $user->getDonatesAll(); @endphp
                                             @foreach($userDonates->getVolunteerIds() as $id)
                                                 @include('item-donates', ['masonry' => 'masonry-grid-item', 'donates' => $userDonates, 'user' => User::find($id)])
                                             @endforeach
