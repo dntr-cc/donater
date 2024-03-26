@@ -23,10 +23,11 @@ class SubscribeSchedulerCommand extends Command
             $nextMessage = $subscribe->getNextSubscribesMessage();
             if ($nextMessage->getScheduledAt() < $time) {
                 Log::info('subscribe:process ' . $subscribe->getId());
-                Artisan::call('subscribe:process ' . $subscribe->getId());
                 $openFundraisings = $subscribe->getVolunteer()->getFundraisings()
                     ->filter(fn(Fundraising $fundraising) => $fundraising->isEnabled())
                     ->count();
+                $nextMessage->update(['has_open_fundraisings' => (bool)$openFundraisings]);
+                Artisan::call('subscribe:process ' . $subscribe->getId());
                 SubscribesMessage::create([
                     'subscribes_id' => $subscribe->getId(),
                     'frequency' => $nextMessage->getFrequency(),

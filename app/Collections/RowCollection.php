@@ -17,11 +17,11 @@ use Illuminate\Support\Str;
  */
 class RowCollection extends Collection
 {
-    public const string UAH_10 = 'сума донатів до 10 грн.';
-    public const string UAH_100 = 'сума донатів до 100 грн.';
-    public const string UAH_500 = 'сума донатів до 500 грн.';
-    public const string UAH_1000 = 'сума донатів до 1000 грн.';
-    public const string UAH_1000_PLUS = 'сума донатів 1000+ грн.';
+    public const string UAH_10 = 'сума донатів до 10 ₴';
+    public const string UAH_100 = 'сума донатів до 100 ₴';
+    public const string UAH_500 = 'сума донатів до 500 ₴';
+    public const string UAH_1000 = 'сума донатів до 1000 ₴';
+    public const string UAH_1000_PLUS = 'сума донатів 1000+ ₴';
 
     /**
      * @return array|Row[]
@@ -200,7 +200,7 @@ class RowCollection extends Collection
         $perSum = $this->perSum();
         $text .= PHP_EOL . 'Сума донатів по сумі:' . PHP_EOL;
         foreach ($perSum as $type => $sum) {
-            $text .= Str::ucfirst($type) . ": разом $sum грн.\n";
+            $text .= Str::ucfirst($type) . ": разом $sum ₴\n";
         }
 
         return $text;

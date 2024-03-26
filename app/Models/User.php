@@ -313,7 +313,7 @@ class User extends Authenticatable
         return $this->updated_at;
     }
 
-    public function getDonates(): Collection|array
+    public function getDonates(): Collection|DonateCollection|array
     {
         return self::with('donates')->where('id', '=', $this->getId())->first()?->donates;
     }

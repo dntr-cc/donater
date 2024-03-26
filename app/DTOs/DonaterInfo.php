@@ -10,7 +10,7 @@ class DonaterInfo
     const string PRIZE_ADDED = 'Додано призів:';
     const string PEOPLE_SUFFIX = ' ос.';
     const string COUNT_SUFFIX = ' шт.';
-    const string UAH_SUFFIX = ' грн.';
+    const string UAH_SUFFIX = ' ₴';
     protected int $subscribes;
     protected int $donationCount;
     protected int $prizesCount;

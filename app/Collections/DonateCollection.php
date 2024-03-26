@@ -37,15 +37,30 @@ class DonateCollection extends Collection
     }
 
 
-    public function allSum(): float
+    public function getVolunteerIds(): array
     {
-        $amount = 0.00;
-        foreach ($this->all() as $item) {
-            if ($item->getAmount() > 0) {
-                $amount += (float)$item->getAmount();
-            }
+        $result = [];
+        foreach ($this->all() as $donate) {
+            $result[] = $donate->getFundraising()->getVolunteer()->getId();
         }
 
-        return round($amount, 2);
+        return array_unique($result);
+    }
+
+    /**
+     * @param int $id
+     * @return DonateCollection
+     */
+    public function getDonatesByVolunteer(int $id): DonateCollection
+    {
+        $result = new DonateCollection();
+        foreach ($this->all() as $donate) {
+                $volunteer = $donate->getFundraising()->getVolunteer();
+                if ($id === $volunteer->getId()) {
+                    $result->push($donate);
+                }
+            }
+
+        return $result;
     }
 }

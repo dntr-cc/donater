@@ -237,6 +237,36 @@
                         </div>
                     </div>
                     <div class="col-lg-8">
+                        {{--Donates block--}}
+                        @if($user->getDonatesSumAll())
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-12 d-flex justify-content-between align-items-start">
+                                            <h4>Підтримує волонтерів</h4>
+                                            <div>
+                                                <a href="#collapseDonates" data-bs-toggle="collapse" role="button"
+                                                   aria-expanded="false"
+                                                   aria-controls="collapseDonates" class="btn arrow-control"
+                                                   data-state="up">
+                                                    <i class="bi bi-arrow-up"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="collapse show" id="collapseDonates">
+                                        <hr>
+                                        <div
+                                            class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
+                                            @php $userDonates = $user->getDonates(); @endphp
+                                            @foreach($userDonates->getVolunteerIds() as $id)
+                                                @include('item-donates', ['masonry' => 'masonry-grid-item', 'donates' => $userDonates, 'user' => User::find($id)])
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                         {{--Fundraisings block--}}
                         @if($user->getFundraisings()->count() || !(auth()?->user()?->can('update', $user) && $user->settings->hasSetting(UserSetting::DONT_SHOW_CREATE_FUNDRAISING)))
                             <div class="card mb-4">

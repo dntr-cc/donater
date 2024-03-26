@@ -7,7 +7,7 @@ class VolunteerInfo
 
     const string PEOPLE_SUFFIX = ' ос.';
     const string COUNT_SUFFIX = ' шт.';
-    const string UAH_SUFFIX = ' грн.';
+    const string UAH_SUFFIX = ' ₴';
     const string DONORS_SUBSCRIBED = 'Підписалося донатерів:';
     const string TOTAL_COLLECTIONS = 'Всього зборів:';
     const string TOTAL_FUNDS_RAISED = 'Загалом зібрано коштів:';

@@ -3,9 +3,9 @@
 @php $userBanner = url(app(\App\Services\OpenGraphImageService::class)->getUserImage($user)) @endphp
 @php $whoIs = $whoIs ?? '' @endphp
 @php $additionalClasses = $additionalClasses ?? '' @endphp
-@php $mansory = $mansory ?? '' @endphp
+@php $masonry = $masonry ?? '' @endphp
 @php $statService = app(\App\Services\UserStatService::class) @endphp
-<div class="col {{ $mansory }}">
+<div class="col {{ $masonry }}">
     <div class="card">
         <div class="card {{ $additionalClasses }}">
             <div class="row g-0">

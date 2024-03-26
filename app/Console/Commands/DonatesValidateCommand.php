@@ -74,7 +74,7 @@ class DonatesValidateCommand extends Command
                         continue;
                     }
                     if ($telegramId) {
-                        $strtr = strtr('Ваш внесок в :amountгрн. за :date було завалідовано! Подивитися звіт: :url', [
+                        $strtr = strtr('Ваш внесок в :amount₴ за :date було завалідовано! Подивитися звіт: :url', [
                             ':amount' => $amount,
                             ':date'   => $createdAt->toString(),
                             ':code'   => $donate->getHash(),
