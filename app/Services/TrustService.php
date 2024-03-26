@@ -46,13 +46,13 @@ class TrustService
             }
             $promiseTotal += round(floatval($result[$id]['count'] * $result[$id]['amount']), 2);
         }
-        $donatesTotal = Donate::query()->select('donates.amount')
+        $donatesTotal = Donate::query()->withoutGlobalScope('order')
             ->join('fundraisings', 'fundraisings.id', '=', 'donates.fundraising_id')
             ->where('donates.user_id', '=', $donaterId)
             ->where('fundraisings.user_id', '=', $volunteerId)
             ->where('donates.created_at', '>=', $dateStart)
             ->where('donates.created_at', '<=', $dateEnd)
-            ->sum('donates.amount');
+            ->get()->sum('amount');
 
         return (int)(round($donatesTotal / $promiseTotal, 2) * 100);
     }
