@@ -27,7 +27,6 @@ class SubscribeRequestUpdate extends FormRequest
             'volunteer_id'     => ['required', 'integer', 'exists:fundraisings,user_id'],
             'amount'           => ['required', 'integer', 'min:1'],
             'first_message_at' => ['required', 'date_format:Y-m-d H:i', new SubscribeFrequencyRule()],
-            'use_random'       => ['boolean'],
         ];
     }
 

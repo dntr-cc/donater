@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property User $donater
  * @property User $volunteer
  * @property float $amount
- * @property bool $use_random
  * @property string $frequency
  * @property Carbon $first_message_at
  * @property Carbon $created_at
@@ -34,7 +33,6 @@ class Subscribe extends Model
         'volunteer_id',
         'amount',
         'scheduled_at',
-        'use_random',
         'first_message_at',
         'frequency',
     ];
@@ -99,17 +97,6 @@ class Subscribe extends Model
     public function setScheduledAt(Carbon $scheduled_at): Subscribe
     {
         $this->scheduled_at = $scheduled_at;
-        return $this;
-    }
-
-    public function isUseRandom(): bool
-    {
-        return $this->use_random;
-    }
-
-    public function setIsUseRandom(bool $isUseRandom): Subscribe
-    {
-        $this->use_random = $isUseRandom;
         return $this;
     }
 

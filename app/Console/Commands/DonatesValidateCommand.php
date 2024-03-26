@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Donate;
 use App\Models\Fundraising;
+use App\Models\SubscribesMessage;
+use App\Models\SubscribesTrustCode;
 use App\Models\User;
 use App\Models\UserSetting;
 use App\Services\GoogleServiceSheets;
@@ -43,7 +45,7 @@ class DonatesValidateCommand extends Command
             $rows = $this->service->getRowCollection($fundraising->getSpreadsheetId(), $fundraisingId);
             foreach ($rows->all() as $item) {
                 $amount = round((float)$item->getAmount(), 2);
-                if ($amount > 0  && preg_match('/^[0-9]{2}.[0-9]{2}.[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $item->getDate())) {
+                if ($amount > 0 && preg_match('/^[0-9]{2}.[0-9]{2}.[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $item->getDate())) {
                     $code = $item->extractCode($item->getComment());
                     if (empty($code)) {
                         continue;
@@ -66,6 +68,16 @@ class DonatesValidateCommand extends Command
                         'fundraising_id' => $fundraisingId,
                         'created_at'     => $createdAt,
                     ]);
+                    if ($trustCode = $item->extractTrustCode($item->getComment())) {
+                        if ($sm = SubscribesMessage::query()->where('hash', '=', $trustCode)->first()) {
+                            SubscribesTrustCode::create([
+                                'id'        => $sm->getSubscribesId(),
+                                'user_id'   => $userId,
+                                'hash'      => $trustCode,
+                                'donate_id' => $donate->getId(),
+                            ]);
+                        }
+                    }
                     $user = User::find($userId);
                     OpenGraphRegenerateEvent::dispatch($user->getId(), OpenGraphRegenerateEvent::TYPE_USER);
                     OpenGraphRegenerateEvent::dispatch($fundraising->getVolunteer()->getId(), OpenGraphRegenerateEvent::TYPE_USER);

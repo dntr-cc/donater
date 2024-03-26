@@ -7,15 +7,15 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table('subscribes_messages', function (Blueprint $table) {
-            $table->boolean('has_open_fundraisings')->default(false);
+        Schema::table('subscribes', function (Blueprint $table) {
+            $table->dropColumn('use_random');
         });
     }
 
     public function down(): void
     {
-        Schema::table('subscribes_messages', function (Blueprint $table) {
-            $table->dropColumn('has_open_fundraisings');
+        Schema::table('subscribes', function (Blueprint $table) {
+            $table->boolean('use_random')->default(false);
         });
     }
 };

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $subscribes_id
  * @property string $frequency
  * @property bool $has_open_fundraisings
+ * @property string $hash
  * @property Carbon $scheduled_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -45,6 +46,7 @@ class SubscribesMessage extends Model
         'frequency',
         'scheduled_at',
         'has_open_fundraisings',
+        'hash',
     ];
 
     protected $casts = [
@@ -84,9 +86,28 @@ class SubscribesMessage extends Model
     {
         return $this->updated_at;
     }
+    public function getHash(): string
+    {
+        return (string)$this->hash;
+    }
 
     public function isHasOpenFundraisings(): bool
     {
         return $this->has_open_fundraisings;
+    }
+
+    public function getNotificationCode(): string
+    {
+        return static::generateHash($this->getSubscribesId(), $this->getScheduledAt()->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * @param int $id
+     * @param string $key
+     * @return string
+     */
+    public static function generateHash(int $id, string $key): string
+    {
+        return 'code:' . substr(sha1($id . $key), 0, 8);
     }
 }
