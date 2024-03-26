@@ -98,7 +98,6 @@
                                         <button class="btn btn-outline-secondary copy-text"
                                                 data-message="Код донатера"
                                                 data-text="{{ $user->getUserCode() }}" onclick="return false;">
-
                                             <i class="bi bi-copy"></i></button>
                                     </div>
                                 </div>
@@ -115,7 +114,6 @@
                                         @include('subscribe.button', compact('volunteer', 'authUser'))
                                     @endif
                                 </div>
-
                             </div>
                         </div>
                         {{--Links block--}}
@@ -128,7 +126,8 @@
                                             @if($user->getLinks()->count())
                                                 <a href="#collapseLinks" data-bs-toggle="collapse" role="button"
                                                    aria-expanded="false"
-                                                   aria-controls="collapseLinks" class="btn arrow-control" data-state="up">
+                                                   aria-controls="collapseLinks" class="btn arrow-control"
+                                                   data-state="up">
                                                     <i class="bi bi-arrow-up"></i>
                                                 </a>
                                             @endif
@@ -159,32 +158,32 @@
                         {{--Subscribes block--}}
                         @can('update', $user)
                             @if($user->getSubscribes()->count())
-                            <div class="card mt-4 mb-4 mb-lg-0">
-                                <div class="card-body p-0">
-                                    <ul class="list-group list-group-flush rounded-3">
-                                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                            <h4>
-                                                Підписки на волонтерів
-                                            </h4>
-                                            <a href="#collapseSubscribes" data-bs-toggle="collapse" role="button"
-                                               aria-expanded="false"
-                                               aria-controls="collapseSubscribes" class="btn arrow-control"
-                                               data-state="down">
-                                                <i class="bi bi-arrow-down"></i>
-                                            </a>
-                                        </li>
-                                        @if($user->getSubscribes()->count())
-                                            <div class="collapse" id="collapseSubscribes">
-                                                @foreach($user->getSubscribes()->all() as $subscribe)
-                                                    <div class="col-md-12">
-                                                        @include('layouts.user_item', ['user' => $subscribe->getVolunteer(), 'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS])
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        @endif
-                                    </ul>
+                                <div class="card mt-4 mb-4 mb-lg-0">
+                                    <div class="card-body p-0">
+                                        <ul class="list-group list-group-flush rounded-3">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                                <h4>
+                                                    Підписки на волонтерів
+                                                </h4>
+                                                <a href="#collapseSubscribes" data-bs-toggle="collapse" role="button"
+                                                   aria-expanded="false"
+                                                   aria-controls="collapseSubscribes" class="btn arrow-control"
+                                                   data-state="down">
+                                                    <i class="bi bi-arrow-down"></i>
+                                                </a>
+                                            </li>
+                                            @if($user->getSubscribes()->count())
+                                                <div class="collapse" id="collapseSubscribes">
+                                                    @foreach($user->getSubscribes()->all() as $subscribe)
+                                                        <div class="col-md-12">
+                                                            @include('layouts.user_item', ['user' => $subscribe->getVolunteer(), 'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS])
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
                             @endif
                         @endcan
                         {{--Subscribers block--}}
@@ -238,7 +237,7 @@
                     </div>
                     <div class="col-lg-8">
                         {{--Donates block--}}
-                        @php $userDonates = $user->getDonatesAll(); @endphp
+                        @php $userDonates = $user->getDonatesByVolunteer(); @endphp
                         @if($userDonates)
                             <div class="card mb-4">
                                 <div class="card-body">
@@ -259,8 +258,8 @@
                                         <hr>
                                         <div
                                             class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
-                                            @foreach($userDonates->getVolunteerIds() as $id)
-                                                @include('item-donates', ['masonry' => 'masonry-grid-item', 'donates' => $userDonates, 'user' => User::find($id)])
+                                            @foreach($userDonates as $item)
+                                                @include('item-donates', ['masonry' => 'masonry-grid-item', 'item' => $item, 'user' => User::find($item->volunteer_id)])
                                             @endforeach
                                         </div>
                                     </div>
@@ -276,7 +275,8 @@
                                             <h4>Всі збори</h4>
                                             <div>
                                                 @if($user->getFundraisings()->count())
-                                                    <a href="#collapseFundraisings" data-bs-toggle="collapse" role="button"
+                                                    <a href="#collapseFundraisings" data-bs-toggle="collapse"
+                                                       role="button"
                                                        aria-expanded="false"
                                                        aria-controls="collapseFundraisings" class="btn arrow-control"
                                                        data-state="up">

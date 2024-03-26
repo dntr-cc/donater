@@ -19,11 +19,11 @@
                         </p>
                         <div class="col-12 small mt-2 d-flex d-flex justify-content-between">
                             <div class="">Задоначено, грн.</div>
-                            <div class="">{{ $donates->getDonatesByVolunteer($user->getId())->sum(fn(Donate $donate) => $donate->getAmount()) }} ₴</div>
+                            <div class="">{{ $item->amount ?? 0 }} ₴</div>
                         </div>
                             <div class="col-12 small d-flex d-flex justify-content-between">
                                 <div class="">Кількість донатів, шт.</div>
-                                <div class="">{{ $donates->getDonatesByVolunteer($user->getId())->count() }}</div>
+                                <div class="">{{ $item->count ?? 0 }}</div>
                             </div>
                     </div>
                 </div>
