@@ -27,7 +27,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property DonateCollection|Donate[] $donates
- * @property DonateCollection|Donate[] $donations
+ * @property DonateCollection|Donate[] $donates_all
  * @property Collection|Fundraising[] $fundraisings
  * @property Collection|Prize[] $prizes
  * @property Collection|UserLink[] $links
@@ -101,6 +101,13 @@ class User extends Authenticatable
     public function donates(): HasMany
     {
         return $this->hasMany(Donate::class, 'user_id', 'id')->limit(10);
+    }
+    /**
+     * @return HasMany
+     */
+    public function donatesAll(): HasMany
+    {
+        return $this->hasMany(Donate::class, 'user_id', 'id');
     }
 
     /**
@@ -321,7 +328,7 @@ class User extends Authenticatable
 
     public function getDonatesAll(): Collection|DonateCollection|array
     {
-        return self::with('donations')->where('id', '=', $this->getId())->first()?->donations;
+        return self::with('donatesAll')->where('id', '=', $this->getId())->first()?->donates_all;
     }
 
     public function getFundraisings(): Collection|array
