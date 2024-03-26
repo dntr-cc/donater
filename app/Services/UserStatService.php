@@ -43,8 +43,7 @@ class UserStatService
     }
 
     /**
-     * @param string $
-     * @param $type
+     * @param string $type
      * @param int $id
      * @return string
      */

@@ -8,8 +8,8 @@ class DonaterInfo
     const string DONATION_COUNT = 'Зроблено донатів:';
     const string WEBSITE_DONATION = 'Задоначено через сайт:';
     const string PRIZE_ADDED = 'Додано призів:';
-    const string PEOPLE_SUFFIX = ' ос.';
-    const string COUNT_SUFFIX = ' шт.';
+    const string PEOPLE_SUFFIX = '';
+    const string COUNT_SUFFIX = '';
     const string UAH_SUFFIX = ' ₴';
     protected int $subscribes;
     protected int $donationCount;
