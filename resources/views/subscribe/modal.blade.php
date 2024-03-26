@@ -18,7 +18,7 @@
                         <input type="number" class="form-control" min="1" name="amount"
                                id="amount" value="33">
                         <label for="amount">
-                            Сума щоденного донату, грн.
+                            Сума щоденного донату, ₴
                         </label>
                     </div>
                     <div class="form-floating py-1">

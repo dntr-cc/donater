@@ -33,7 +33,7 @@ class SubscribeProcessCommand extends Command
             $donater = $subscribe->getDonater();
             $volunteer = $subscribe->getVolunteer();
             $template = <<<'MD'
-                Ваш волонтер @:volunteerKey чекає на ваш донат в :amount грн. на збір :fundLink
+                Ваш волонтер @:volunteerKey чекає на ваш донат в :amount ₴ на збір :fundLink
 
                 Будь ласка, зробіть донат по посиланню :jarLink
                 MD;
@@ -45,7 +45,7 @@ class SubscribeProcessCommand extends Command
             if (!$randomFundraising && $subscribe->isUseRandom()) {
                 $randomFundraising = Fundraising::getRandom();
                 $template = strtr(strtr(<<<'MD'
-                    Ваш волонтер @:volunteerKey не має відкритого збору. Ми пропонуємо вам зробити донат @:newVolunteerKey в розмірі :amount грн.  на збір :fundLink
+                    Ваш волонтер @:volunteerKey не має відкритого збору. Ми пропонуємо вам зробити донат @:newVolunteerKey в розмірі :amount ₴  на збір :fundLink
 
                     Будь ласка, зробіть донат за посиланням :jarLink
                     MD, [':volunteerKey' => $volunteer->getUsername()]), [':newVolunteerKey' => ':volunteerKey']);

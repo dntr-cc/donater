@@ -22,7 +22,7 @@
         @php /** @var \Illuminate\Support\Collection|\App\Models\User[] $users */ @endphp
         @php $askAs = 'донатер' @endphp
             @forelse($users->all() as $user)
-                @include('layouts.user_item', ['user' => $user, 'mansory' => 'masonry-grid-item'])
+                @include('layouts.user_item', ['user' => $user, 'masonry' => 'masonry-grid-item'])
             @empty
                 <p>{{ $whoIs }} не знайдені</p>
             @endforelse
