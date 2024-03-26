@@ -102,18 +102,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(Donate::class, 'user_id', 'id')->limit(10);
     }
-    /**
-     * @return HasMany
-     */
-    public function donatesAll(): HasMany
-    {
-        return $this->hasMany(Donate::class, 'user_id', 'id');
-    }
 
     /**
      * @return HasMany
      */
     public function donations(): HasMany
+    {
+        return $this->hasMany(Donate::class, 'user_id', 'id');
+    }
+    /**
+     * @return HasMany
+     */
+    public function donatesAll(): HasMany
     {
         return $this->hasMany(Donate::class, 'user_id', 'id');
     }
@@ -326,9 +326,10 @@ class User extends Authenticatable
         return self::with('donates')->where('id', '=', $this->getId())->first()?->donates;
     }
 
-    public function getDonatesAll(): Collection|DonateCollection|array|null
+    public function geAllDonations(): Collection|DonateCollection|array|null
     {
-        return self::with('donatesAll')->where('id', '=', $this->getId())->first()?->donates_all;
+        $model = self::with('donations')->where('id', '=', $this->getId())->first();
+        return $model?->donations;
     }
 
     public function getFundraisings(): Collection|array
@@ -442,5 +443,21 @@ class User extends Authenticatable
             ->where('user_id', '=', $this->getId())
             ->orderBy('amount', 'desc')
             ->get()->first()?->amount ?? 0.00;
+    }
+
+    /**
+     * @uses \App\Models\Donate
+     * @return array
+     */
+    public function getDonatesByVolunteer(): array
+    {
+        return DB::query()
+            ->select([DB::raw('sum(donates.amount) as amount'), DB::raw('count(donates.amount) as count'), 'fundraisings.user_id as volunteer_id'])
+            ->from('donates') // @use Donate::class
+            ->join('fundraisings', 'fundraisings.id', '=', 'donates.fundraising_id') // @use Donate::class
+            ->where('donates.user_id', '=', $this->getId())
+            ->groupBy(['fundraisings.user_id'])
+            ->orderBy('amount', 'desc')
+            ->get()->toArray() ?? [];
     }
 }
