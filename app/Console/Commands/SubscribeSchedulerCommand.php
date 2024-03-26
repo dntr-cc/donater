@@ -22,17 +22,20 @@ class SubscribeSchedulerCommand extends Command
         foreach (Subscribe::query()->withoutTrashed()->get()->all() as $subscribe) {
             $nextMessage = $subscribe->getNextSubscribesMessage();
             if ($nextMessage->getScheduledAt() < $time) {
-                Log::info('subscribe:process ' . $subscribe->getId());
+                Log::info('subscribe:notify ' . $subscribe->getId());
                 $openFundraisings = $subscribe->getVolunteer()->getFundraisings()
                     ->filter(fn(Fundraising $fundraising) => $fundraising->isEnabled())
                     ->count();
                 $nextMessage->update(['has_open_fundraisings' => (bool)$openFundraisings]);
-                Artisan::call('subscribe:process ' . $subscribe->getId());
+                $code = $nextMessage->getNotificationCode();
+                Artisan::call('subscribe:notify ' . $subscribe->getId() . ' ' . $code);
+                $nextScheduledAt = $nextMessage->getScheduledAt()->modify($subscribe->getModifier($nextMessage->getFrequency()));
                 SubscribesMessage::create([
                     'subscribes_id' => $subscribe->getId(),
                     'frequency' => $nextMessage->getFrequency(),
-                    'scheduled_at' => $nextMessage->getScheduledAt()->modify($subscribe->getModifier($nextMessage->getFrequency())),
+                    'scheduled_at' => $nextScheduledAt,
                     'has_open_fundraisings' => (bool)$openFundraisings,
+                    'hash' => SubscribesMessage::generateHash($subscribe->getId(), $nextScheduledAt->format('Y-m-d H:i:s')),
                 ]);
             }
         }

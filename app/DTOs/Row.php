@@ -95,6 +95,15 @@ class Row
         return static::getCode($comment);
     }
 
+    /**
+     * @param string $comment
+     * @return string
+     */
+    public function extractTrustCode(string $comment): string
+    {
+        return static::getCode($comment);
+    }
+
     public static function getCode(string $comment): string
     {
         $matches1 = $matches2 = $matches3 = [];
@@ -104,6 +113,14 @@ class Row
         $matches1 = explode('/', $matches1[0] ?? '');
 
         return $matches1[1] ?? $matches2[0] ?? $matches3[0] ?? '';
+    }
+
+    public static function getTrustCode(string $comment): string
+    {
+        $matches = [];
+        preg_match('/code:[0-9a-f]{8}/', $comment, $matches);
+
+        return $matches[0] ?? '';
     }
 
     public static function hasCode(string $comment): bool

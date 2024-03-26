@@ -7,9 +7,9 @@ use App\Models\Subscribe;
 use App\Services\UserCodeService;
 use Illuminate\Console\Command;
 
-class SubscribeProcessCommand extends Command
+class SubscribeNotifyCommand extends Command
 {
-    protected $signature = 'subscribe:process {id}';
+    protected $signature = 'subscribe:notify {id} {code}';
 
     protected $description = 'Command description';
 
@@ -28,41 +28,35 @@ class SubscribeProcessCommand extends Command
 
     public function handle(): void
     {
-        if ($id = $this->argument('id')) {
+        $id = $this->argument('id');
+        $code = $this->argument('code');
+        if ($id && $code) {
             $subscribe = Subscribe::find($id);
             $donater = $subscribe->getDonater();
             $volunteer = $subscribe->getVolunteer();
+            $codeText = $donater->getUserCode() . '%20' . $code;
             $template = <<<'MD'
                 Ваш волонтер @:volunteerKey чекає на ваш донат в :amount ₴ на збір :fundLink
 
                 Будь ласка, зробіть донат по посиланню :jarLink
+
+                Зверніть увагу, що коментар має формат `:codeText` - це для розрахунків надійності вас як серійного донатера по підписці.
                 MD;
             /** @var Fundraising $randomFundraising */
             $randomFundraising = $volunteer->getRandomFundraising();
-            if (!$randomFundraising && !$subscribe->isUseRandom()) {
+            if (!$randomFundraising) {
                 return;
-            }
-            if (!$randomFundraising && $subscribe->isUseRandom()) {
-                $randomFundraising = Fundraising::getRandom();
-                $template = strtr(strtr(<<<'MD'
-                    Ваш волонтер @:volunteerKey не має відкритого збору. Ми пропонуємо вам зробити донат @:newVolunteerKey в розмірі :amount ₴  на збір :fundLink
-
-                    Будь ласка, зробіть донат за посиланням :jarLink
-                    MD, [':volunteerKey' => $volunteer->getUsername()]), [':newVolunteerKey' => ':volunteerKey']);
-                $volunteer = $randomFundraising->getVolunteer();
             }
             $message = strtr($template, [
                 '  ' => '',
                 ':volunteerKey' => $volunteer->getUsername(),
-                ':jarLink' => $randomFundraising->getJarLink() . '?t=' . $donater->getUserCode() . '&a=' . $subscribe->getAmount(),
+                ':codeText' => $donater->getUserCode() . ' ' . $code,
+                ':jarLink' => $randomFundraising->getJarLink() . '?t=' . $codeText . '&a=' . $subscribe->getAmount(),
                 ':amount' => $subscribe->getAmount(),
                 ':fundLink' => $randomFundraising->getShortLink(),
             ]);
             $callToAction = "\n\nВи можете скопіювати запрошення для ваших друзів робити як ви нижче (копіює по кліку)\n\n`Я підтримую :volunteer щоденним донатом. Мені в телеграм кожен день приходить посилання в обраний мною час. Прошу вас робити так само. Донатьте. Будь ласка ❤️`";
-            $filledCallToAction = strtr($callToAction, [
-                ':volunteer' => $randomFundraising->getShortLink(),
-            ]);
-            $donater->sendBotMessage($message . $filledCallToAction);
+            $donater->sendBotMessage($message . strtr($callToAction, [':volunteer' => $randomFundraising->getShortLink()]));
         }
     }
 }

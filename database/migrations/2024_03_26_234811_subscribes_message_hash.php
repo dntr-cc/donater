@@ -8,14 +8,14 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('subscribes_messages', function (Blueprint $table) {
-            $table->boolean('has_open_fundraisings')->default(false);
+            $table->string('hash')->default('')->index();
         });
     }
 
     public function down(): void
     {
         Schema::table('subscribes_messages', function (Blueprint $table) {
-            $table->dropColumn('has_open_fundraisings');
+            $table->dropColumn('hash');
         });
     }
 };

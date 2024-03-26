@@ -16,7 +16,6 @@ class SubscribeResource extends JsonResource
             'volunteer_id' => $this->volunteer_id,
             'amount'       => $this->amount,
             'scheduled_at' => $this->scheduled_at,
-            'use_random'   => $this->use_random,
             'created_at'   => $this->created_at,
             'updated_at'   => $this->updated_at,
         ];

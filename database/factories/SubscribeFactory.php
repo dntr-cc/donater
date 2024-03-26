@@ -17,7 +17,6 @@ class SubscribeFactory extends Factory
             'volunteer_id' => $this->faker->randomNumber(),
             'amount'       => $this->faker->randomNumber(),
             'scheduled_at' => Carbon::now(),
-            'use_random'   => $this->faker->boolean(),
             'created_at'   => Carbon::now(),
             'updated_at'   => Carbon::now(),
         ];

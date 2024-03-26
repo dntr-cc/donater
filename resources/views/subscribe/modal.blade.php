@@ -39,12 +39,6 @@
                         </label>
                         <div class="js-mini-picker-container"></div>
                     </div>
-                    <div class="form-check form-switch d-flex justify-content-between mt-3">
-                        <input class="form-check-input" type="checkbox" value="" id="use_random">
-                        <label class="form-check-label" for="use_random">
-                            Якщо немає відкритого збору у волонтера - присилати рандомно відкритий збір інших волонтерів
-                        </label>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer justify-content-between">
@@ -93,7 +87,6 @@
                 frequency: $('#frequency').val(),
                 amount: $('#amount').val(),
                 first_message_at: $('#first_message_at').val(),
-                use_random: $('#use_random').is(':checked') ? '1' : '0',
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -152,9 +145,6 @@
             inline: true,
             rows: 5,
         });
-        if (button.getAttribute('data-bs-use-random').toString() === '1') {
-            subscribe.querySelector('#use_random').setAttribute('checked', 'checked');
-        }
         let volunteerKey = button.getAttribute('data-bs-volunteer-key');
         let actionTypeTxtTitle = isNew ? 'Підписатися' : 'Редагувати підписку';
         let actionTypeTxtContent1 = isNew ? '{{ sensitive('Ви хочете стати серійним донатером', $current) }}' : '{{ sensitive('Ви серійний донатер', $current) }}';
