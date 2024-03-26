@@ -12,12 +12,16 @@ class TrustService
     {
         $dateStart = $this->getStartOfNotificationEra();
         $dateEnd = date('Y-m-d H:i:s', strtotime(strtr('-:days day', [':days' => $days])));
+        if ($dateStart < $dateEnd) {
+            throw new \LogicException('Trust not allowed for the date under start logging open fundraisings');
+        }
         $promises = SubscribesMessage::query()
             ->whereIn(
                 'subscribes_id',
                 $this->getIdsForProcessing($donaterId, $volunteerId, $dateStart, $dateEnd
                 )
             )
+            ->where('has_open_fundraisings', '=', true)
             ->where('created_at', '>=', $dateStart)
             ->where('created_at', '<=', $dateEnd)
             ->get();
@@ -83,6 +87,6 @@ class TrustService
      */
     public function getStartOfNotificationEra(): string
     {
-        return '2024-03-02 21:00:00';
+        return '2024-03-26 02:00:00';
     }
 }
