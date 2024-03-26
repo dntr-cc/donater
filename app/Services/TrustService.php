@@ -17,7 +17,10 @@ class TrustService
                 'subscribes_id',
                 $this->getIdsForProcessing($donaterId, $volunteerId, $dateStart, $dateEnd
                 )
-            )->get();
+            )
+            ->where('created_at', '>=', $dateStart)
+            ->where('created_at', '<=', $dateEnd)
+            ->get();
         $result = [];
         $subscribes = [];
         $subscribesDeleted = [];
