@@ -59,9 +59,9 @@ class SubscribeController extends Controller
         if (!$volunteer->settings->hasSetting(UserSetting::DONT_SEND_SUBSCRIBERS_INFORMATION)) {
             $donater = $subscribe->getDonater();
             $message = strtr($messageTemplate, [
-                ':amount' => $subscribe->getAmount(),
-                ':donater' => $donater->getUsername(),
-                ':first' => $subscribe->getFirstMessageAt(),
+                ':amount'    => $subscribe->getAmount(),
+                ':donater'   => $donater->getUsername(),
+                ':first'     => $subscribe->getFirstMessageAt(),
                 ':frequency' => mb_strtolower(SubscribesMessage::FREQUENCY_NAME_MAP[$subscribe->getFrequency() ?? ''] ?? ''),
             ]);
 
@@ -76,10 +76,12 @@ class SubscribeController extends Controller
      */
     protected function subscribe(Subscribe $subscribe, User $volunteer): void
     {
+        $subscribe->getNextSubscribesMessage()?->update(['has_open_fundraisings' => false]);
         SubscribesMessage::create([
-            'subscribes_id' => $subscribe->getId(),
-            'frequency'     => $subscribe->getFrequency(),
-            'scheduled_at'  => $subscribe->getFirstMessageAt(),
+            'subscribes_id'         => $subscribe->getId(),
+            'frequency'             => $subscribe->getFrequency(),
+            'scheduled_at'          => $subscribe->getFirstMessageAt(),
+            'has_open_fundraisings' => true,
         ]);
         OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
         OpenGraphRegenerateEvent::dispatch($subscribe->getDonater()->getId(), OpenGraphRegenerateEvent::TYPE_USER);
