@@ -25,6 +25,6 @@
         "masonry-layout": "^4.2.2",
         "mdb-ui-kit": "^7.1.0",
         "pickerjs": "^1.2.1",
-        "tinymce": "^6.8.0"
+        "tinymce": "^7.0.0"
     }
 }
