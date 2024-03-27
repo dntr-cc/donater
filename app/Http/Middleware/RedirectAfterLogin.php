@@ -20,7 +20,8 @@ class RedirectAfterLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->user()) {
+        $user = auth()->user();
+        if (!$user) {
             $redirectUrl = url()->current();
             if ($redirectUrl === route('login')) {
                 $redirectUrl = route('my');

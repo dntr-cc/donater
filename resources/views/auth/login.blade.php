@@ -4,6 +4,7 @@
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
 @section('og_image_height', '630')
+@php $loginHash ?? app(App\Services\LoginService::class)->getNewLoginHash() @endphp
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -12,17 +13,17 @@
                     <h1 class="h3 mb-3 fw-normal">🍩 Авторизація</h1>
                     <div class="form-floating input-group">
                         <input type="text" class="form-control" id="loginCode"
-                               value="{{ session()->get(\App\Http\Controllers\Auth\LoginController::LOGIN_HASH, '') }}"
+                               value="{{ $loginHash }}"
                                disabled>
                         <label for="loginCode">Код для логіну через телеграм</label>
                         <button class="btn btn-outline-secondary copy-text" data-message="Код"
-                                data-text="{{ session()->get(\App\Http\Controllers\Auth\LoginController::LOGIN_HASH, '') }}"
+                                data-text="{{ $loginHash }}"
                                 onclick="return false;">
                             <i class="bi bi-copy"></i>
                         </button>
                     </div>
                     <div class="text-center input-group pt-2">
-                        <a href="{{ config('telegram.bots.donater-bot.url') }}?start={{ session()->get(\App\Http\Controllers\Auth\LoginController::LOGIN_HASH, '') }}"
+                        <a href="{{ config('telegram.bots.donater-bot.url') }}?start={{ $loginHash }}"
                            class="btn btn-outline-primary w-100" target="_blank"><i class="bi bi-telegram"> Відкрити
                                 Телеграм</i></a>
                     </div>
