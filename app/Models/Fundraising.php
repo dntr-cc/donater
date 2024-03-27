@@ -258,7 +258,7 @@ class Fundraising extends Model
 
     public function getCreatedAt(): Carbon
     {
-        return $this->created_at;
+        return $this->created_at->setTimezone(config('app.timezone'));
     }
 
     public function getDonates(): ?DonateCollection

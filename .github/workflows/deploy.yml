@@ -7,12 +7,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Check previous deploy
-        run: |
-          status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy)
-          while [[ "$status_code" -ne 204 ]]; do echo "Previous deploy in progress. Waiting 5sec..." && sleep 5 && status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy); done
-        shell: bash
+      - uses: actions/checkout@v4
+#      - name: Check previous deploy
+#        run: |
+#          status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy)
+#          while [[ "$status_code" -ne 204 ]]; do echo "Previous deploy in progress. Waiting 5sec..." && sleep 5 && status_code=$(curl -H "${{ secrets.DEV_HASH }}: 1" --write-out %{http_code} --silent --output /dev/null -k ${{ secrets.DEPLOY_URL }}/deploy); done
+#        shell: bash
       - name: Create deploy.pid for run job after deploy
         working-directory: ./
         run: |
@@ -38,4 +38,4 @@ jobs:
       - name: Run rsync
         working-directory: ./
         run: |
-          rsync -avzr --delete -e 'ssh -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} -i ~/.ssh/id_rsa'  ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}
+          rsync -avzr --exclude=.env --exclude=storage --exclude=public --delete -e 'ssh -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} -i ~/.ssh/id_rsa'  ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}
