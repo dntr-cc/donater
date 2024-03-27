@@ -29,11 +29,17 @@ class LoginController extends Controller
         if (!RateLimiter::attempt(
             'open-login-page' . session()->get('_token'),
             12,
-            fn () => User::find(1)->sendBotMessage('HERAK')
+            fn() => ''
         )) {
+            User::find(1)->sendBotMessage('login:429' . PHP_EOL  . PHP_EOL . json_encode(
+                [
+                    'request' => request()->toArray(),
+                    'headers' => request()->header(),
+                    'client_ips' => request()->getClientIps(),
+                ]
+            ));
             return view('errors.429');
         }
-
         return view('auth.login', ['loginHash' => app(LoginService::class)->getNewLoginHash()]);
     }
 
