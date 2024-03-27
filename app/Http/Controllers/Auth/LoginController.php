@@ -36,13 +36,14 @@ class LoginController extends Controller
         $key = 'login:' . request()->getClientIp();
         if (RateLimiter::tooManyAttempts($key, 12)) {
             $seconds = RateLimiter::availableIn($key);
-            User::find(1)->sendBotMessage('login:429' . PHP_EOL  . PHP_EOL . '```'. json_encode(
+            User::find(1)->sendBotMessage('login:429' . PHP_EOL  . PHP_EOL . '`'. json_encode(
                     [
                         'request' => request()->toArray(),
                         'headers' => request()->header(),
                         'client_ips' => request()->getClientIps(),
                     ]
-                ));
+                ). '`'
+            );
 
             return view('errors.429', compact('seconds'));
         }
