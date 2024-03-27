@@ -29,27 +29,26 @@ class LoginController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\Foundation\Application|Factory|\Illuminate\Contracts\View\View|Application
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @return View
      */
     public function showLoginForm(): View
     {
-        if (RateLimiter::attempt(
-            'open-login-page' . session()->get('_token'),
-            12,
-            fn() => view('auth.login', ['loginHash' => app(LoginService::class)->getNewLoginHash()])
-        )) {
-            User::find(1)->sendBotMessage('login:429' . PHP_EOL  . PHP_EOL . json_encode(
-                [
-                    'request' => request()->toArray(),
-                    'headers' => request()->header(),
-                    'client_ips' => request()->getClientIps(),
-                ]
-            ));
-        }
+        $key = 'login:' . request()->getClientIp();
+        if (RateLimiter::tooManyAttempts($key, 12)) {
+            $seconds = RateLimiter::availableIn($key);
+            User::find(1)->sendBotMessage('login:429' . PHP_EOL  . PHP_EOL . '```'. json_encode(
+                    [
+                        'request' => request()->toArray(),
+                        'headers' => request()->header(),
+                        'client_ips' => request()->getClientIps(),
+                    ]
+                ));
 
-        return view('errors.429');
+            return view('errors.429', compact('seconds'));
+        }
+        RateLimiter::increment($key);
+
+        return view('auth.login', ['loginHash' => app(LoginService::class)->getNewLoginHash()]);
     }
 
     public function login(Request $request)
