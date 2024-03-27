@@ -40,13 +40,13 @@ class LoginController extends Controller
             12,
             fn() => view('auth.login', ['loginHash' => app(LoginService::class)->getNewLoginHash()])
         )) {
-            User::find(1)->sendBotMessage('login:429' . PHP_EOL  . PHP_EOL . json_encode(
+            User::find(1)->sendBotMessage('login:429' . PHP_EOL  . PHP_EOL . '```'. json_encode(
                 [
                     'request' => request()->toArray(),
                     'headers' => request()->header(),
                     'client_ips' => request()->getClientIps(),
                 ]
-            ));
+            ) . '```');
         }
 
         return view('errors.429');
