@@ -60,7 +60,7 @@
         @endif
         @if($withPrizes)
             <a class="btn m-1 btn-fit-text {{ $additionalClasses }}" data-bs-toggle="modal"
-               data-bs-target="#fundraisingEditPrizesModal">
+               data-bs-target="#fundraisingEditPrizesModal{{ sha1($fundraising->getKey()) }}">
                 <nobr>
                     <i class="bi bi-gift"></i>
                     Призи
@@ -71,7 +71,7 @@
             @can('create', [\App\Models\FundraisingShortCode::class, $fundraising])
                 <a class="btn m-1 btn-fit-text {{ $additionalClasses }}"
                    data-bs-toggle="modal"
-                   data-bs-target="#fundraisingEditShortCodesModal">
+                   data-bs-target="#fundraisingEditShortCodesModal{{ sha1($fundraising->getKey()) }}">
                     <nobr>
                         <i class="bi bi-share"></i>
                         Коротке посилання
@@ -99,13 +99,13 @@
 {{--Prizes additional data: modal, js--}}
 @can('update', $fundraising)
     @if($withPrizes)
-        <div class="modal fade" id="fundraisingEditPrizesModal" tabindex="-1"
-             aria-labelledby="fundraisingEditPrizesModalLabel"
+        <div class="modal fade" id="fundraisingEditPrizesModal{{ sha1($fundraising->getKey()) }}" tabindex="-1"
+             aria-labelledby="fundraisingEditPrizesModalLabel{{ sha1($fundraising->getKey()) }}"
              aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="fundraisingEditPrizesModalLabel">Призи для розіграшу</h1>
+                        <h1 class="modal-title fs-5" id="fundraisingEditPrizesModalLabel{{ sha1($fundraising->getKey()) }}">Призи для розіграшу</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form class="form">
@@ -117,7 +117,7 @@
                                 Додані розіграші: {{ $prizes->count() }}
                             </p>
                             @foreach($prizes as $prize)
-                                <div class="card m-2">
+                                <div class="card m-2 with-id" data-id="{{ $prize->getId() }}">
                                     <div class="row no-gutters">
                                         <div class="col-auto">
                                             <img src="{{ url($prize->getAvatar()) }}" class="img-fluid"
@@ -133,8 +133,7 @@
                                                     <i class="bi bi-eye"></i>
                                                     Подробиці
                                                 </a>
-                                                <button class="btn btn-xs btn-danger del-prize"
-                                                        data-id="{{ $prize->getId() }}">
+                                                <button class="btn btn-xs btn-danger del-prize-{{ sha1($fundraising->getKey()) }}">
                                                     Видалити з вашого збору
                                                 </button>
                                             </div>
@@ -154,7 +153,7 @@
                                 Очікують підтвердження: {{ $bookedPrizes->count() }}
                             </p>
                             @foreach($bookedPrizes as $prize)
-                                <div class="card m-2">
+                                <div class="card m-2 with-id" data-id="{{ $prize->getId() }}">
                                     <div class="row no-gutters">
                                         <div class="col-auto">
                                             <img src="{{ url($prize->getAvatar()) }}" class="img-fluid"
@@ -173,8 +172,7 @@
                                                 <span class="btn btn-xs btn-warning">
                                                     Очікує підтвердження
                                                 </span>
-                                                <button class="btn btn-xs btn-danger del-prize"
-                                                        data-id="{{ $prize->getId() }}">
+                                                <button class="btn btn-xs btn-danger del-prize-{{ sha1($fundraising->getKey()) }}">
                                                     Видалити з вашого збору
                                                 </button>
                                             </div>
@@ -194,7 +192,7 @@
                                 Доступно для розіграшу: {{ $availablePrizes->count() }}
                             </p>
                             @foreach($availablePrizes as $prize)
-                                <div class="card m-2">
+                                <div class="card m-2 with-id" data-id="{{ $prize->getId() }}">
                                     <div class="row no-gutters">
                                         <div class="col-auto">
                                             <img src="{{ url($prize->getAvatar()) }}" class="img-fluid"
@@ -210,8 +208,7 @@
                                                     <i class="bi bi-eye"></i>
                                                     Подробиці
                                                 </a>
-                                                <button class="btn btn-xs btn-success add-prize"
-                                                        data-id="{{ $prize->getId() }}">
+                                                <button class="btn btn-xs btn-success add-prize-{{ sha1($fundraising->getKey()) }}">
                                                     Додати до вашого збору
                                                 </button>
                                             </div>
@@ -236,10 +233,11 @@
             </div>
         </div>
         <script type="module">
-            $('.add-prize').on('click', event => {
+            $('.add-prize-{{ sha1($fundraising->getKey()) }}').on('click', event => {
+                let item = $(event.target.closest('div.with-id'));
                 event.preventDefault();
                 $.ajax({
-                    url: '{{ route('fundraising.show', compact('fundraising')) }}' + '/prize/' + $(event.target).attr('data-id'),
+                    url: '{{ route('fundraising.show', compact('fundraising')) }}' + '/prize/' + item.attr('data-id'),
                     type: "POST",
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content')
@@ -250,8 +248,9 @@
                 });
                 return false;
             });
-            $('.del-prize').on('click', event => {
-                let url = '{{ route('fundraising.show', compact('fundraising')) }}' + '/prize/' + $(event.target).attr('data-id');
+            $('.del-prize-{{ sha1($fundraising->getKey()) }}').on('click', event => {
+                let item = $(event.target.closest('div.with-id'));
+                let url = '{{ route('fundraising.show', compact('fundraising')) }}' + '/prize/' + item.attr('data-id');
                 event.preventDefault();
                 $.ajax({
                     url: url,
@@ -272,13 +271,13 @@
 {{--Shortcodes additional data: modal, js--}}
 @if(!$disableShortCodes)
     @can('create', [\App\Models\FundraisingShortCode::class, $fundraising])
-        <div class="modal fade" id="fundraisingEditShortCodesModal" tabindex="-1"
-             aria-labelledby="fundraisingEditShortCodesModalLabel"
+        <div class="modal fade" id="fundraisingEditShortCodesModal{{ sha1($fundraising->getKey()) }}" tabindex="-1"
+             aria-labelledby="fundraisingEditShortCodesModalLabel{{ sha1($fundraising->getKey()) }}"
              aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="fundraisingEditShortCodesModalLabel">Коротке посилання для
+                        <h1 class="modal-title fs-5" id="fundraisingEditShortCodesModalLabel{{ sha1($fundraising->getKey()) }}">Коротке посилання для
                             поширення</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -286,7 +285,7 @@
                         <div class="modal-body">
                             <div class="d-flex justify-content-center mb-2">
                                 <div class="form-floating input-group">
-                                    <input type="text" class="form-control" id="shortLink"
+                                    <input type="text" class="form-control" id="shortLink{{ sha1($fundraising->getKey()) }}"
                                            value="{{ $fundraising->getShortLink() }}" disabled>
                                     <label for="userShortLink">Коротке посилання</label>
                                     <button class="btn btn-outline-secondary copy-text"
@@ -297,9 +296,9 @@
                             <div class="mb-3">
                                 <label for="basic-url" class="form-label">Замінити шорт-лінк</label>
                                 <div class="input-group">
-                                    <span class="input-group-text" id="newShortLinkPrefix">dntr.cc/f/</span>
-                                    <input type="text" class="form-control" id="newShortLink">
-                                    <button id="createShortLink" class="btn btn-outline-success"
+                                    <span class="input-group-text" id="newShortLinkPrefix{{ sha1($fundraising->getKey()) }}">dntr.cc/f/</span>
+                                    <input type="text" class="form-control" id="newShortLink{{ sha1($fundraising->getKey()) }}">
+                                    <button id="createShortLink{{ sha1($fundraising->getKey()) }}" class="btn btn-outline-success"
                                             onclick="return false;">
                                         <i class="bi bi-plus-circle-fill"></i></button>
                                 </div>
@@ -326,9 +325,9 @@
             </div>
         </div>
         <script type="module">
-            $('#createShortLink').on('click', event => {
+            $('#createShortLink{{ sha1($fundraising->getKey()) }}').on('click', event => {
                 event.preventDefault();
-                let code = $('#newShortLink').val();
+                let code = $('#newShortLink{{ sha1($fundraising->getKey()) }}').val();
                 $.ajax({
                     url: '{{ route('fundraising.link.create', compact('fundraising')) }}',
                     type: "POST",
@@ -339,8 +338,10 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: (data) => {
-                        $('#shortLink').val($('#newShortLinkPrefix').html() + code);
-                        $('#newShortLink').val('');
+                        $('#shortLink{{ sha1($fundraising->getKey()) }}').val($('#newShortLinkPrefix{{ sha1($fundraising->getKey()) }}').html() + code);
+                        $('#newShortLink{{ sha1($fundraising->getKey()) }}').val('');
+                        $('#share-fund-{{ sha1($fundraising->getKey()) }}').text('Поширити збір: dntr.cc/f/' + code);
+                        $('#share-fund-btn-{{ sha1($fundraising->getKey()) }}').attr('data-text', 'dntr.cc/f/' + code);
                         $('meta[name="csrf-token"]').attr('content', data.csrf);
                     },
                     error: data => {
