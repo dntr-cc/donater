@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\LoginService;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\View\View;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class LoginController extends Controller
 {
@@ -24,12 +28,17 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|\Illuminate\Contracts\View\View|Application
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function showLoginForm(): View
     {
-        if (!RateLimiter::attempt(
+        if (RateLimiter::attempt(
             'open-login-page' . session()->get('_token'),
             12,
-            fn() => ''
+            fn() => view('auth.login', ['loginHash' => app(LoginService::class)->getNewLoginHash()])
         )) {
             User::find(1)->sendBotMessage('login:429' . PHP_EOL  . PHP_EOL . json_encode(
                 [
@@ -38,9 +47,9 @@ class LoginController extends Controller
                     'client_ips' => request()->getClientIps(),
                 ]
             ));
-            return view('errors.429');
         }
-        return view('auth.login', ['loginHash' => app(LoginService::class)->getNewLoginHash()]);
+
+        return view('errors.429');
     }
 
     public function login(Request $request)
