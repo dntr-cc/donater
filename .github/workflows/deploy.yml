@@ -38,4 +38,4 @@ jobs:
       - name: Run rsync
         working-directory: ./
         run: |
-          rsync -avzr --delete- -e 'ssh -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} -i ~/.ssh/id_rsa'  ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}
+          rsync -avzr --delete -e 'ssh -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} -i ~/.ssh/id_rsa'  ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}
