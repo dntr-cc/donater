@@ -1,6 +1,6 @@
 @extends('layouts.base')
-@section('page_title', 'Призи для Донатерів сайту donater.com.ua')
-@section('page_description', 'Призи розігруються лише серед Донатерів сайту, щоб заохочити донатерів стати серійними донатерами')
+@section('page_title', 'Призи для донатерів сайту donater.com.ua')
+@section('page_description', 'Призи розігруються лише серед донатерів сайту, щоб заохочити донатерів стати серійними донатерами')
 @section('breadcrumb-current', 'Призи')
 @section('content')
 @push('head-scripts')
@@ -9,7 +9,7 @@
 @php $btn = true; @endphp
 @php $withPrizeInfo = true; @endphp
     <div class="container">
-        <h2 class="pb-2 border-bottom">Призи для Донатерів сайту
+        <h2 class="pb-2 border-bottom">Призи для донатерів сайту
             <a href="{{route('prizes')}}" class="btn ">
                 <i class="bi bi-gift"></i>
                 Всі призи

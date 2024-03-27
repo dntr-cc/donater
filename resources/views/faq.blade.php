@@ -15,7 +15,7 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#faq-collapseHowToInviteSomeone" aria-expanded="false"
                                     aria-controls="faq-collapseHowToInviteSomeone">
-                                Як запросити Донатера?
+                                Як запросити донатера?
                             </button>
                         </h2>
                         <div id="faq-collapseHowToInviteSomeone" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToInviteSomeone"
@@ -47,7 +47,7 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#faq-collapseIconsMeaning" aria-expanded="false"
                                     aria-controls="faq-collapseIconsMeaning">
-                                Що значать іконки біля імені Донатерів?
+                                Що значать іконки біля імені донатерів?
                             </button>
                         </h2>
                         <div id="faq-collapseIconsMeaning" class="accordion-collapse collapse" aria-labelledby="faq-headingIconsMeaning"

@@ -15,7 +15,7 @@
 @php $name = true; @endphp
 @php $donates = $user->getDonates(); @endphp
 @php $authUser = auth()?->user(); @endphp
-@php $additionalAnalyticsText = ' по Донатеру ' . $user->getUserLink(); @endphp
+@php $additionalAnalyticsText = ' по донатеру ' . $user->getUserLink(); @endphp
 @php $title = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
 @php $description = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
 @php $userBanner = url(app(\App\Services\OpenGraphImageService::class)->getUserImage($user)) @endphp
@@ -281,7 +281,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-sm-12 d-flex justify-content-between align-items-start">
-                                            <h4>Підтримує волонтерів</h4>
+                                            <h4>Донатить волонтерам</h4>
                                             <div>
                                                 <a href="#collapseDonates" data-bs-toggle="collapse" role="button"
                                                    aria-expanded="false"
@@ -393,7 +393,7 @@
                                             нього, отримують нагадування з посиланням на банку зборів «свого» волонтера.
                                             Таким чином донатори можуть робити регулярні внески на актуальну банку
                                             волонтера. Що більше, нагадування вже має зашитий в посилання код донатора,
-                                            що дає можливість побачити, від кого саме з Донатерів поступив внесок. А
+                                            що дає можливість побачити, від кого саме з донатерів поступив внесок. А
                                             це важливо, адже платформа надає волонтерам можливість заохочувати своїх
                                             донаторів призами, які розігруються тільки серед донаторів сайту. До речі,
                                             донатори теж можуть пропонувати свої призи для зборів. Від волонтера
