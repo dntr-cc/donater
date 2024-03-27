@@ -202,7 +202,7 @@ class User extends Authenticatable
 
     public function getCreatedAt(): Carbon
     {
-        return $this->created_at;
+        return $this->created_at->setTimezone(config('app.timezone'));
     }
 
     public function getUpdatedAt(): Carbon
