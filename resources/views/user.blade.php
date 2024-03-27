@@ -721,18 +721,5 @@
                 return false;
             });
             @endcan
-            window.document.querySelectorAll('.arrow-control')
-                .forEach(el => el.addEventListener('click', event => {
-                    let button = $(event.target.closest('.arrow-control'));
-                    console.log(button);
-                    let state = button.attr('data-state');
-                    if (state === 'down') {
-                        button.attr('data-state', 'up');
-                        button.html('<i class="bi bi-arrow-up"></i>');
-                    } else {
-                        button.attr('data-state', 'down');
-                        button.html('<i class="bi bi-arrow-down"></i>');
-                    }
-                }));
         </script>
 @endsection
