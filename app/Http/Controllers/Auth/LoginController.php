@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\LoginService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\View\View;
 
 class LoginController extends Controller
@@ -24,6 +26,14 @@ class LoginController extends Controller
 
     public function showLoginForm(): View
     {
+        if (!RateLimiter::attempt(
+            'open-login-page' . session()->get('_token'),
+            12,
+            fn () => User::find(1)->sendBotMessage('HERAK')
+        )) {
+            return view('errors.429');
+        }
+
         return view('auth.login', ['loginHash' => app(LoginService::class)->getNewLoginHash()]);
     }
 
