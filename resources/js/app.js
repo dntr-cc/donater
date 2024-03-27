@@ -48,7 +48,7 @@ window.isValidUrl = urlString => {
 }
 
 window.document.querySelectorAll('.arrow-control').forEach(el => el.addEventListener('click', event => {
-    let button = $(event.target.closest('.arrow-control'));
+    let button = $($(event.target).hasClass('arrow-control') ? event.target : event.target.closest('.arrow-control'));
     let state = button.attr('data-state');
     if (state === 'down') {
         button.attr('data-state', 'up');

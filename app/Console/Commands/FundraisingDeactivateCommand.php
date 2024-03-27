@@ -22,6 +22,9 @@ class FundraisingDeactivateCommand extends Command
         $service = app(GoogleServiceSheets::class);
         $limit = strtotime(static::DAYS);
         foreach ($this->getAllFundraisings() as $fundraising) {
+            if (!$fundraising) {
+                continue;
+            }
             $rows = $service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId());
             $rowsChecked = 0;
             foreach ($rows->all() as $item) {
