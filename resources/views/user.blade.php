@@ -18,6 +18,7 @@
 @php $title = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
 @php $description = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
 @php $userBanner = url(app(\App\Services\OpenGraphImageService::class)->getUserImage($user)) @endphp
+@php $openedLargeBlocks = $authUser ? $authUser->settings->hasSetting(UserSetting::LARGE_BLOCKS_ARE_OPENED) : true; @endphp
 @extends('layouts.base')
 @section('page_title', $title)
 @section('page_description', $description)
@@ -146,12 +147,12 @@
                                                 <a href="#collapseSubscribes" data-bs-toggle="collapse" role="button"
                                                    aria-expanded="false"
                                                    aria-controls="collapseSubscribes" class="btn arrow-control"
-                                                   data-state="down">
-                                                    <i class="bi bi-arrow-down"></i>
+                                                   data-state="{{ $openedLargeBlocks ? 'up' : 'down' }}">
+                                                    <i class="bi bi-arrow-{{ $openedLargeBlocks ? 'up' : 'down' }}"></i>
                                                 </a>
                                             </li>
                                             @if($user->getSubscribes()->count())
-                                                <div class="collapse" id="collapseSubscribes">
+                                                <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseSubscribes">
                                                     @foreach($user->getSubscribes()->all() as $subscribe)
                                                         <div class="col-md-12">
                                                             @include('layouts.user_item', ['user' => $subscribe->getVolunteer(), 'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS])
@@ -178,13 +179,13 @@
                                                 <a href="#collapseSubscribers" data-bs-toggle="collapse" role="button"
                                                    aria-expanded="false"
                                                    aria-controls="collapseSubscribers" class="btn arrow-control"
-                                                   data-state="down">
-                                                    <i class="bi bi-arrow-down"></i>
+                                                   data-state="{{ $openedLargeBlocks ? 'up' : 'down' }}">
+                                                    <i class="bi bi-arrow-{{ $openedLargeBlocks ? 'up' : 'down' }}"></i>
                                                 </a>
                                             @endif
                                         </li>
                                         @if($subscribers->count())
-                                            <div class="collapse" id="collapseSubscribers">
+                                            <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseSubscribers">
                                                 @foreach($subscribers as $subscriber)
                                                     <div class="col-md-12">
                                                         @include('layouts.user_item', ['user' => $subscriber->getDonater()])
@@ -227,8 +228,8 @@
                                                        role="button"
                                                        aria-expanded="false"
                                                        aria-controls="collapseFundraisings" class="btn arrow-control"
-                                                       data-state="up">
-                                                        <i class="bi bi-arrow-up"></i>
+                                                       data-state="{{ $openedLargeBlocks ? 'up' : 'down' }}">
+                                                        <i class="bi bi-arrow-{{ $openedLargeBlocks ? 'up' : 'down' }}"></i>
                                                     </a>
                                                 @endif
                                                 @if (auth()?->user()?->getId() === $user->getId())
@@ -240,7 +241,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="collapse show" id="collapseFundraisings">
+                                    <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseFundraisings">
                                         <hr>
                                         <div
                                             class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
@@ -264,13 +265,13 @@
                                                 <a href="#collapseDonates" data-bs-toggle="collapse" role="button"
                                                    aria-expanded="false"
                                                    aria-controls="collapseDonates" class="btn arrow-control"
-                                                   data-state="up">
-                                                    <i class="bi bi-arrow-up"></i>
+                                                   data-state="{{ $openedLargeBlocks ? 'up' : 'down' }}">
+                                                    <i class="bi bi-arrow-{{ $openedLargeBlocks ? 'up' : 'down' }}"></i>
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="collapse show" id="collapseDonates">
+                                    <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseDonates">
                                         <hr>
                                         <div
                                             class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
@@ -289,14 +290,14 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-sm-12 d-flex justify-content-between align-items-start">
-                                            <h4>Всі призи</h4>
+                                            <h4>Призи</h4>
                                             <div>
                                                 @if($allPrizes->count())
                                                     <a href="#collapsePrizes" data-bs-toggle="collapse" role="button"
                                                        aria-expanded="false"
                                                        aria-controls="collapsePrizes" class="btn arrow-control"
-                                                       data-state="up">
-                                                        <i class="bi bi-arrow-up"></i>
+                                                       data-state="{{ $openedLargeBlocks ? 'up' : 'down' }}">
+                                                        <i class="bi bi-arrow-{{ $openedLargeBlocks ? 'up' : 'down' }}"></i>
                                                     </a>
                                                 @endif
                                                 @if (auth()?->user()?->getId() === $user->getId())
@@ -308,7 +309,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="collapse show" id="collapsePrizes">
+                                    <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapsePrizes">
                                         <hr>
                                         <div
                                             class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
@@ -321,31 +322,29 @@
                             </div>
                         @endif
                         {{--Donater Analytics block--}}
-                        @if (auth()?->user()?->can('update', $user) && $donaterRows->count())
-                            @php $uniq = 'volunteerUniq' @endphp
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-sm-12 d-flex justify-content-between align-items-start">
-                                            <h4>Донатна Аналітика</h4>
-                                            <div>
-                                            <a href="#collapseDonateAnalytics" data-bs-toggle="collapse" role="button"
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12 d-flex justify-content-between align-items-start">
+                                        <h4>Донатна Аналітика</h4>
+                                        <div>
+                                            <a href="#collapseDonateAnalytics" data-bs-toggle="collapse"
+                                               role="button"
                                                aria-expanded="false"
                                                aria-controls="collapseDonateAnalytics" class="btn arrow-control"
-                                               data-state="down">
-                                                <i class="bi bi-arrow-down"></i>
+                                               data-state="{{ $openedLargeBlocks ? 'up' : 'down' }}">
+                                                <i class="bi bi-arrow-{{ $openedLargeBlocks ? 'up' : 'down' }}"></i>
                                             </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="collapse" id="collapseDonateAnalytics">
-                                        <div class="row row-cols-1 g-1">
-                                            @include('layouts.analytics', ['rows' => $donaterRows, 'charts' => $donaterCharts, 'charts2' => $donaterCharts2, 'charts3' => $donaterCharts3, 'uniq' => 'donateUniq', 'additionalAnalyticsText' => 'sasa',])
                                         </div>
                                     </div>
                                 </div>
+                                <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseDonateAnalytics">
+                                    <div class="row row-cols-1 g-1">
+                                        @include('layouts.analytics', ['rows' => $donaterRows, 'charts' => $donaterCharts, 'charts2' => $donaterCharts2, 'charts3' => $donaterCharts3, 'uniq' => 'donateUniq', 'additionalAnalyticsText' => 'sasa',])
+                                    </div>
+                                </div>
                             </div>
-                        @endcan
+                        </div>
                         {{--Volunteer Analytics block--}}
                         @if (auth()?->user()?->can('update', $user) && $user->getFundraisings()?->count())
                             @php $uniq = 'volunteerUniq' @endphp
@@ -355,16 +354,16 @@
                                         <div class="col-sm-12 d-flex justify-content-between align-items-start">
                                             <h4>Волонтерська Аналітика</h4>
                                             <div>
-                                            <a href="#collapseFundAnalytics" data-bs-toggle="collapse" role="button"
-                                               aria-expanded="false"
-                                               aria-controls="collapseFundAnalytics" class="btn arrow-control"
-                                               data-state="up">
-                                                <i class="bi bi-arrow-up"></i>
-                                            </a>
+                                                <a href="#collapseFundAnalytics" data-bs-toggle="collapse" role="button"
+                                                   aria-expanded="false"
+                                                   aria-controls="collapseFundAnalytics" class="btn arrow-control"
+                                                   data-state="{{ $openedLargeBlocks ? 'up' : 'down' }}">
+                                                    <i class="bi bi-arrow-{{ $openedLargeBlocks ? 'up' : 'down' }}"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="collapse show" id="collapseFundAnalytics">
+                                    <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseFundAnalytics">
                                         <div class="row row-cols-1 g-1">
                                             @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3', 'additionalAnalyticsText', 'uniq'))
                                         </div>

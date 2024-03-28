@@ -26,7 +26,7 @@ class SubscribeSchedulerCommand extends Command
                 $openFundraisings = $subscribe->getVolunteer()->getFundraisings()
                     ->filter(fn(Fundraising $fundraising) => $fundraising->isEnabled())
                     ->count();
-                $nextMessage->update(['has_open_fundraisings' => (bool)$openFundraisings]);
+                $nextMessage->update(['need_send' => (bool)$openFundraisings]);
                 $code = $nextMessage->getNotificationCode();
                 Artisan::call('subscribe:notify ' . $subscribe->getId() . ' ' . $code);
                 $nextScheduledAt = $nextMessage->getScheduledAt()->modify($subscribe->getModifier($nextMessage->getFrequency()));
@@ -34,7 +34,7 @@ class SubscribeSchedulerCommand extends Command
                     'subscribes_id' => $subscribe->getId(),
                     'frequency' => $nextMessage->getFrequency(),
                     'scheduled_at' => $nextScheduledAt,
-                    'has_open_fundraisings' => (bool)$openFundraisings,
+                    'need_send' => (bool)$openFundraisings,
                     'hash' => SubscribesMessage::generateHash($subscribe->getId(), $nextScheduledAt->format('Y-m-d H:i:s')),
                 ]);
             }

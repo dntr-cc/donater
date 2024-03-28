@@ -57,6 +57,9 @@ window.document.querySelectorAll('.arrow-control').forEach(el => el.addEventList
         button.attr('data-state', 'down');
         button.html('<i class="bi bi-arrow-down"></i>');
     }
+    if (window.masonry) {
+        window.masonry();
+    }
 }));
 
 window.document.querySelectorAll('.copy-text').forEach(el => el.addEventListener('click', event => {
