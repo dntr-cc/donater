@@ -75,9 +75,21 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="https://www.instagram.com/donater.com.ua" target="_blank" class="dropdown-item">
+                                    <i class="bi bi-facebook d-inline mx-auto mb-1"></i>
+                                    Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.linkedin.com/company/donatercomua" target="_blank" class="dropdown-item">
+                                    <i class="bi bi-facebook d-inline mx-auto mb-1"></i>
+                                    LinkedIn
+                                </a>
+                            </li>
+                            <li>
                                 <a href="https://telegra.ph/donatercomua---podroboc%D1%96-proektu-01-23" target="_blank" class="dropdown-item">
                                     <i class="bi bi-three-dots-vertical d-inline mx-auto mb-1"></i>
-                                    Опис (10хв читання)
+                                    Опис (30хв читання)
                                 </a>
                             </li>
                             <li>
