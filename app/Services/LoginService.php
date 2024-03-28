@@ -16,6 +16,17 @@ class LoginService
 {
     public const string LOGIN_START = 'login:start:key';
     public const string LOGIN_END = 'login:end:key';
+    const string WELCOME_TEXT = <<<'MD'
+Вітаємо вас з реєстрацією! Ваш профіль на сайті автоматично заповнило даними з телеграму.
+
+Якщо ви волонтер, то ми зняли відео як користуватися платформою та додати свій збір: https://youtu.be/s6El9IK88LI (12хв, можна дивитися х2).
+Після додавання збору запрошуйте своїх донатерів підписуватися на вас на регулярні донати, вони зможуть обрати суму та періодичність. Вам приде повідомлення, коли хтось підпишеться.
+Телеграм бот буде присилати їм посилання на банку на відкритий вами збір. Якщо ви його закриєте, та відкриєте наступний - їм нічого не треба робити, вони постійно отримують посилання на монобанку актуального відкритого вами збору.
+Якщо відкритого збору немає - вони не отримають повідомлення з нагадуванням. Як зупиняти та запускати збір ви зможете побачити на відео.
+
+Якщо ви донатер/ка - скоріш підписуйтеся на свого волонтера! Дякуємо вам за підтримку Сил Оборони України!
+MD;
+
 
     public function getNewLoginHash(): string
     {
@@ -68,12 +79,14 @@ class LoginService
                 'is_premium'  => $data['is_premium'] ?? false,
                 'avatar'      => $avatar,
             ]);
+
             if ($fatherId = Cache::pull('referral_fg:' . sha1(request()->userAgent() . implode(request()->ips())))) {
                 Referral::create([
                     'user_id' => $fatherId,
                     'referral_id' => $user->getId(),
                 ]);
             }
+            $user->sendBotMessage(self::WELCOME_TEXT);
         }
 
         $user->setIsPremium($data['is_premium'] ?? false)->save();
