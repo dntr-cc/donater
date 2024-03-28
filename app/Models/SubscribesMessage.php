@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $subscribes_id
  * @property string $frequency
- * @property bool $has_open_fundraisings
+ * @property bool $need_send
  * @property string $hash
  * @property Carbon $scheduled_at
  * @property Carbon $created_at
@@ -45,7 +45,7 @@ class SubscribesMessage extends Model
         'subscribes_id',
         'frequency',
         'scheduled_at',
-        'has_open_fundraisings',
+        'need_send',
         'hash',
     ];
 
@@ -91,9 +91,9 @@ class SubscribesMessage extends Model
         return (string)$this->hash;
     }
 
-    public function isHasOpenFundraisings(): bool
+    public function isNeedSend(): bool
     {
-        return $this->has_open_fundraisings;
+        return $this->need_send;
     }
 
     public function getNotificationCode(): string

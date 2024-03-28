@@ -21,7 +21,7 @@ class TrustService
                 $this->getIdsForProcessing($donaterId, $volunteerId, $dateStart, $dateEnd
                 )
             )
-            ->where('has_open_fundraisings', '=', true)
+            ->where('need_send', '=', true)
             ->where('created_at', '>=', $dateStart)
             ->where('created_at', '<=', $dateEnd)
             ->get();

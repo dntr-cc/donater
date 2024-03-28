@@ -47,7 +47,7 @@ class SubscribeController extends Controller
         $volunteer = $subscribe->getVolunteer();
         $id = $subscribe->getDonater()->getId();
         $this->notifyVolunteer($volunteer, $subscribe, self::SUBSCRIPTION_DELETED_MESSAGE);
-        $subscribe->getNextSubscribesMessage()?->update(['has_open_fundraisings' => false]);
+        $subscribe->getNextSubscribesMessage()?->update(['need_send' => false]);
         $subscribe->delete();
         OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
         OpenGraphRegenerateEvent::dispatch($id, OpenGraphRegenerateEvent::TYPE_USER);
@@ -78,13 +78,13 @@ class SubscribeController extends Controller
     protected function subscribe(Subscribe $subscribe, User $volunteer): void
     {
         $subscribesMessage = $subscribe->getNextSubscribesMessage();
-        $subscribesMessage?->update(['has_open_fundraisings' => false]);
+        $subscribesMessage?->update(['need_send' => false]);
         SubscribesMessage::create([
-            'subscribes_id'         => $subscribe->getId(),
-            'frequency'             => $subscribe->getFrequency(),
-            'scheduled_at'          => $subscribe->getFirstMessageAt(),
-            'has_open_fundraisings' => true,
-            'hash'                  => SubscribesMessage::generateHash($subscribe->getId(), $subscribe->getFirstMessageAt()->format('Y-m-d H:i:s')),
+            'subscribes_id' => $subscribe->getId(),
+            'frequency'     => $subscribe->getFrequency(),
+            'scheduled_at'  => $subscribe->getFirstMessageAt(),
+            'need_send'     => true,
+            'hash'          => SubscribesMessage::generateHash($subscribe->getId(), $subscribe->getFirstMessageAt()->format('Y-m-d H:i:s')),
         ]);
         OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
         OpenGraphRegenerateEvent::dispatch($subscribe->getDonater()->getId(), OpenGraphRegenerateEvent::TYPE_USER);

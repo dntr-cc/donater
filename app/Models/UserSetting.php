@@ -20,7 +20,8 @@ class UserSetting extends Model
     public const string USE_PERCENT_INSTEAD_FRACTION = 'use_percent_instead_fraction';
     public const string DONT_SEND_SUBSCRIBERS_INFORMATION = 'dont_send_subscribers_information';
     public const string DONT_SEND_MARKETING_MESSAGES = 'dont_send_marketing_messages';
-    public const string USE_FEMININE_FORMS_WHEN_MY_ROLE_IS_CALLED = 'USE_FEMININE_FORMS_WHEN_MY_ROLE_IS_CALLED';
+    public const string USE_FEMININE_FORMS_WHEN_MY_ROLE_IS_CALLED = 'use_feminine_forms_when_my_role_is_called';
+    public const string LARGE_BLOCKS_ARE_OPENED = 'large_blocks_are_opened';
     protected $fillable = [
         'setting',
         'user_id',
@@ -32,6 +33,7 @@ class UserSetting extends Model
         self::DONT_SEND_MARKETING_MESSAGES              => 'Не отримувати повідомлення маркетингових нагадувань чи розсилок',
         self::DONT_SEND_SUBSCRIBERS_INFORMATION         => 'Як волонтер: не отримувати повідомлення про додавання/видалення/зміни підписок серійних донатерів',
         self::USE_FEMININE_FORMS_WHEN_MY_ROLE_IS_CALLED => 'Використовувати фемінітиви, коли описують мою роль (волонтерка/донатерка)',
+        self::LARGE_BLOCKS_ARE_OPENED                   => 'При відкритті профілів всі блоки окрім посилань будуть розгорнуті',
     ];
 
     public function getId(): int
