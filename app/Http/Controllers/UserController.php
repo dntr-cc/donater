@@ -109,15 +109,15 @@ class UserController extends Controller
         $rowCollectionService = app(RowCollectionService::class);
         $donaterRows = $rowCollectionService->getRowCollectionByDonates($user->getDonates());
         $chartsService = app(ChartService::class);
-        $donaterCharts = $chartsService->getChartPerDay($donaterRows);
-        $donaterCharts2 = $chartsService->getChartPerAmount($donaterRows);
-        $donaterCharts3 = $chartsService->getChartPerSum($donaterRows);
+        $donaterCharts = $chartsService->getChartPerDay($donaterRows, 'linePerDay1');
+        $donaterCharts2 = $chartsService->getChartPerAmount($donaterRows, 'piePerAmount1');
+        $donaterCharts3 = $chartsService->getChartPerSum($donaterRows, 'piePerSum1');
         $rows = $charts = $charts2 = $charts3 = null;
         if (auth()?->user()?->can('update', $user) && $fundraisings) {
             $rows = $rowCollectionService->getRowCollection($fundraisings);
-            $charts = $chartsService->getChartPerDay($rows);
-            $charts2 = $chartsService->getChartPerAmount($rows);
-            $charts3 = $chartsService->getChartPerSum($rows);
+            $charts = $chartsService->getChartPerDay($rows, 'linePerDay2');
+            $charts2 = $chartsService->getChartPerAmount($rows, 'piePerAmount2');
+            $charts3 = $chartsService->getChartPerSum($rows, 'piePerSum2');
         }
 
         return view('user', [

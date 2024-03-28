@@ -340,7 +340,7 @@
                                     </div>
                                     <div class="collapse" id="collapseDonateAnalytics">
                                         <div class="mt-4 row row-cols-1 g-4 ">
-                                            @include('layouts.analytics', ['donaterRows' => $donaterRows, 'donaterCharts' => $donaterCharts, 'donaterCharts2' => $donaterCharts2, 'donaterCharts3' => $donaterCharts3, 'uniq' => 'donateUniq', 'additionalAnalyticsText' => 'sasa',])
+                                            @include('layouts.analytics', ['rows' => $donaterRows, 'charts' => $donaterCharts, 'charts2' => $donaterCharts2, 'charts3' => $donaterCharts3, 'uniq' => 'donateUniq', 'additionalAnalyticsText' => 'sasa',])
                                         </div>
                                     </div>
                                 </div>
