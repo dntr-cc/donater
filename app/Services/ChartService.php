@@ -28,11 +28,11 @@ class ChartService
      * @param RowCollection $rows
      * @return Builder
      */
-    public function getChartPerDay(RowCollection $rows): Builder
+    public function getChartPerDay(RowCollection $rows, string $name = 'linePerDay'): Builder
     {
         $perDay = $rows->perDay();
 
-        return $this->chart()->name('linePerDay')
+        return $this->chart()->name($name)
             ->type('line')
             ->size(['width' => 400, 'height' => 200])
             ->labels(array_keys($perDay))
@@ -61,11 +61,11 @@ class ChartService
      * @param RowCollection $rows
      * @return Builder
      */
-    public function getChartPerAmount(RowCollection $rows): Builder
+    public function getChartPerAmount(RowCollection $rows, string $name = 'piePerAmount'): Builder
     {
         $perSum = $rows->perAmount();
 
-        return $this->chart()->name('piePerAmount')
+        return $this->chart()->name($name)
             ->type('pie')
             ->labels(array_keys($perSum))
             ->datasets([
@@ -95,11 +95,11 @@ class ChartService
      * @param RowCollection $rows
      * @return Builder
      */
-    public function getChartPerSum(RowCollection $rows): Builder
+    public function getChartPerSum(RowCollection $rows, string $name = 'piePerSum'): Builder
     {
         $perSum = $rows->perSum();
 
-        return $this->chart()->name('piePerSum')
+        return $this->chart()->name($name)
             ->type('pie')
             ->labels(array_keys($perSum))
             ->datasets([

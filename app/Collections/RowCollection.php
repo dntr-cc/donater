@@ -188,7 +188,7 @@ class RowCollection extends Collection
         $text .= PHP_EOL . PHP_EOL;
         $text .= 'Донати по дням:' . PHP_EOL;
         foreach ($perDays as $day => $data) {
-            $text .= "$day: зібрали {$data['amount']}, що є {$data['percent']}% від всієї суми\n";
+            $text .= "$day: задоначено {$data['amount']}, що є {$data['percent']}% від всієї суми\n";
         }
 
         $perAmount = $this->perAmount();
