@@ -11,8 +11,11 @@ use App\Services\FileService;
 use App\Services\GoogleServiceSheets;
 use App\Services\RowCollectionService;
 use Cache;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -22,27 +25,11 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $rows = $charts = $charts2 = $charts3 = null;
         $dntr = (bool)Cache::pull('fg:' . sha1(request()->userAgent() . implode(request()->ips())));
         if ($dntr) {
             Cache::set('referral_fg:' . sha1(request()->userAgent() . implode(request()->ips())), $user->getId(), 60 * 60);
         }
-        if (auth()?->user()?->can('update', $user)) {
-            $rows = app(RowCollectionService::class)->getRowCollection($user->getFundraisings());
-            $chartsService = app(ChartService::class);
-            $charts = $chartsService->getChartPerDay($rows);
-            $charts2 = $chartsService->getChartPerAmount($rows);
-            $charts3 = $chartsService->getChartPerSum($rows);
-        }
-
-        return view('user', [
-            'dntr' => $dntr,
-            'user' => $user,
-            'rows' => $rows,
-            'charts' => $charts,
-            'charts2' => $charts2,
-            'charts3' => $charts3,
-        ]);
+        return static::renderUserView($user, $dntr, $user->getFundraisings());
     }
 
     public function index(): View
@@ -106,5 +93,44 @@ class UserController extends Controller
     protected function getVolunteersPerPage(): int
     {
         return config('app.per_page.volunteers') ?? 12;
+    }
+
+    /**
+     * @param User $user
+     * @param bool $dntr
+     * @param Collection|null $fundraisings
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|\Illuminate\Contracts\View\View|Application
+     */
+    public static function renderUserView(
+        User $user,
+        bool $dntr,
+        Collection $fundraisings = null
+    ): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\View|Application|Factory {
+        $rowCollectionService = app(RowCollectionService::class);
+        $donaterRows = $rowCollectionService->getRowCollectionByDonates($user->getDonates());
+        $chartsService = app(ChartService::class);
+        $donaterCharts = $chartsService->getChartPerDay($donaterRows);
+        $donaterCharts2 = $chartsService->getChartPerAmount($donaterRows);
+        $donaterCharts3 = $chartsService->getChartPerSum($donaterRows);
+        $rows = $charts = $charts2 = $charts3 = null;
+        if (auth()?->user()?->can('update', $user) && $fundraisings) {
+            $rows = $rowCollectionService->getRowCollection($fundraisings);
+            $charts = $chartsService->getChartPerDay($rows);
+            $charts2 = $chartsService->getChartPerAmount($rows);
+            $charts3 = $chartsService->getChartPerSum($rows);
+        }
+
+        return view('user', [
+            'dntr'           => $dntr,
+            'user'           => $user,
+            'rows'           => $rows,
+            'charts'         => $charts,
+            'charts2'        => $charts2,
+            'charts3'        => $charts3,
+            'donaterRows'    => $donaterRows,
+            'donaterCharts'  => $donaterCharts,
+            'donaterCharts2' => $donaterCharts2,
+            'donaterCharts3' => $donaterCharts3,
+        ]);
     }
 }

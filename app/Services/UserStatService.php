@@ -31,7 +31,6 @@ class UserStatService
             return unserialize(Cache::get($this->getCacheKey('donater', $user->getId())));
         }
 
-        $rows = app(\App\Services\RowCollectionService::class)->getRowCollection($user->getFundraisings());
         $totalSubscribes = $user->getSubscribersAsSubscriber()->count();
         $donateCount = $user->getDonateCount();
         $totalAmount = $user->getDonatesSumAll();
