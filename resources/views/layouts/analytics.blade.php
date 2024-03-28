@@ -6,8 +6,8 @@
 @php $additionalAnalyticsText = $additionalAnalyticsText ?? '' @endphp
 
 @if(!empty($rows))
-    <div class="row-cols-4 d-flex justify-content-center">
-        <a id="text-analytics-{{ $uniq }}" class="btn m-3">
+    <div class="row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 d-flex justify-content-center">
+        <a id="text-analytics-{{ $uniq }}" class="btn m-1">
             <i class="bi bi-search-heart-fill"></i>
             Аналітика текстом
         </a>
