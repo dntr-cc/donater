@@ -13,7 +13,6 @@
 @php $withPrizeInfo = true; @endphp
 @php $additionalClasses = 'btn-xs'; @endphp
 @php $name = true; @endphp
-@php $donates = $user->getDonates(); @endphp
 @php $authUser = auth()?->user(); @endphp
 @php $additionalAnalyticsText = ' по донатеру ' . $user->getUserLink(); @endphp
 @php $title = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
@@ -52,32 +51,11 @@
                                      alt="avatar"
                                      class="rounded-circle img-fluid" style="width: 150px;">
                                 <h3 class="my-3">{{ $user->getFullName() }}</h3>
-                                @if ($user->isPremium())
-                                    <span title="Створені збори" class="badge bg-golden p-1">
-                                    <i class="bi bi-telegram" title="Telegram Premium"
-                                       style="color: #fff;"></i>
-                                    </span>
-                                @endif
-                                @if ($user->fundraisings->count())
-                                    <span title="Створені збори" class="badge p-1 bg-info">
-                                    &nbsp;{{ $user->fundraisings->count() }}&nbsp;
-                                </span>
-                                @endif
-                                @if ($user->getDonateCount())
-                                    <span title="Завалідовані донати" class="badge p-1 bg-success">
-                                    &nbsp;{{ $user->getDonateCount() }}&nbsp;
-                                </span>
-                                @endif
-                                @if ($user->getPrizesCount())
-                                    <span title="Призи для зборів" class="badge p-1 bg-warning">
-                                    &nbsp;{{ $user->getPrizesCount() }}&nbsp;
-                                </span>
-                                @endif
                                 <h4 class="m-3 text-muted">{{ $user->getAtUsername() }}</h4>
                                 <h6 class="m-3 text-muted">Дата реєстрації {{ $user->getCreatedAt() }}</h6>
                                 @if($ref = \App\Models\Referral::query()->where('referral_id', '=', $user->getId())->get()->first())
-                                    <h6 class="m-3 text-muted">по
-                                        запрошенню {!! $ref->getInviter()->getUserHref() !!}</h6>
+                                    <p class="fs-6 1m-3 text-muted">по
+                                        запрошенню {!! $ref->getInviter()->getUserHref() !!}</p>
                                 @endif
                                 <div class="d-flex justify-content-center mb-2">
                                     <div class="form-floating input-group">
@@ -328,7 +306,6 @@
                                                     </a>
                                                 @endif
                                             </div>
-
                                         </div>
                                     </div>
                                     <div class="collapse show" id="collapsePrizes">
@@ -343,19 +320,53 @@
                                 </div>
                             </div>
                         @endif
-                        @if (auth()?->user()?->can('update', $user) && $user->getFundraisings()?->count())
+                        {{--Donater Analytics block--}}
+                        @if (auth()?->user()?->can('update', $user) && $donaterRows->count())
+                            @php $uniq = 'volunteerUniq' @endphp
                             <div class="card mb-4">
                                 <div class="card-body">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-7">
-                                                <div class="me-auto mt-auto">
-                                                    <h4>Ваша аналітика по всім зборам (бачите тільки ви)</h4>
-                                                </div>
+                                    <div class="row mb-4">
+                                        <div class="col-sm-12 d-flex justify-content-between align-items-start">
+                                            <h4>Донатна Аналітика</h4>
+                                            <div>
+                                            <a href="#collapseDonateAnalytics" data-bs-toggle="collapse" role="button"
+                                               aria-expanded="false"
+                                               aria-controls="collapseDonateAnalytics" class="btn arrow-control"
+                                               data-state="down">
+                                                <i class="bi bi-arrow-down"></i>
+                                            </a>
                                             </div>
-                                            <div class="col-md-12 px-2 py-2">
-                                                @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3', 'additionalAnalyticsText'))
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="collapseDonateAnalytics">
+                                        <div class="mt-4 row row-cols-1 g-4 ">
+                                            @include('layouts.analytics', ['donaterRows' => $donaterRows, 'donaterCharts' => $donaterCharts, 'donaterCharts2' => $donaterCharts2, 'donaterCharts3' => $donaterCharts3, 'uniq' => 'donateUniq', 'additionalAnalyticsText' => 'sasa',])
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endcan
+                        {{--Volunteer Analytics block--}}
+                        @if (auth()?->user()?->can('update', $user) && $user->getFundraisings()?->count())
+                            @php $uniq = 'volunteerUniq' @endphp
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="row mb-4">
+                                        <div class="col-sm-12 d-flex justify-content-between align-items-start">
+                                            <h4>Волонтерська Аналітика</h4>
+                                            <div>
+                                            <a href="#collapseFundAnalytics" data-bs-toggle="collapse" role="button"
+                                               aria-expanded="false"
+                                               aria-controls="collapseFundAnalytics" class="btn arrow-control"
+                                               data-state="up">
+                                                <i class="bi bi-arrow-up"></i>
+                                            </a>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="collapse show" id="collapseFundAnalytics">
+                                        <div class="mt-4 row row-cols-1 g-4 ">
+                                            @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3', 'additionalAnalyticsText', 'uniq'))
                                         </div>
                                     </div>
                                 </div>

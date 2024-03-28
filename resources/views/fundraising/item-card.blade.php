@@ -13,7 +13,7 @@
         <a href="{{ route('fundraising.show', compact('fundraising')) }}">
             <img src="{{ url($fundraising->getAvatar()) }}" class="card-img-top "
                  alt="{{ $fundraising->getName() }}"></a>
-        <div class="m-1 mt-3 {{ $fundraising->getClassByState() }} }}">
+        <div class="m-1 mt-3 {{ $fundraising->getClassByState() }}">
             @if($btn || $name)
             <div class="text-center m-4">
                 @if($name)

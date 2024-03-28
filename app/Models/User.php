@@ -78,10 +78,6 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        static::addGlobalScope('donates_all_count', static function (Builder $builder) {
-            $builder->withCount('donatesAll');
-        });
-
         static::addGlobalScope(static function (Builder $builder) {
             $builder->orderBy('id', 'desc');
         });
@@ -99,21 +95,6 @@ class User extends Authenticatable
      * @return HasMany
      */
     public function donates(): HasMany
-    {
-        return $this->hasMany(Donate::class, 'user_id', 'id')->limit(10);
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function donations(): HasMany
-    {
-        return $this->hasMany(Donate::class, 'user_id', 'id');
-    }
-    /**
-     * @return HasMany
-     */
-    public function donatesAll(): HasMany
     {
         return $this->hasMany(Donate::class, 'user_id', 'id');
     }
@@ -326,12 +307,6 @@ class User extends Authenticatable
         return self::with('donates')->where('id', '=', $this->getId())->first()?->donates;
     }
 
-    public function geAllDonations(): Collection|DonateCollection|array|null
-    {
-        $model = self::with('donations')->where('id', '=', $this->getId())->first();
-        return $model?->donations;
-    }
-
     public function getFundraisings(): Collection|array
     {
         return $this->fundraisings;
@@ -339,7 +314,7 @@ class User extends Authenticatable
 
     public function getDonateCount(): int
     {
-        return $this->donates_all_count;
+        return $this->getDonates()->count();
     }
 
     public function getPrizesCount(): int
