@@ -18,8 +18,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content rounded-4 shadow">
                             <div class="modal-header p-4 pb-2 border-bottom-0 justify-content-center">
-                                <h2 class="title fs-5" id="createPrizeModalLabel">Створити новий приз для
-                                    зборів</h2>
+                                <h2 class="title" id="createPrizeModalLabel">Створити новий приз</h2>
                             </div>
                             <div class="modal-b-ody p-3 pt-0">
                                 <div class="row">

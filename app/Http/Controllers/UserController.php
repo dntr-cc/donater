@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $dntr = (bool)Cache::pull('fg:' . sha1(request()->userAgent() . implode(request()->ips())));
+        $dntr = (bool)Cache::pull(':fg:' . sha1(request()->userAgent() . implode(request()->ips())));
         if ($dntr) {
             Cache::set('referral_fg:' . sha1(request()->userAgent() . implode(request()->ips())), $user->getId(), 60 * 60);
         }

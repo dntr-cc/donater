@@ -16,7 +16,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content rounded-4 shadow">
                             <div class="modal-header p-4 pb-2 border-bottom-0 justify-content-center">
-                                <h2 class="title fs-5" id="createFundraisingModalLabel">Створити новий збір</h2>
+                                <h2 class="title" id="createFundraisingModalLabel">Створити новий збір</h2>
                             </div>
                             <div class="modal-b-ody p-3 pt-0">
                                 <div class="row">
@@ -36,6 +36,13 @@
                                                    value="/images/banners/ava-fund-default.png">
                                             <input id="file" type="file" style="display: none;" accept="image/*">
                                         </span>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="m-3 text-muted lh-1 fs-6">
+                                                Якщо вам не подобається ваш аватар збору -
+                                                ви можете згенерувати свій за допомогою
+                                                <a href="https://rewlogan.com/cover" target="_blank">rewlogan/cover</a>
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
