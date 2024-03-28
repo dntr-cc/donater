@@ -2,10 +2,12 @@
 
 use App\Bot\CommandWrapper;
 use App\Collections\RowCollection;
+use App\Models\Donate;
 use App\Models\Fundraising;
 use App\Models\Prize;
 use App\Services\ChartService;
 use App\Services\GoogleServiceSheets;
+use App\Services\RowCollectionService;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -60,8 +62,13 @@ Route::get('/analytics', static function () {
     $charts = $chartsService->getChartPerDay($rows);
     $charts2 = $chartsService->getChartPerAmount($rows);
     $charts3 = $chartsService->getChartPerSum($rows);
+    $rowCollectionService = app(RowCollectionService::class);
+    $rows2 = $rowCollectionService->getRowCollectionByDonates(Donate::all());
+    $chartsAll = $chartsService->getChartPerDay($rows2, 'getChartPerDay2');
+    $charts2All = $chartsService->getChartPerAmount($rows2, 'getChartPerAmount2');
+    $charts3All = $chartsService->getChartPerSum($rows2, 'getChartPerSum2');
 
-    return view('analytics', compact('rows', 'charts', 'charts2', 'charts3'));
+    return view('analytics', compact('rows', 'charts', 'charts2', 'charts3', 'rows2', 'chartsAll', 'charts2All', 'charts3All'));
 })->name('analytics');
 Route::get('/about', static fn() => redirect(\route('welcome'), Response::HTTP_FOUND)->header('Cache-Control', 'no-store, no-cache, must-revalidate'))->name('about');
 Route::get('/roadmap', static fn() => view('roadmap'))->name('roadmap');
