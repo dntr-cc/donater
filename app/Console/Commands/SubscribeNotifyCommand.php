@@ -55,7 +55,7 @@ class SubscribeNotifyCommand extends Command
                 ':amount' => $subscribe->getAmount(),
                 ':fundLink' => $randomFundraising->getShortLink(),
             ]);
-            $callToAction = "\n\nВи можете скопіювати запрошення для ваших друзів робити як ви нижче (копіює по кліку)\n\n`Я підтримую :volunteer щоденним донатом. Мені в телеграм кожен день приходить посилання в обраний мною час. Прошу вас робити так само. Донатьте. Будь ласка ❤️`";
+            $callToAction = "\n\nВи можете скопіювати запрошення для ваших друзів робити як ви нижче (копіює по кліку)\n\n`Я підтримую :volunteer донатом за моїм розкладом. Мені в телеграм кожен день приходить посилання в обраний мною час. Прошу вас робити так само. Донатьте. Будь ласка ❤️`";
             $donater->sendBotMessage($message . strtr($callToAction, [':volunteer' => $randomFundraising->getShortLink()]));
         }
     }
