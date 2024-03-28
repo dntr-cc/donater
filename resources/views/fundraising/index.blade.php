@@ -18,7 +18,24 @@
 @section('content')
     <div class="container">
         <h2 class="pb-2">
-            Всі збори
+            Збори
+            <a href="{{route('fundraising.all')}}" class="btn ">
+                <i class="bi bi-gift"></i>
+                Всі збори
+            </a>
+            <a href="{{route('fundraising.open')}}" class="btn ">
+                <i class="bi bi-gift"></i>
+                Відкриті збори
+            </a>
+            <a href="{{route('fundraising.wait')}}" class="btn ">
+                <i class="bi bi-gift"></i>
+                Збори скоро розпочнуться
+            </a>
+            <a href="{{route('fundraising.close')}}" class="btn ">
+                <i class="bi bi-gift-fill"></i>
+                Закриті збори
+            </a>
+
             @auth()
                 <a href="{{route('fundraising.new')}}" class="btn ">
                     <i class="bi bi-plus-circle-fill"></i>

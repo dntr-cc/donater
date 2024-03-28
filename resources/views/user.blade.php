@@ -325,7 +325,7 @@
                             @php $uniq = 'volunteerUniq' @endphp
                             <div class="card mb-4">
                                 <div class="card-body">
-                                    <div class="row mb-4">
+                                    <div class="row">
                                         <div class="col-sm-12 d-flex justify-content-between align-items-start">
                                             <h4>Донатна Аналітика</h4>
                                             <div>
@@ -339,7 +339,7 @@
                                         </div>
                                     </div>
                                     <div class="collapse" id="collapseDonateAnalytics">
-                                        <div class="mt-4 row row-cols-1 g-4 ">
+                                        <div class="row row-cols-1 g-1">
                                             @include('layouts.analytics', ['rows' => $donaterRows, 'charts' => $donaterCharts, 'charts2' => $donaterCharts2, 'charts3' => $donaterCharts3, 'uniq' => 'donateUniq', 'additionalAnalyticsText' => 'sasa',])
                                         </div>
                                     </div>
@@ -349,9 +349,9 @@
                         {{--Volunteer Analytics block--}}
                         @if (auth()?->user()?->can('update', $user) && $user->getFundraisings()?->count())
                             @php $uniq = 'volunteerUniq' @endphp
-                            <div class="card mb-4">
+                            <div class="card mb-1">
                                 <div class="card-body">
-                                    <div class="row mb-4">
+                                    <div class="row">
                                         <div class="col-sm-12 d-flex justify-content-between align-items-start">
                                             <h4>Волонтерська Аналітика</h4>
                                             <div>
@@ -365,7 +365,7 @@
                                         </div>
                                     </div>
                                     <div class="collapse show" id="collapseFundAnalytics">
-                                        <div class="mt-4 row row-cols-1 g-4 ">
+                                        <div class="row row-cols-1 g-1">
                                             @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3', 'additionalAnalyticsText', 'uniq'))
                                         </div>
                                     </div>

@@ -1,5 +1,6 @@
 @php /** @var App\Models\Fundraising $fundraising */ @endphp
 @php $btn = $btn ?? false; @endphp
+@php $info = true; @endphp
 @php $name = $name ?? false; @endphp
 @php $withVolunteer = $withVolunteer ?? false; @endphp
 @php $withJarLink = true; @endphp
@@ -13,30 +14,34 @@
         <a href="{{ route('fundraising.show', compact('fundraising')) }}">
             <img src="{{ url($fundraising->getAvatar()) }}" class="card-img-top "
                  alt="{{ $fundraising->getName() }}"></a>
+        <h6 class="m-3 text-muted text-center">Дата створення {{ $fundraising->getCreatedAt() }}</h6>
         <div class="m-1 mt-3 {{ $fundraising->getClassByState() }}">
             @if($btn || $name)
-            <div class="text-center m-4">
-                @if($name)
-                <h3 class="mt-3">{{ $fundraising->getName() }}</h3>
-                @endif
-                @if($btn)
-                    <a class="btn btn-success text-center" href="{{ route('fundraising.show', compact('fundraising')) }}">Подивитися збір</a>
-                @endif
-            </div>
+                <div class="text-center m-4">
+                    @if($name)
+                        <h3 class="mt-3">{{ $fundraising->getName() }}</h3>
+                    @endif
+                    @if($btn)
+                        <a class="btn btn-success text-center"
+                           href="{{ route('fundraising.show', compact('fundraising')) }}">Подивитися збір</a>
+                    @endif
+                </div>
             @endif
             @if($fundraising->isEnabled())
-                @include('layouts.monodonat', compact('fundraising'))
-                    <div class="d-flex justify-content-center mb-2">
-                        <label for="basic-url" class="form-label"></label>
-                        <div class="input-group mb-3">
-                            <span id="share-fund-{{ sha1($fundraising->getKey()) }}" class="input-group-text fw-bold {{ $fundraising->getClassByState() }}">Поширити збір: {{ $fundraising->getShortLink() }}</span>
-                            <input aria-label="fade input" type="text" class="form-control fw-bold {{ $fundraising->getClassByState() }}" disabled>
-                            <button id="share-fund-btn-{{ sha1($fundraising->getKey()) }}" class="btn btn-outline-dark copy-text" data-message="Посилання" data-text="{{ $fundraising->getShortLink() }}" onclick="return false;">
-                                <i class="bi bi-copy"></i></button>
-                        </div>
-
-
+                @include('layouts.monodonat', compact('fundraising', 'info'))
+                <div class="d-flex justify-content-center mb-2">
+                    <label for="basic-url" class="form-label"></label>
+                    <div class="input-group mb-3">
+                        <span id="share-fund-{{ sha1($fundraising->getKey()) }}"
+                              class="input-group-text fw-bold {{ $fundraising->getClassByState() }}">Поширити збір: {{ $fundraising->getShortLink() }}</span>
+                        <input aria-label="fade input" type="text"
+                               class="form-control fw-bold {{ $fundraising->getClassByState() }}" disabled>
+                        <button id="share-fund-btn-{{ sha1($fundraising->getKey()) }}"
+                                class="btn btn-outline-dark copy-text" data-message="Посилання"
+                                data-text="{{ $fundraising->getShortLink() }}" onclick="return false;">
+                            <i class="bi bi-copy"></i></button>
                     </div>
+                </div>
             @elseif($fundraising->donates->count())
                 <h5 class="text-center">Збір закрито</h5>
                 <div class="progress">
