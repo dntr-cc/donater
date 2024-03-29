@@ -76,13 +76,13 @@
                             </li>
                             <li>
                                 <a href="https://www.instagram.com/donater.com.ua" target="_blank" class="dropdown-item">
-                                    <i class="bi bi-facebook d-inline mx-auto mb-1"></i>
+                                    <i class="bi bi-instagram d-inline mx-auto mb-1"></i>
                                     Instagram
                                 </a>
                             </li>
                             <li>
                                 <a href="https://www.linkedin.com/company/donatercomua" target="_blank" class="dropdown-item">
-                                    <i class="bi bi-facebook d-inline mx-auto mb-1"></i>
+                                    <i class="bi bi-linkedin d-inline mx-auto mb-1"></i>
                                     LinkedIn
                                 </a>
                             </li>

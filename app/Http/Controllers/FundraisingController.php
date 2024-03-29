@@ -75,7 +75,7 @@ class FundraisingController extends Controller
     public function spreadsheet(Request $request): JsonResponse
     {
         $this->authorize('create', Fundraising::class);
-        app(GoogleServiceSheets::class)->getRowCollection($request->get('spreadsheet_id'));
+        app(GoogleServiceSheets::class)->getRowCollection($request->get('spreadsheet_id'), 0, GoogleServiceSheets::RANGE_DEFAULT, false);
 
         return new JsonResponse(['csrf' => $this->getNewCSRFToken()], Response::HTTP_OK);
     }

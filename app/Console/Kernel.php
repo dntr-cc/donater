@@ -23,11 +23,11 @@ class Kernel extends ConsoleKernel
             $schedule->command('donates:validate '  . $item->getId())->everyFiveMinutes();
         }
         $schedule->command('subscribe:reminder')->weeklyOn(7, '14:00');
-        $schedule->command('subscribe:scheduler')->everySecond();
-        $schedule->command('fundraising:forget-links')->everySecond();
+        $schedule->command('subscribe:scheduler')->everyFifteenSeconds();
+        $schedule->command('fundraising:forget-links')->everyFiveMinutes();
         $schedule->command('fundraising:deactivate')->dailyAt('09:00');
         $schedule->command('fundraising:remove')->dailyAt('23:59');
-        $schedule->command('fundraising:activate')->everyMinute();
+        $schedule->command('fundraising:activate')->everyFiveMinutes();
     }
 
     /**
