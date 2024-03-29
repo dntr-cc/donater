@@ -12,8 +12,8 @@ function install_website() {
     done
     date | sed -e 's/$/: CREATE restart supervisorctl pid file/'
     touch supervisor-restart.pid > /dev/null 2>&1 || touch supervisor-restart.pid >> /var/log/supervisor/laravel-deploy.log
-    date | sed -e 's/$/: RUN chmod -R 777 short_url/storage/'
-    chmod -R 777 short_url/storage > /dev/null 2>&1 || chmod -R 777 storage >> /var/log/supervisor/laravel-deploy.log
+    date | sed -e 's/$/: RUN chmod -R 777 short_url\/storage/'
+    chmod -R 777 short_url/storage > /dev/null 2>&1 || chmod -R 777 short_url/storage >> /var/log/supervisor/laravel-deploy.log
     date | sed -e 's/$/: RUN chmod -R 777 storage/'
     chmod -R 777 storage > /dev/null 2>&1 || chmod -R 777 storage >> /var/log/supervisor/laravel-deploy.log
     date | sed -e 's/$/: RUN chmod -R 777 public/'
@@ -39,6 +39,7 @@ function install_website() {
     php artisan route:clear
     php artisan queue:clear
     php artisan schedule:clear-cache
+    php artisan optimize:clear
     date | sed -e 's/$/: DISABLE maintenance/'
     php artisan up
 }
