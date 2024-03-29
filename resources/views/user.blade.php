@@ -155,7 +155,7 @@
                                                 <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseSubscribes">
                                                     @foreach($user->getSubscribes()->all() as $subscribe)
                                                         <div class="col-md-12">
-                                                            @include('layouts.user_item', ['user' => $subscribe->getVolunteer(), 'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS])
+                                                            @include('layouts.user_item', ['user' => $subscribe->getVolunteer(true), 'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS])
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -276,7 +276,7 @@
                                         <div
                                             class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
                                             @foreach($userDonates as $item)
-                                                @include('item-donates', ['masonry' => 'masonry-grid-item', 'item' => $item, 'user' => User::find($item->volunteer_id)])
+                                                @include('item-donates', ['masonry' => 'masonry-grid-item', 'item' => $item, 'user' => User::query()->without(['fundraisings', 'links', 'settings'])->find($item->volunteer_id)])
                                             @endforeach
                                         </div>
                                     </div>

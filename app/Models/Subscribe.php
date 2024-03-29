@@ -46,9 +46,19 @@ class Subscribe extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    public function donaterShort(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'user_id')->without(['fundraisings', 'links', 'settings']);
+    }
+
     public function volunteer(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'volunteer_id');
+    }
+
+    public function volunteerShort(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'volunteer_id')->without(['fundraisings', 'links', 'settings']);
     }
 
     public function subscribes(): HasOne
@@ -135,13 +145,21 @@ class Subscribe extends Model
         return $this->first_message_at;
     }
 
-    public function getVolunteer(): User
+    public function getVolunteer(bool $short = false): User
     {
+        if ($short) {
+            return self::with('volunteerShort')->where('id', '=', $this->getId())->first()->volunteer;
+        }
+
         return self::with('volunteer')->where('id', '=', $this->getId())->first()->volunteer;
     }
 
-    public function getDonater(): ?User
+    public function getDonater(bool $short = false): ?User
     {
+        if ($short) {
+            return self::with('donaterShort')->where('id', '=', $this->getId())->first()->volunteer;
+        }
+
         return self::with('donater')->where('id', '=', $this->getId())->first()->donater;
     }
 
