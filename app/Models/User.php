@@ -360,6 +360,9 @@ class User extends Authenticatable
             ->where('user_id', '=', $userId)->first();
     }
 
+    /**
+     * @return Collection|Subscribe[]
+     */
     public function getSubscribers(): Collection
     {
         return Subscribe::query()->where('volunteer_id', '=', $this->getId())->get();
