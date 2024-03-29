@@ -26,12 +26,13 @@ use Telegram\Bot\Laravel\Facades\Telegram;
  * @property bool $is_premium
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property Collection|Prize[] $prizes
+ * @property Collection|Donate[] $prizes
  * @property DonateCollection|Donate[] $donates
  * @property DonateCollection|Donate[] $donates_all
  * @property Collection|Fundraising[] $fundraisings
- * @property Collection|Subscribe[] $subscribers
- * @property Collection|Subscribe[] $subscribes
+ * @property Collection|Fundraising[] $subscribers
+ * @property Collection|Fundraising[] $subscribes
+ * @property Collection|Prize[] $prizes
  * @property Collection|UserLink[] $links
  * @property UserSettingsCollection|UserSetting[] $settings
  * @property int $donates_all_count
@@ -367,7 +368,7 @@ class User extends Authenticatable
             HTML;
     }
 
-    public function getPrizes(): Collection
+    public function getPrizes(): self
     {
         return $this->prizes;
     }
