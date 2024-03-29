@@ -49,5 +49,9 @@ class AppServiceProvider extends ServiceProvider
             OpenGraphRegenerateEvent::class,
             OpenGraphRegenerate::class,
         );
+        if (auth()?->user()?->getId() === 1) {
+            dd(auth());
+            config()->set('debugbar.enabled', true);
+        }
     }
 }
