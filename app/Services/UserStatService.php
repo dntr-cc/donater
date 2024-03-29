@@ -31,7 +31,7 @@ class UserStatService
             return unserialize(Cache::get($this->getCacheKey('donater', $user->getId())));
         }
 
-        $totalSubscribes = $user->getSubscribersAsSubscriber()->count();
+        $totalSubscribes = $user->getSubscribes()->count();
         $donateCount = $user->getDonateCount();
         $totalAmount = $user->getDonatesSumAll();
         $prizesCount = $user->getPrizesCount();

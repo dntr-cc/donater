@@ -26,9 +26,12 @@ use Telegram\Bot\Laravel\Facades\Telegram;
  * @property bool $is_premium
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property Collection|Donate[] $prizes
  * @property DonateCollection|Donate[] $donates
  * @property DonateCollection|Donate[] $donates_all
  * @property Collection|Fundraising[] $fundraisings
+ * @property Collection|Fundraising[] $subscribers
+ * @property Collection|Fundraising[] $subscribes
  * @property Collection|Prize[] $prizes
  * @property Collection|UserLink[] $links
  * @property UserSettingsCollection|UserSetting[] $settings
@@ -38,7 +41,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $with = ['fundraisings', 'links', 'settings'];
+    protected $with = ['fundraisings', 'links', 'settings', 'donates', 'prizes', 'subscribers', 'subscribes'];
     public const array ESCAPE_MAP = [
         '_' => '\_',
         '*' => '\*',
@@ -137,6 +140,22 @@ class User extends Authenticatable
     public function refs(): HasMany
     {
         return $this->hasMany(Referral::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function subscribers(): HasMany
+    {
+        return $this->hasMany(Subscribe::class, 'volunteer_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function subscribes(): HasMany
+    {
+        return $this->hasMany(Subscribe::class, 'user_id', 'id');
     }
 
     /**
@@ -304,7 +323,7 @@ class User extends Authenticatable
 
     public function getDonates(): Collection|DonateCollection|array
     {
-        return self::with('donates')->where('id', '=', $this->getId())->first()?->donates;
+        return $this->donates;
     }
 
     public function getFundraisings(): Collection|array
@@ -349,9 +368,9 @@ class User extends Authenticatable
             HTML;
     }
 
-    public function withPrizes(): self
+    public function getPrizes(): self
     {
-        return self::with('prizes')->where('id', '=', $this->getId())->first();
+        return $this->prizes;
     }
 
     public function getSubscribe(int $userId): ?Subscribe
@@ -362,12 +381,7 @@ class User extends Authenticatable
 
     public function getSubscribers(): Collection
     {
-        return Subscribe::query()->where('volunteer_id', '=', $this->getId())->get();
-    }
-
-    public function getSubscribersAsSubscriber(): Collection
-    {
-        return Subscribe::query()->where('user_id', '=', $this->getId())->get();
+        return $this->subscribers;
     }
 
     /**
@@ -376,7 +390,7 @@ class User extends Authenticatable
      */
     public function getSubscribes(): Collection
     {
-        return Subscribe::query()->where('user_id', '=', $this->getId())->get();
+        return $this->subscribes;
     }
 
     public function sendBotMessage(string $message): void
