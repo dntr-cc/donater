@@ -1,5 +1,6 @@
 {
-    "name": "laravel/laravel",
+    "name": "dntr/donater",
+    "version": "0.0.8",
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
@@ -17,8 +18,8 @@
         "intervention/image": "^3.5",
         "irazasyed/telegram-bot-sdk": "^3.13",
         "itsgoingd/clockwork": "^5.2",
-        "laravel/framework": "^11",
-        "laravel/passport": "^12",
+        "laravel/framework": "^v11.1.1",
+        "laravel/passport": "^v12.0.2",
         "laravel/sanctum": "^4",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
