@@ -20,7 +20,6 @@ use Illuminate\Support\Collection;
  * @property Collection|Donate[] $donates
  * @property Collection|Fundraising[] $fundraisings
  * @property Collection|UserLink[] $links
- * @property int $approved_donates_count
  */
 class User extends Authenticatable
 {
