@@ -28,6 +28,17 @@
       0 => 'Telegram\\Bot\\Laravel\\TelegramServiceProvider',
     ),
   ),
+  'itsgoingd/clockwork' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Clockwork\\Support\\Laravel\\ClockworkServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Clockwork' => 'Clockwork\\Support\\Laravel\\Facade',
+    ),
+  ),
   'laravel/passport' => 
   array (
     'providers' => 

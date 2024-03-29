@@ -102,7 +102,7 @@ return [
      |
      */
 
-    'include_vendors' => true,
+    'include_vendors' => false,
 
     /*
      |--------------------------------------------------------------------------
@@ -145,7 +145,7 @@ return [
      | Extension, without the server-side code. It uses Debugbar collectors instead.
      |
      */
-    'clockwork' => false,
+    'clockwork' => true,
 
     /*
      |--------------------------------------------------------------------------
@@ -172,15 +172,15 @@ return [
         'symfony_request' => true,  // Only one can be enabled..
         'mail'            => true,  // Catch mail messages
         'laravel'         => false, // Laravel version and environment
-        'events'          => false, // All events fired
+        'events'          => true, // All events fired
         'default_request' => false, // Regular or special Symfony request logger
-        'logs'            => false, // Add the latest log messages
+        'logs'            => true, // Add the latest log messages
         'files'           => false, // Show the included files
         'config'          => false, // Display config settings
         'cache'           => false, // Display cache events
         'models'          => true,  // Display models
         'livewire'        => true,  // Display Livewire (when available)
-        'jobs'            => false, // Display dispatched jobs
+        'jobs'            => true, // Display dispatched jobs
     ],
 
     /*
@@ -211,7 +211,7 @@ return [
             'with_params'       => true,   // Render SQL with the parameters substituted
             'backtrace'         => true,   // Use a backtrace to find the origin of the query in your files.
             'backtrace_exclude_paths' => [],   // Paths to exclude from backtrace. (in addition to defaults)
-            'timeline'          => false,  // Add the queries to the timeline
+            'timeline'          => true,  // Add the queries to the timeline
             'duration_background'  => true,   // Show shaded background on each query relative to how long it took to execute.
             'explain' => [                 // Show EXPLAIN output on queries
                 'enabled' => false,
@@ -220,16 +220,16 @@ return [
             'hints'             => false,    // Show hints for common mistakes
             'show_copy'         => false,    // Show copy button next to the query,
             'slow_threshold'    => false,   // Only track queries that last longer than this time in ms
-            'memory_usage'      => false,   // Show queries memory usage
-            'soft_limit'       => 100,      // After the soft limit, no parameters/backtrace are captured
-            'hard_limit'       => 500,      // After the hard limit, queries are ignored
+            'memory_usage'      => true,   // Show queries memory usage
+            'soft_limit'       => 1000,      // After the soft limit, no parameters/backtrace are captured
+            'hard_limit'       => 5000,      // After the hard limit, queries are ignored
         ],
         'mail' => [
             'timeline' => false,  // Add mails to the timeline
             'show_body' => true,
         ],
         'views' => [
-            'timeline' => false,    // Add the views to the timeline (Experimental)
+            'timeline' => true,    // Add the views to the timeline (Experimental)
             'data' => false,        //true for all data, 'keys' for only names, false for no parameters.
             'group' => 50,          // Group duplicate views. Pass value to auto-group, or true/false to force
             'exclude_paths' => [    // Add the paths which you don't want to appear in the views
@@ -246,7 +246,7 @@ return [
             'hiddens' => [], // hides sensitive values using array paths, example: request_request.password
         ],
         'events' => [
-            'data' => false, // collect events data, listeners
+            'data' => true, // collect events data, listeners
         ],
         'logs' => [
             'file' => null,
