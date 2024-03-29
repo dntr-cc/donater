@@ -41,7 +41,7 @@ function install_website() {
     php artisan schedule:clear-cache
     php artisan optimize:clear
     date | sed -e 's/$/: DISABLE maintenance/'
-    php artisan up
+    php artisan up || echo 'already run'
 }
 
 for i in {1..60} ; do
