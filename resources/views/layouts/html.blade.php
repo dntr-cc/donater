@@ -1,3 +1,4 @@
+@php use DebugBar\StandardDebugBar;  @endphp
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -55,6 +56,8 @@
         gtag('js', new Date());
         gtag('config', 'G-MGFJBVTQCY');
     </script>
+    @php $debugbarRenderer = (new StandardDebugBar())->getJavascriptRenderer(); @endphp
+    {!! $debugbarRenderer->renderHead() !!}
 </head>
 @yield('body')
 @guest
@@ -78,4 +81,5 @@
         }, 1000);
     </script>
 @endguest
+{!! $debugbarRenderer->render() !!}
 </html>
