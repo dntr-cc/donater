@@ -384,11 +384,6 @@ class User extends Authenticatable
         return $this->subscribers;
     }
 
-    public function getSubscribersAsSubscriber(): Collection
-    {
-        return $this->subscribes;
-    }
-
     /**
      * @param int $userId
      * @return Collection|Subscribe[]
