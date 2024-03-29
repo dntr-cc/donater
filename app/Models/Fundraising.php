@@ -60,9 +60,6 @@ class Fundraising extends Model
     protected static function boot(): void
     {
         parent::boot();
-        static::addGlobalScope('donates_count', static function (Builder $builder) {
-            $builder->withCount('donates');
-        });
         static::addGlobalScope('order', static function (Builder $builder) {
             $builder->withCount('donates')->orderBy('is_enabled', 'desc')->orderBy('id', 'desc');
         });
