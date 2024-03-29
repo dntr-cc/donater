@@ -152,8 +152,7 @@
                                                 </a>
                                             </li>
                                             @if($user->getSubscribes()->count())
-                                                <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}"
-                                                     id="collapseSubscribes">
+                                                <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseSubscribes">
                                                     @foreach($user->getSubscribes()->all() as $subscribe)
                                                         <div class="col-md-12">
                                                             @include('layouts.user_item', ['user' => $subscribe->getVolunteer(), 'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS])
@@ -186,8 +185,7 @@
                                             @endif
                                         </li>
                                         @if($subscribers->count())
-                                            <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}"
-                                                 id="collapseSubscribers">
+                                            <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseSubscribers">
                                                 @foreach($subscribers as $subscriber)
                                                     <div class="col-md-12">
                                                         @include('layouts.user_item', ['user' => $subscriber->getDonater()])
@@ -243,8 +241,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}"
-                                         id="collapseFundraisings">
+                                    <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseFundraisings">
                                         <hr>
                                         <div
                                             class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
@@ -287,7 +284,7 @@
                             </div>
                         @endif
                         {{--Prizes block--}}
-                        @php $allPrizes = $user->getPrizes() @endphp
+                        @php $allPrizes = $user->withPrizes()->prizes @endphp
                         @if($allPrizes->count() || !(auth()?->user()?->can('update', $user)))
                             <div class="card mb-4">
                                 <div class="card-body">
@@ -341,8 +338,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}"
-                                     id="collapseDonateAnalytics">
+                                <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseDonateAnalytics">
                                     <div class="row row-cols-1 g-1">
                                         @include('layouts.analytics', ['rows' => $donaterRows, 'charts' => $donaterCharts, 'charts2' => $donaterCharts2, 'charts3' => $donaterCharts3, 'uniq' => 'donateUniq', 'additionalAnalyticsText' => 'sasa',])
                                     </div>
@@ -367,8 +363,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}"
-                                         id="collapseFundAnalytics">
+                                    <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseFundAnalytics">
                                         <div class="row row-cols-1 g-1">
                                             @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3', 'additionalAnalyticsText', 'uniq'))
                                         </div>
