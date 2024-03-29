@@ -23,6 +23,45 @@ class UserController extends Controller
     public const string VOLUNTEERS = 'Волонтери';
     const string USERS = 'Донатери';
 
+    /**
+     * @param User $user
+     * @param Collection|null $fundraisings
+     * @param bool $dntr
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|\Illuminate\Contracts\View\View|Application
+     */
+    protected static function getUserViewWithoutCache(
+        User $user,
+        ?Collection $fundraisings,
+        bool $dntr
+    ): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\View|Application|Factory {
+        $rowCollectionService = app(RowCollectionService::class);
+        $donaterRows = $rowCollectionService->getRowCollectionByDonates($user->getDonates());
+        $chartsService = app(ChartService::class);
+        $donaterCharts = $chartsService->getChartPerDay($donaterRows, 'linePerDay1');
+        $donaterCharts2 = $chartsService->getChartPerAmount($donaterRows, 'piePerAmount1');
+        $donaterCharts3 = $chartsService->getChartPerSum($donaterRows, 'piePerSum1');
+        $rows = $charts = $charts2 = $charts3 = null;
+        if (auth()?->user()?->can('update', $user) && $fundraisings) {
+            $rows = $rowCollectionService->getRowCollection($fundraisings);
+            $charts = $chartsService->getChartPerDay($rows, 'linePerDay2');
+            $charts2 = $chartsService->getChartPerAmount($rows, 'piePerAmount2');
+            $charts3 = $chartsService->getChartPerSum($rows, 'piePerSum2');
+        }
+
+        return view('user', [
+            'dntr'           => $dntr,
+            'user'           => $user,
+            'rows'           => $rows,
+            'charts'         => $charts,
+            'charts2'        => $charts2,
+            'charts3'        => $charts3,
+            'donaterRows'    => $donaterRows,
+            'donaterCharts'  => $donaterCharts,
+            'donaterCharts2' => $donaterCharts2,
+            'donaterCharts3' => $donaterCharts3,
+        ]);
+    }
+
     public function show(User $user)
     {
         $dntr = (bool)Cache::pull(':fg:' . sha1(request()->userAgent() . implode(request()->ips())));
@@ -106,31 +145,11 @@ class UserController extends Controller
         bool $dntr,
         Collection $fundraisings = null
     ): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\View|Application|Factory {
-        $rowCollectionService = app(RowCollectionService::class);
-        $donaterRows = $rowCollectionService->getRowCollectionByDonates($user->getDonates());
-        $chartsService = app(ChartService::class);
-        $donaterCharts = $chartsService->getChartPerDay($donaterRows, 'linePerDay1');
-        $donaterCharts2 = $chartsService->getChartPerAmount($donaterRows, 'piePerAmount1');
-        $donaterCharts3 = $chartsService->getChartPerSum($donaterRows, 'piePerSum1');
-        $rows = $charts = $charts2 = $charts3 = null;
-        if (auth()?->user()?->can('update', $user) && $fundraisings) {
-            $rows = $rowCollectionService->getRowCollection($fundraisings);
-            $charts = $chartsService->getChartPerDay($rows, 'linePerDay2');
-            $charts2 = $chartsService->getChartPerAmount($rows, 'piePerAmount2');
-            $charts3 = $chartsService->getChartPerSum($rows, 'piePerSum2');
-        }
-
-        return view('user', [
-            'dntr'           => $dntr,
-            'user'           => $user,
-            'rows'           => $rows,
-            'charts'         => $charts,
-            'charts2'        => $charts2,
-            'charts3'        => $charts3,
-            'donaterRows'    => $donaterRows,
-            'donaterCharts'  => $donaterCharts,
-            'donaterCharts2' => $donaterCharts2,
-            'donaterCharts3' => $donaterCharts3,
-        ]);
+        return Cache::remember(
+            strtr('view:userId:dntr:funds', [
+                'userId' => sha1(serialize($user)),
+                'dntr' => (int)$dntr,
+                'funds' => sha1(serialize($fundraisings)),
+            ]), 120, fn() => self::getUserViewWithoutCache($user, $fundraisings, $dntr));
     }
 }
