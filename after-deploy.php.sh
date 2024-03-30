@@ -18,6 +18,8 @@ function install_website() {
     chmod -R 777 storage > /dev/null 2>&1 || chmod -R 777 storage >> /var/log/supervisor/laravel-deploy.log
     date | sed -e 's/$/: RUN chmod -R 777 public/'
     chmod -R 777 public > /dev/null 2>&1 || chmod -R 777 public >> /var/log/supervisor/laravel-deploy.log
+    date | sed -e 's/$/: RUN chmod -R 777 bootstrap/'
+    chmod -R 777 bootstrap > /dev/null 2>&1 || chmod -R 777 bootstrap >> /var/log/supervisor/laravel-deploy.log
     if [ $(md5sum composer.lock | awk '{ print $1 }') == $(cat composer.md5) ] ; then
         date | sed -e 's/$/: SKIP composer install/'
     else
