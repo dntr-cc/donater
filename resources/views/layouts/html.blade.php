@@ -49,8 +49,7 @@
     @stack('head-scripts')
 
     @includeWhen(config('app.env') === 'live', 'layouts.tracking')
-    @php $debugbarRenderer = (new StandardDebugBar())->getJavascriptRenderer(); @endphp
-    {!! $debugbarRenderer->renderHead() !!}
+    @includeWhen(config('debugbar.enabled'), 'layouts.debug')
 </head>
 @yield('body')
 @guest
@@ -74,5 +73,4 @@
         }, 1000);
     </script>
 @endguest
-{!! $debugbarRenderer->render() !!}
 </html>

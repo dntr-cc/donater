@@ -10,6 +10,7 @@ function install_website() {
     fi
     date | sed 's/$/: RUN npm run build/'
     npm run build --silent > /dev/null 2>&1 || npm run build --silent >> /var/log/supervisor/laravel-deploy.log
+    date | sed 's/$/: FINISH DEPLOY STEPS/'
 }
 
 for i in {1..360} ; do
