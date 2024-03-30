@@ -22,7 +22,7 @@ function install_website() {
         date | sed -e 's/$/: SKIP composer install/'
     else
         date | sed -e 's/$/: RUN composer install/'
-        echo $(composer install || composer install >> /var/log/supervisor/laravel-deploy.log && echo 'migrations finished with errors') >> tmptext
+        composer install --no-dev || composer install --no-dev >> /var/log/supervisor/laravel-deploy.log || echo 'migrations finished with errors'
         md5sum composer.lock | awk '{ print $1 }' > composer.md5
     fi
     if [ $(tar -cf - database/migrations | md5sum | awk '{ print $1 }') == $(cat migrations.md5) ] ; then

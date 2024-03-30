@@ -24,7 +24,8 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
         "p3k/emoji-detector": "*",
-        "spatie/temporary-directory": "^2.2"
+        "spatie/temporary-directory": "^2.2",
+        "maximebf/debugbar": "^1.21"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
