@@ -101,7 +101,7 @@ class Row
      */
     public function extractTrustCode(string $comment): string
     {
-        return static::getCode($comment);
+        return static::getTrustCode($comment);
     }
 
     public static function getCode(string $comment): string
