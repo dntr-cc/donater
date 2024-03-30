@@ -34,7 +34,7 @@ class UserController extends Controller
 
     public function index(): View
     {
-        $users = User::paginate($this->getUsersPerPage())->onEachSide(1);
+        $users = User::query()->without(['fundraisings', 'links'])->paginate($this->getUsersPerPage())->onEachSide(1);
         $whoIs = self::USERS;
 
         return view('users', compact('users', 'whoIs'));
@@ -47,7 +47,7 @@ class UserController extends Controller
      */
     public function volunteers(): View
     {
-        $users = User::query()->withWhereHas('fundraisings')->paginate($this->getVolunteersPerPage())->onEachSide(1);
+        $users = User::query()->without(['settings'])->withWhereHas('fundraisings')->paginate($this->getVolunteersPerPage())->onEachSide(1);
         $whoIs = self::VOLUNTEERS;
 
         return view('users', compact('users', 'whoIs'));

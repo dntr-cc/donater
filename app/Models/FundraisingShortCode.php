@@ -31,9 +31,6 @@ class FundraisingShortCode extends Model
     protected static function boot(): void
     {
         parent::boot();
-        static::addGlobalScope('fundraising', static function (Builder $builder) {
-            $builder->with('fundraising');
-        });
         static::addGlobalScope('order', static function (Builder $builder) {
             $builder->orderBy('id', 'desc');
         });
@@ -74,12 +71,7 @@ class FundraisingShortCode extends Model
 
     public function getFundraising(): Fundraising
     {
-        return $this->fundraising;
-    }
-
-    public function getShortLink(): string
-    {
-        return strtr('dntr.cc/f/:code', [':code' => $this->getCode()]);
+        return self::with('fundraising')->where('id', '=', $this->getId())->first()->fundraising;
     }
 
     public static function hasCode(string $code): bool

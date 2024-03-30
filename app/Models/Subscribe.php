@@ -48,7 +48,7 @@ class Subscribe extends Model
 
     public function donaterShort(): HasOne
     {
-        return $this->hasOne(User::class, 'id', 'user_id')->without(['fundraisings', 'links', 'settings']);
+        return $this->hasOne(User::class, 'id', 'user_id')->without(['fundraisings', 'links']);
     }
 
     public function volunteer(): HasOne
@@ -58,7 +58,7 @@ class Subscribe extends Model
 
     public function volunteerShort(): HasOne
     {
-        return $this->hasOne(User::class, 'id', 'volunteer_id')->without(['fundraisings', 'links', 'settings']);
+        return $this->hasOne(User::class, 'id', 'volunteer_id')->without(['fundraisings', 'links']);
     }
 
     public function subscribes(): HasOne

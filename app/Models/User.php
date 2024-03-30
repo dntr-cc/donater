@@ -349,7 +349,7 @@ class User extends Authenticatable
 
     public function withPrizes(): self
     {
-        return self::with('prizes')->where('id', '=', $this->getId())->first();
+        return self::without(['fundraisings', 'links', 'settings'])->with('prizes')->where('id', '=', $this->getId())->first();
     }
 
     public function getSubscribe(int $userId): ?Subscribe

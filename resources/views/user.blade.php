@@ -13,7 +13,7 @@
 @php $withPrizeInfo = true; @endphp
 @php $additionalClasses = 'btn-xs'; @endphp
 @php $name = true; @endphp
-@php $authUser = auth()?->user(); @endphp
+@php $authUser = $authUser; @endphp
 @php $additionalAnalyticsText = ' по донатеру ' . $user->getUserLink(); @endphp
 @php $title = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
 @php $description = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
@@ -46,7 +46,7 @@
                              onclick="return false;">
                             <div class="card-body text-center">
                                 <img src="{{ $user->getAvatar() }}"
-                                     @if (auth()?->user()?->can('update', $user))
+                                     @if ($authUser?->can('update', $user))
                                          data-bs-toggle="modal" data-bs-target="#userEditModal"
                                      @endif
                                      alt="avatar"
@@ -216,7 +216,7 @@
                     </div>
                     <div class="col-lg-8">
                         {{--Fundraisings block--}}
-                        @if($user->getFundraisings()->count() || !(auth()?->user()?->can('update', $user)))
+                        @if($user->getFundraisings()->count() || !($authUser?->can('update', $user)))
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="row">
@@ -232,7 +232,7 @@
                                                         <i class="bi bi-arrow-{{ $openedLargeBlocks ? 'up' : 'down' }}"></i>
                                                     </a>
                                                 @endif
-                                                @if (auth()?->user()?->getId() === $user->getId())
+                                                @if ($authUser?->getId() === $user->getId())
                                                     <a href="{{route('fundraising.new')}}" class="btn ">
                                                         <i class="bi bi-plus-circle-fill"></i>
                                                         Створити
@@ -276,7 +276,7 @@
                                         <div
                                             class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
                                             @foreach($userDonates as $item)
-                                                @include('item-donates', ['masonry' => 'masonry-grid-item', 'item' => $item, 'user' => User::query()->without(['fundraisings', 'links', 'settings'])->find($item->volunteer_id)])
+                                                @include('item-donates', ['masonry' => 'masonry-grid-item', 'item' => $item, 'user' => User::query()->without(['fundraisings', 'links'])->find($item->volunteer_id)])
                                             @endforeach
                                         </div>
                                     </div>
@@ -285,7 +285,7 @@
                         @endif
                         {{--Prizes block--}}
                         @php $allPrizes = $user->withPrizes()->prizes @endphp
-                        @if($allPrizes->count() || !(auth()?->user()?->can('update', $user)))
+                        @if($allPrizes->count() || !($authUser?->can('update', $user)))
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="row">
@@ -300,7 +300,7 @@
                                                         <i class="bi bi-arrow-{{ $openedLargeBlocks ? 'up' : 'down' }}"></i>
                                                     </a>
                                                 @endif
-                                                @if (auth()?->user()?->getId() === $user->getId())
+                                                @if ($authUser?->getId() === $user->getId())
                                                     <a href="{{route('prize.new')}}" class="btn ">
                                                         <i class="bi bi-plus-circle-fill"></i>
                                                         Створити
@@ -346,7 +346,7 @@
                             </div>
                         </div>
                         {{--Volunteer Analytics block--}}
-                        @if (auth()?->user()?->can('update', $user) && $user->getFundraisings()?->count())
+                        @if ($authUser?->can('update', $user) && $user->getFundraisings()?->count())
                             @php $uniq = 'volunteerUniq' @endphp
                             <div class="card mb-1">
                                 <div class="card-body">
