@@ -39,7 +39,6 @@ function install_website() {
     php artisan event:clear
     php artisan route:clear
     php artisan route:clear
-    php artisan queue:clear
     php artisan schedule:clear-cache
     php artisan optimize:clear
     date | sed -e 's/$/: DISABLE maintenance/'
