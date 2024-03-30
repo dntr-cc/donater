@@ -24,8 +24,7 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
         "p3k/emoji-detector": "*",
-        "spatie/temporary-directory": "^2.2",
-        "maximebf/debugbar": "^1.21"
+        "spatie/temporary-directory": "^2.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -55,7 +54,9 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "sed -i 's!text/javascript!module!g' vendor/maximebf/debugbar/src/DebugBar/JavascriptRenderer.php"
+            "sed -i 's!<script type=\"text/javascript\" src=\"%s\"></script>!<link rel=\"modulepreload\" href=\"%s\">!g' vendor/maximebf/debugbar/src/DebugBar/JavascriptRenderer.php || echo 'skipped debugger hint'",
+            "sed -i 's!enableJqueryNoConflict = true!enableJqueryNoConflict = false!g' vendor/maximebf/debugbar/src/DebugBar/JavascriptRenderer.php || echo 'skipped debugger hint'",
+            "sed -i 's! type=\"text/css\"!!g' vendor/maximebf/debugbar/src/DebugBar/JavascriptRenderer.php || echo 'skipped debugger hint'"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
