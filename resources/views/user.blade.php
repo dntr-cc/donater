@@ -13,7 +13,7 @@
 @php $withPrizeInfo = true; @endphp
 @php $additionalClasses = 'btn-xs'; @endphp
 @php $name = true; @endphp
-@php $authUser = $authUser; @endphp
+@php $authUser = auth()?->user(); @endphp
 @php $additionalAnalyticsText = ' по донатеру ' . $user->getUserLink(); @endphp
 @php $title = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
 @php $description = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
