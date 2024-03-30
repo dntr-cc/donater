@@ -13,6 +13,8 @@ use App\Services\GoogleServiceSheets;
 use App\Services\UserCodeService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 class DonatesValidateCommand extends Command
@@ -70,12 +72,21 @@ class DonatesValidateCommand extends Command
                     ]);
                     if ($trustCode = $item->extractTrustCode($item->getComment())) {
                         if ($sm = SubscribesMessage::query()->where('hash', '=', $trustCode)->first()) {
-                            SubscribesTrustCode::create([
-                                'id'        => $sm->getSubscribesId(),
-                                'user_id'   => $userId,
-                                'hash'      => $trustCode,
-                                'donate_id' => $donate->getId(),
-                            ]);
+                            try {
+                                SubscribesTrustCode::updateOrCreate([
+                                    'id'        => $sm->getSubscribesId(),
+                                    'user_id'   => $userId,
+                                    'hash'      => $trustCode,
+                                    'donate_id' => $donate->getId(),
+                                ]);
+                            } catch (UniqueConstraintViolationException $exception) {
+                                Log::info('duplicate code', [
+                                    'id'        => $sm->getSubscribesId(),
+                                    'user_id'   => $userId,
+                                    'hash'      => $trustCode,
+                                    'donate_id' => $donate->getId(),
+                                ]);
+                            }
                         }
                     }
                     $user = User::find($userId);
