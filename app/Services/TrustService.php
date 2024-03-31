@@ -5,60 +5,32 @@ namespace App\Services;
 use App\Models\Donate;
 use App\Models\Subscribe;
 use App\Models\SubscribesMessage;
+use App\Models\SubscribesTrustCode;
 
 class TrustService
 {
-    public function countTrust(int $donaterId, int $volunteerId, int $days = 1): int
+    public function countTrust(int $donaterId, int $volunteerId, int $days = 0): int
     {
         $dateStart = $this->getStartOfNotificationEra();
-        $dateEnd = date('Y-m-d H:i:s', strtotime(strtr('-:days day', [':days' => $days])));
-        if ($dateStart < $dateEnd) {
+        $dateEnd = date('Y-m-d H:i:s', strtotime( $days ? strtr('-:days day', [':days' => $days]) : 'now'));
+        if ($dateStart > $dateEnd) {
             throw new \LogicException('Trust not allowed for the date under start logging open fundraisings');
         }
         $promises = SubscribesMessage::query()
             ->whereIn(
                 'subscribes_id',
-                $this->getIdsForProcessing($donaterId, $volunteerId, $dateStart, $dateEnd
-                )
+                $this->getIdsForProcessing($donaterId, $volunteerId, $dateStart, $dateEnd)
             )
             ->where('need_send', '=', true)
             ->where('created_at', '>=', $dateStart)
             ->where('created_at', '<=', $dateEnd)
-            ->get();
-        $result = [];
-        $subscribes = [];
-        $subscribesDeleted = [];
-        foreach ($promises->all() as $promise) {
-            $id = $promise->getSubscribesId();
-            if (!isset($subscribes[$id])) {
-                $subscribes[$id] = Subscribe::withTrashed()->find($id);
-                if (!$subscribes[$id]) {
-                    continue;
-                }
-                if ($subscribes[$id]->getDeletedAt()) {
-                    $subscribesDeleted[$id] = true;
-                }
-            }
-            $result[$id]['amount'] = $subscribes[$id]->getAmount();
-            $result[$id]['count'] = $result[$id]['count'] ?? 0;
-            $result[$id]['count']++;
+            ->pluck('id')->toArray();
+        $donated = 0;
+        if ($promises) {
+            $donated = SubscribesTrustCode::query()->whereIn('id', $promises)->count();
         }
-        $promiseTotal = 0;
-        foreach ($result as $id => $item) {
-            if ($subscribesDeleted[$id] ?? false) {
-                $result[$id]['count']--;
-            }
-            $promiseTotal += round(floatval($result[$id]['count'] * $result[$id]['amount']), 2);
-        }
-        $donatesTotal = Donate::query()->withoutGlobalScope('order')
-            ->join('fundraisings', 'fundraisings.id', '=', 'donates.fundraising_id')
-            ->where('donates.user_id', '=', $donaterId)
-            ->where('fundraisings.user_id', '=', $volunteerId)
-            ->where('donates.created_at', '>=', $dateStart)
-            ->where('donates.created_at', '<=', $dateEnd)
-            ->get()->sum('amount');
 
-        return (int)(round($donatesTotal / $promiseTotal, 2) * 100);
+        return !empty($promises) ? (int)(round($donated / count($promises), 2) * 100) : 0;
     }
 
     /**
@@ -87,6 +59,6 @@ class TrustService
      */
     public function getStartOfNotificationEra(): string
     {
-        return '2024-03-26 02:00:00';
+        return '2024-03-27 09:59:59';
     }
 }
