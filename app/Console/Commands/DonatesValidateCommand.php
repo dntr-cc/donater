@@ -74,14 +74,14 @@ class DonatesValidateCommand extends Command
                         if ($sm = SubscribesMessage::query()->where('hash', '=', $trustCode)->first()) {
                             try {
                                 SubscribesTrustCode::updateOrCreate([
-                                    'id'        => $sm->getSubscribesId(),
+                                    'id'        => $sm->getId(),
                                     'user_id'   => $userId,
                                     'hash'      => $trustCode,
                                     'donate_id' => $donate->getId(),
                                 ]);
                             } catch (UniqueConstraintViolationException $exception) {
                                 Log::info('duplicate code', [
-                                    'id'        => $sm->getSubscribesId(),
+                                    'id'        => $sm->getId(),
                                     'user_id'   => $userId,
                                     'hash'      => $trustCode,
                                     'donate_id' => $donate->getId(),
