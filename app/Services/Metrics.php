@@ -13,7 +13,14 @@ class Metrics
     const string CONSOLE_JOBS = 'console';
     const string DEFAULT_METRIC_NAMESPACE = 'donater';
     const array ALLOWED_METRICS = [
-        self::SUBSCRIBE_SCHEDULER => 'Run scheduler for subscription notification each 15 seconds'
+        self::SUBSCRIBE_SCHEDULER => 'Run scheduler for subscription notification each 15 seconds',
+        self::SUBSCRIBE_REMINDER => 'Run scheduler every Sunday at 14:00',
+        self::FUNDRAISING_DEACTIVATE => 'Run scheduler every day at 09:00',
+        self::FUNDRAISING_FORGET_LINKS => 'Run scheduler every 5 minutes',
+        self::FUNDRAISING_ACTIVATE => 'Run scheduler every 5 minutes',
+        self::FUNDRAISING_REMOVE => 'Run scheduler every day at 23:59',
+        self::DONATES_VALIDATE => 'Run scheduler every 5 minutes for each fundraising',
+        self::FUNDRAISING_CACHE => 'Run scheduler every 5 minutes for each fundraising',
     ];
     const string SUBSCRIBE_SCHEDULER = 'subscribe_scheduler';
     const string SUBSCRIBE_REMINDER = 'subscribe_reminder';
