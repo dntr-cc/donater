@@ -58,7 +58,7 @@ class SubscribeNotifyCommand extends DefaultCommand
             ]);
             $callToAction = "\n\nВи можете скопіювати запрошення для ваших друзів робити як ви нижче (копіює по кліку)\n\n`Я підтримую :volunteer донатом за моїм розкладом. Мені в телеграм кожен день приходить посилання в обраний мною час. Прошу вас робити так само. Донатьте. Будь ласка ❤️`";
             $donater->sendBotMessage($message . strtr($callToAction, [':volunteer' => $randomFundraising->getShortLink()]));
-            $this->saveMetric(Metrics::SUBSCRIBE_NOTIFY);
+            $this->saveMetric(Metrics::SUBSCRIBE_SCHEDULER);
         }
     }
 }

@@ -21,8 +21,10 @@ class Metrics
         self::FUNDRAISING_REMOVE => 'Run scheduler every day at 23:59',
         self::DONATES_VALIDATE => 'Run scheduler every 5 minutes for each fundraising',
         self::FUNDRAISING_CACHE => 'Run scheduler every 5 minutes for each fundraising',
+        self::SUBSCRIBE_NOTIFY => 'Run when need to send donate notification',
     ];
     const string SUBSCRIBE_SCHEDULER = 'subscribe_scheduler';
+    const string SUBSCRIBE_NOTIFY = 'subscribe_notify';
     const string SUBSCRIBE_REMINDER = 'subscribe_reminder';
     const string FUNDRAISING_DEACTIVATE = 'fundraising_deactivate';
     const string FUNDRAISING_FORGET_LINKS = 'fundraising_forget_links';
