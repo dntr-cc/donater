@@ -5,12 +5,11 @@ namespace App\Console\Commands;
 use App\Models\Donate;
 use App\Models\User;
 use App\Services\GoogleServiceSheets;
-use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Throwable;
 
-class AllUsersRaffleCommand extends Command
+class AllUsersRaffleCommand extends DefaultCommand
 {
     protected $signature = 'raffle:all';
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e02f9805ddf1b2244b23c67f529378e3",
+    "content-hash": "c208c5f20df469c6e280dc94d6a4d53e",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -4659,6 +4659,123 @@
                 }
             ],
             "time": "2024-03-03T02:14:58+00:00"
+        },
+        {
+            "name": "promphp/prometheus_client_php",
+            "version": "v2.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PromPHP/prometheus_client_php.git",
+                "reference": "a09ea80ec1ec26dd1d4853e9af2a811e898dbfeb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PromPHP/prometheus_client_php/zipball/a09ea80ec1ec26dd1d4853e9af2a811e898dbfeb",
+                "reference": "a09ea80ec1ec26dd1d4853e9af2a811e898dbfeb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.2|^8.0"
+            },
+            "replace": {
+                "endclothing/prometheus_client_php": "*",
+                "jimdo/prometheus_client_php": "*",
+                "lkaemmerling/prometheus_client_php": "*"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.3|^7.0",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^1.5.4",
+                "phpstan/phpstan-phpunit": "^1.1.0",
+                "phpstan/phpstan-strict-rules": "^1.1.0",
+                "phpunit/phpunit": "^9.4",
+                "squizlabs/php_codesniffer": "^3.6",
+                "symfony/polyfill-apcu": "^1.6"
+            },
+            "suggest": {
+                "ext-apc": "Required if using APCu.",
+                "ext-redis": "Required if using Redis.",
+                "promphp/prometheus_push_gateway_php": "An easy client for using Prometheus PushGateway.",
+                "symfony/polyfill-apcu": "Required if you use APCu on PHP8.0+"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Prometheus\\": "src/Prometheus/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Lukas Kämmerling",
+                    "email": "kontakt@lukas-kaemmerling.de"
+                }
+            ],
+            "description": "Prometheus instrumentation library for PHP applications.",
+            "support": {
+                "issues": "https://github.com/PromPHP/prometheus_client_php/issues",
+                "source": "https://github.com/PromPHP/prometheus_client_php/tree/v2.10.0"
+            },
+            "time": "2024-02-01T13:28:34+00:00"
+        },
+        {
+            "name": "promphp/prometheus_push_gateway_php",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PromPHP/prometheus_push_gateway_php.git",
+                "reference": "0129c78cfccdae0851359ac69f1a92e53b5f5126"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PromPHP/prometheus_push_gateway_php/zipball/0129c78cfccdae0851359ac69f1a92e53b5f5126",
+                "reference": "0129c78cfccdae0851359ac69f1a92e53b5f5126",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.3|^7.0",
+                "php": "^7.2|^8.0",
+                "promphp/prometheus_client_php": "^1.0|^2.0"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.12.50",
+                "phpstan/phpstan-phpunit": "^0.12.16",
+                "phpstan/phpstan-strict-rules": "^0.12.5",
+                "phpunit/phpunit": "^8.4|^9.4",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PrometheusPushGateway\\": "src/PrometheusPushGateway/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Lukas Kämmerling",
+                    "email": "kontakt@lukas-kaemmerling.de"
+                }
+            ],
+            "description": "Prometheus Push Gateway client for PHP applications.",
+            "support": {
+                "issues": "https://github.com/PromPHP/prometheus_push_gateway_php/issues",
+                "source": "https://github.com/PromPHP/prometheus_push_gateway_php/tree/v1.1.1"
+            },
+            "time": "2022-04-11T18:49:08+00:00"
         },
         {
             "name": "psr/cache",

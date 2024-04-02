@@ -4,12 +4,15 @@ namespace App\Console\Commands;
 
 use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Fundraising;
+use App\Services\Metrics;
 
 class FundraisingActivateCommand extends FundraisingDeactivateCommand
 {
     public const string MESSAGE = 'Ви закинули актуальну виписку на видалений збір :fundraising. Збір буде відновлено автоматично.';
     public const string MESSAGE_ADMIN = ':fundraising буде відновлено автоматично.';
     public const string DAYS = '-10 days';
+    public const string METRIC_NAME = Metrics::FUNDRAISING_ACTIVATE;
+
     protected $signature = 'fundraising:activate';
 
     protected $description = 'Command description';

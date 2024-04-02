@@ -6,13 +6,15 @@ use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Fundraising;
 use App\Models\User;
 use App\Services\GoogleServiceSheets;
+use App\Services\Metrics;
 use Illuminate\Console\Command;
 
-class FundraisingDeactivateCommand extends Command
+class FundraisingDeactivateCommand extends DefaultCommand
 {
     public const string MESSAGE = 'Ви не закидали виписку з донатами старше 7 днів. Протягом 72 годин ваш збір :fundraising буде видалено автоматично. Якщо ваш збір зупинено - натисніть кнопку "ЗУПИНИТИ".';
     public const string MESSAGE_ADMIN = ':fundraising буде видалено автоматично за 48 годин.';
     public const string DAYS = '-7 days';
+    public const string METRIC_NAME = Metrics::FUNDRAISING_DEACTIVATE;
     protected $signature = 'fundraising:deactivate';
 
     protected $description = 'Command description';
@@ -41,6 +43,7 @@ class FundraisingDeactivateCommand extends Command
                 $this->notifyVolunteerAndAdmin($fundraising);
             }
         }
+        $this->saveMetric(static::METRIC_NAME);
     }
 
     /**
