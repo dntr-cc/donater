@@ -13,7 +13,6 @@ use Throwable;
 
 class FundraisingCacheCommand extends DefaultCommand
 {
-    const int ONE_CENTURY_YEARS_IN_SECONDS = 60 * 60 * 24 * 365 * 100;
     protected $signature = 'fundraising:cache {id}';
 
     protected $description = 'Command description';
@@ -56,7 +55,7 @@ class FundraisingCacheCommand extends DefaultCommand
                         strtr('На вашому зборі :link оновилася виписка. Наступне повідомлення ви отримаєте коли сайт побачить зміни в виписці', [':link' => $fundraising->getShortLink()])
                     );
                 }
-                Cache::set($shaKey, $hash, static::ONE_CENTURY_YEARS_IN_SECONDS);
+                Cache::forever($shaKey, $hash);
             } catch (Throwable $t) {
                 if (str_contains($t->getMessage(), 'bot was blocked by the user')) {
                     $fundraising?->update(['forget' => true]);
