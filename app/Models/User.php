@@ -14,7 +14,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
+use Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
+use Throwable;
 
 /**
  * @property int $id
@@ -24,6 +26,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
  * @property string|null $last_name
  * @property string|null $avatar
  * @property bool $is_premium
+ * @property bool $forget
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property DonateCollection|Donate[] $donates
@@ -36,7 +39,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $with = ['fundraisings', 'links', 'settings'];
     public const array ESCAPE_MAP = [
         '_' => '\_',
         '*' => '\*',
@@ -57,7 +59,7 @@ class User extends Authenticatable
         '.' => '\.',
         '!' => '\!',
     ];
-
+    protected $with = ['fundraisings', 'links', 'settings'];
     /**
      * The attributes that are mass assignable.
      *
@@ -70,6 +72,7 @@ class User extends Authenticatable
         'last_name',
         'avatar',
         'is_premium',
+        'forget',
     ];
 
     protected static function boot(): void
@@ -138,30 +141,6 @@ class User extends Authenticatable
     }
 
     /**
-     * @return mixed
-     */
-    public function getAtUsername(): string
-    {
-        return $this->username ? '@' . $this->username : '';
-    }
-
-    /**
-     * @return string
-     */
-    public function getUserLink(): string
-    {
-        return url('/u/' . $this->getUsername());
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
-    /**
      * @param mixed $username
      */
     public function setUsername(string $username): self
@@ -169,14 +148,6 @@ class User extends Authenticatable
         $this->username = $username;
 
         return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTelegramId(): int
-    {
-        return $this->telegram_id;
     }
 
     /**
@@ -188,14 +159,6 @@ class User extends Authenticatable
         $this->telegram_id = $telegramId;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFullName(): string
-    {
-        return trim("{$this->getFirstName()} {$this->getLastName()}");
     }
 
     /**
@@ -220,6 +183,14 @@ class User extends Authenticatable
     public function getLastName(): string
     {
         return (string)$this->last_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAtUsername(): string
+    {
+        return $this->username ? '@' . $this->username : '';
     }
 
     /**
@@ -264,11 +235,11 @@ class User extends Authenticatable
     }
 
     /**
-     * @return int
+     * @return bool
      */
-    public function getId(): int
+    public function isForget(): bool
     {
-        return $this->id;
+        return $this->forget;
     }
 
     /**
@@ -300,19 +271,22 @@ class User extends Authenticatable
         return $this->updated_at;
     }
 
+    public function getDonateCount(): int
+    {
+        return $this->getDonates()->count();
+    }
+
     public function getDonates(): Collection|DonateCollection|array
     {
         return self::with('donates')->where('id', '=', $this->getId())->first()?->donates;
     }
 
-    public function getFundraisings(): Collection|array
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
-        return $this->fundraisings;
-    }
-
-    public function getDonateCount(): int
-    {
-        return $this->getDonates()->count();
+        return $this->id;
     }
 
     public function getPrizesCount(): int
@@ -345,6 +319,30 @@ class User extends Authenticatable
                 {$this->getFullName()} ({$this->getAtUsername()})
             </a>
             HTML;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserLink(): string
+    {
+        return url('/u/' . $this->getUsername());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName(): string
+    {
+        return trim("{$this->getFirstName()} {$this->getLastName()}");
     }
 
     public function withPrizes(): self
@@ -383,14 +381,29 @@ class User extends Authenticatable
     public function sendBotMessage(string $message): void
     {
         if (str_contains(config('app.url'), 'localhost')) {
-            \Log::critical($message);
+            Log::critical($message);
             return;
         }
-        Telegram::sendMessage([
-            'chat_id' => $this->getTelegramId(),
-            'text' => strtr($message, self::ESCAPE_MAP),
-            'parse_mode' => 'MarkdownV2',
-        ]);
+        try {
+            Telegram::sendMessage([
+                'chat_id'    => $this->getTelegramId(),
+                'text'       => strtr($message, self::ESCAPE_MAP),
+                'parse_mode' => 'MarkdownV2',
+            ]);
+        } catch (Throwable $throwable) {
+            if (str_contains($throwable->getMessage(), 'bot was blocked by the user')) {
+                $this->update(['forget' => true]);
+            }
+            throw $throwable;
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getTelegramId(): int
+    {
+        return $this->telegram_id;
     }
 
     public function getRandomFundraising(): ?Fundraising
@@ -407,9 +420,14 @@ class User extends Authenticatable
         return $fundraisings->random();
     }
 
+    public function getFundraisings(): Collection|array
+    {
+        return $this->fundraisings;
+    }
+
     /**
-     * @uses \App\Models\Donate
      * @return float
+     * @uses Donate
      */
     public function getDonatesSumAll(): float
     {
@@ -422,8 +440,8 @@ class User extends Authenticatable
     }
 
     /**
-     * @uses \App\Models\Donate
      * @return array
+     * @uses Donate
      */
     public function getDonatesByVolunteer(): array
     {

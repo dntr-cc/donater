@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Fundraising;
 use App\Services\Metrics;
 
@@ -15,7 +14,7 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
 
     protected $signature = 'fundraising:activate';
 
-    protected $description = 'Command description';
+    protected $description = 'Command that restores and activates previously deactivated fundraising events if the requirements for activation are met, and informs the volunteers about this event re-activation.';
 
 
     /**
@@ -33,6 +32,7 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
     {
         if ($byCountRow) {
             $fundraising->restore();
+            $fundraising->update(['forget' => false]);
             return true;
         }
 

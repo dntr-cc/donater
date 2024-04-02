@@ -21,7 +21,7 @@ class DonatesValidateCommand extends DefaultCommand
 {
     protected $signature = 'donates:validate {id}';
 
-    protected $description = 'Command description';
+    protected $description = 'Command that validates and processes the donations related to a specific fundraising event, given its ID, and communicates the validation results to the users via messaging.';
     private GoogleServiceSheets $service;
 
     public function __construct()

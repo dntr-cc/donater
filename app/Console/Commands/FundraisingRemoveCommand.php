@@ -15,7 +15,7 @@ class FundraisingRemoveCommand extends FundraisingDeactivateCommand
 
     protected $signature = 'fundraising:remove';
 
-    protected $description = 'Command description';
+    protected $description = 'Command that automatically deletes fundraising events that haven\'t received any new donations in the past 10 days and notifies the volunteer of the event\'s deletion.';
 
     protected function notifyVolunteer(Fundraising $fundraising): void
     {

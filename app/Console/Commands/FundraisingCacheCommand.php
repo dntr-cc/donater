@@ -32,7 +32,7 @@ class FundraisingCacheCommand extends DefaultCommand
 
     public function handle(): void
     {
-        $volunteer = null;
+        $volunteer = $fundraising = null;
         if ($id = $this->argument('id')) {
             try {
                 $fundraising = Fundraising::find($id);
@@ -58,6 +58,9 @@ class FundraisingCacheCommand extends DefaultCommand
                 }
                 Cache::set($shaKey, $hash, static::ONE_CENTURY_YEARS_IN_SECONDS);
             } catch (Throwable $t) {
+                if (str_contains($t->getMessage(), 'bot was blocked by the user')) {
+                    $fundraising?->update(['forget' => true]);
+                }
                 Log::error(strtr('fundraising:cache :user =>', [':user' => $volunteer ? $volunteer->getUsername() : 'none-user']) . $t->getMessage(), ['trace' => $t->getTraceAsString()]);
             }
             $this->saveMetric(Metrics::FUNDRAISING_CACHE);

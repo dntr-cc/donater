@@ -14,11 +14,11 @@ class SubscribeSchedulerCommand extends DefaultCommand
 {
     protected $signature = 'subscribe:scheduler';
 
-    protected $description = 'Command description';
+    protected $description = 'Command that schedules the next subscription notifications for all active subscriptions, and automatically sends the notifications if they are due.';
 
     public function handle(): void
     {
-        $time = (new Carbon())->setTimezone(config('app.timezone'))->modify('+16 second');
+        $time = (new Carbon())->setTimezone(config('app.timezone'))->modify('+1 second');
         foreach (Subscribe::query()->withoutTrashed()->get()->all() as $subscribe) {
             $nextMessage = $subscribe->getNextSubscribesMessage();
             if ($nextMessage->getScheduledAt() < $time) {

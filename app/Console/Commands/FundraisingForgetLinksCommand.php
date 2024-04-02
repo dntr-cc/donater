@@ -4,14 +4,13 @@ namespace App\Console\Commands;
 
 use App\Models\FundraisingShortCode;
 use App\Services\Metrics;
-use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
 class FundraisingForgetLinksCommand extends DefaultCommand
 {
     protected $signature = 'fundraising:forget-links';
 
-    protected $description = 'Command description';
+    protected $description = 'Command that cleans up old fundraising link entries, leaving only the most recent link for each fundraising event.';
 
     public function handle(): void
     {
