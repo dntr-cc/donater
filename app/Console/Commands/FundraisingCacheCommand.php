@@ -40,12 +40,12 @@ class FundraisingCacheCommand extends DefaultCommand
                     return;
                 }
                 $hash = sha1(
-                    $this->service->getRowCollection(
+                    json_encode($this->service->getRowCollection(
                         $fundraising->getSpreadsheetId(),
                         $fundraising->getId(),
                         GoogleServiceSheets::RANGE_DEFAULT,
                         false
-                    )->toArray()
+                    )->toArray())
                 );
                 $shaKey = strtr('sha1-:id', [':id' => $fundraising->getId()]);
                 $existedHash = Cache::get($shaKey);
