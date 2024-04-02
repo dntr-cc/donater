@@ -6,8 +6,10 @@ namespace App\DTOs;
 
 use App\Models\Donate;
 use App\Models\User;
+use Illuminate\Contracts\Support\Arrayable;
+use Override;
 
-class Row
+class Row implements Arrayable
 {
     protected string $date;
     protected string $category;
@@ -24,24 +26,24 @@ class Row
      */
     public function __construct(array $row, array $donates = [])
     {
-        $this->date     = $row[0] ?? '';
+        $this->date = $row[0] ?? '';
         $this->category = $row[1] ?? '';
-        $this->from     = $row[3] ?? '';
-        $this->comment  = $row[3] ?? '';
-        $this->amount   = $row[4] ?? '';
+        $this->from = $row[3] ?? '';
+        $this->comment = $row[3] ?? '';
+        $this->amount = $row[4] ?? '';
         $this->currency = $row[5] ?? '';
-        $this->sum      = $row[6] ?? '';
-        $this->donates  = $donates;
+        $this->sum = $row[6] ?? '';
+        $this->donates = $donates;
+    }
+
+    public static function hasCode(string $comment): bool
+    {
+        return (bool)static::getCode($comment);
     }
 
     public function getDate(): string
     {
         return trim($this->date);
-    }
-
-    public function getCategory(): string
-    {
-        return $this->category;
     }
 
     public function getFrom(): string
@@ -81,11 +83,6 @@ class Row
         return null;
     }
 
-    public function isOwnerTransaction(): bool
-    {
-        return 'Разові поповнення' === $this->getCategory();
-    }
-
     /**
      * @param string $comment
      * @return string
@@ -93,15 +90,6 @@ class Row
     public function extractCode(string $comment): string
     {
         return static::getCode($comment);
-    }
-
-    /**
-     * @param string $comment
-     * @return string
-     */
-    public function extractTrustCode(string $comment): string
-    {
-        return static::getTrustCode($comment);
     }
 
     public static function getCode(string $comment): string
@@ -115,6 +103,25 @@ class Row
         return $matches1[1] ?? $matches2[0] ?? $matches3[0] ?? '';
     }
 
+    public function isOwnerTransaction(): bool
+    {
+        return 'Разові поповнення' === $this->getCategory();
+    }
+
+    public function getCategory(): string
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param string $comment
+     * @return string
+     */
+    public function extractTrustCode(string $comment): string
+    {
+        return static::getTrustCode($comment);
+    }
+
     public static function getTrustCode(string $comment): string
     {
         $matches = [];
@@ -123,8 +130,16 @@ class Row
         return $matches[0] ?? '';
     }
 
-    public static function hasCode(string $comment): bool
+    #[Override] public function toArray(): array
     {
-        return (bool)static::getCode($comment);
+        return [
+            'date'     => $this->date,
+            'category' => $this->category,
+            'from'     => $this->from,
+            'comment'  => $this->comment,
+            'amount'   => $this->amount,
+            'currency' => $this->currency,
+            'sum'      => $this->sum,
+        ];
     }
 }

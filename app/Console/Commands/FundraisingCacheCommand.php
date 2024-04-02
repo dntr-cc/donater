@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\DTOs\Row;
 use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Fundraising;
 use App\Services\GoogleServiceSheets;
@@ -14,7 +15,7 @@ class FundraisingCacheCommand extends DefaultCommand
 {
     protected $signature = 'fundraising:cache {id}';
 
-    protected $description = 'Command responsible for updating and caching data related to a specific fundraising object identified by ID from a Google Sheets and informs the volunteer associated with the fundraising effort when updates are detected. It handles errors gracefully and saves metrics related to the caching operation.';
+    protected $description = 'Command description';
     private GoogleServiceSheets $service;
 
     public function __construct()
@@ -37,22 +38,25 @@ class FundraisingCacheCommand extends DefaultCommand
                 if (!$fundraising) {
                     return;
                 }
-                $hash = sha1(
-                    json_encode($this->service->getRowCollection(
-                        $fundraising->getSpreadsheetId(),
-                        $fundraising->getId(),
-                        GoogleServiceSheets::RANGE_DEFAULT,
-                        false
-                    )->toArray())
-                );
+                $items = $this->service->getRowCollection(
+                    $fundraising->getSpreadsheetId(),
+                    $fundraising->getId(),
+                    GoogleServiceSheets::RANGE_DEFAULT,
+                    false
+                )->all();
+                $tmp = [];
+                foreach ($items as $item) {
+                    $tmp[] = $item->toArray();
+                }
+                $hash = sha1(json_encode($tmp));
                 $shaKey = strtr('sha1-:id', [':id' => $fundraising->getId()]);
                 $existedHash = Cache::get($shaKey);
                 $volunteer = $fundraising->getVolunteer();
                 OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
                 if ($existedHash !== $hash) {
-                    $volunteer->sendBotMessage(
-                        strtr('На вашому зборі :link оновилася виписка. Наступне повідомлення ви отримаєте коли сайт побачить зміни в виписці', [':link' => $fundraising->getShortLink()])
-                    );
+//                    $volunteer->sendBotMessage(
+//                        strtr('На вашому зборі :link оновилася виписка. Наступне повідомлення ви отримаєте коли сайт побачить зміни в виписці', [':link' => $fundraising->getShortLink()])
+//                    );
                 }
                 Cache::forever($shaKey, $hash);
             } catch (Throwable $t) {
