@@ -53,7 +53,7 @@ class FundraisingCacheCommand extends DefaultCommand
                         strtr('На вашому зборі :link оновилася виписка. Наступне повідомлення ви отримаєте коли сайт побачить зміни в виписці', [':link' => $fundraising->getShortLink()])
                     );
                 }
-                Cache::put($shaKey, $hash);
+                Cache::put($shaKey, $hash, 9999999999);
             } catch (Throwable $t) {
                 Log::error($t->getMessage(), ['trace' => $t->getTraceAsString()]);
             }
