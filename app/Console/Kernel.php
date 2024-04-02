@@ -16,12 +16,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        foreach (Fundraising::query()->withTrashed()->where('forget', '=', false)->get()->all() as $item) {
-            /** @uses FundraisingCacheCommand::class */
-            $schedule->command('fundraising:cache ' . $item->getId())->everyFiveMinutes();
-            /** @uses DonatesValidateCommand::class */
-            $schedule->command('donates:validate '  . $item->getId())->everyFiveMinutes();
-        }
+//        foreach (Fundraising::query()->withTrashed()->where('forget', '=', false)->get()->all() as $item) {
+//            /** @uses FundraisingCacheCommand::class */
+//            $schedule->command('fundraising:cache ' . $item->getId())->everyFiveMinutes();
+//            /** @uses DonatesValidateCommand::class */
+//            $schedule->command('donates:validate '  . $item->getId())->everyFiveMinutes();
+//        }
         $schedule->command('subscribe:reminder')->weeklyOn(7, '14:00');
         $schedule->command('subscribe:scheduler')->everyMinute();
         $schedule->command('fundraising:forget')->weeklyOn(3, '12:00');
