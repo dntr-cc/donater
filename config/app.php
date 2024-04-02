@@ -224,7 +224,7 @@ return [
         'volunteers' => env('PER_PAGE_VOLUNTEERS', 24),
         'prizes' => env('PER_PAGE_PRIZES', 20),
     ],
-    'google_cache_time' => env('GOOGLE_CACHE_TIME', 600),
+    'google_cache_time' => env('GOOGLE_CACHE_TIME', 3153600000),
     'excluded_breadcrumbs' => [
         'welcome',
         'roadmap',

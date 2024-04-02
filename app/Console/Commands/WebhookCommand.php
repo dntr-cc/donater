@@ -8,6 +8,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 class WebhookCommand extends Command
 {
     protected $signature = 'webhook {disable? : Disable webhook}';
+    protected $description = 'Command that manages the state of the Telegram webhook, either setting it up or disabling it based on the provided argument.';
 
     public function handle(): void
     {

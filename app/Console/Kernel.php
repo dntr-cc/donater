@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        foreach (Fundraising::query()->withTrashed()->get()->all() as $item) {
+        foreach (Fundraising::query()->withTrashed()->where('forget', '=', false)->get()->all() as $item) {
             /** @uses FundraisingCacheCommand::class */
             $schedule->command('fundraising:cache ' . $item->getId())->everyFiveMinutes();
             /** @uses DonatesValidateCommand::class */
@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         }
         $schedule->command('subscribe:reminder')->weeklyOn(7, '14:00');
         $schedule->command('subscribe:scheduler')->everyMinute();
+        $schedule->command('fundraising:forget')->weeklyOn(3, '12:00');
         $schedule->command('fundraising:forget-links')->everyFiveMinutes();
         $schedule->command('fundraising:deactivate')->dailyAt('09:00');
         $schedule->command('fundraising:remove')->dailyAt('23:59');

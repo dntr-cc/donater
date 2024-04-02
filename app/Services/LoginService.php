@@ -11,6 +11,7 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Cache;
 use Storage;
 use Telegram\Bot\Laravel\Facades\Telegram;
+use Throwable;
 
 class LoginService
 {
@@ -49,28 +50,31 @@ MD;
      * @param array $data
      * @param bool $tryGetPhoto
      * @return User
+     * @throws Throwable
      */
     public function getOrCreateUser(array $data, bool $tryGetPhoto = true): User
     {
         $telegramId = $data['id'] ?? 0;
-        $user       = User::where('telegram_id', $telegramId)->first();
-        $avatar     = '/images/avatars/avatar.jpeg';
+        $user = User::where('telegram_id', $telegramId)->first();
+        $avatar = '/images/avatars/avatar.jpeg';
         if (!$user) {
             $username = $data['username'] ?? $this->generateUniqueUserName();
-            if ($tryGetPhoto) {{
-                $photos   = Telegram::getUserProfilePhotos([
-                    'user_id' => $telegramId,
-                    'limit'   => 1,
-                ]);
-                if ($fileId = $photos->getPhotos()?->first()?->first()['file_id'] ?? null) {
-                    $avatar = Telegram::downloadFile(Telegram::getFile(['file_id' => $fileId]), "/tmp/{$username}/");
-                    $filesystem = Storage::disk('avatars');
-                    $file       = new File($avatar);
-                    $filesystem->put($username, $file);
-                    $file = $filesystem->files($username)[0] ?? '';
-                    $avatar = '/images/avatars/' . $file;
+            if ($tryGetPhoto) {
+                {
+                    $photos = Telegram::getUserProfilePhotos([
+                        'user_id' => $telegramId,
+                        'limit'   => 1,
+                    ]);
+                    if ($fileId = $photos->getPhotos()?->first()?->first()['file_id'] ?? null) {
+                        $avatar = Telegram::downloadFile(Telegram::getFile(['file_id' => $fileId]), "/tmp/{$username}/");
+                        $filesystem = Storage::disk('avatars');
+                        $file = new File($avatar);
+                        $filesystem->put($username, $file);
+                        $file = $filesystem->files($username)[0] ?? '';
+                        $avatar = '/images/avatars/' . $file;
+                    }
                 }
-            }}
+            }
             $user = User::create([
                 'username'    => $username,
                 'telegram_id' => $telegramId,
@@ -82,13 +86,16 @@ MD;
 
             if ($fatherId = Cache::pull('referral_fg:' . sha1(request()->userAgent() . implode(request()->ips())))) {
                 Referral::create([
-                    'user_id' => $fatherId,
+                    'user_id'     => $fatherId,
                     'referral_id' => $user->getId(),
                 ]);
             }
             $user->sendBotMessage(self::WELCOME_TEXT);
         }
 
+        if ($user->isForget()) {
+            $user->update(['forget' => false]);
+        }
         $user->setIsPremium($data['is_premium'] ?? false)->save();
 
         return $user;

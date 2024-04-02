@@ -17,7 +17,7 @@ class FundraisingDeactivateCommand extends DefaultCommand
     public const string METRIC_NAME = Metrics::FUNDRAISING_DEACTIVATE;
     protected $signature = 'fundraising:deactivate';
 
-    protected $description = 'Command description';
+    protected $description = 'Command that deactivates active fundraising events that haven\'t received any donations in the past 7 days, and notifies the fundraisers about the impending deletion.';
 
     public function handle(): void
     {

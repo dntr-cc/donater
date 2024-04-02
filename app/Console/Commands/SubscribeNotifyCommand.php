@@ -6,13 +6,12 @@ use App\Models\Fundraising;
 use App\Models\Subscribe;
 use App\Services\Metrics;
 use App\Services\UserCodeService;
-use Illuminate\Console\Command;
 
 class SubscribeNotifyCommand extends DefaultCommand
 {
     protected $signature = 'subscribe:notify {id} {code}';
 
-    protected $description = 'Command description';
+    protected $description = 'Command that sends a specific subscriber (identified by their ID and a unique code) a notification message, encouraging them to make a donation to a randomly selected opened fundraising event.';
 
     protected UserCodeService $service;
 

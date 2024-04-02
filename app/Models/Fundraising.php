@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Collections\DonateCollection;
+use App\Collections\RaffleUserCollection;
 use App\Services\FundraisingShortCodeService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,9 +24,11 @@ use Illuminate\Support\Collection;
  * @property string $description
  * @property string $spreadsheet_id
  * @property bool $is_enabled
+ * @property bool $forget
  * @property int $user_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property Carbon|null $deleted_at
  * @property DonateCollection|null $donates
  * @property Collection|null $prizes
  * @property Collection|null $booked_prizes
@@ -44,14 +47,20 @@ class Fundraising extends Model
         'is_enabled',
         'user_id',
         'spreadsheet_id',
+        'forget',
     ];
 
-    /**
-     * @return string
-     */
-    public function getRouteKeyName(): string
+    public static function getRandom(): self
     {
-        return 'key';
+        return self::query()->where('is_enabled', '=', 'true')->get()->random();
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public static function active(): Collection
+    {
+        return static::all();
     }
 
     /**
@@ -64,6 +73,31 @@ class Fundraising extends Model
             $builder->orderBy('is_enabled', 'desc')->orderBy('id', 'desc');
         });
     }
+
+    /**
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'key';
+    }
+
+    /**
+     * @return Carbon
+     */
+    public function getUpdatedAt(): Carbon
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @return null|Carbon
+     */
+    public function getDeletedAt(): ?Carbon
+    {
+        return $this->deleted_at;
+    }
+
 
     /**
      * @return HasMany
@@ -97,11 +131,6 @@ class Fundraising extends Model
     public function volunteer(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getKey(): string
@@ -207,21 +236,11 @@ class Fundraising extends Model
         return $this;
     }
 
-    public function isEnabled(): bool
-    {
-        return $this->is_enabled;
-    }
-
     public function setEnabled(bool $isEnabled): self
     {
         $this->is_enabled = $isEnabled;
 
         return $this;
-    }
-
-    public function getUserId(): int
-    {
-        return $this->user_id;
     }
 
     public function getDescription(): string
@@ -236,14 +255,14 @@ class Fundraising extends Model
         return $this;
     }
 
-    public function getSpreadsheetId(): string
-    {
-        return $this->spreadsheet_id;
-    }
-
     public function getSpreadsheetLink(): string
     {
         return strtr('https://docs.google.com/spreadsheets/d/:spreadsheetId/edit#gid=0', [':spreadsheetId' => $this->getSpreadsheetId()]);
+    }
+
+    public function getSpreadsheetId(): string
+    {
+        return $this->spreadsheet_id;
     }
 
     public function setSpreadsheetId(string $spreadsheetId): self
@@ -263,17 +282,17 @@ class Fundraising extends Model
         return $this->donates;
     }
 
-    public function getDonateCollection(): ?DonateCollection
-    {
-        return self::with('donates')->where('id', '=', $this->getId())->first()->donates;
-    }
-
     /**
      * @return Collection|Prize[]|null
      */
     public function getPrizes(): ?Collection
     {
         return self::with('prizes')->where('id', '=', $this->getId())->first()->prizes;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     /**
@@ -319,6 +338,11 @@ class Fundraising extends Model
             ->get();
     }
 
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+
     private function getAvailablePrizesForAll(): Collection
     {
         return Prize::query()
@@ -341,7 +365,7 @@ class Fundraising extends Model
             ->get();
     }
 
-    public function rafflesPredictCollection(): \App\Collections\RaffleUserCollection
+    public function rafflesPredictCollection(): RaffleUserCollection
     {
         return $this->getDonateCollection()->getRaffleUserCollection(
             UserSetting::query()
@@ -352,9 +376,9 @@ class Fundraising extends Model
         );
     }
 
-    public static function getRandom(): self
+    public function getDonateCollection(): ?DonateCollection
     {
-        return self::query()->where('is_enabled', '=', 'true')->get()->random();
+        return self::with('donates')->where('id', '=', $this->getId())->first()->donates;
     }
 
     public function getVolunteer(): User
@@ -378,11 +402,16 @@ class Fundraising extends Model
         return 'bg-secondary-subtle';
     }
 
-    /**
-     * @return Collection|self[]
-     */
-    public static function active(): Collection
+    public function isEnabled(): bool
     {
-        return static::all();
+        return $this->is_enabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isForget(): bool
+    {
+        return $this->forget;
     }
 }

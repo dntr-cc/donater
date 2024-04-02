@@ -6,14 +6,13 @@ use App\Models\Subscribe;
 use App\Models\User;
 use App\Models\UserSetting;
 use App\Services\Metrics;
-use Illuminate\Console\Command;
 
 class SubscribeReminderCommand extends DefaultCommand
 {
     public const string MESSAGE = "Нам дуже прикро, що ви не користуєтесь підписками на волонтерів. Ми розуміємо, що це проблема, якщо вашого волонтера нема на сайті. Ви можете запросити людину своїм кодом донатера, після переходу по ньому відкривається спеціальне віконечко, де коротко описано ще це за сайт. Ваш код донатера:\n";
     protected $signature = 'subscribe:reminder';
 
-    protected $description = 'Command description';
+    protected $description = 'Command that sends a reminder to users who have not been using volunteer subscriptions, encouraging them to utilize the feature while providing them with their unique donator code.';
 
     public function handle(): void
     {
