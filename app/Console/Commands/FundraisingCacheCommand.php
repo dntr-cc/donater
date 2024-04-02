@@ -6,7 +6,6 @@ use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Fundraising;
 use App\Services\GoogleServiceSheets;
 use App\Services\Metrics;
-use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -15,7 +14,7 @@ class FundraisingCacheCommand extends DefaultCommand
 {
     protected $signature = 'fundraising:cache {id}';
 
-    protected $description = 'Command description';
+    protected $description = 'Command responsible for updating and caching data related to a specific fundraising object identified by ID from a Google Sheets and informs the volunteer associated with the fundraising effort when updates are detected. It handles errors gracefully and saves metrics related to the caching operation.';
     private GoogleServiceSheets $service;
 
     public function __construct()
