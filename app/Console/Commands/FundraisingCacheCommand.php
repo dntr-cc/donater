@@ -6,17 +6,15 @@ use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Fundraising;
 use App\Services\GoogleServiceSheets;
 use App\Services\Metrics;
-use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class FundraisingCacheCommand extends DefaultCommand
 {
-    const int ONE_CENTURY_YEARS_IN_SECONDS = 60 * 60 * 24 * 365 * 100;
     protected $signature = 'fundraising:cache {id}';
 
-    protected $description = 'Command description';
+    protected $description = 'Command responsible for updating and caching data related to a specific fundraising object identified by ID from a Google Sheets and informs the volunteer associated with the fundraising effort when updates are detected. It handles errors gracefully and saves metrics related to the caching operation.';
     private GoogleServiceSheets $service;
 
     public function __construct()
@@ -56,7 +54,7 @@ class FundraisingCacheCommand extends DefaultCommand
                         strtr('На вашому зборі :link оновилася виписка. Наступне повідомлення ви отримаєте коли сайт побачить зміни в виписці', [':link' => $fundraising->getShortLink()])
                     );
                 }
-                Cache::set($shaKey, $hash, static::ONE_CENTURY_YEARS_IN_SECONDS);
+                Cache::forever($shaKey, $hash);
             } catch (Throwable $t) {
                 if (str_contains($t->getMessage(), 'bot was blocked by the user')) {
                     $fundraising?->update(['forget' => true]);
