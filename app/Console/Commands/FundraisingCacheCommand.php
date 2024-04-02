@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\DTOs\Row;
 use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Fundraising;
+use App\Models\User;
 use App\Services\GoogleServiceSheets;
 use App\Services\Metrics;
 use Illuminate\Support\Facades\Cache;
@@ -54,9 +55,12 @@ class FundraisingCacheCommand extends DefaultCommand
                 $volunteer = $fundraising->getVolunteer();
                 OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
                 if ($existedHash !== $hash) {
-//                    $volunteer->sendBotMessage(
-//                        strtr('На вашому зборі :link оновилася виписка. Наступне повідомлення ви отримаєте коли сайт побачить зміни в виписці', [':link' => $fundraising->getShortLink()])
-//                    );
+                    $message = strtr(
+                        'На вашому зборі :link оновилася виписка. Наступне повідомлення ви отримаєте коли сайт побачить зміни в виписці',
+                        [':link' => $fundraising->getShortLink()]
+                    );
+                    $volunteer->sendBotMessage($message);
+                    User::find(1)->sendBotMessage($message);
                 }
                 Cache::forever($shaKey, $hash);
             } catch (Throwable $t) {
