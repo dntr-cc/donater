@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use LogicException;
 use Prometheus\CollectorRegistry;
 use Prometheus\Counter;
 use Prometheus\Exception\MetricsRegistrationException;
@@ -23,11 +24,14 @@ class Metrics
     const string DONATES_VALIDATE = 'donates_validate';
     const string FUNDRAISING_CACHE = 'fundraising_cache';
     protected PushGateway $pushGateway;
+    protected CollectorRegistry $registry;
 
 
-    public function __construct()
+    public function __construct(PushGateway $pushGateway, CollectorRegistry $registry)
     {
-        $this->pushGateway = app(PushGateway::class);
+        $this->pushGateway = $pushGateway;
+        $this->registry = $registry;
+
     }
 
     public function getPushGateway(): PushGateway
@@ -42,11 +46,9 @@ class Metrics
      */
     public function getCounterMetric(string $metricName): Counter
     {
-        if (!$this->isAllowedMetric($metricName)) {
-            throw new \LogicException($metricName . ' is not allowed');
-        }
+        $this->validateMetricName($metricName);
 
-        return CollectorRegistry::getDefault()->getOrRegisterCounter(self::DEFAULT_METRIC_NAMESPACE, $metricName, $this->getMetricMeasurement($metricName));
+        return $this->getCollectorRegistry()->getOrRegisterCounter(self::DEFAULT_METRIC_NAMESPACE, $metricName, $this->getMetricMeasurement($metricName));
     }
 
     public function isAllowedMetric(string $name): bool
@@ -57,5 +59,24 @@ class Metrics
     public function getMetricMeasurement(string $name): string
     {
         return static::ALLOWED_METRICS[$name] ?? 'unregistered metric';
+    }
+
+    /**
+     * @return CollectorRegistry
+     */
+    protected function getCollectorRegistry(): CollectorRegistry
+    {
+        return $this->registry;
+    }
+
+    /**
+     * @param string $metricName
+     * @return void
+     */
+    protected function validateMetricName(string $metricName): void
+    {
+        if (!$this->isAllowedMetric($metricName)) {
+            throw new LogicException($metricName . ' is not allowed');
+        }
     }
 }

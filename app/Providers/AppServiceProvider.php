@@ -11,7 +11,9 @@ use Google_Service_Sheets;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Prometheus\CollectorRegistry;
 use PrometheusPushGateway\PushGateway;
+use Prometheus\Storage\Redis as PrometheusRedis;
 use Str;
 use URL;
 
@@ -34,6 +36,17 @@ class AppServiceProvider extends ServiceProvider
         });
         $this->app->singleton(PushGateway::class, function () {
             return new PushGateway('http://' . config('app.support_server') . ':9091');
+        });
+        $this->app->singleton(CollectorRegistry::class, function () {
+            PrometheusRedis::setDefaultOptions([
+                'host' => config('database.redis.default.host'),
+                'port' => config('database.redis.default.port'),
+                'timeout' => 0.1,
+                'read_timeout' => '10',
+                'persistent_connections' => false,
+                'password' => null,
+            ]);
+            return new CollectorRegistry(new PrometheusRedis());
         });
     }
 
