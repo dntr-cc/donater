@@ -5,12 +5,13 @@ namespace App\Console\Commands;
 use App\Events\OpenGraphRegenerateEvent;
 use App\Models\Fundraising;
 use App\Services\GoogleServiceSheets;
+use App\Services\Metrics;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class FundraisingCacheCommand extends Command
+class FundraisingCacheCommand extends DefaultCommand
 {
     protected $signature = 'fundraising:cache {id}';
 
@@ -56,6 +57,7 @@ class FundraisingCacheCommand extends Command
             } catch (Throwable $t) {
                 Log::error($t->getMessage(), ['trace' => $t->getTraceAsString()]);
             }
+            $this->saveMetric(Metrics::FUNDRAISING_CACHE);
         }
     }
 }

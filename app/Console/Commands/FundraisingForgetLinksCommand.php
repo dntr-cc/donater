@@ -3,10 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\FundraisingShortCode;
+use App\Services\Metrics;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class FundraisingForgetLinksCommand extends Command
+class FundraisingForgetLinksCommand extends DefaultCommand
 {
     protected $signature = 'fundraising:forget-links';
 
@@ -28,5 +29,6 @@ class FundraisingForgetLinksCommand extends Command
         foreach ($needRemove->all() as $item) {
             $item->delete();
         }
+        $this->saveMetric(Metrics::FUNDRAISING_FORGET_LINKS);
     }
 }

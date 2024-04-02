@@ -5,9 +5,10 @@ namespace App\Console\Commands;
 use App\Models\Subscribe;
 use App\Models\User;
 use App\Models\UserSetting;
+use App\Services\Metrics;
 use Illuminate\Console\Command;
 
-class SubscribeReminderCommand extends Command
+class SubscribeReminderCommand extends DefaultCommand
 {
     public const string MESSAGE = "Нам дуже прикро, що ви не користуєтесь підписками на волонтерів. Ми розуміємо, що це проблема, якщо вашого волонтера нема на сайті. Ви можете запросити людину своїм кодом донатера, після переходу по ньому відкривається спеціальне віконечко, де коротко описано ще це за сайт. Ваш код донатера:\n";
     protected $signature = 'subscribe:reminder';
@@ -37,5 +38,6 @@ class SubscribeReminderCommand extends Command
             'Skipped ('. count($skipped) . '):' . implode(', ', $skipped) . PHP_EOL . PHP_EOL .
             'Send messages: ' . $it
         );
+        $this->saveMetric(Metrics::SUBSCRIBE_REMINDER);
     }
 }

@@ -11,6 +11,7 @@ use Google_Service_Sheets;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use PrometheusPushGateway\PushGateway;
 use Str;
 use URL;
 
@@ -31,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
 
             return new GoogleServiceSheets(new Google_Service_Sheets($client));
         });
+        $this->app->singleton(PushGateway::class, function () {
+            return new PushGateway('http://' . config('app.support_server') . ':9091');
+        });
     }
 
     /**
@@ -49,9 +53,8 @@ class AppServiceProvider extends ServiceProvider
             OpenGraphRegenerateEvent::class,
             OpenGraphRegenerate::class,
         );
-        if (auth()?->user()?->getId() === 1) {
-            dd(auth());
-            config()->set('debugbar.enabled', true);
-        }
+//        if (auth()?->user()?->getId() === 1) {
+//            config()->set('debugbar.enabled', true);
+//        }
     }
 }

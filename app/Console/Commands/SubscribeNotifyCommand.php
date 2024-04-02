@@ -4,10 +4,11 @@ namespace App\Console\Commands;
 
 use App\Models\Fundraising;
 use App\Models\Subscribe;
+use App\Services\Metrics;
 use App\Services\UserCodeService;
 use Illuminate\Console\Command;
 
-class SubscribeNotifyCommand extends Command
+class SubscribeNotifyCommand extends DefaultCommand
 {
     protected $signature = 'subscribe:notify {id} {code}';
 
@@ -57,6 +58,7 @@ class SubscribeNotifyCommand extends Command
             ]);
             $callToAction = "\n\nВи можете скопіювати запрошення для ваших друзів робити як ви нижче (копіює по кліку)\n\n`Я підтримую :volunteer донатом за моїм розкладом. Мені в телеграм кожен день приходить посилання в обраний мною час. Прошу вас робити так само. Донатьте. Будь ласка ❤️`";
             $donater->sendBotMessage($message . strtr($callToAction, [':volunteer' => $randomFundraising->getShortLink()]));
+            $this->saveMetric(Metrics::SUBSCRIBE_NOTIFY);
         }
     }
 }

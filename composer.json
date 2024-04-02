@@ -24,6 +24,7 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
         "p3k/emoji-detector": "*",
+        "promphp/prometheus_push_gateway_php": "^1.1",
         "spatie/temporary-directory": "^2.2"
     },
     "require-dev": {

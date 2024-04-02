@@ -10,14 +10,14 @@ use App\Models\SubscribesTrustCode;
 use App\Models\User;
 use App\Models\UserSetting;
 use App\Services\GoogleServiceSheets;
+use App\Services\Metrics;
 use App\Services\UserCodeService;
 use Carbon\Carbon;
-use Illuminate\Console\Command;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
-class DonatesValidateCommand extends Command
+class DonatesValidateCommand extends DefaultCommand
 {
     protected $signature = 'donates:validate {id}';
 
@@ -111,6 +111,7 @@ class DonatesValidateCommand extends Command
                     }
                 }
             }
+            $this->saveMetric(Metrics::DONATES_VALIDATE);
         }
     }
 }

@@ -233,4 +233,5 @@ return [
         'analytics',
         'faq',
     ],
+    'support_server' => env('SUPPORT_SERVER', '10.209.236.181'),
 ];

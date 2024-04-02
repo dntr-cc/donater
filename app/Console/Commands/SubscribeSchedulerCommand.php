@@ -5,12 +5,12 @@ namespace App\Console\Commands;
 use App\Models\Subscribe;
 use App\Models\Fundraising;
 use App\Models\SubscribesMessage;
+use App\Services\Metrics;
 use Carbon\Carbon;
-use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
-class SubscribeSchedulerCommand extends Command
+class SubscribeSchedulerCommand extends DefaultCommand
 {
     protected $signature = 'subscribe:scheduler';
 
@@ -39,5 +39,6 @@ class SubscribeSchedulerCommand extends Command
                 ]);
             }
         }
+        $this->saveMetric(Metrics::SUBSCRIBE_SCHEDULER);
     }
 }
