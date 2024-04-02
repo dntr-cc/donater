@@ -13,6 +13,7 @@ use Throwable;
 
 class FundraisingCacheCommand extends DefaultCommand
 {
+    const int ONE_CENTURY_YEARS_IN_SECONDS = 60 * 60 * 24 * 365 * 100;
     protected $signature = 'fundraising:cache {id}';
 
     protected $description = 'Command description';
@@ -43,9 +44,9 @@ class FundraisingCacheCommand extends DefaultCommand
                         $fundraising->getId(),
                         GoogleServiceSheets::RANGE_DEFAULT,
                         false
-                    )
+                    )->toArray()
                 );
-                $shaKey = strtr('sha1-:key', [':key' => $fundraising->getKey()]);
+                $shaKey = strtr('sha1-:id', [':id' => $fundraising->getId()]);
                 $existedHash = Cache::get($shaKey);
                 OpenGraphRegenerateEvent::dispatch($fundraising->getVolunteer()->getId(), OpenGraphRegenerateEvent::TYPE_USER);
                 if ($existedHash !== $hash) {
@@ -53,7 +54,7 @@ class FundraisingCacheCommand extends DefaultCommand
                         strtr('На вашому зборі :link оновилася виписка. Наступне повідомлення ви отримаєте коли сайт побачить зміни в виписці', [':link' => $fundraising->getShortLink()])
                     );
                 }
-                Cache::put($shaKey, $hash, 9999999999);
+                Cache::set($shaKey, $hash, static::ONE_CENTURY_YEARS_IN_SECONDS);
             } catch (Throwable $t) {
                 Log::error($t->getMessage(), ['trace' => $t->getTraceAsString()]);
             }
