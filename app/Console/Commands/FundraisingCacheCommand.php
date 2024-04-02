@@ -32,6 +32,7 @@ class FundraisingCacheCommand extends DefaultCommand
 
     public function handle(): void
     {
+        $volunteer = null;
         if ($id = $this->argument('id')) {
             try {
                 $fundraising = Fundraising::find($id);
@@ -48,15 +49,16 @@ class FundraisingCacheCommand extends DefaultCommand
                 );
                 $shaKey = strtr('sha1-:id', [':id' => $fundraising->getId()]);
                 $existedHash = Cache::get($shaKey);
-                OpenGraphRegenerateEvent::dispatch($fundraising->getVolunteer()->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+                $volunteer = $fundraising->getVolunteer();
+                OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
                 if ($existedHash !== $hash) {
-                    $fundraising->getVolunteer()->sendBotMessage(
+                    $volunteer->sendBotMessage(
                         strtr('На вашому зборі :link оновилася виписка. Наступне повідомлення ви отримаєте коли сайт побачить зміни в виписці', [':link' => $fundraising->getShortLink()])
                     );
                 }
                 Cache::set($shaKey, $hash, static::ONE_CENTURY_YEARS_IN_SECONDS);
             } catch (Throwable $t) {
-                Log::error($t->getMessage(), ['trace' => $t->getTraceAsString()]);
+                Log::error(strtr('fundraising:cache :user =>', [':user' => $volunteer ? $volunteer->getUsername() : 'none-user']) . $t->getMessage(), ['trace' => $t->getTraceAsString()]);
             }
             $this->saveMetric(Metrics::FUNDRAISING_CACHE);
         }
