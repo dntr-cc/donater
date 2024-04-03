@@ -10,16 +10,15 @@ function install_website() {
     fi
     date | sed 's/$/: RUN npm run build/'
     npm run build --silent > /dev/null 2>&1 || npm run build --silent >> /var/log/supervisor/laravel-deploy.log
-    date | sed 's/$/: FINISH DEPLOY STEPS/'
+    date | sed 's/$/: FINISH NODE DEPLOY STEPS/'
 }
 
 for i in {1..360} ; do
     FILE=./deploy.pid
     if [ -f "$FILE" ] ; then
-        touch ./deploy.npm.pid
         install_website
-        rm ./deploy.npm.pid
-        sleep 30
+        touch ./deploy.php.pid
+        sleep 60
     else
         sleep 1
     fi
