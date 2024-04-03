@@ -10,7 +10,7 @@
 @endif
 
 <div class="row row-cols-xl-4 row-cols-lg-4 row-cols-md-1 row-cols-sm-1 row-cols-sm-1 d-flex justify-content-around m-4">
-    <a class="btn btn-dark btn-xs m-1 btn-fit-text " target="_blank" href="{{ $fundraising->getJarLink(true, 100, 'With ❤️ to 🇺🇦') }}">🍩 100₴</a>
-    <a class="btn btn-dark btn-xs m-1 btn-fit-text " target="_blank" href="{{ $fundraising->getJarLink(true, 500, 'With ❤️ to 🇺🇦') }}">🍩 500₴</a>
-    <a class="btn btn-dark btn-xs m-1 btn-fit-text " target="_blank" href="{{ $fundraising->getJarLink(true, 1000, 'With ❤️ to 🇺🇦'), }}">🍩 1000₴</a>
+    <a class="btn btn-dark btn-xs m-1 btn-fit-text " target="_blank" href="{{ $fundraising->getJarLink(true, 33, '🇺🇦 нехай буде 33 🍩 щодня ❤️ ') }}">🍩 33₴</a>
+    <a class="btn btn-dark btn-xs m-1 btn-fit-text " target="_blank" href="{{ $fundraising->getJarLink(true, 333, '🇺🇦 нехай буде 333 🍩 щодня ❤️ ') }}">🍩 333₴</a>
+    <a class="btn btn-dark btn-xs m-1 btn-fit-text " target="_blank" href="{{ $fundraising->getJarLink(true, 3333, '🇺🇦 нехай буде 3333 🍩 щодня ❤️ '), }}">🍩 3333₴</a>
 </div>
