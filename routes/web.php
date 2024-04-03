@@ -35,7 +35,7 @@ Route::post('/' . config('app.dev_hash'), static function () {
 });
 
 Route::get('/deploy', static function () {
-    $deployNotAvailable = file_exists(base_path() . '/deploy.pid');
+    $deployNotAvailable = file_exists(base_path() . '/deploy.pid') || file_exists(base_path() . '/deploy.php.pid');
     if (!$deployNotAvailable) {
         Artisan::call('down', [
             '--render' => 'layouts.pause',

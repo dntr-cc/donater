@@ -17,6 +17,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -25,6 +26,9 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        if ($user->isForget()) {
+            return abort(Response::HTTP_NOT_FOUND);
+        }
         $dntr = (bool)Cache::pull(':fg:' . sha1(request()->userAgent() . implode(request()->ips())));
         if ($dntr) {
             Cache::set('referral_fg:' . sha1(request()->userAgent() . implode(request()->ips())), $user->getId(), 60 * 60);
@@ -34,7 +38,7 @@ class UserController extends Controller
 
     public function index(): View
     {
-        $users = User::query()->without(['fundraisings', 'links'])->paginate($this->getUsersPerPage())->onEachSide(1);
+        $users = User::query()->where('forget', '=', false)->without(['fundraisings', 'links'])->paginate($this->getUsersPerPage())->onEachSide(1);
         $whoIs = self::USERS;
 
         return view('users', compact('users', 'whoIs'));
@@ -47,7 +51,7 @@ class UserController extends Controller
      */
     public function volunteers(): View
     {
-        $users = User::query()->without(['settings'])->withWhereHas('fundraisings')->paginate($this->getVolunteersPerPage())->onEachSide(1);
+        $users = User::query()->where('forget', '=', false)->without(['settings'])->withWhereHas('fundraisings')->paginate($this->getVolunteersPerPage())->onEachSide(1);
         $whoIs = self::VOLUNTEERS;
 
         return view('users', compact('users', 'whoIs'));

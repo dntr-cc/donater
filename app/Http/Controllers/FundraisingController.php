@@ -82,6 +82,9 @@ class FundraisingController extends Controller
 
     public function edit(Fundraising $fundraising)
     {
+        if ($fundraising->isForget()) {
+            return abort(Response::HTTP_NOT_FOUND);
+        }
         $this->authorize('update', $fundraising);
 
         return view('fundraising.edit', compact('fundraising'));
@@ -89,6 +92,9 @@ class FundraisingController extends Controller
 
     public function show(Fundraising $fundraising)
     {
+        if ($fundraising->isForget()) {
+            return abort(Response::HTTP_NOT_FOUND);
+        }
         $this->authorize('view', $fundraising);
 
         return view('fundraising.show', compact('fundraising'));
@@ -96,6 +102,9 @@ class FundraisingController extends Controller
 
     public function preload(Fundraising $fundraising)
     {
+        if ($fundraising->isForget()) {
+            return abort(Response::HTTP_NOT_FOUND);
+        }
         $this->authorize('view', $fundraising);
         $rows = null;
         try {
@@ -112,6 +121,9 @@ class FundraisingController extends Controller
 
     public function start(Fundraising $fundraising)
     {
+        if ($fundraising->isForget()) {
+            return abort(Response::HTTP_NOT_FOUND);
+        }
         $this->authorize('update', $fundraising);
 
         $fundraising->update(['is_enabled' => true]);
@@ -122,6 +134,9 @@ class FundraisingController extends Controller
 
     public function update(FundraisingRequest $request, Fundraising $fundraising)
     {
+        if ($fundraising->isForget()) {
+            return abort(Response::HTTP_NOT_FOUND);
+        }
         $this->authorize('update', $fundraising);
 
         $fundraising->update($request->validated());
@@ -144,6 +159,9 @@ class FundraisingController extends Controller
 
     public function stop(Fundraising $fundraising)
     {
+        if ($fundraising->isForget()) {
+            return abort(Response::HTTP_NOT_FOUND);
+        }
         $this->authorize('update', $fundraising);
 
         $fundraising->update(['is_enabled' => false]);
@@ -163,6 +181,9 @@ class FundraisingController extends Controller
 
     public function addPrize(Fundraising $fundraising, Prize $prize)
     {
+        if ($fundraising->isForget()) {
+            return abort(Response::HTTP_NOT_FOUND);
+        }
         $this->authorize('update', $fundraising);
 
         $isSelf = $fundraising->getUserId() === $prize->getUserId();
@@ -183,6 +204,9 @@ class FundraisingController extends Controller
 
     public function delPrize(Fundraising $fundraising, Prize $prize)
     {
+        if ($fundraising->isForget()) {
+            return abort(Response::HTTP_NOT_FOUND);
+        }
         $this->authorize('update', $fundraising);
 
         $prize->setFundraisingId()->setAvailableStatus(Prize::STATUS_NEW)->save();
@@ -192,6 +216,9 @@ class FundraisingController extends Controller
 
     public function createShortLink(FundraisingLinkCreateRequest $request, Fundraising $fundraising): JsonResponse
     {
+        if ($fundraising->isForget()) {
+            return abort(Response::HTTP_NOT_FOUND);
+        }
         $this->authorize('create', [FundraisingShortCode::class, $fundraising]);
 
         $data = $request->validated();
@@ -204,6 +231,9 @@ class FundraisingController extends Controller
 
     public function analytics(Fundraising $fundraising)
     {
+        if ($fundraising->isForget()) {
+            return abort(Response::HTTP_NOT_FOUND);
+        }
         $this->authorize('view', $fundraising);
         $rows = $charts = $charts2 = $charts3 = null;
         try {
