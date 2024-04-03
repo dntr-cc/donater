@@ -19,7 +19,6 @@ class FundraisingForgetCommand extends Command
                 if ($item->isEnabled() && !$item->getDeletedAt()) {
                     continue;
                 }
-                $item->update(['forget' => true]);
             }
         }
     }
