@@ -13,12 +13,16 @@ function install_website() {
     date | sed 's/$/: FINISH NODE DEPLOY STEPS/'
 }
 
-for i in {1..360} ; do
+run=0
+for i in {1..120} ; do
     FILE=./deploy.pid
     if [ -f "$FILE" ] ; then
-        install_website
-        touch ./deploy.php.pid
-        sleep 60
+        if [ -$run -eq 0 ] ; then
+            run=1
+            install_website
+            touch ./deploy.php.pid
+            sleep 120
+        fi
     else
         sleep 1
     fi

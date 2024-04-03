@@ -43,7 +43,7 @@ function install_website() {
     php artisan up || echo 'already run'
 }
 
-for i in {1..360} ; do
+for i in {1..120} ; do
     FILE=./deploy.php.pid
     if [ -f "$FILE" ] ; then
         install_website
