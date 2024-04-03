@@ -34,21 +34,21 @@ function install_website() {
         php artisan migrate --force > /dev/null 2>&1 || php artisan migrate --force >> /var/log/supervisor/laravel-deploy.log && echo 'migrations finished with errors'
         tar -cf - database/migrations | md5sum | awk '{ print $1 }' > migrations.md5
     fi
-    date | sed -e 's/$/: RUN clear caches/'
+    date | sed -e 's/$/: RUN clear cache and build view/'
     php artisan config:clear
-    php artisan event:clear
     php artisan route:clear
-    php artisan route:clear
-    php artisan schedule:clear-cache
-    php artisan optimize:clear
+    php artisan view:clear
+    php artisan view:cache
     date | sed -e 's/$/: DISABLE maintenance/'
     php artisan up || echo 'already run'
 }
 
-for i in {1..60} ; do
-    FILE=./deploy.npm.pid
+for i in {1..360} ; do
+    FILE=./deploy.php.pid
     if [ -f "$FILE" ] ; then
         install_website
+        rm ./deploy.php.pid
+        rm ./deploy.pid
     else
         sleep 1
     fi

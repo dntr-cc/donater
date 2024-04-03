@@ -56,7 +56,7 @@ class GoogleServiceSheets
         }
 
         $valueRange = $this->getSheets()->spreadsheets_values->get($spreadsheetId, $range);
-        Cache::set($key, serialize($valueRange), config('app.google_cache_time'));
+        Cache::forever($key, serialize($valueRange));
 
         return $valueRange;
     }
