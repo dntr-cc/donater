@@ -239,7 +239,7 @@ class User extends Authenticatable
      */
     public function isForget(): bool
     {
-        return $this->forget;
+        return (bool)$this->forget;
     }
 
     /**
