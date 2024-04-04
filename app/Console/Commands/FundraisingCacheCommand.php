@@ -41,7 +41,7 @@ class FundraisingCacheCommand extends DefaultCommand
                     return;
                 }
                 $hash = sha1(json_encode($this->getCurrentHash($fundraising)));
-                $hashItem = FundraisingsHash::createOrFirst(['id' => $fundraising->getId()]);
+                $hashItem = FundraisingsHash::firstOrNew(['id' => $fundraising->getId()]);
                 $existedHash = $hashItem->getHash();
                 $volunteer = $fundraising->getVolunteer();
                 OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
