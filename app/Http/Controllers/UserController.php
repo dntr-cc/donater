@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Collections\RowCollection;
 use App\Events\OpenGraphRegenerateEvent;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Services\ChartService;
 use App\Services\FileService;
-use App\Services\GoogleServiceSheets;
 use App\Services\RowCollectionService;
 use Cache;
 use Illuminate\Contracts\View\Factory;

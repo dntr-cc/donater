@@ -22,18 +22,28 @@ class UserSetting extends Model
     public const string DONT_SEND_MARKETING_MESSAGES = 'dont_send_marketing_messages';
     public const string USE_FEMININE_FORMS_WHEN_MY_ROLE_IS_CALLED = 'use_feminine_forms_when_my_role_is_called';
     public const string LARGE_BLOCKS_ARE_OPENED = 'large_blocks_are_opened';
+    public const int USER_SETTING_AS_DONATER = 0;
+    public const int USER_SETTING_AS_VOLUNTEER = 1;
     protected $fillable = [
         'setting',
         'user_id',
     ];
 
     public const array SETTINGS_MAP = [
-        self::NO_RAFFLE_ENTRY                           => 'Не брати участь в розіграшах',
-        self::USE_PERCENT_INSTEAD_FRACTION              => 'Показувати відсотки замість дробі в шансах розіграшів',
-        self::DONT_SEND_MARKETING_MESSAGES              => 'Не отримувати повідомлення маркетингових нагадувань чи розсилок',
-        self::DONT_SEND_SUBSCRIBERS_INFORMATION         => 'Як волонтер: не отримувати повідомлення про додавання/видалення/зміни підписок серійних донатерів',
-        self::USE_FEMININE_FORMS_WHEN_MY_ROLE_IS_CALLED => 'Використовувати фемінітиви, коли описують мою роль (волонтерка/донатерка)',
-        self::LARGE_BLOCKS_ARE_OPENED                   => 'При відкритті профілів всі блоки окрім посилань будуть розгорнуті',
+        self::USER_SETTING_AS_DONATER => [
+            self::NO_RAFFLE_ENTRY                           => 'Не брати участь в розіграшах',
+            self::USE_PERCENT_INSTEAD_FRACTION              => 'Показувати відсотки замість дробі в шансах розіграшів',
+            self::DONT_SEND_MARKETING_MESSAGES              => 'Не отримувати повідомлення маркетингових нагадувань чи розсилок',
+            self::USE_FEMININE_FORMS_WHEN_MY_ROLE_IS_CALLED => 'Використовувати фемінітиви, коли описують мою роль (донатерка)',
+            self::LARGE_BLOCKS_ARE_OPENED                   => 'При відкритті профілів всі блоки окрім посилань будуть розгорнуті',
+        ],
+        self::USER_SETTING_AS_VOLUNTEER => [
+            self::NO_RAFFLE_ENTRY                           => 'Не брати участь в розіграшах',
+            self::USE_PERCENT_INSTEAD_FRACTION              => 'Показувати відсотки замість дробі в шансах розіграшів',
+            self::DONT_SEND_SUBSCRIBERS_INFORMATION         => 'Не отримувати повідомлення про додавання/видалення/зміни підписок серійних донатерів',
+            self::USE_FEMININE_FORMS_WHEN_MY_ROLE_IS_CALLED => 'Використовувати фемінітиви, коли описують мою роль (волонтерка/донатерка)',
+            self::LARGE_BLOCKS_ARE_OPENED                   => 'При відкритті профілів всі блоки окрім посилань будуть розгорнуті',
+        ]
     ];
 
     public function getId(): int
@@ -51,11 +61,6 @@ class UserSetting extends Model
         return $this->setting;
     }
 
-    public function getSettingName(): string
-    {
-        return self::SETTINGS_MAP[$this->setting] ?? 'Помилка. Налаштування не існує.';
-    }
-
     public function setSetting(string $setting): void
     {
         $this->setting = $setting;
@@ -71,11 +76,6 @@ class UserSetting extends Model
         $this->user_id = $userId;
     }
 
-    public function getSettingsMap(): array
-    {
-        return self::SETTINGS_MAP;
-    }
-
     /**
      * Create a new Eloquent Collection instance.
      *
@@ -85,5 +85,10 @@ class UserSetting extends Model
     public function newCollection(array $models = []): Collection
     {
         return new UserSettingsCollection($models);
+    }
+
+    public static function getNecessarySettingsForVolunteer(): array
+    {
+        return array_diff(array_keys(self::SETTINGS_MAP[1]), array_keys(self::SETTINGS_MAP[0]));
     }
 }

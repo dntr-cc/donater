@@ -8,6 +8,7 @@ use App\Http\Requests\FundraisingRequest;
 use App\Models\Fundraising;
 use App\Models\FundraisingShortCode;
 use App\Models\Prize;
+use App\Models\UserSetting;
 use App\Services\ChartService;
 use App\Services\FileService;
 use App\Services\FundraisingShortCodeService;
@@ -39,6 +40,12 @@ class FundraisingController extends Controller
         OpenGraphRegenerateEvent::dispatch($fundraising->getId(), OpenGraphRegenerateEvent::TYPE_FUNDRAISING);
 
         if (1 === $volunteer->getFundraisings()->count()) {
+            foreach (UserSetting::getNecessarySettingsForVolunteer() as $setting)
+            if ($volunteer->settings->has($setting)) {
+                $first = UserSetting::query()->where('user_id', '=', $volunteer->getId())
+                    ->where('setting', '=', $setting)->get()->first();
+                $first?->delete();
+            }
             $volunteer->sendBotMessage(
                 'Вітаю! Ви створили свій перший збір. Долучайтеся до чату волонтерів нашого сайту ' .
                 config('app.volunteer_chat_link') . ' Там волонтери шерять свій досвід, можуть задати питання, ' .
