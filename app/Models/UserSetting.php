@@ -89,6 +89,6 @@ class UserSetting extends Model
 
     public static function getNecessarySettingsForVolunteer(): array
     {
-        return array_diff(array_keys(self::SETTINGS_MAP[1]), array_keys(self::SETTINGS_MAP[0]));
+        return array_diff(array_keys(self::SETTINGS_MAP[0]), array_keys(self::SETTINGS_MAP[1]));
     }
 }
