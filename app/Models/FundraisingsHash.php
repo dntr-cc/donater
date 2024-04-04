@@ -52,4 +52,9 @@ class FundraisingsHash extends Model
 
         return $this;
     }
+
+    public function isNew(): bool
+    {
+        return empty($this->getHash());
+    }
 }

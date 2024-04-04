@@ -51,8 +51,8 @@ class FundraisingCacheCommand extends DefaultCommand
                     $tmp[] = $item->toArray();
                 }
                 $hash = sha1(json_encode($tmp));
-                $shaKey = strtr('sha1-:id', [':id' => $fundraising->getId()]);
-                $existedHash = Cache::get($shaKey);
+                $hashItem = FundraisingsHash::createOrFirst(['id' => $fundraising->getId()]);
+                $existedHash = $hashItem->getHash();
                 $volunteer = $fundraising->getVolunteer();
                 OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
                 if ($existedHash !== $hash) {
@@ -63,8 +63,7 @@ class FundraisingCacheCommand extends DefaultCommand
                     $volunteer->sendBotMessage($message);
                     User::find(1)->sendBotMessage($message);
                 }
-                Cache::forever($shaKey, $hash);
-                FundraisingsHash::findOrNew($fundraising->getId())->update(['id' => $fundraising->getId(), 'hash' => $hash]);
+                $hashItem->update(['hash' => $hash]);
             } catch (Throwable $t) {
                 if (str_contains($t->getMessage(), 'bot was blocked by the user')) {
                     $fundraising?->update(['forget' => true]);
