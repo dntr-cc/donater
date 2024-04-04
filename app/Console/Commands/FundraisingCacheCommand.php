@@ -40,19 +40,9 @@ class FundraisingCacheCommand extends DefaultCommand
                 if (!$fundraising) {
                     return;
                 }
-                $items = $this->service->getRowCollection(
-                    $fundraising->getSpreadsheetId(),
-                    $fundraising->getId(),
-                    GoogleServiceSheets::RANGE_DEFAULT,
-                    false
-                )->all();
-                $tmp = [];
-                foreach ($items as $item) {
-                    $tmp[] = $item->toArray();
-                }
-                $hash = sha1(json_encode($tmp));
-                $shaKey = strtr('sha1-:id', [':id' => $fundraising->getId()]);
-                $existedHash = Cache::get($shaKey);
+                $hash = sha1(json_encode($this->getCurrentHash($fundraising)));
+                $hashItem = FundraisingsHash::createOrFirst(['id' => $fundraising->getId()]);
+                $existedHash = $hashItem->getHash();
                 $volunteer = $fundraising->getVolunteer();
                 OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
                 if ($existedHash !== $hash) {
@@ -63,15 +53,40 @@ class FundraisingCacheCommand extends DefaultCommand
                     $volunteer->sendBotMessage($message);
                     User::find(1)->sendBotMessage($message);
                 }
-                Cache::forever($shaKey, $hash);
-                FundraisingsHash::findOrNew($fundraising->getId())->update(['id' => $fundraising->getId(), 'hash' => $hash]);
+                $hashItem->update(['hash' => $hash]);
             } catch (Throwable $t) {
                 if (str_contains($t->getMessage(), 'bot was blocked by the user')) {
                     $fundraising?->update(['forget' => true]);
                 }
-                Log::error(strtr('fundraising:cache :user =>', [':user' => $volunteer ? $volunteer->getUsername() : 'none-user']) . $t->getMessage(), ['trace' => $t->getTraceAsString()]);
+                Log::error(
+                    strtr('fundraising:cache :user =>', [':user' => $volunteer ? $volunteer->getUsername() : 'none-user']) . $t->getMessage(),
+                    ['trace' => $t->getTraceAsString()]
+                );
             }
             $this->saveMetric(Metrics::FUNDRAISING_CACHE);
         }
+    }
+
+    /**
+     * @param Fundraising $fundraising
+     * @return array
+     */
+    protected function getCurrentHash(Fundraising $fundraising): array
+    {
+        $tmp = [];
+        foreach ($this->getAll($fundraising) as $item) {
+            $tmp[] = $item->toArray();
+        }
+
+        return $tmp;
+    }
+
+    /**
+     * @param Fundraising $fundraising
+     * @return Row[]
+     */
+    protected function getAll(Fundraising $fundraising): array
+    {
+        return $this->service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId(), GoogleServiceSheets::RANGE_DEFAULT, false)->all();
     }
 }
