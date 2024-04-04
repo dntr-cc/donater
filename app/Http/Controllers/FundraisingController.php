@@ -42,9 +42,7 @@ class FundraisingController extends Controller
         if (1 === $volunteer->getFundraisings()->count()) {
             foreach (UserSetting::getNecessarySettingsForVolunteer() as $setting)
             if ($volunteer->settings->has($setting)) {
-                $first = UserSetting::query()->where('user_id', '=', $volunteer->getId())
-                    ->where('setting', '=', $setting)->get()->first();
-                $first?->delete();
+                UserSetting::query()->where('user_id', '=', $volunteer->getId())->where('setting', '=', $setting)->delete();
             }
             $volunteer->sendBotMessage(
                 'Вітаю! Ви створили свій перший збір. Долучайтеся до чату волонтерів нашого сайту ' .
