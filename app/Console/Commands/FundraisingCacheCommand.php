@@ -53,6 +53,9 @@ class FundraisingCacheCommand extends DefaultCommand
                     $volunteer->sendBotMessage($message);
                     User::find(1)->sendBotMessage($message);
                 }
+                if ($hashItem->isNew()) {
+                    $hashItem->setHash('')->save();
+                }
                 $hashItem->update(['hash' => $hash]);
             } catch (Throwable $t) {
                 if (str_contains($t->getMessage(), 'bot was blocked by the user')) {
