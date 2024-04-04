@@ -64,7 +64,7 @@ class FundraisingCacheCommand extends DefaultCommand
                     User::find(1)->sendBotMessage($message);
                 }
                 Cache::forever($shaKey, $hash);
-                FundraisingsHash::updateOrCreate(['id' => $fundraising->getId(), 'hash' => $hash]);
+                FundraisingsHash::findOrNew($fundraising->getId())->update(['id' => $fundraising->getId(), 'hash' => $hash]);
             } catch (Throwable $t) {
                 if (str_contains($t->getMessage(), 'bot was blocked by the user')) {
                     $fundraising?->update(['forget' => true]);
