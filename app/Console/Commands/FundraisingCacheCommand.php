@@ -40,17 +40,7 @@ class FundraisingCacheCommand extends DefaultCommand
                 if (!$fundraising) {
                     return;
                 }
-                $items = $this->service->getRowCollection(
-                    $fundraising->getSpreadsheetId(),
-                    $fundraising->getId(),
-                    GoogleServiceSheets::RANGE_DEFAULT,
-                    false
-                )->all();
-                $tmp = [];
-                foreach ($items as $item) {
-                    $tmp[] = $item->toArray();
-                }
-                $hash = sha1(json_encode($tmp));
+                $hash = sha1(json_encode($this->getCurrentHash($fundraising)));
                 $hashItem = FundraisingsHash::createOrFirst(['id' => $fundraising->getId()]);
                 $existedHash = $hashItem->getHash();
                 $volunteer = $fundraising->getVolunteer();
@@ -68,9 +58,35 @@ class FundraisingCacheCommand extends DefaultCommand
                 if (str_contains($t->getMessage(), 'bot was blocked by the user')) {
                     $fundraising?->update(['forget' => true]);
                 }
-                Log::error(strtr('fundraising:cache :user =>', [':user' => $volunteer ? $volunteer->getUsername() : 'none-user']) . $t->getMessage(), ['trace' => $t->getTraceAsString()]);
+                Log::error(
+                    strtr('fundraising:cache :user =>', [':user' => $volunteer ? $volunteer->getUsername() : 'none-user']) . $t->getMessage(),
+                    ['trace' => $t->getTraceAsString()]
+                );
             }
             $this->saveMetric(Metrics::FUNDRAISING_CACHE);
         }
+    }
+
+    /**
+     * @param Fundraising $fundraising
+     * @return array
+     */
+    protected function getCurrentHash(Fundraising $fundraising): array
+    {
+        $tmp = [];
+        foreach ($this->getAll($fundraising) as $item) {
+            $tmp[] = $item->toArray();
+        }
+
+        return $tmp;
+    }
+
+    /**
+     * @param Fundraising $fundraising
+     * @return Row[]
+     */
+    protected function getAll(Fundraising $fundraising): array
+    {
+        return $this->service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId(), GoogleServiceSheets::RANGE_DEFAULT, false)->all();
     }
 }
