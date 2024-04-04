@@ -39,7 +39,7 @@ class FundraisingsHash extends Model
      */
     public function getHash(): string
     {
-        return $this->hash;
+        return (string)$this->hash;
     }
 
     /**
