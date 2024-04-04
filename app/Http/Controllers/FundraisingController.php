@@ -41,13 +41,14 @@ class FundraisingController extends Controller
 
         if (1 === $volunteer->getFundraisings()->count()) {
             foreach (UserSetting::getNecessarySettingsForVolunteer() as $setting)
-            UserSetting::query()->where('user_id', '=', $volunteer->getId())->where('setting', '=', $setting)->delete();
+                UserSetting::query()->where('user_id', '=', $volunteer->getId())->where('setting', '=', $setting)->delete();
+            }
             $volunteer->sendBotMessage(
-                'Вітаю! Ви створили свій перший збір. Долучайтеся до чату волонтерів нашого сайту ' .
-                config('app.volunteer_chat_link') . ' Там волонтери шерять свій досвід, можуть задати питання, ' .
-                ' попросити оперативно виправити знайдену багу тощо'
+                'Вітаю! Ви створили свій перший збір. Долучайтеся до чату нашої спільноти волонтерів ' .
+                config('app.volunteer_chat_link') . ' Там волонтери можуть задати питання, ділитися контактами продавців, ' .
+                'домовляються за спільні збори, допомогають один одному репостами, а також можна попросити ' .
+                'оперативно виправити знайдену багу на сайті тощо. Ми'
             );
-        }
 
         return new JsonResponse(['url' => route('fundraising.show', compact('fundraising'))]);
     }
