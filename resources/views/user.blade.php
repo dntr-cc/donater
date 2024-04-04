@@ -569,7 +569,7 @@
                         </div>
                         <form class="form">
                             <div class="modal-body">
-                                @foreach(\App\Models\UserSetting::SETTINGS_MAP as $key => $name)
+                                @foreach(\App\Models\UserSetting::SETTINGS_MAP[$user->isVolunteer()] as $key => $name)
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" value="" id="{{ $key }}"
                                                @if($user->settings->hasSetting($key))
@@ -710,7 +710,7 @@
                     type: "PATCH",
                     data: {
                         settings: {
-                            @foreach(\App\Models\UserSetting::SETTINGS_MAP as $key => $name)
+                            @foreach(\App\Models\UserSetting::SETTINGS_MAP[$user->isVolunteer()] as $key => $name)
                                 {{ $key }}: $('#{{ $key }}').is(':checked') ? 1 : 0,
                             @endforeach
                         },

@@ -6,13 +6,14 @@ use Illuminate\Support\Facades\Cache;
 
 class CacheWrapper
 {
-    public static function get(string $key, callable $function, array $args = [], int $seconds = 300): mixed
-    {
-        if (Cache::has($key)) {
-            return unserialize(Cache::get($key));
+    public function lazyLoading(string $key, callable $callback, bool $rewrite = false) {
+        if (!$rewrite && Cache::has($key)) {
+            $data = Cache::get($key);
+        } else {
+            $data = $callback();
+            Cache::forever($key, $data);
         }
-        Cache::set($key, serialize($value = $function(...$args)), $seconds);
 
-        return $value;
+        return $data;
     }
 }

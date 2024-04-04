@@ -454,4 +454,9 @@ class User extends Authenticatable
             ->orderBy('amount', 'desc')
             ->get()->toArray() ?? [];
     }
+
+    public function isVolunteer(): int
+    {
+        return $this->fundraisings->count() ? 1 : 0;
+    }
 }

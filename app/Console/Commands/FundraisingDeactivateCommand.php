@@ -7,7 +7,6 @@ use App\Models\Fundraising;
 use App\Models\User;
 use App\Services\GoogleServiceSheets;
 use App\Services\Metrics;
-use Illuminate\Console\Command;
 
 class FundraisingDeactivateCommand extends DefaultCommand
 {
