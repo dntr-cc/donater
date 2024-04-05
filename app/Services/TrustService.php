@@ -9,7 +9,16 @@ use App\Models\SubscribesTrustCode;
 
 class TrustService
 {
-    public function countTrust(int $donaterId, int $volunteerId, int $days = 0): int
+    public function countTrustStyle(int $trust): string
+    {
+        return match(true) {
+            $trust <= 24 => 'bg-danger',
+            $trust <= 59 => 'bg-warning',
+            $trust <= 89 => 'bg-info',
+            default => 'bg-success',
+        };
+    }
+    public function countTrust(int $donaterId, int $volunteerId, int $days = 7): int
     {
         $dateStart = $this->getStartOfNotificationEra();
         $dateEnd = date('Y-m-d H:i:s', strtotime( $days ? strtr('-:days day', [':days' => $days]) : 'now'));
