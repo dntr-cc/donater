@@ -29,7 +29,6 @@
 @section('og_image_title', $title)
 @section('og_image_alt', $description)
 @section('breadcrumb-path')
-    <li class="breadcrumb-item"><a href="{{ route('users') }}">Донатери</a></li>
     <li class="breadcrumb-item"><a href="{{ route('volunteers') }}">Волонтери</a></li>
 @endsection
 @section('breadcrumb-current', '@'. $user->getUsername())

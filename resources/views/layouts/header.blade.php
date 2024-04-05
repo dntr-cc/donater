@@ -38,12 +38,6 @@
                             Волонтери
                         </a>
                     </li>
-                    <li class="">
-                        <a href="{{ route('users') }}" class="nav-link text-white">
-                            <i class="bi bi-people-fill d-inline mx-auto mb-1"></i>
-                            Донатери
-                        </a>
-                    </li>
                     <li>
                         <a href="{{ route('prizes') }}" class="nav-link text-white">
                             <i class="bi bi-gift d-inline mx-auto mb-1"></i>
