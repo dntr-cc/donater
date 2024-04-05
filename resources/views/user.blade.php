@@ -200,7 +200,7 @@
                                                 @foreach($subscribers as $subscriber)
                                                     @php
                                                         $currentVolunteer = $subscriber->getVolunteer(true);
-                                                        $trust = $trustService->countTrust($currentVolunteer->getId(), $user->getId());
+                                                        $trust = $trustService->countTrust($user->getId(), $currentVolunteer->getId());
                                                         $trustStyle = $trustService->countTrustStyle($trust);
                                                     @endphp
                                                     <div class="col-md-12">

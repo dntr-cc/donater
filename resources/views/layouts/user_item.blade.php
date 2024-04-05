@@ -51,7 +51,7 @@
 
                             <div class="progress">
                                 <div class="progress-bar progress-bar-animated progress-bar-striped {{ $trustStyle }}" role="progressbar"
-                                     style="width: {{ $trust }}%" aria-valuenow="{{ $trust }}" aria-valuemin="0" aria-valuemax="100">
+                                     style="width: {{ $trust < 11 ? 6 : $trust }}%" aria-valuenow="{{ $trust }}" aria-valuemin="0" aria-valuemax="100">
                                     <div class="text-black overflow-visible">{{ $trust }}%</div>
                                 </div>
                             </div>
