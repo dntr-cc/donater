@@ -9,11 +9,7 @@
     @vite(['resources/js/masonry.js'])
 @endpush
 @section('breadcrumb-path')
-    @if($subscribeAllowed)
-        <li class="breadcrumb-item"><a href="{{ route('users') }}">Донатери</a></li>
-    @else
-        <li class="breadcrumb-item"><a href="{{ route('volunteers') }}">Волонтери</a></li>
-    @endif
+    <li class="breadcrumb-item"><a href="{{ route('volunteers') }}">Волонтери</a></li>
     @endsection
 @section('breadcrumb-current', $whoIs)
 @section('content')
