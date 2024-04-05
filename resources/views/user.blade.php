@@ -199,13 +199,13 @@
                                             <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseSubscribers">
                                                 @foreach($subscribers as $subscriber)
                                                     @php
-                                                        $currentVolunteer = $subscriber->getVolunteer(true);
-                                                        $trust = $trustService->countTrust($user->getId(), $currentVolunteer->getId());
+                                                        $currentUser = $subscriber->getDonater();
+                                                        $trust = $trustService->countTrust($currentUser->getId(), $user->getId());
                                                         $trustStyle = $trustService->countTrustStyle($trust);
                                                     @endphp
                                                     <div class="col-md-12">
                                                         @include('layouts.user_item', [
-                                                            'user' => $subscriber->getDonater(),
+                                                            'user' => $currentUser,
                                                             'trust' => $trust,
                                                             'trustStyle' => $trustStyle,
                                                         ])
