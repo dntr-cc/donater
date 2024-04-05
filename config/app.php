@@ -233,4 +233,5 @@ return [
         'faq',
     ],
     'support_server' => env('SUPPORT_SERVER', '10.209.236.181'),
+    'trust_days' => env('TRUST_DAYS', 7),
 ];

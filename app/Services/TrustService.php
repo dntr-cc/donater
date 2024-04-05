@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Donate;
-use App\Models\Subscribe;
 use App\Models\SubscribesMessage;
 use App\Models\SubscribesTrustCode;
 
@@ -18,8 +16,11 @@ class TrustService
             default => 'bg-success',
         };
     }
-    public function countTrust(int $donaterId, int $volunteerId, int $days = 7): int
+    public function countTrust(int $donaterId, int $volunteerId, int $days = null): int
     {
+        if (is_null($days)) {
+            $days = $this->getTrustDays();
+        }
         $dateStart = $this->getStartOfNotificationEra();
         $dateEnd = date('Y-m-d H:i:s', strtotime( $days ? strtr('-:days day', [':days' => $days]) : 'now'));
         if ($dateStart > $dateEnd) {
@@ -69,5 +70,13 @@ class TrustService
     public function getStartOfNotificationEra(): string
     {
         return '2024-03-27 09:59:59';
+    }
+
+    /**
+     * @return int
+     */
+    protected function getTrustDays(): int
+    {
+        return (int)config('app.trust_days');
     }
 }
