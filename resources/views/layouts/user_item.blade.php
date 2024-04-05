@@ -4,6 +4,8 @@
 @php $whoIs = $whoIs ?? '' @endphp
 @php $additionalClasses = $additionalClasses ?? '' @endphp
 @php $masonry = $masonry ?? '' @endphp
+@php $trust = $trust ?? null @endphp
+@php $trustStyle = $trustStyle ?? null @endphp
 @php $statService = app(\App\Services\UserStatService::class) @endphp
 <div class="col {{ $masonry }}">
     <div class="card">
@@ -40,6 +42,18 @@
                             <div class="col-12 small d-flex d-flex justify-content-between">
                                 <div class="">{{ \App\DTOs\DonaterInfo::DONATION_COUNT }}</div>
                                 <div class="">{{ $donaterInfo->getDonationCount() }}</div>
+                            </div>
+                        @endif
+                        @if(!is_null($trust))
+                            <div class="col-12 small d-flex d-flex justify-content-center">
+                                <div class="">Рівень достовірності підписки</div>
+                            </div>
+
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-animated progress-bar-striped {{ $trustStyle }}" role="progressbar"
+                                     style="width: {{ $trust }}%" aria-valuenow="{{ $trust }}" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="text-black overflow-visible">{{ $trust }}%</div>
+                                </div>
                             </div>
                         @endif
                     </div>

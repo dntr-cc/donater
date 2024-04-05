@@ -19,6 +19,7 @@
 @php $description = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
 @php $userBanner = url(app(\App\Services\OpenGraphImageService::class)->getUserImage($user)) @endphp
 @php $openedLargeBlocks = $authUser ? $authUser->settings->hasSetting(UserSetting::LARGE_BLOCKS_ARE_OPENED) : true; @endphp
+@php $trustService = app(\App\Services\TrustService::class); @endphp
 @extends('layouts.base')
 @section('page_title', $title)
 @section('page_description', $description)
@@ -154,8 +155,18 @@
                                             @if($user->getSubscribes()->count())
                                                 <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseSubscribes">
                                                     @foreach($user->getSubscribes()->all() as $subscribe)
+                                                        @php
+                                                            $currentVolunteer = $subscribe->getVolunteer(true);
+                                                            $trust = $trustService->countTrust($user->getId(), $currentVolunteer->getId());
+                                                            $trustStyle = $trustService->countTrustStyle($trust);
+                                                        @endphp
                                                         <div class="col-md-12">
-                                                            @include('layouts.user_item', ['user' => $subscribe->getVolunteer(true), 'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS])
+                                                            @include('layouts.user_item', [
+                                                                'user' => $currentVolunteer,
+                                                                'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS,
+                                                                'trust' => $trust,
+                                                                'trustStyle' => $trustStyle,
+                                                            ])
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -187,8 +198,17 @@
                                         @if($subscribers->count())
                                             <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseSubscribers">
                                                 @foreach($subscribers as $subscriber)
+                                                    @php
+                                                        $currentVolunteer = $subscriber->getVolunteer(true);
+                                                        $trust = $trustService->countTrust($currentVolunteer->getId(), $user->getId());
+                                                        $trustStyle = $trustService->countTrustStyle($trust);
+                                                    @endphp
                                                     <div class="col-md-12">
-                                                        @include('layouts.user_item', ['user' => $subscriber->getDonater()])
+                                                        @include('layouts.user_item', [
+                                                            'user' => $subscriber->getDonater(),
+                                                            'trust' => $trust,
+                                                            'trustStyle' => $trustStyle,
+                                                        ])
                                                     </div>
                                             @endforeach
                                         @endif

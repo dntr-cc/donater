@@ -69,6 +69,15 @@ return [
             'path' => storage_path('logs/laravel.json'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 14,
+            'handler' => Monolog\Handler\RotatingFileHandler::class,
+            'with' => [
+                'filename' => storage_path('logs/laravel.log')
+            ],
+            'formatter' => Monolog\Formatter\JsonFormatter::class,
+            'formatter_with' => [
+                'dateFormat' => 'Y-m-d',
+            ],
+
         ],
 
         'daily' => [
