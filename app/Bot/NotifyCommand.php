@@ -25,7 +25,10 @@ class NotifyCommand extends Command
         $chatId = $this->getUpdate()?->getChat()?->getId();
         $blocked = $skipped = [];
         $it = 0;
-        if (empty((string)$this->getUpdate()?->getMessage()?->getText() ?? '')) {
+        $text = $this->getUpdate()?->getMessage()?->getText() ?? '';
+        $text = strtr($text, [$this->replaceCommandText() => '']);
+        if (empty($text)) {
+            $this->replyWithMessage(['text' => 'empty text']);
             return;
         }
         if (in_array($chatId, config('app.admins_ids'))) {
@@ -35,11 +38,7 @@ class NotifyCommand extends Command
                     continue;
                 }
                 try {
-                    $text = $this->getUpdate()?->getMessage()?->getText() ?? '';
-                    \Telegram::sendMessage([
-                        'chat_id' => $user->getTelegramId(),
-                        'text' => strtr($text, [$this->replaceCommandText() => '']),
-                    ]);
+                    $user->sendBotMessage($text);
                     $it++;
                 } catch (\Throwable $t) {
                     $blocked[] = $user->getUserLink();
