@@ -104,10 +104,7 @@ class DonatesValidateCommand extends DefaultCommand
                             ':url'    => route('fundraising.show', ['fundraising' => $fundraising->getKey()]),
                         ]);
                         $this->output->info($strtr);
-                        Telegram::sendMessage([
-                            'chat_id' => $telegramId,
-                            'text'    => $strtr,
-                        ]);
+                        $user->sendBotMessage($strtr);
                     }
                 }
             }
