@@ -27,6 +27,6 @@ class NotifyAllCommand extends NotifyCommand
 
     protected function replaceCommandText(): string
     {
-        return '/notifyall ';
+        return '/notifyall';
     }
 }
