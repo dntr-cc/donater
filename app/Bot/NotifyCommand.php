@@ -66,6 +66,6 @@ class NotifyCommand extends Command
      */
     protected function replaceCommandText(): string
     {
-        return '/notify ';
+        return '/notify';
     }
 }
