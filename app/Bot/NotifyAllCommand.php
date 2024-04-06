@@ -25,4 +25,9 @@ class NotifyAllCommand extends NotifyCommand
     {
         return false;
     }
+
+    protected function replaceCommandText(): string
+    {
+        return '/notify ';
+    }
 }

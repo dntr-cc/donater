@@ -25,6 +25,9 @@ class NotifyCommand extends Command
         $chatId = $this->getUpdate()?->getChat()?->getId();
         $blocked = $skipped = [];
         $it = 0;
+        if (empty((string)$this->getUpdate()?->getMessage()?->getText() ?? '')) {
+            return;
+        }
         if (in_array($chatId, config('app.admins_ids'))) {
             foreach (User::all() as $user) {
                 if ($this->skipCondition($user)) {
@@ -32,9 +35,10 @@ class NotifyCommand extends Command
                     continue;
                 }
                 try {
+                    $text = $this->getUpdate()?->getMessage()?->getText() ?? '';
                     \Telegram::sendMessage([
                         'chat_id' => $user->getTelegramId(),
-                        'text' => strtr((string)$this->getUpdate()?->getMessage()?->getText() ?? '', [$this->replaceCommandText() => '']),
+                        'text' => strtr($text, [$this->replaceCommandText() => '']),
                     ]);
                     $it++;
                 } catch (\Throwable $t) {
@@ -63,6 +67,6 @@ class NotifyCommand extends Command
      */
     protected function replaceCommandText(): string
     {
-        return '/' . static::getName() . ' ';
+        return '/notify ';
     }
 }
