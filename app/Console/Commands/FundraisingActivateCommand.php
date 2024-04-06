@@ -19,7 +19,9 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
 
     /**
      * @param mixed $fundraising
+     * @param bool $throw
      * @return void
+     * @throws \Throwable
      */
     protected function notifyVolunteer(Fundraising $fundraising, bool $throw = false): void
     {
@@ -31,7 +33,7 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
 
     protected function doCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool
     {
-        if ($byCountRow) {
+        if (!$byCountRow) {
             $fundraising->restore();
             $fundraising->update(['forget' => false]);
             return true;
