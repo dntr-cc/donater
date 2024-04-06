@@ -93,7 +93,11 @@ class FundraisingDeactivateCommand extends DefaultCommand
 
     protected function doCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool
     {
-        if ($byCreatedDate && !$byCountRow) {
+        if (!$byCreatedDate) {
+            return false;
+        }
+
+        if ($byCountRow) {
             return true;
         }
 
@@ -126,7 +130,7 @@ class FundraisingDeactivateCommand extends DefaultCommand
     protected function isValidDate(string $date, false|int $limit): bool
     {
         return preg_match('/^[0-9]{2}.[0-9]{2}.[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $date) &&
-            strtotime($date) < $limit;
+            strtotime($date) > $limit;
     }
 
     /**
