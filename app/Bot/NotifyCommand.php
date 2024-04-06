@@ -27,7 +27,7 @@ class NotifyCommand extends Command
         $it = 0;
         $text = $this->getUpdate()?->getMessage()?->getText() ?? '';
         $text = strtr($text, [$this->replaceCommandText() => '']);
-        if (empty($text)) {
+        if (empty(trim($text))) {
             $this->replyWithMessage(['text' => 'empty text']);
             return;
         }
@@ -38,7 +38,7 @@ class NotifyCommand extends Command
                     continue;
                 }
                 try {
-                    $user->sendBotMessage($text);
+                    $user->sendBotMessage($text, true);
                     $it++;
                 } catch (\Throwable $t) {
                     $blocked[] = $user->getUserLink();
