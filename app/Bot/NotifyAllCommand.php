@@ -9,7 +9,7 @@ use App\Models\UserSetting;
 
 class NotifyAllCommand extends NotifyCommand
 {
-    protected string $name = 'notify-all';
+    protected string $name = 'notifyall';
 
     /**
      * @var string Command Description
@@ -28,6 +28,6 @@ class NotifyAllCommand extends NotifyCommand
 
     protected function replaceCommandText(): string
     {
-        return '/notify ';
+        return '/notifyall ';
     }
 }
