@@ -33,6 +33,7 @@ class FundraisingController extends Controller
         if ((int)$attributes['user_id'] !== $request->user()->getId() && !$request->user()->isSuperAdmin()) {
             return new JsonResponse([], Response::HTTP_UNAUTHORIZED);
         }
+        $attributes['is_enabled'] = true;
 
         $fundraising = Fundraising::create($attributes);
         $volunteer = $fundraising->getVolunteer();

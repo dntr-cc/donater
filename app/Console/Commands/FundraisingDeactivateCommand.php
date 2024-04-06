@@ -53,27 +53,30 @@ class FundraisingDeactivateCommand extends DefaultCommand
     {
         $sendMessage = ' Повідомлення доставлно волонтеру.';
         try {
-            $this->notifyVolunteer($fundraising);
+            $this->notifyVolunteer($fundraising, true);
         } catch (\Throwable $t) {
             $sendMessage = ' Повідомлення недоставлно волонтеру.';
         }
         User::find(1)->sendBotMessage(
-            strtr(static::MESSAGE . $sendMessage, [':fundraising' => route('fundraising.show', compact('fundraising'))])
+            strtr(static::MESSAGE . $sendMessage, [':fundraising' => route('fundraising.show', compact('fundraising'))]),
+            true
         );
     }
 
     /**
      * @param mixed $fundraising
+     * @param bool $throw
      * @return void
+     * @throws \Throwable
      */
-    protected function notifyVolunteer(Fundraising $fundraising): void
+    protected function notifyVolunteer(Fundraising $fundraising, bool $throw = false): void
     {
         $volunteer = $fundraising->getVolunteer();
         $volunteer->sendBotMessage(
             strtr(static::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))])
         );
-        $volunteer->sendBotMessage('Повідомлення для підтримки монобанку для замовлення виписки:');
-        $volunteer->sendBotMessage($fundraising->getMonoRequest($fundraising->getJarLink(false)));
+        $volunteer->sendBotMessage('Повідомлення для підтримки монобанку для замовлення виписки:', $throw);
+        $volunteer->sendBotMessage($fundraising->getMonoRequest($fundraising->getJarLink(false)), $throw);
     }
 
     protected function initDoCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool

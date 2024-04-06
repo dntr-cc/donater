@@ -378,7 +378,7 @@ class User extends Authenticatable
         return Subscribe::query()->where('user_id', '=', $this->getId())->get();
     }
 
-    public function sendBotMessage(string $message): void
+    public function sendBotMessage(string $message, bool $throw = false): void
     {
         if (str_contains(config('app.url'), 'localhost')) {
             Log::critical($message);
@@ -394,7 +394,10 @@ class User extends Authenticatable
             if (str_contains($throwable->getMessage(), 'bot was blocked by the user')) {
                 $this->update(['forget' => true]);
             }
-            throw $throwable;
+            Log::error($throwable->getMessage(), ['code' => $throwable->getCode(), 'trace' => $throwable->getTraceAsString()]);
+            if ($throw) {
+                throw $throwable;
+            }
         }
     }
 

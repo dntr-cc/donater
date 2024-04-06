@@ -27,17 +27,17 @@ class NotifyCommand extends Command
         $it = 0;
         if (in_array($chatId, config('app.admins_ids'))) {
             foreach (User::all() as $user) {
-                if ($user->settings->hasSetting(UserSetting::DONT_SEND_MARKETING_MESSAGES)) {
+                if ($this->skipCondition($user)) {
                     $skipped[] = $user->getUserLink();
                     continue;
                 }
                 try {
                     \Telegram::sendMessage([
                         'chat_id' => $user->getTelegramId(),
-                        'text' => strtr($this->getUpdate()?->getMessage()?->getText() ?? '', ['/notify ' => '']),
+                        'text' => strtr((string)$this->getUpdate()?->getMessage()?->getText() ?? '', [$this->replaceCommandText() => '']),
                     ]);
                     $it++;
-                } catch (\Throwable $exception) {
+                } catch (\Throwable $t) {
                     $blocked[] = $user->getUserLink();
                 }
             }
@@ -47,5 +47,22 @@ class NotifyCommand extends Command
                 'Send messages: ' . $it
             ]);
         }
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    protected function skipCondition(User $user): bool
+    {
+        return (bool)$user?->settings?->hasSetting(UserSetting::DONT_SEND_MARKETING_MESSAGES) ?? false;
+    }
+
+    /**
+     * @return string
+     */
+    protected function replaceCommandText(): string
+    {
+        return '/' . static::getName() . ' ';
     }
 }
