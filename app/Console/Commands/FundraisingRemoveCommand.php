@@ -17,7 +17,7 @@ class FundraisingRemoveCommand extends FundraisingDeactivateCommand
 
     protected $description = 'Command that automatically deletes fundraising events that haven\'t received any new donations in the past 10 days and notifies the volunteer of the event\'s deletion.';
 
-    protected function notifyVolunteer(Fundraising $fundraising): void
+    protected function notifyVolunteer(Fundraising $fundraising, bool $throw = false): void
     {
         $fundraising->getVolunteer()->sendBotMessage(
             strtr(static::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))])
