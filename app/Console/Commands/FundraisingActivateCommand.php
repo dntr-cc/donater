@@ -21,10 +21,11 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
      * @param mixed $fundraising
      * @return void
      */
-    protected function notifyVolunteer(Fundraising $fundraising): void
+    protected function notifyVolunteer(Fundraising $fundraising, bool $throw = false): void
     {
         $fundraising->getVolunteer()->sendBotMessage(
-            strtr(static::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))])
+            strtr(static::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))]),
+            $throw
         );
     }
 
