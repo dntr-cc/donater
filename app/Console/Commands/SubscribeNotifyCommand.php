@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Fundraising;
 use App\Models\Subscribe;
+use App\Models\SubscribesMessage;
 use App\Services\Metrics;
 use App\Services\UserCodeService;
 
@@ -32,6 +33,12 @@ class SubscribeNotifyCommand extends DefaultCommand
         $code = $this->argument('code');
         if ($id && $code) {
             $subscribe = Subscribe::find($id);
+            $nextMessage = $subscribe->getNextSubscribesMessage();
+            $openFundraisings = $subscribe->getVolunteer()->getFundraisings()
+                ->filter(fn(Fundraising $fundraising) => $fundraising->isEnabled())
+                ->count();
+            $nextMessage->update(['need_send' => (bool)$openFundraisings]);
+            $code = $nextMessage->getNotificationCode();
             $donater = $subscribe->getDonater();
             $volunteer = $subscribe->getVolunteer();
             $codeText = $donater->getUserCode() . '%20' . $code;
@@ -57,7 +64,15 @@ class SubscribeNotifyCommand extends DefaultCommand
             ]);
             $callToAction = "\n\nВи можете скопіювати запрошення для ваших друзів робити як ви нижче (копіює по кліку)\n\n`Я підтримую :volunteer донатом за моїм розкладом. Мені в телеграм кожен день приходить посилання в обраний мною час. Прошу вас робити так само. Донатьте. Будь ласка ❤️`";
             $donater->sendBotMessage($message . strtr($callToAction, [':volunteer' => $randomFundraising->getShortLink()]));
-            $this->saveMetric(Metrics::SUBSCRIBE_SCHEDULER);
+            $nextScheduledAt = $nextMessage->getScheduledAt()->modify($subscribe->getModifier($nextMessage->getFrequency()));
+            SubscribesMessage::create([
+                'subscribes_id' => $subscribe->getId(),
+                'frequency' => $nextMessage->getFrequency(),
+                'scheduled_at' => $nextScheduledAt,
+                'need_send' => (bool)$openFundraisings,
+                'hash' => SubscribesMessage::generateHash($subscribe->getId(), $nextScheduledAt->format('Y-m-d H:i:s')),
+            ]);
+            $this->saveMetric(Metrics::SUBSCRIBE_NOTIFY);
         }
     }
 }
