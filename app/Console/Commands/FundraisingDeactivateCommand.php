@@ -10,8 +10,8 @@ use App\Services\Metrics;
 
 class FundraisingDeactivateCommand extends DefaultCommand
 {
-    public const string MESSAGE = 'Ви не закидали виписку з донатами старше 7 днів. Протягом 72 годин ваш збір :fundraising буде видалено автоматично. Якщо ваш збір зупинено - натисніть кнопку "ЗУПИНИТИ".';
-    public const string MESSAGE_ADMIN = ':fundraising буде видалено автоматично за 48 годин.';
+    public const string MESSAGE = 'Ви не закидали виписку з донатами старше 7 днів.😞 Якщо в виписці не буде записів старше 10 днів то ваш збір :fundraising буде видалено автоматично.';
+    public const string MESSAGE_ADMIN = ':fundraising було повідомлено, що скоро його буде видалено автоматично';
     public const string DAYS = '-7 days';
     public const string METRIC_NAME = Metrics::FUNDRAISING_DEACTIVATE;
     protected $signature = 'fundraising:deactivate';
