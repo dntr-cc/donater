@@ -2,6 +2,6 @@
 
 while true
 do
-   /usr/local/bin/php /var/www/html/artisan schedule:run
-   /bin/sleep 7;
+   /usr/local/bin/php /var/www/html/artisan subscribe:scheduler
+   /bin/sleep 15;
 done
