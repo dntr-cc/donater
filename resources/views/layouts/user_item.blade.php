@@ -3,7 +3,7 @@
 @php $userBanner = url(app(\App\Services\OpenGraphImageService::class)->getUserImage($user)) @endphp
 @php $whoIs = $whoIs ?? '' @endphp
 @php $additionalClasses = $additionalClasses ?? '' @endphp
-@php $hasOpenFundsClass = $hasOpenFundsClass ?? '' @endphp
+@php $hasOpenFundsClass = $isVolunteer ? 'bg-golden' : null @endphp
 @php $masonry = $masonry ?? '' @endphp
 @php $trust = $trust ?? null @endphp
 @php $trustStyle = $trustStyle ?? null @endphp
