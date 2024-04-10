@@ -6,7 +6,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Головна</a></li>
                 @yield('breadcrumb-path')
-                <li class="breadcrumb-item active" aria-current="page">@yield('breadcrumb-current')</li>
+                <li class="breadcrumb-item active" aria-current="page">@yield('breadcrumb-current', '')</li>
             </ol>
         </nav>
         @endif
