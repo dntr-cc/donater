@@ -3,7 +3,7 @@
 @php $userBanner = url(app(\App\Services\OpenGraphImageService::class)->getUserImage($user)) @endphp
 @php $whoIs = $whoIs ?? '' @endphp
 @php $additionalClasses = $additionalClasses ?? '' @endphp
-@php $hasOpenFundsClass = $isVolunteer ? 'bg-golden' : null @endphp
+@php $hasOpenFundsClass = ($isVolunteer ?? false) && !$user->fundraisings->filter(fn ($f) => $f->isEnabled())->isEmpty() ? 'bg-golden': null @endphp
 @php $masonry = $masonry ?? '' @endphp
 @php $trust = $trust ?? null @endphp
 @php $trustStyle = $trustStyle ?? null @endphp
@@ -14,8 +14,8 @@
             <div class="row g-0">
                 <div class="col-4">
                     <a href="{{ route('user', compact('user')) }}">
-                    <img src="{{ $user->getAvatar() }}" class="img-fluid rounded-start card-img-cover"
-                         alt="{{ $user->getFullName() }} - {{ $user->getUsername() }}">
+                        <img src="{{ $user->getAvatar() }}" class="img-fluid rounded-start card-img-cover"
+                             alt="{{ $user->getFullName() }} - {{ $user->getUsername() }}">
                     </a>
                 </div>
                 <div class="col-8 {{ $hasOpenFundsClass }}">

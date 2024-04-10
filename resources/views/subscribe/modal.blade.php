@@ -16,7 +16,7 @@
                            id="volunteer_id" aria-label="volunteer_id">
                     <div class="form-floating py-1">
                         <input type="number" class="form-control" min="1" name="amount"
-                               id="amount" value="33">
+                               id="amount" value="3">
                         <label for="amount">
                             Сума щоденного донату, ₴
                         </label>
