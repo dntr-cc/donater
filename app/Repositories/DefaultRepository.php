@@ -6,8 +6,8 @@ use App\Services\CacheWrapper;
 
 class DefaultRepository
 {
+    protected string $model = '';
     protected bool $rewrite = false;
-    protected int $needRewrite = 0;
     protected CacheWrapper $wrapper;
 
     public function __construct(CacheWrapper $wrapper)
@@ -15,20 +15,31 @@ class DefaultRepository
         $this->wrapper = $wrapper;
     }
 
-    public function needRewrite(): self
+    protected function lazy(callable $callback, string $uniq)
     {
-        $this->needRewrite = 1;
-
-        return $this;
-    }
-
-    protected function lazy(callable $callback)
-    {
+        $key = strtr('lazy::model::uniq', [
+            ':model'  => $this->getModelName(),
+            ':uniq'   => sha1($uniq),
+        ]);
         return $this->wrapper->lazyLoading(
-            'lazy:' . sha1(get_class($this) . __METHOD__),
+            $key,
             $callback,
-            (bool)($this->needRewrite > 0 ? --$this->needRewrite : 0)
         );
     }
 
+    public function getModelName(): string
+    {
+        if (empty($this->model)) {
+            throw new \LogicException('model can be filled');
+        }
+
+        return $this->model;
+    }
+
+    public function getDependsKeys(): array
+    {
+        return [
+
+        ];
+    }
 }

@@ -23,6 +23,10 @@
                 <p>
                     <a href="{{ route('volunteers') }}" class="btn btn-outline-success my-2">Обрати волонтера</a>
                     @auth
+                        <a href="{{route('fundraising.new')}}" class="btn btn btn-outline-danger">
+                            <i class="bi bi-plus-circle-fill"></i>
+                            Додати збір
+                        </a>
                         <a href="{{ route('my') }}" class="btn btn-outline-primary my-2">Ваша сторінка</a>
                     @endauth
                 </p>
