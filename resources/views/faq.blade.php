@@ -1,8 +1,6 @@
 @extends('layouts.base')
 @section('page_title', 'Часті питання по сайту donater.com.ua')
-@section('page_description', 'Часті питання по сайту donater.com.ua')
-
-@section('content')
+@section('page_description', 'Часті питання по сайту donater.com.ua''content')
     <div class="container">
         <h2 class="pb-2 border-bottom">
             Довідка

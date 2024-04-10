@@ -5,11 +5,7 @@
 @section('page_description', strtr('Звітність по :fundraising - donater.com.ua', [':fundraising' => $fundraising->getName()]))
 @section('og_image_title', $title)
 @section('og_image_alt', 'Створить нагадування задонатити на збір ' . $fundraising->getName() . ' на сайті donater.com.ua')
-@section('og_image', url($fundraisingBanner))
-@section('breadcrumb-path')
-    <li class="breadcrumb-item"><a href="{{ route('fundraising.all') }}">Збори</a></li>
-@endsection
-@section('breadcrumb-current', $fundraising->getName())
+@section('og_image', url($fundraisingBanner)'breadcrumb-current', $fundraising->getName())
 @push('head-scripts')
     @vite(['resources/js/tabs.js'])
 @endpush
