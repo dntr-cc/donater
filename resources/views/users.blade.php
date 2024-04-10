@@ -22,11 +22,6 @@
             <p>{{ $whoIs }} не знайдені</p>
         @endforelse
     </div>
-    <div class="col-12">
-        <div class="row">
-            {{ $users->links('layouts.pagination', ['elements' => $users]) }}
-        </div>
-    </div>
     @if($isVolunteer && auth()?->user())
         @include('subscribe.modal')
     @endif
