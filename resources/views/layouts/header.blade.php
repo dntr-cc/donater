@@ -27,12 +27,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('fundraising.all') }}" class="nav-link text-white">
-                            <i class="bi bi-activity d-inline mx-auto mb-1"></i>
-                            Всі збори
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{ route('volunteers') }}" class="nav-link text-white">
                             <i class="bi bi-star-fill d-inline mx-auto mb-1"></i>
                             Волонтери
