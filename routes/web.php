@@ -78,20 +78,11 @@ Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLog
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-Route::get('/zvit', static fn() => redirect(route('fundraising.all'), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/fundraising', static fn() => view('fundraising.index', [
-    'fundraisings' => Fundraising::query()->paginate(config('app.per_page.funds'))
-]))->name('fundraising.all');
-Route::get('/zvit/{fundraising}', fn(Fundraising $fundraising) => redirect(route('fundraising.show', compact('fundraising')), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/fundraising/open', static fn() => view('fundraising.index', data: [
-    'fundraisings' => Fundraising::query()->where('is_enabled', '=', true)->paginate(config('app.per_page.funds'))
-]))->name('fundraising.open');
-Route::get('/fundraising/wait', static fn() => view('fundraising.index', data: [
-    'fundraisings' => Fundraising::query()->doesntHave('donates')->where('is_enabled', '=', false)->paginate(config('app.per_page.funds'))
-]))->name('fundraising.wait');
-Route::get('/fundraising/close', static fn() => view('fundraising.index', data: [
-    'fundraisings' => Fundraising::query()->whereHas('donates')->where('is_enabled', '=', false)->paginate(config('app.per_page.funds'))
-]))->name('fundraising.close');
+Route::get('/zvit', static fn() => redirect(route('welcome'), Response::HTTP_MOVED_PERMANENTLY));
+Route::get('/fundraising', static fn() => redirect(route('welcome'), Response::HTTP_MOVED_PERMANENTLY));
+Route::get('/zvit/{fundraising}', static fn() => redirect(route('welcome'), Response::HTTP_MOVED_PERMANENTLY));
+Route::get('/fundraising/wait', static fn() => redirect(route('welcome'), Response::HTTP_MOVED_PERMANENTLY));
+Route::get('/fundraising/close', static fn() => redirect(route('welcome'), Response::HTTP_MOVED_PERMANENTLY));
 Route::post('/fundraising', [App\Http\Controllers\FundraisingController::class, 'store'])->name('fundraising.create');
 Route::post('/fundraising/avatar', [App\Http\Controllers\FundraisingController::class, 'storeAvatar'])->name('fundraising.avatar');
 Route::post('/fundraising/key', [App\Http\Controllers\FundraisingController::class, 'checkKey'])->name('fundraising.key');
