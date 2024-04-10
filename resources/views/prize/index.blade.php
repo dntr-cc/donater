@@ -51,7 +51,7 @@
             console.log()
             let button = event.target.closest('.add-prize-by-fund');
             $.ajax({
-                url: '{{ route('fundraising.all') }}' + '/' + $(button).attr('data-fund-key') + '/prize/' + $(button).attr('data-prize-id'),
+                url: '{{ route('fundraising.create') }}' + '/' + $(button).attr('data-fund-key') + '/prize/' + $(button).attr('data-prize-id'),
                 type: "POST",
                 data: {
                     _token: $('meta[name="csrf-token"]').attr('content')

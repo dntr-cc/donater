@@ -7,7 +7,6 @@
 @section('og_image_width', $ogImageWidth)
 @section('og_image_height', $ogImageHeight)
 @section('breadcrumb-path')
-    <li class="breadcrumb-item"><a href="{{ route('fundraising.all') }}">Збори</a></li>
     <li class="breadcrumb-item"><a href="{{ route('fundraising.show', compact('fundraising')) }}">{{ $fundraising->getName() }}</a></li>
 @endsection
 @section('breadcrumb-current', 'Аналітика')
