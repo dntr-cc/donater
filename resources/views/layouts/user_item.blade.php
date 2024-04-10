@@ -3,6 +3,7 @@
 @php $userBanner = url(app(\App\Services\OpenGraphImageService::class)->getUserImage($user)) @endphp
 @php $whoIs = $whoIs ?? '' @endphp
 @php $additionalClasses = $additionalClasses ?? '' @endphp
+@php $hasOpenFundsClass = $hasOpenFundsClass ?? '' @endphp
 @php $masonry = $masonry ?? '' @endphp
 @php $trust = $trust ?? null @endphp
 @php $trustStyle = $trustStyle ?? null @endphp
@@ -17,7 +18,7 @@
                          alt="{{ $user->getFullName() }} - {{ $user->getUsername() }}">
                     </a>
                 </div>
-                <div class="col-8">
+                <div class="col-8 {{ $hasOpenFundsClass }}">
                     <div class="card-body">
                         <h5 class="m-0 card-title">{{ $user->getFullName() }}</h5>
                         <p class="card-text"><small class="text-body-secondary">{{ '@' . $user->getUsername() }}</small>
