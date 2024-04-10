@@ -15,8 +15,8 @@
 @section('content')
     <h2>{{ $whoIs }}</h2>
     <div class="row row-cols-1 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
-        @php /** @var \Illuminate\Support\Collection|\App\Models\User[] $users */ @endphp
-        @forelse($users->all() as $user)
+    @php /** @var \Illuminate\Support\Collection|\App\Models\User[] $users */ @endphp
+    @forelse($users->shuffle()->all() as $user)
             @include('layouts.user_item', ['user' => $user, 'masonry' => 'masonry-grid-item', 'isVolunteer' => $isVolunteer])
         @empty
             <p>{{ $whoIs }} не знайдені</p>

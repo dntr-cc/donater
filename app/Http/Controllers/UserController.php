@@ -34,14 +34,6 @@ class UserController extends Controller
         return static::renderUserView($user, $dntr, $user->getFundraisings());
     }
 
-    public function index(): View
-    {
-        $users = User::query()->where('forget', '=', false)->without(['fundraisings', 'links'])->paginate($this->getUsersPerPage())->onEachSide(1);
-        $whoIs = self::USERS;
-
-        return view('users', compact('users', 'whoIs'));
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -49,7 +41,7 @@ class UserController extends Controller
      */
     public function volunteers(): View
     {
-        $users = User::query()->where('forget', '=', false)->without(['settings'])->withWhereHas('fundraisings')->paginate($this->getVolunteersPerPage())->onEachSide(1);
+        $users = User::query()->where('forget', '=', false)->without(['settings'])->withWhereHas('fundraisings')->get();
         $whoIs = self::VOLUNTEERS;
 
         return view('users', compact('users', 'whoIs'));
