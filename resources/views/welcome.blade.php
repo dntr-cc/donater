@@ -21,7 +21,6 @@
                 <p class="lead text-muted">Підписуйтеся на свого волонтера, щоб задати розклад. Якщо вашого волонтера
                     нема на сайті, запросіть його своім кодом донатера, код донатера є на вашій сторінці</p>
                 <p>
-                    <a href="{{ route('volunteers') }}" class="btn btn-outline-success my-2">Обрати волонтера</a>
                     @auth
                         <a href="{{route('fundraising.new')}}" class="btn btn btn-outline-danger">
                             <i class="bi bi-plus-circle-fill"></i>
@@ -75,11 +74,7 @@
                     <div class="card-body">
                         <ol class="mt-3 mb-4">
                             <li class="mt-4">
-                                Відкриваєте сторінку з
-                                <a href="{{ route('volunteers') }}" target="_blank" class="">волонтерами</a>
-                            </li>
-                            <li class="mt-4">
-                                Знайдіть свого волонтера
+                                Відкриваєте сторінку свого волонтера
                             </li>
                             <li class="mt-4">
                                 Натисніть на
