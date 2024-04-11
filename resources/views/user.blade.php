@@ -152,7 +152,8 @@
                                                 </a>
                                             </li>
                                             @if($user->getSubscribes()->count())
-                                                <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseSubscribes">
+                                                <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}"
+                                                     id="collapseSubscribes">
                                                     @foreach($user->getSubscribes()->all() as $subscribe)
                                                         @php
                                                             $currentVolunteer = $subscribe->getVolunteer(true);
@@ -195,7 +196,8 @@
                                             @endif
                                         </li>
                                         @if($subscribers->count())
-                                            <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseSubscribers">
+                                            <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}"
+                                                 id="collapseSubscribers">
                                                 @foreach($subscribers as $subscriber)
                                                     @php
                                                         $currentUser = $subscriber->getDonater();
@@ -260,7 +262,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseFundraisings">
+                                    <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}"
+                                         id="collapseFundraisings">
                                         <hr>
                                         <div
                                             class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
@@ -357,7 +360,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseDonateAnalytics">
+                                <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}"
+                                     id="collapseDonateAnalytics">
                                     <div class="row row-cols-1 g-1">
                                         @include('layouts.analytics', ['rows' => $donaterRows, 'charts' => $donaterCharts, 'charts2' => $donaterCharts2, 'charts3' => $donaterCharts3, 'uniq' => 'donateUniq', 'additionalAnalyticsText' => 'sasa',])
                                     </div>
@@ -382,7 +386,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}" id="collapseFundAnalytics">
+                                    <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}"
+                                         id="collapseFundAnalytics">
                                         <div class="row row-cols-1 g-1">
                                             @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3', 'additionalAnalyticsText', 'uniq'))
                                         </div>
@@ -588,7 +593,7 @@
                         </div>
                         <form class="form">
                             <div class="modal-body">
-                                @foreach(\App\Models\UserSetting::SETTINGS_MAP[$user->isVolunteer()] as $key => $name)
+                                @foreach(\App\Models\UserSetting::SETTINGS_MAP[$user->hasFundraisings()] as $key => $name)
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" value="" id="{{ $key }}"
                                                @if($user->settings->hasSetting($key))
@@ -729,7 +734,7 @@
                     type: "PATCH",
                     data: {
                         settings: {
-                            @foreach(\App\Models\UserSetting::SETTINGS_MAP[$user->isVolunteer()] as $key => $name)
+                            @foreach(\App\Models\UserSetting::SETTINGS_MAP[$user->hasFundraisings()] as $key => $name)
                                 {{ $key }}: $('#{{ $key }}').is(':checked') ? 1 : 0,
                             @endforeach
                         },

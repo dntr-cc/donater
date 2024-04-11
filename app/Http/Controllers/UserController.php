@@ -41,7 +41,7 @@ class UserController extends Controller
      */
     public function volunteers(): View
     {
-        $users = User::query()->where('forget', '=', false)->without(['settings'])->withWhereHas('fundraisings')->get();
+        $users = User::query()->where('forget', '=', false)->without(['settings'])->withWhereHas('volunteer')->get();
         $whoIs = self::VOLUNTEERS;
 
         return view('users', compact('users', 'whoIs'));
