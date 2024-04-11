@@ -6,6 +6,7 @@ namespace App\DTOs;
 
 use App\Models\Donate;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Contracts\Support\Arrayable;
 use Override;
 
@@ -19,6 +20,10 @@ class Row implements Arrayable
     protected string $currency;
     protected string $sum;
     private array $donates;
+    /**
+     * @var UserRepository|(UserRepository&\Illuminate\Contracts\Foundation\Application)|\Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|mixed
+     */
+    protected mixed $userRepository;
 
     /**
      * @param array $row
@@ -34,6 +39,7 @@ class Row implements Arrayable
         $this->currency = $row[5] ?? '';
         $this->sum = $row[6] ?? '';
         $this->donates = $donates;
+        $this->userRepository = app(UserRepository::class);
     }
 
     public static function hasCode(string $comment): bool
@@ -77,7 +83,7 @@ class Row implements Arrayable
         /** @var Donate $donate */
         $donate = $this->donates[$code] ?? $this->donates[mb_strtolower($code)] ?? null;
         if ($donate) {
-            return User::find($donate->getUserId());
+            return $this->userRepository->find($donate->getUserId());
         }
 
         return null;
