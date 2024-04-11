@@ -6,12 +6,8 @@
                 <div class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
                     <a class="text-white text-decoration-none"
                        href="{{ url('/') }}">
-                        <nobr>🍩 Донатити будуть всі</nobr>
+                        <nobr>🍩 Донати за розкладом</nobr>
                     </a>
-
-{{--                    <form class="d-flex align-items-right px-3">--}}
-{{--                        <input type="search" class="form-control" placeholder="Пошук донатерів" aria-label="Search">--}}
-{{--                    </form>--}}
                 </div>
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                     <li>
@@ -27,9 +23,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('volunteers') }}" class="nav-link text-white">
-                            <i class="bi bi-star-fill d-inline mx-auto mb-1"></i>
-                            Волонтери
+                        <a href="{{ route('fundraising.new') }}" class="nav-link text-white">
+                            <i class="bi bi-plus-circle-fill d-inline mx-auto mb-1"></i>
+                            Додати збір
                         </a>
                     </li>
                     <li>

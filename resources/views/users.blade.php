@@ -8,9 +8,6 @@
 @push('head-scripts')
     @vite(['resources/js/masonry.js'])
 @endpush
-@section('breadcrumb-path')
-    <li class="breadcrumb-item"><a href="{{ route('volunteers') }}">Волонтери</a></li>
-@endsection
 @section('breadcrumb-current', $whoIs)
 @section('content')
     <h2>{{ $whoIs }}</h2>

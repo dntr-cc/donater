@@ -123,7 +123,6 @@ class FundraisingController extends Controller
 
         return new JsonResponse([
             'html' => view('fundraising.preload', compact('fundraising', 'rows'))->render(),
-            'csrf' => $this->getNewCSRFToken()
         ]);
     }
 
