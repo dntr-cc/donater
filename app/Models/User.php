@@ -61,7 +61,7 @@ class User extends Authenticatable
         '.' => '\.',
         '!' => '\!',
     ];
-    protected $with = ['fundraisings', 'links', 'settings', 'isVolunteer'];
+    protected $with = ['fundraisings', 'links', 'settings', 'volunteer'];
     /**
      * The attributes that are mass assignable.
      *
