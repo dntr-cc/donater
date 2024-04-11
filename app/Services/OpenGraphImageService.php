@@ -210,6 +210,9 @@ class OpenGraphImageService
         $imageTemplate->place($imageUsernamePath, 'top-right', 50, $offset);
 
         $volunteer = $fundraising->getVolunteer();
+        if (!$volunteer) {
+            throw new \LogicException('User not found');
+        }
         $imageAvatar = $manager->read(base_path('public/' . $volunteer->getAvatar()));
         $scaledAvatar = $imageAvatar->scale(width: 380)->cover(380, 380)->toPng();
         $scaledAvatar->save($filepathScaledAvatar);

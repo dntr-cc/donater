@@ -26,6 +26,7 @@ use Illuminate\Support\Collection;
  * @property bool $is_enabled
  * @property bool $forget
  * @property int $user_id
+ * @property User|null $volunteer
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon|null $deleted_at
@@ -381,7 +382,7 @@ class Fundraising extends Model
         return self::with('donates')->where('id', '=', $this->getId())->first()->donates;
     }
 
-    public function getVolunteer(): User
+    public function getVolunteer(): ?User
     {
         return self::with('volunteer')->where('id', '=', $this->getId())->first()->volunteer;
     }

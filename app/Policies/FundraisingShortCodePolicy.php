@@ -23,16 +23,16 @@ class FundraisingShortCodePolicy
 
     public function create(?User $user, Fundraising $fundraising): bool
     {
-        return $user && $user->getId() === $fundraising->getVolunteer()->getId() || $user && $user->isSuperAdmin();
+        return $user && $user->getId() === $fundraising->getVolunteer()?->getId() || $user && $user->isSuperAdmin();
     }
 
     public function update(?User $user, FundraisingShortCode $fundraisingShortCode): bool
     {
-        return $user && $user->getId() === $fundraisingShortCode->getFundraising()->getVolunteer()->getId() || $user && $user->isSuperAdmin();
+        return $user && $user->getId() === $fundraisingShortCode->getFundraising()->getVolunteer()?->getId() || $user && $user->isSuperAdmin();
     }
 
     public function delete(?User $user, FundraisingShortCode $fundraisingShortCode): bool
     {
-        return $user && $user->getId() === $fundraisingShortCode->getFundraising()->getVolunteer()->getId() || $user && $user->isSuperAdmin();
+        return $user && $user->getId() === $fundraisingShortCode->getFundraising()->getVolunteer()?->getId() || $user && $user->isSuperAdmin();
     }
 }

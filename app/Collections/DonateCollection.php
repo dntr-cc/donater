@@ -56,7 +56,7 @@ class DonateCollection extends Collection
         $result = new DonateCollection();
         foreach ($this->all() as $donate) {
                 $volunteer = $donate->getFundraising()->getVolunteer();
-                if ($id === $volunteer->getId()) {
+                if ($volunteer && $id === $volunteer->getId()) {
                     $result->push($donate);
                 }
             }
