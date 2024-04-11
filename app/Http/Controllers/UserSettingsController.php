@@ -14,7 +14,7 @@ class UserSettingsController extends Controller
         $this->authorize('update', $user);
 
         $settings = $request->get('settings', []);
-        foreach (array_keys(UserSetting::SETTINGS_MAP[$user->isVolunteer()]) as $key) {
+        foreach (array_keys(UserSetting::SETTINGS_MAP[$user->hasFundraisings()]) as $key) {
             if (boolval($settings[$key]) ?? false) {
                 UserSetting::createOrFirst(['setting' => $key, 'user_id' => $user->getId()]);
             } else {

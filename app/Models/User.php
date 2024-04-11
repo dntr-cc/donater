@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
@@ -26,6 +27,7 @@ use Throwable;
  * @property string|null $last_name
  * @property string|null $avatar
  * @property bool $is_premium
+ * @property IsVolunteer|null $volunteer
  * @property bool $forget
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -59,7 +61,7 @@ class User extends Authenticatable
         '.' => '\.',
         '!' => '\!',
     ];
-    protected $with = ['fundraisings', 'links', 'settings'];
+    protected $with = ['fundraisings', 'links', 'settings', 'isVolunteer'];
     /**
      * The attributes that are mass assignable.
      *
@@ -138,6 +140,19 @@ class User extends Authenticatable
     public function refs(): HasMany
     {
         return $this->hasMany(Referral::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function volunteer(): HasOne
+    {
+        return $this->hasOne(IsVolunteer::class, 'id', 'id');
+    }
+
+    public function isVolunteer(): bool
+    {
+        return (bool)$this->volunteer;
     }
 
     /**
@@ -458,7 +473,7 @@ class User extends Authenticatable
             ->get()->toArray() ?? [];
     }
 
-    public function isVolunteer(): int
+    public function hasFundraisings(): int
     {
         return $this->fundraisings->count() ? 1 : 0;
     }
