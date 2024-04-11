@@ -91,7 +91,10 @@ class DonatesValidateCommand extends DefaultCommand
                     }
                     $user = User::find($userId);
                     OpenGraphRegenerateEvent::dispatch($user->getId(), OpenGraphRegenerateEvent::TYPE_USER);
-                    OpenGraphRegenerateEvent::dispatch($fundraising->getVolunteer()->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+                    $volunteer = $fundraising->getVolunteer();
+                    if ($volunteer) {
+                        OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+                    }
                     $telegramId = $user->getTelegramId();
                     if ($user->settings->hasSetting(UserSetting::DONT_SEND_MARKETING_MESSAGES)) {
                         continue;

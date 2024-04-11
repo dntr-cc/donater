@@ -25,7 +25,11 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
      */
     protected function notifyVolunteer(Fundraising $fundraising, bool $throw = false): void
     {
-        $fundraising->getVolunteer()->sendBotMessage(
+        $volunteer = $fundraising->getVolunteer();
+        if (!$volunteer) {
+            throw new \LogicException('User not found');
+        }
+        $volunteer->sendBotMessage(
             strtr(static::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))]),
             $throw
         );

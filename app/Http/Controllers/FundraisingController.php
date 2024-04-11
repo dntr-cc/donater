@@ -37,16 +37,19 @@ class FundraisingController extends Controller
 
         $fundraising = Fundraising::create($attributes);
         $volunteer = $fundraising->getVolunteer();
-        OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
-        OpenGraphRegenerateEvent::dispatch($fundraising->getId(), OpenGraphRegenerateEvent::TYPE_FUNDRAISING);
+        if ($volunteer) {
+            OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+            OpenGraphRegenerateEvent::dispatch($fundraising->getId(), OpenGraphRegenerateEvent::TYPE_FUNDRAISING);
+        }
 
-        if (1 === $volunteer->getFundraisings()->count()) {
+        if ($volunteer && 1 === $volunteer->getFundraisings()->count()) {
             foreach (UserSetting::getNecessarySettingsForVolunteer() as $setting)
                 UserSetting::query()->where('user_id', '=', $volunteer->getId())->where('setting', '=', $setting)->delete();
             }
             $volunteer->sendBotMessage(
-                'Вітаю! Ви створили свій перший збір. Долучайтеся до чату нашої спільноти волонтерів ' .
-                config('app.volunteer_chat_link') . ' Там волонтери можуть задати питання, ділитися контактами продавців, ' .
+                'Вітаю! Ви створили свій перший збір. Для того, щоб ви з\'явилися на сторінці волонтерів, вам мають довіряти інші волонтери.' .
+                ' Долучайтеся до чату нашої спільноти волонтерів ' . config('app.volunteer_chat_link') .
+                ' Там волонтери можуть задати питання, ділитися контактами продавців, ' .
                 'домовляються за спільні збори, допомогають один одному репостами, а також можна попросити ' .
                 'оперативно виправити знайдену багу на сайті тощо. Ми чекаємо на вас!'
             );

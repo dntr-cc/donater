@@ -48,6 +48,7 @@ class FundraisingDeactivateCommand extends DefaultCommand
     /**
      * @param mixed $fundraising
      * @return void
+     * @throws \Throwable
      */
     protected function notifyVolunteerAndAdmin(Fundraising $fundraising): void
     {
@@ -72,6 +73,9 @@ class FundraisingDeactivateCommand extends DefaultCommand
     protected function notifyVolunteer(Fundraising $fundraising, bool $throw = false): void
     {
         $volunteer = $fundraising->getVolunteer();
+        if (!$volunteer) {
+            throw new \LogicException('User not found');
+        }
         $volunteer->sendBotMessage(
             strtr(static::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))])
         );
@@ -84,7 +88,10 @@ class FundraisingDeactivateCommand extends DefaultCommand
         $doCommandGoal = $this->doCommandGoal($byCountRow, $byCreatedDate, $fundraising);
         if ($doCommandGoal) {
             $this->output->warning($fundraising->getName() . ' doCommandGoal apply action!');
-            OpenGraphRegenerateEvent::dispatch($fundraising->getVolunteer()->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+            $volunteer = $fundraising->getVolunteer();
+            if ($volunteer) {
+                OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
+            }
 
         }
 
