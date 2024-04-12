@@ -212,7 +212,7 @@
                                   <i class="bi bi-stars text-primary"></i>
                                 </span>
                                 <h5 class="fw-bold">MVP ідеї, ver.0.0.9</h5>
-                                <p class="text-muted mb-2 fw-bold">28 березня 2024</p>
+                                <p class="text-muted mb-2 fw-bold">12 квітня 2024</p>
                                 <p class="text-muted">
                                     Важливе оновлення:
                                 </p>
