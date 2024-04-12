@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -17,11 +16,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $started_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property Carbon|null $deleted_at
  */
 class DeepLink extends Model
 {
-    use SoftDeletes, HasFactory;
+    use HasFactory;
 
     public const string TEMPLATE_DEEP_LINK = 'dntr.cc/d/:hash';
     public const int CODE_LENGTH = 5;
@@ -161,25 +159,6 @@ class DeepLink extends Model
     public function getUpdatedAt(): Carbon
     {
         return $this->updated_at;
-    }
-
-    /**
-     * @return Carbon|null
-     */
-    public function getDeletedAt(): ?Carbon
-    {
-        return $this->deleted_at;
-    }
-
-    /**
-     * @param Carbon|null $deleted_at
-     * @return DeepLink
-     */
-    public function setDeletedAt(?Carbon $deleted_at): self
-    {
-        $this->deleted_at = $deleted_at;
-
-        return $this;
     }
 
     public static function createHash(): string
