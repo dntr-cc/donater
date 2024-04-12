@@ -5,6 +5,9 @@
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
 @section('og_image_height', '630')
+@push('head-scripts')
+    @vite(['resources/sass/timeline.scss'])
+@endpush
 @section('content')
     <div class="container">
         <h2 class="mb-3">Розвиток ресурсу donater.com.ua</h2>

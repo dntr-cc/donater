@@ -11,7 +11,10 @@ export default defineConfig({
             'resources/js/tinymce.js',
             'resources/js/pickerjs.js',
             'resources/js/masonry.js',
+            'resources/js/swiper.js',
+            'resources/sass/timeline.scss',
             'resources/sass/pickerjs.scss',
+            'resources/sass/swiper.scss',
             'resources/sass/app.scss',
         ]),
     ],
@@ -26,6 +29,7 @@ export default defineConfig({
             'pickerjs': path.resolve(__dirname, 'node_modules/pickerjs'),
             'masonry': path.resolve(__dirname, 'node_modules/masonry-layout'),
             'imagesloaded': path.resolve(__dirname, 'node_modules/imagesloaded'),
+            'swiper': path.resolve(__dirname, 'node_modules/swiper'),
         }
     },
     server: {
