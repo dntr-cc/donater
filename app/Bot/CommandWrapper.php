@@ -73,7 +73,7 @@ class CommandWrapper
             return;
         }
         $matches = [];
-        preg_match('/deep[0-9a-f]+/', (string)$text, $matches);
+        preg_match('/deep[0-9a-z\-\_]+/', (string)$text, $matches);
         if (isset($matches[0]) && Cache::has($matches[0])) {
             Cache::forget($matches[0]);
             $deepLink = DeepLink::query()->where('hash', '=', strtr((string)$matches[0], ['deep' => '']))->first();
