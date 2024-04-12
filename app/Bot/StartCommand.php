@@ -42,7 +42,6 @@ class StartCommand extends Command
                 Cache::set('login:end:' . $text, $from->toJson(), 60);
                 $this->replyWithMessage(['text' => self::AUTHORISE_SUCCESS]);
             }
-        } else {
             $matches = [];
             preg_match('/deep[0-9a-z\-\_]+/', (string)$text, $matches);
             if (isset($matches[0]) && Cache::has($matches[0])) {
@@ -132,8 +131,8 @@ class StartCommand extends Command
                     ':time' => $subscribe->getFirstMessageAt(),
                     ':amount' => $subscribe->getAmount(),
                 ]));
-                return;
             }
+        } else {
             $this->replyWithMessage(['text' => 'Вітаю! Введіть код з сайту для авторизації ⬇️']);
         }
     }
