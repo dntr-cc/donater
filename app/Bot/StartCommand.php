@@ -70,7 +70,11 @@ class StartCommand extends Command
                     return;
                 }
                 $user = app(LoginService::class)->getOrCreateUser($from->toArray());
-                if (Subscribe::query()->where('user_id', '=', $user->getId())->where('volunteer_id', '=', $volunteer->getId())->exists()) {
+                if (
+                    Subscribe::query()->withoutTrashed()->where('user_id', '=', $user->getId())
+                        ->where('volunteer_id', '=', $volunteer->getId())
+                        ->exists()
+                ) {
                     Telegram::sendMessage([
                         'chat_id' => $chatId,
                         'text'    => 'Ви вже підпісані на волонтера',
