@@ -14,7 +14,7 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#faq-collapseHowToInviteSomeone" aria-expanded="false"
                                     aria-controls="faq-collapseHowToInviteSomeone">
-                                Як запросити донатера?
+                                Як запросити людину на платформу?
                             </button>
                         </h2>
                         <div id="faq-collapseHowToInviteSomeone" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToInviteSomeone"
@@ -42,35 +42,89 @@
                         </div>
                     </div>
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq-headingIconsMeaning">
+                        <h2 class="accordion-header" id="faq-headingHowToEditProfile">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#faq-collapseIconsMeaning" aria-expanded="false"
-                                    aria-controls="faq-collapseIconsMeaning">
-                                Що значать іконки біля імені донатерів?
+                                    data-bs-target="#faq-collapseHowToEditProfile" aria-expanded="false"
+                                    aria-controls="faq-collapseHowToEditProfile">
+                                Що таке помилка "CSRF token mismatch."?
                             </button>
                         </h2>
-                        <div id="faq-collapseIconsMeaning" class="accordion-collapse collapse" aria-labelledby="faq-headingIconsMeaning"
+                        <div id="faq-collapseHowToEditProfile" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToEditProfile"
                              data-bs-parent="#accordionFAQ">
                             <div class="accordion-body">
+                                На сайті використовується CSRF token для кожного запиту на сервер. Він одноразовий, тому
+                                інколи при лагах інтернету можливо що він не оновився. Також це можливо якщо повернутися
+                                на сторінку кнопкою "назад", або якщо вкладка була відкрита дуже давно. Просто оновіть
+                                сторінку та помилка пропаде.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq-headingHowToAsk">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
+                                    aria-controls="faq-collapseHowToAsk">
+                                Які налаштування мені доступні як донатеру/ці?
+                            </button>
+                        </h2>
+                        <div id="faq-collapseHowToAsk" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToAsk"
+                             data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                <p>Налаштування доступні на вашій сторінці, під вашим аватаром є кнопка "НАЛАШТУВАННЯ"</p>
                                 <ul>
                                     <li>
-                                        <span title="Створені збори" class="badge bg-golden p-1">
-                                            <i class="bi bi-telegram" title="Telegram Premium"
-                                               style="color: #fff;"></i>
-                                        </span> - Донатер має Telegram Premium
+                                        Не брати участь в розіграшах: автоматично виключати вас при розіграші призів,
+                                        які розігруються на сайті. За замовченням вимкнено.
                                     </li>
                                     <li>
-                                        <span title="Створені збори" class="badge p-1 bg-info">33</span> - Донатер
-                                        створив 33 збори на сайті
+                                        Показувати відсотки замість дробі в шансах розіграшів. За замовченням вимкнено.
                                     </li>
                                     <li>
-                                        <span title="Завалідовані донати" class="badge p-1 bg-success">22</span> -
-                                        Донатер
-                                        має 22 донати (які беруться з виписок волонтерів)
+                                        Не отримувати повідомлення маркетингових нагадувань чи розсилок. Не стосується
+                                        важливих повідомлень від адміна, які ігнорують це налаштування. За замовченням
+                                        вимкнено.
                                     </li>
                                     <li>
-                                        <span title="Призи для зборів" class="badge p-1 bg-warning">11</span> - Донатер
-                                        додав 11 призів для розіграшів
+                                        Використовувати фемінітиви, коли описують мою роль (донатерка). За замовченням вимкнено.
+                                    </li>
+                                    <li>
+                                        При відкритті профілів користувачів всі блоки окрім посилань будуть розгорнуті.
+                                        За замовченням вимкнено.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq-headingHowToAsk">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
+                                    aria-controls="faq-collapseHowToAsk">
+                                Які налаштування мені доступні як волонтеру/ці?
+                            </button>
+                        </h2>
+                        <div id="faq-collapseHowToAsk" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToAsk"
+                             data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                <p>Налаштування доступні на вашій сторінці, під вашим аватаром є кнопка "НАЛАШТУВАННЯ"</p>
+                                <ul>
+                                    <li>
+                                        Не брати участь в розіграшах: автоматично виключати вас при розіграші призів,
+                                        які розігруються на сайті. За замовченням вимкнено.
+                                    </li>
+                                    <li>
+                                        Показувати відсотки замість дробі в шансах розіграшів. За замовченням вимкнено.
+                                    </li>
+                                    <li>
+                                        Не отримувати повідомлення про додавання/видалення/зміни підписок ваших донатерів.
+                                        За замовченням вимкнено.
+                                    </li>
+                                    <li>
+                                        Використовувати фемінітиви, коли описують мою роль (донатерка). За замовченням вимкнено.
+                                    </li>
+                                    <li>
+                                        При відкритті профілів користувачів всі блоки окрім посилань будуть розгорнуті.
+                                        За замовченням вимкнено.
                                     </li>
                                 </ul>
                             </div>

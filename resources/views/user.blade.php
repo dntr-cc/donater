@@ -14,7 +14,8 @@
 @php $additionalClasses = 'btn-xs'; @endphp
 @php $name = true; @endphp
 @php $authUser = auth()?->user(); @endphp
-@php $additionalAnalyticsText = ' по донатеру ' . $user->getUserLink(); @endphp
+@php $additionalAnalyticsTextD = ' по донатеру ' . $user->getUserLink(); @endphp
+@php $additionalAnalyticsTextV = ' по волонтеру ' . $user->getUserLink(); @endphp
 @php $title = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
 @php $description = strtr(':fullName (:username) - Донатер сайту donater.com.ua', [':fullName' => $user->getFullName(), ':username' => $user->getAtUsername()]); @endphp
 @php $userBanner = url(app(\App\Services\OpenGraphImageService::class)->getUserImage($user)) @endphp
@@ -414,13 +415,20 @@
                                 <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}"
                                      id="collapseDonateAnalytics">
                                     <div class="row row-cols-1 g-1">
-                                        @include('layouts.analytics', ['rows' => $donaterRows, 'charts' => $donaterCharts, 'charts2' => $donaterCharts2, 'charts3' => $donaterCharts3, 'uniq' => 'donateUniq', 'additionalAnalyticsText' => 'sasa',])
+                                        @include('layouts.analytics', [
+                                            'rows' => $donaterRows,
+                                            'charts' => $donaterCharts,
+                                            'charts2' => $donaterCharts2,
+                                            'charts3' => $donaterCharts3,
+                                            'uniq' => 'donateUniq',
+                                            'additionalAnalyticsText' => $additionalAnalyticsTextD,
+                                        ])
                                     </div>
                                 </div>
                             </div>
                         </div>
                         {{--Volunteer Analytics block--}}
-                        @if ($authUser?->can('update', $user) && $user->getFundraisings()?->count())
+                        @if ($user->getFundraisings()?->count())
                             @php $uniq = 'volunteerUniq' @endphp
                             <div class="card mb-1">
                                 <div class="card-body">
@@ -440,7 +448,14 @@
                                     <div class="collapse {{ $openedLargeBlocks ? 'show' : '' }}"
                                          id="collapseFundAnalytics">
                                         <div class="row row-cols-1 g-1">
-                                            @include('layouts.analytics', compact('rows', 'charts', 'charts2', 'charts3', 'additionalAnalyticsText', 'uniq'))
+                                            @include('layouts.analytics', [
+                                                'rows' => $rows,
+                                                'charts' => $charts,
+                                                'charts2' => $charts2,
+                                                'charts3' => $charts3,
+                                                'uniq' => 'volunteerUniq',
+                                                'additionalAnalyticsText' => $additionalAnalyticsTextV,
+                                            ])
                                         </div>
                                     </div>
                                 </div>
@@ -454,57 +469,13 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="welcomeVolunteerModalLabel">Ласкаво просимо на
-                                        сторінку донатера {{ '@' . $user->getUsername() }}</h1>
+                                        сторінку користувача {{ '@' . $user->getUsername() }}</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
                                 <form class="form">
                                     <div class="modal-body">
-                                        <p>
-                                            donater.com.ua - платформа для волонтерів та донаторів, яка робить процес
-                                            зборів більш прозорим, а накопичення коштів на потреби ЗСУ - стабільним.
-                                        </p>
-                                        <p>
-                                            <strong>Коротко це той самий "лайк-підписка-дзвоник", де замість нового
-                                                контенту вам
-                                                приходить посилання на банку вашого волонтера, з обраною вами сумою та
-                                                за
-                                                вашим розкладом.</strong>
-                                        </p>
-                                        <p>
-                                            <strong>Якщо подробніше</strong>, то головна функція платформи - підписка на
-                                            волонтера з зазначенням прийнятної для донатора суми та розкладом
-                                            нагадувань. Коли волонтер має відкритий збір, то донатори, що підписалися на
-                                            нього, отримують нагадування з посиланням на банку зборів «свого» волонтера.
-                                            Таким чином донатори можуть робити регулярні внески на актуальну банку
-                                            волонтера. Що більше, нагадування вже має зашитий в посилання код донатора,
-                                            що дає можливість побачити, від кого саме з донатерів поступив внесок. А
-                                            це важливо, адже платформа надає волонтерам можливість заохочувати своїх
-                                            донаторів призами, які розігруються тільки серед донаторів сайту. До речі,
-                                            донатори теж можуть пропонувати свої призи для зборів. Від волонтера
-                                            потрібно лише додати наявний приз до себе на збір.
-                                        </p>
-                                        <p>
-                                            <strong>Та головне!</strong> Платформу створено для забезпечення регулярного
-                                            надсилання донатів. Сума значення не має. Набагато простіше планувати
-                                            виробництво FPV, якщо маєш 3000 грн в день від 1000 людей, які регулярно
-                                            надсилають 3грн (ми дуже вдячні за донат в 3грн, приводіть друзів, ми хочемо
-                                            зробити донатерами всіх, хто здатен користуватися інтернетом), чим очікувати
-                                            на фінансування від поодинокого донатора, якій може задонатити (а може й ні)
-                                            100к раз на місяць.
-                                        </p>
-                                        <p>
-                                            Повний опис всього функціоналу в форматі треда твітера - <a
-                                                href="https://x.com/setnemo/status/1749896475667026256?s=20"
-                                                target="_blank">тут</a>. А якщо
-                                            хочеться окремим лонгрідом - <a
-                                                href="https://telegra.ph/donatercomua---podroboc%D1%96-proektu-01-23"
-                                                target="_blank">тут</a>.
-                                        </p>
-                                        <p>
-                                            Наразі сайт у відкритому бета-тесті. Плани розвитку сайту можна почитати в
-                                            розділі <a href="{{ route('roadmap') }}" class="">Roadmap</a>.
-                                        </p>
+                                        @include('layouts.welcome_text')
                                     </div>
                                     <div class="modal-footer justify-content-between">
                                         <button type="button" class="btn btn-secondary justify-content-evenly"

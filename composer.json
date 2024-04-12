@@ -1,9 +1,9 @@
 {
     "name": "dntr/donater",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на тиждень, місяць тощо",
+    "keywords": ["ukraine","volunteering","volunteer","donates","donater","automation","telegram"],
     "license": "MIT",
     "require": {
         "php": "^8.3.0",
