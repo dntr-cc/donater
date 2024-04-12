@@ -35,6 +35,7 @@ use Throwable;
  * @property Collection|Fundraising[] $fundraisings
  * @property Collection|Prize[] $prizes
  * @property Collection|UserLink[] $links
+ * @property Collection|DeepLink[] $deep
  * @property UserSettingsCollection|UserSetting[] $settings
  */
 class User extends Authenticatable
@@ -61,7 +62,7 @@ class User extends Authenticatable
         '.' => '\.',
         '!' => '\!',
     ];
-    protected $with = ['fundraisings', 'links', 'settings', 'volunteer'];
+    protected $with = ['fundraisings', 'links', 'settings', 'volunteer', 'deep'];
     /**
      * The attributes that are mass assignable.
      *
@@ -124,6 +125,14 @@ class User extends Authenticatable
     public function links(): HasMany
     {
         return $this->hasMany(UserLink::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function deep(): HasMany
+    {
+        return $this->hasMany(DeepLink::class, 'volunteer_id', 'id');
     }
 
     /**
@@ -315,6 +324,14 @@ class User extends Authenticatable
     public function getLinks(): Collection|array
     {
         return $this->links;
+    }
+
+    /**
+     * @return Collection|DeepLink[]
+     */
+    public function getDeepLinks(): Collection|array
+    {
+        return $this->deep ?? new Collection();
     }
 
     public function isSuperAdmin(): bool
