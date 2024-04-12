@@ -42,14 +42,14 @@
                         </div>
                     </div>
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq-headingHowToEditProfile">
+                        <h2 class="accordion-header" id="faq-headingWhatsHappensWithCSRF">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#faq-collapseHowToEditProfile" aria-expanded="false"
-                                    aria-controls="faq-collapseHowToEditProfile">
+                                    data-bs-target="#faq-collapseWhatsHappensWithCSRF" aria-expanded="false"
+                                    aria-controls="faq-collapseWhatsHappensWithCSRF">
                                 Що таке помилка "CSRF token mismatch."?
                             </button>
                         </h2>
-                        <div id="faq-collapseHowToEditProfile" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToEditProfile"
+                        <div id="faq-collapseWhatsHappensWithCSRF" class="accordion-collapse collapse" aria-labelledby="faq-headingWhatsHappensWithCSRF"
                              data-bs-parent="#accordionFAQ">
                             <div class="accordion-body">
                                 На сайті використовується CSRF token для кожного запиту на сервер. Він одноразовий, тому
@@ -60,14 +60,14 @@
                         </div>
                     </div>
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq-headingHowToAsk">
+                        <h2 class="accordion-header" id="faq-headingWhichSettingsIsAvailableForDonater">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
-                                    aria-controls="faq-collapseHowToAsk">
+                                    data-bs-target="#faq-collapseWhichSettingsIsAvailableForDonater" aria-expanded="false"
+                                    aria-controls="faq-collapseWhichSettingsIsAvailableForDonater">
                                 Які налаштування мені доступні як донатеру/ці?
                             </button>
                         </h2>
-                        <div id="faq-collapseHowToAsk" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToAsk"
+                        <div id="faq-collapseWhichSettingsIsAvailableForDonater" class="accordion-collapse collapse" aria-labelledby="faq-headingWhichSettingsIsAvailableForDonater"
                              data-bs-parent="#accordionFAQ">
                             <div class="accordion-body">
                                 <p>Налаштування доступні на вашій сторінці, під вашим аватаром є кнопка "НАЛАШТУВАННЯ"</p>
@@ -96,14 +96,14 @@
                         </div>
                     </div>
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq-headingHowToAsk">
+                        <h2 class="accordion-header" id="faq-headingWhichSettingsIsAvailableForVolunteer">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
-                                    aria-controls="faq-collapseHowToAsk">
+                                    data-bs-target="#faq-collapseWhichSettingsIsAvailableForVolunteer" aria-expanded="false"
+                                    aria-controls="faq-collapseWhichSettingsIsAvailableForVolunteer">
                                 Які налаштування мені доступні як волонтеру/ці?
                             </button>
                         </h2>
-                        <div id="faq-collapseHowToAsk" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToAsk"
+                        <div id="faq-collapseWhichSettingsIsAvailableForVolunteer" class="accordion-collapse collapse" aria-labelledby="faq-headingWhichSettingsIsAvailableForVolunteer"
                              data-bs-parent="#accordionFAQ">
                             <div class="accordion-body">
                                 <p>Налаштування доступні на вашій сторінці, під вашим аватаром є кнопка "НАЛАШТУВАННЯ"</p>
@@ -131,20 +131,20 @@
                         </div>
                     </div>
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq-headingHowToAsk">
+                        <h2 class="accordion-header" id="faq-headingHowToWorkTrustScore">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
-                                    aria-controls="faq-collapseHowToAsk">
+                                    data-bs-target="#faq-collapseHowToWorkTrustScore" aria-expanded="false"
+                                    aria-controls="faq-collapseHowToWorkTrustScore">
                                 Як працює розрахунок "Рівень достовірності підписки"?
                             </button>
                         </h2>
-                        <div id="faq-collapseHowToAsk" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToAsk"
+                        <div id="faq-collapseHowToWorkTrustScore" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToWorkTrustScore"
                              data-bs-parent="#accordionFAQ">
                             <div class="accordion-body">
                                 Дата відліку - 2024-03-27 09:59:59. Починаючи з цього часу сайт почав фіксувати донати по
                                 підписці додатковим унікальним кодом. Середній час оновлення виписки на сайті становить
                                 7-8 днів. Тому для розрахунку береться період з 2024-03-27 09:59:59 по поточну дату мінус
-                                8 днів. Якщо в момент виправляння повідомлення нагадування донату волонтер/ка мав/ла відкритий
+                                8 днів. Якщо в момент надсилання повідомлення нагадування донату волонтер/ка мав/ла відкритий
                                 збір, то система очікує знайти унікальний код в виписці. Це буде працювати тільки в випадку
                                 коли волонтери оновлюють виписку. Якщо волонтери цього не роблять - система з часом видаляє
                                 збір. Цей функціонал зараз знаходиться на тестуванні, та з часом він буде більше точно
@@ -153,14 +153,14 @@
                         </div>
                     </div>
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq-headingHowToAsk">
+                        <h2 class="accordion-header" id="faq-headingWhichSanctionWebsiteHasForVolunteer">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
-                                    aria-controls="faq-collapseHowToAsk">
+                                    data-bs-target="#faq-collapseWhichSanctionWebsiteHasForVolunteer" aria-expanded="false"
+                                    aria-controls="faq-collapseWhichSanctionWebsiteHasForVolunteer">
                                 Які санкції очікують волонтерів, якщо вони не закидають виписку?
                             </button>
                         </h2>
-                        <div id="faq-collapseHowToAsk" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToAsk"
+                        <div id="faq-collapseWhichSanctionWebsiteHasForVolunteer" class="accordion-collapse collapse" aria-labelledby="faq-headingWhichSanctionWebsiteHasForVolunteer"
                              data-bs-parent="#accordionFAQ">
                             <div class="accordion-body">
                                 Система перевіряє виписки щодня. Якщо дата крайнього донату (або час створення збору)
@@ -171,14 +171,14 @@
                         </div>
                     </div>
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq-headingHowToAsk">
+                        <h2 class="accordion-header" id="faq-headingWhichSanctionWebsiteHasForBotBlockers">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
-                                    aria-controls="faq-collapseHowToAsk">
+                                    data-bs-target="#faq-collapseWhichSanctionWebsiteHasForBotBlockers" aria-expanded="false"
+                                    aria-controls="faq-collapseWhichSanctionWebsiteHasForBotBlockers">
                                 Які санкції очікують користувачів, які заблокували бота?
                             </button>
                         </h2>
-                        <div id="faq-collapseHowToAsk" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToAsk"
+                        <div id="faq-collapseWhichSanctionWebsiteHasForBotBlockers" class="accordion-collapse collapse" aria-labelledby="faq-headingWhichSanctionWebsiteHasForBotBlockers"
                              data-bs-parent="#accordionFAQ">
                             <div class="accordion-body">
                                 Якщо сайт спробує відправити повідомлення в бота користувачу, який заблокував бота -
