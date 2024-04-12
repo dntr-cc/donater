@@ -135,6 +135,62 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
                                     aria-controls="faq-collapseHowToAsk">
+                                Як працює розрахунок "Рівень достовірності підписки"?
+                            </button>
+                        </h2>
+                        <div id="faq-collapseHowToAsk" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToAsk"
+                             data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                Дата відліку - 2024-03-27 09:59:59. Починаючи з цього часу сайт почав фіксувати донати по
+                                підписці додатковим унікальним кодом. Середній час оновлення виписки на сайті становить
+                                7-8 днів. Тому для розрахунку береться період з 2024-03-27 09:59:59 по поточну дату мінус
+                                8 днів. Якщо в момент виправляння повідомлення нагадування донату волонтер/ка мав/ла відкритий
+                                збір, то система очікує знайти унікальний код в виписці. Це буде працювати тільки в випадку
+                                коли волонтери оновлюють виписку. Якщо волонтери цього не роблять - система з часом видаляє
+                                збір. Цей функціонал зараз знаходиться на тестуванні, та з часом він буде більше точно
+                                відображати відносини донатерів та волонтерів.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq-headingHowToAsk">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
+                                    aria-controls="faq-collapseHowToAsk">
+                                Які санкції очікують волонтерів, якщо вони не закидають виписку?
+                            </button>
+                        </h2>
+                        <div id="faq-collapseHowToAsk" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToAsk"
+                             data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                Система перевіряє виписки щодня. Якщо дата крайнього донату (або час створення збору)
+                                більше 7 днів - система повідомляє волонтерам що треба оновити виписку. Якщо дата
+                                крайнього донату (або час створення збору) більше 10 днів - система видаляє збір. Як
+                                тільки волонтер закине актуальну виписку - збір буде відновлено автоматично
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq-headingHowToAsk">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
+                                    aria-controls="faq-collapseHowToAsk">
+                                Які санкції очікують користувачів, які заблокували бота?
+                            </button>
+                        </h2>
+                        <div id="faq-collapseHowToAsk" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToAsk"
+                             data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                Якщо сайт спробує відправити повідомлення в бота користувачу, який заблокував бота -
+                                система видалить користувача з сайту, а також всі збори та підписки, які було створено
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq-headingHowToAsk">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
+                                    aria-controls="faq-collapseHowToAsk">
                                 Як поставити питання?
                             </button>
                         </h2>

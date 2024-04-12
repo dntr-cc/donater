@@ -60,7 +60,7 @@ class LoginController extends Controller
         }
 
         $this->validateLogin($request);
-        $service  = app(LoginService::class);
+        $service = app(LoginService::class);
         $data = $service->getCachedLoginData($request->get('loginHash'));
         if (empty($data)) {
             return response('Login information not found', Response::HTTP_UNAUTHORIZED);
