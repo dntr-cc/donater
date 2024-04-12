@@ -388,8 +388,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @param int $userId
-     * @return Collection|Subscribe[]
+     * @return Collection
      */
     public function getSubscribes(): Collection
     {
@@ -413,6 +412,12 @@ class User extends Authenticatable
                 $this->update(['forget' => true]);
                 foreach ($this->fundraisings()->get() as $item) {
                     $item->update(['forget' => true]);
+                }
+                foreach ($this->getSubscribers() as $item) {
+                    $item->delete();
+                }
+                foreach ($this->getSubscribes() as $item) {
+                    $item->delete();
                 }
             }
             Log::error($throwable->getMessage(), ['code' => $throwable->getCode(), 'trace' => $throwable->getTraceAsString()]);
