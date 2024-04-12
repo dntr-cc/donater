@@ -44,14 +44,15 @@ class StartCommand extends Command
             }
             $matches = [];
             preg_match('/deep[0-9a-z\-\_]+/', (string)$text, $matches);
-            if (isset($matches[0]) && Cache::has($matches[0])) {
+            $code = strtr((string)$matches[0], ['deep' => '']);
+            if (!empty($code) && Cache::has(':deep' . $code)) {
                 $from = $message?->getFrom();
                 $chatId = $message?->getChat()?->getId();
                 if (!$chatId || !$from) {
                     return;
                 }
                 Cache::forget($matches[0]);
-                $deepLink = DeepLink::query()->where('hash', '=', strtr((string)$matches[0], ['deep' => '']))->first();
+                $deepLink = DeepLink::query()->where('hash', '=', $code)->first();
                 if (!$deepLink->exists()) {
                     Telegram::sendMessage([
                         'chat_id' => $chatId,
