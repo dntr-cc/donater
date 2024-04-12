@@ -411,6 +411,9 @@ class User extends Authenticatable
         } catch (Throwable $throwable) {
             if (str_contains($throwable->getMessage(), 'bot was blocked by the user')) {
                 $this->update(['forget' => true]);
+                foreach ($this->fundraisings()->get() as $item) {
+                    $item->update(['forget' => true]);
+                }
             }
             Log::error($throwable->getMessage(), ['code' => $throwable->getCode(), 'trace' => $throwable->getTraceAsString()]);
             if ($throw) {
