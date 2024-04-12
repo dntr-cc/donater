@@ -8,7 +8,6 @@
 @import 'bootstrap/scss/bootstrap';
 @import '~bootstrap-icons/font/bootstrap-icons.css';
 @import 'mdb-ui-kit/css/mdb.min.css';
-@import 'pickerjs/src/index.css';
 
 body {
     margin: 0!important;
@@ -24,46 +23,11 @@ body {
     --bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
 }
 
-.timeline-with-icons {
-    border-left: 1px solid hsl(0, 0%, 90%);
-    position: relative;
-    list-style: none;
-}
-
-.timeline-with-icons .timeline-item {
-    position: relative;
-}
-
-.timeline-with-icons .timeline-item:after {
-    position: absolute;
-    display: block;
-    top: 0;
-}
-
-.timeline-with-icons .timeline-icon {
-    position: absolute;
-    left: -48px;
-    background-color: hsl(217, 88.2%, 90%);
-    color: hsl(217, 88.8%, 35.1%);
-    border-radius: 50%;
-    height: 31px;
-    width: 31px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .start-80 {
     left: 80% !important;
 }
 .top-80 {
     top: 80% !important;
-}
-.top-75 {
-    top: 80% !important;
-}
-.top-90 {
-    top: 90% !important;
 }
 .font-x-small {
     font-size: x-small;
@@ -80,9 +44,7 @@ body {
 .font-x-large {
     font-size: x-large;
 }
-.min-vh-25 {
-    min-height: 25vh;
-}
+
 .bg-image-position-center {
     background-position: center;
     background-size: cover;
@@ -168,6 +130,7 @@ body {
 .icon-size-xxx-larger {
     font-size: xxx-large;
 }
+
 .pagination {
     --bs-pagination-padding-x: .75rem;
     --bs-pagination-padding-y: .375rem;
@@ -212,10 +175,4 @@ body {
     height:100%;
     max-height: 200px;
     object-fit: cover;
-}
-
-.crop-banner {
-    height: 170px;
-    object-fit: cover;
-    object-position: top;
 }

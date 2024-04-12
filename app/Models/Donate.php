@@ -152,7 +152,7 @@ class Donate extends Model
      * Create a new Eloquent Collection instance.
      *
      * @param  array<int, Model>  $models
-     * @return \Illuminate\Database\Eloquent\Collection<int, Model>
+     * @return \Illuminate\Database\Eloquent\Collection<int, Model>|DonateCollection
      */
     public function newCollection(array $models = []): Collection
     {

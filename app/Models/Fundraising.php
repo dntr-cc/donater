@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Collections\DonateCollection;
 use App\Collections\RaffleUserCollection;
+use App\Collections\RowCollection;
 use App\Services\FundraisingShortCodeService;
+use App\Services\GoogleServiceSheets;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 /**
  * @property int $id
@@ -414,5 +418,20 @@ class Fundraising extends Model
     public function isForget(): bool
     {
         return $this->forget;
+    }
+
+    public static function getAllRows(): RowCollection
+    {
+        $rows = new RowCollection();
+        $service = app(GoogleServiceSheets::class);
+        foreach (Fundraising::all() as $fundraising) {
+            try {
+                $rows->push(...$service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->all());
+            } catch (Throwable $throwable) {
+                Log::critical($throwable->getMessage(), ['fundraising' => $fundraising->toArray(), 'trace' => $throwable->getTraceAsString()]);
+            }
+        }
+
+        return $rows;
     }
 }

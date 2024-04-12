@@ -49,15 +49,7 @@ Route::get('/deploy', static function () {
 
 Route::get('/', static fn() => view('welcome'))->name('welcome');
 Route::get('/analytics', static function () {
-    $rows = new RowCollection();
-    $service = app(GoogleServiceSheets::class);
-    foreach (Fundraising::all() as $fundraising) {
-        try {
-            $rows->push(...$service->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->all());
-        } catch (Throwable $throwable) {
-            Log::critical($throwable->getMessage(), ['fundraising' => $fundraising->toArray(), 'trace' => $throwable->getTraceAsString()]);
-        }
-    }
+    $rows = Fundraising::getAllRows();
     $chartsService = app(ChartService::class);
     $charts = $chartsService->getChartPerDay($rows);
     $charts2 = $chartsService->getChartPerAmount($rows);
