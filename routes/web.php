@@ -138,4 +138,6 @@ Route::post('/subscribe', [App\Http\Controllers\SubscribeController::class, 'sto
 Route::patch('/subscribe/{subscribe}', [App\Http\Controllers\SubscribeController::class, 'update'])->name('subscribe.update');
 Route::delete('/subscribe/{subscribe}', [App\Http\Controllers\SubscribeController::class, 'destroy'])->name('subscribe.delete');
 
+Route::post('/{user}/deep', [App\Http\Controllers\UserController::class, 'deepCreate'])->name('deep.create');
+Route::post('/{user}/deep/{deepLink}', [App\Http\Controllers\UserController::class, 'deepRemove'])->name('deep.delete');
 

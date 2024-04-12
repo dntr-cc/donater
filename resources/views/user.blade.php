@@ -131,6 +131,60 @@
                                 </ul>
                             </div>
                         </div>
+                        @can('update', $user)
+                            @if($user->hasFundraisings())
+                                {{--Deep Links block--}}
+                                <div class="card mt-4 mb-4 mb-lg-0">
+                                    <div class="card-body p-0">
+                                        <ul class="list-group list-group-flush rounded-3">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                                <h4>Діп-лінки</h4>
+                                                <div>
+                                                    @if($user->getDeepLinks()->count())
+                                                        <a href="#collapseDeepLinks" data-bs-toggle="collapse" role="button"
+                                                           aria-expanded="false"
+                                                           aria-controls="collapseDeepLinks" class="btn arrow-control"
+                                                           data-state="up">
+                                                            <i class="bi bi-arrow-up"></i>
+                                                        </a>
+                                                    @endif
+                                                    @can('update', $user)
+                                                        <button data-bs-toggle="modal"
+                                                                data-bs-target="#createDeepLinkModal"
+                                                                id="addDeepLink" class="btn">
+                                                            <i class="bi bi-plus-circle-fill"></i>
+                                                        </button>
+                                                    @endcan
+                                                </div>
+                                            </li>
+                                            <div class="collapse show" id="collapseDeepLinks">
+                                                @foreach($user->getDeepLinks() as $deepLink)
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                                        <div class="form-floating input-group">
+                                                            <input type="text" class="form-control" id="userLink"
+                                                                   value="{{ $deepLink->getLink() }}" disabled>
+                                                            <label for="userLink">Діп лінк на {{ $deepLink->getStartedAt() }} на {{ $deepLink->getAmount() }}₴ </label>
+                                                            <button class="btn btn-outline-secondary copy-text"
+                                                                    data-message="Посилання"
+                                                                    data-text="{{ $deepLink->getLink() }}" onclick="return false;">
+                                                                <i class="bi bi-copy"></i></button>
+                                                            <button href="{{ route('deep.delete', compact('user', 'deepLink')) }}"
+                                                                 class="btn btn-outline-danger"
+                                                               onclick="event.preventDefault(); document.getElementById('deleteDeepLink{{ $deepLink->getHash() }}').submit();">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                            <form id="deleteDeepLink{{ $deepLink->getHash() }}" action="{{ route('deep.delete', compact('user', 'deepLink')) }}" method="POST" class="d-none">
+                                                                @csrf
+                                                            </form>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
+                            @endif
+                        @endcan
                         {{--Subscribes block--}}
                         @can('update', $user)
                             @if($user->getSubscribes()->count())
@@ -466,6 +520,95 @@
             </div>
         </div>
         @can('update', $user)
+            @if($user->hasFundraisings())
+                <div class="modal fade" id="createDeepLinkModal" tabindex="-1" aria-labelledby="createLinkModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="createLinkModalLabel">Створити новий діп-лінк</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="lead">Це посилання, яке автоматично створить підписку новому або вже
+                                    зареєстрованому користувачу на щоденний донат в 1 клік. Це посилання буде вести в
+                                    телеграм бот, де треба буде натиснути Старт. Після натискання кнопки старт буде
+                                    автореєстрація та автостворення підписки на вас на щоденний донат в годину, яку ви
+                                    обрали, з сумою, яку ви обрали. Користувачу буде створено профіль на сайті з кодом
+                                    донатера автоматично. Якщо в нього буде потреба в змінах цієї підписки - користувач має
+                                    зайти на сайт та змінити. Або просто заблокувати бота</p>
+                                <form>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="newDeepLinkPrefix">{{ strtr(\App\Models\DeepLink::TEMPLATE_DEEP_LINK, [':hash' => '']) }}</span>
+                                        <input type="text" class="form-control" id="deepLinkHash" value="{{ \App\Models\DeepLink::createHash() }}">
+                                    </div>
+                                    <input type="number" class="form-control hide" min="1" name="volunteer_id"
+                                           id="volunteer_id" aria-label="volunteer_id" value="{{ $user->getId() }}">
+                                    <div class="form-floating py-1">
+                                        <input type="number" class="form-control" min="1" name="amount"
+                                               id="amount_deep" value="33">
+                                        <label for="amount_deep">
+                                            Сума щоденного донату, ₴
+                                        </label>
+                                    </div>
+                                    <div class="form-floating py-1">
+                                        <input type="text" class="form-control js-time-picker" name="started_at"
+                                               id="started_at" value="10:00">
+                                        <label for="started_at">
+                                            Час наступного нагадування донату від бота
+                                        </label>
+                                        <div class="js-mini-picker-container-deep"></div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-secondary justify-content-evenly"
+                                        data-bs-dismiss="modal">
+                                    Закрити
+                                </button>
+                                <button id="deepLinkCreate" type="button" class="btn btn-primary">Створити</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script type="module">
+                    $('#deepLinkCreate').on('click', event => {
+                        event.preventDefault();
+                        $.ajax({
+                            url: '{{ route('deep.create', compact('user')) }}',
+                            type: 'POST',
+                            data: {
+                                hash: $('#deepLinkHash').val(),
+                                amount: $('#amount_deep').val(),
+                                started_at: $('#started_at').val(),
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: () => {
+                                location.reload();
+                            },
+                            error: data => {
+                                let empty = $("<a>");
+                                toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
+                                empty.click();
+                                $('meta[name="csrf-token"]').attr('content', data.csrf);
+                            },
+                        });
+                        return false;
+                    });
+                    document.getElementById('createDeepLinkModal').addEventListener('show.bs.modal', event => {
+                        new Picker(document.getElementById('started_at'), {
+                            container: '.js-mini-picker-container-deep',
+                            format: 'HH:mm',
+                            setDate: '10:00',
+                            controls: true,
+                            inline: true,
+                            rows: 5,
+                        });
+                    })
+                </script>
+            @endif
             <div class="modal fade" id="createLinkModal" tabindex="-1" aria-labelledby="createLinkModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">

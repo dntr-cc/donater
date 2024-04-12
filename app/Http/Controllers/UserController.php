@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Events\OpenGraphRegenerateEvent;
+use App\Http\Requests\DeepLinkRequestCreate;
 use App\Http\Requests\UserRequest;
+use App\Models\DeepLink;
 use App\Models\User;
 use App\Services\ChartService;
 use App\Services\FileService;
@@ -71,6 +73,22 @@ class UserController extends Controller
         }
 
         return new JsonResponse(['url' => route('user', compact('user')), 'csrf' => $this->getNewCSRFToken()]);
+    }
+
+    public function deepCreate(DeepLinkRequestCreate $request, User $user)
+    {
+        $this->authorize('update', $user);
+        DeepLink::create(array_merge($request->validated(), ['volunteer_id' => $user->getId()]));
+
+        return new JsonResponse(['url' => route('user', compact('user')), 'csrf' => $this->getNewCSRFToken()]);
+    }
+
+    public function deepRemove(User $user, DeepLink $deepLink)
+    {
+        $this->authorize('update', $user);
+        $deepLink->delete();
+
+        return back();
     }
 
     /**
