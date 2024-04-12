@@ -51,8 +51,9 @@ class StartCommand extends Command
                 if (!$chatId || !$from) {
                     return;
                 }
+                \Log::info('deep1', ['matches' => $matches, 'hash' => $code]);
                 $deepLink = DeepLink::query()->where('hash', '=', $code)->first();
-                if (!$deepLink->exists()) {
+                if (!$deepLink) {
                     Telegram::sendMessage([
                         'chat_id' => $chatId,
                         'text'    => 'Діп-лінк не знайдено!',
@@ -69,6 +70,13 @@ class StartCommand extends Command
                     return;
                 }
                 $user = app(LoginService::class)->getOrCreateUser($from->toArray());
+                if (Subscribe::query()->where('user_id', '=', $user->getId())->where('volunteer_id', '=', $volunteer->getId())->exists()) {
+                    Telegram::sendMessage([
+                        'chat_id' => $chatId,
+                        'text'    => 'Ви вже підпісані на волонтера',
+                    ]);
+                    return;
+                }
                 $date = Carbon::parse(date('Y-m-d') . ' ' . $deepLink->getStartedAt() . ':00')->setTimezone(config('app.timezone'));
                 $data = [
                     'user_id'          => $user->getId(),
