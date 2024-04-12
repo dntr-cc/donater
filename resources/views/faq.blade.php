@@ -135,6 +135,21 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
                                     aria-controls="faq-collapseHowToAsk">
+                                Як працює розрахунок ?
+                            </button>
+                        </h2>
+                        <div id="faq-collapseHowToAsk" class="accordion-collapse collapse" aria-labelledby="faq-headingHowToAsk"
+                             data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                Написати в телеграм @setnemo - якщо питання поширене, то я додам в цей розділ.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq-headingHowToAsk">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq-collapseHowToAsk" aria-expanded="false"
+                                    aria-controls="faq-collapseHowToAsk">
                                 Як поставити питання?
                             </button>
                         </h2>
