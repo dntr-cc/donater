@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/d/{code}', static function (string $code) {
-    Cache::set('deep' . $code, $code, 60);
     return redirect("https://t.me/DonaterComUaBot?start=deep{$code}")->header('Cache-Control', 'no-store, no-cache, must-revalidate');
 });
 Route::get('/f/{code}', static function (string $code) {
