@@ -27,7 +27,6 @@ use Throwable;
  * @property string|null $last_name
  * @property string|null $avatar
  * @property bool $is_premium
- * @property IsVolunteer|null $volunteer
  * @property bool $forget
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -62,7 +61,7 @@ class User extends Authenticatable
         '.' => '\.',
         '!' => '\!',
     ];
-    protected $with = ['fundraisings', 'links', 'settings', 'volunteer', 'deep'];
+    protected $with = ['fundraisings', 'links', 'settings', 'deep'];
     /**
      * The attributes that are mass assignable.
      *
@@ -149,19 +148,6 @@ class User extends Authenticatable
     public function refs(): HasMany
     {
         return $this->hasMany(Referral::class, 'user_id', 'id');
-    }
-
-    /**
-     * @return HasOne
-     */
-    public function volunteer(): HasOne
-    {
-        return $this->hasOne(IsVolunteer::class, 'id', 'id');
-    }
-
-    public function isVolunteer(): bool
-    {
-        return (bool)$this->volunteer;
     }
 
     /**

@@ -4,7 +4,6 @@
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
 @section('og_image_height', '630')
-@php $additionalAnalyticsText = ' (всі збори на сайті donater.com.ua)' @endphp
 @push('head-scripts')
     @vite(['resources/js/tabs.js'])
 @endpush
@@ -32,7 +31,14 @@
                 </h2>
                 <div class="row">
                     <div class="col-12">
-                        @include('layouts.analytics', ['rows' => $rows, 'charts' => $charts, 'charts2' => $charts2, 'charts3' => $charts3, 'uniq' => 'volunteers'])
+                        @include('layouts.analytics', [
+                            'rows' => $rows,
+                            'charts' => $charts,
+                            'charts2' => $charts2,
+                            'charts3' => $charts3,
+                            'uniq' => 'volunteers',
+                            'additionalAnalyticsText' => ' (всі збори на сайті donater.com.ua)',
+                        ])
                     </div>
                 </div>
             </div>
@@ -42,7 +48,14 @@
                 </h2>
                 <div class="row">
                     <div class="col-12">
-                        @include('layouts.analytics', ['rows2' => $rows, 'charts' => $chartsAll, 'charts2' => $charts2All, 'charts3' => $charts3All, 'uniq' => 'donates'])
+                        @include('layouts.analytics', [
+                            'rows2' => $rows2,
+                            'charts' => $chartsAll,
+                            'charts2' => $charts2All,
+                            'charts3' => $charts3All,
+                            'uniq' => 'donates',
+                            'additionalAnalyticsText' => ' (всі донати з сайту donater.com.ua)',
+                        ])
                     </div>
                 </div>
             </div>
