@@ -25,14 +25,26 @@
                     <div class="blog-slider__title">
                         {{ Illuminate\Support\Number::currency(
                             $rows->sum(fn(\App\DTOs\Row $row) => $row->getAmount() > 0 ? round((float)$row->getAmount(), 2) : 0.00),
-                            'UAH'
-                        ) }} показано в виписках волонтерів з {{ \App\Models\Fundraising::count() }} зборів.
+                            'UAH',
+                        ) }} показано в виписках волонтерів з {{ \App\Models\Fundraising::count() }} зборів. Де {{ Illuminate\Support\Number::currency(
+                            $rows->sum(fn(\App\DTOs\Row $row) => $row->getAmount() > 0 && strtotime($row->getDate()) > strtotime('-31 day') ?
+                                round((float)$row->getAmount(), 2) :
+                                0.00
+                            ),
+                            'UAH',
+                        ) }} за крайні 30 днів
                     </div>
                     <div class="blog-slider__title">
                         {{ Illuminate\Support\Number::currency(
                             $rows->sum(fn(\App\DTOs\Row $row) => empty($row->extractCode($row->getComment())) ? 0.00 : round((float)$row->getAmount(), 2)),
-                            'UAH'
-                        ) }} задонатили користувачі сайту
+                            'UAH',
+                        ) }} задонатили користувачі сайту, Де {{ Illuminate\Support\Number::currency(
+                            $rows->sum(fn(\App\DTOs\Row $row) => !empty($row->extractCode($row->getComment())) && strtotime($row->getDate()) > strtotime('-31 day')
+                                ? round((float)$row->getAmount(), 2) :
+                                0.00
+                            ),
+                            'UAH',
+                        ) }} за крайні 30 днів
                     </div>
                 </div>
             </div>
@@ -46,7 +58,7 @@
                         Користувачі створили {{ \App\Models\Subscribe::withoutTrashed()->count() }} підписок на суму
                         {{ Illuminate\Support\Number::currency(
                             \App\Models\Subscribe::withoutTrashed()->get()->sum(fn(\App\Models\Subscribe $item) => round($item->getAmount(), 2)),
-                            'UAH'
+                            'UAH',
                         ) }}
                     </div>
                     <div class="blog-slider__title">
@@ -54,7 +66,7 @@
                         щоденний донат на суму {{ Illuminate\Support\Number::currency(
                             \App\Models\Subscribe::withoutTrashed()->where('frequency', '=', 'daily')
                             ->get()->sum(fn(\App\Models\Subscribe $item) => round($item->getAmount(), 2)),
-                            'UAH'
+                            'UAH',
                         ) }}.
                     </div>
                 </div>
