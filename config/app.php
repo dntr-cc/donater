@@ -154,7 +154,6 @@ return [
     |
     */
 
-    'revision'  => (string)file_get_contents(base_path('version.md')) ?? '',
     'dev_hash' => env('DEV_HASH', ''),
 
     'providers' => [
@@ -234,5 +233,9 @@ return [
     ],
     'support_server' => env('SUPPORT_SERVER', '10.209.236.181'),
     'trust_days' => env('TRUST_DAYS', 8),
-    'version' => \Composer\InstalledVersions::getRootPackage()['version'], '0.0.x',
+    'version' => \Composer\InstalledVersions::getRootPackage()['version'] ?? '0.0.x',
+    'revision'  => (string)file_get_contents(base_path('version.md')) ?? '',
+    'current_revision' => 'beta v.' .
+        (\Composer\InstalledVersions::getRootPackage()['version'] ?? '0.0.x') . '.' .
+        ((string)file_get_contents(base_path('version.md')) ?? ''),
 ];

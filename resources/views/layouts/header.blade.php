@@ -6,7 +6,7 @@
                 <div class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
                     <a class="text-white text-decoration-none"
                        href="{{ url('/') }}">
-                        <nobr>🍩 Донати за розкладом (beta v.{{ config('app.version') }})</nobr>
+                        <nobr>🍩 Донати за розкладом ({{ config('app.current_revision') }})</nobr>
                     </a>
                 </div>
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
