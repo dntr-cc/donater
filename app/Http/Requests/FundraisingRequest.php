@@ -17,6 +17,9 @@ class FundraisingRequest extends FormRequest
             'description'    => [],
             'spreadsheet_id' => ['required'],
             'user_id'        => ['required', 'integer'],
+            'card_mono'      => [],
+            'card_privat'    => [],
+            'paypal'         => [],
         ];
     }
 

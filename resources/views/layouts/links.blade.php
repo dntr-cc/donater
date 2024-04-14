@@ -340,7 +340,7 @@
                     success: (data) => {
                         $('#shortLink{{ sha1($fundraising->getKey()) }}').val($('#newShortLinkPrefix{{ sha1($fundraising->getKey()) }}').html() + code);
                         $('#newShortLink{{ sha1($fundraising->getKey()) }}').val('');
-                        $('#share-fund-{{ sha1($fundraising->getKey()) }}').text('Поширити збір: dntr.cc/f/' + code);
+                        $('#share-fund-{{ sha1($fundraising->getKey()) }}').val('dntr.cc/f/' + code);
                         $('#share-fund-btn-{{ sha1($fundraising->getKey()) }}').attr('data-text', 'dntr.cc/f/' + code);
                         $('meta[name="csrf-token"]').attr('content', data.csrf);
                     },

@@ -30,6 +30,7 @@ use Throwable;
  * @property bool $is_enabled
  * @property bool $forget
  * @property int $user_id
+ * @property FundraisingDetail|null $details
  * @property User|null $volunteer
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -55,11 +56,6 @@ class Fundraising extends Model
         'forget',
     ];
 
-    public static function getRandom(): self
-    {
-        return self::query()->where('is_enabled', '=', 'true')->get()->random();
-    }
-
     /**
      * @return Collection|self[]
      */
@@ -74,8 +70,20 @@ class Fundraising extends Model
     protected static function boot(): void
     {
         parent::boot();
+        static::addGlobalScope('details', static function (Builder $builder) {
+            $builder->with('details');
+        });
         static::addGlobalScope('order', static function (Builder $builder) {
             $builder->orderBy('is_enabled', 'desc')->orderBy('id', 'desc');
+        });
+        static::deleted(static function(self $fundraising) {
+            $fundraising->details()->first()?->delete();
+        });
+        static::forceDeleted(static function(self $fundraising) {
+            $fundraising->details()->withTrashed()->first()?->forceDelete();
+        });
+        static::restored(static function(self $fundraising) {
+            $fundraising->details()->withTrashed()?->restore();
         });
     }
 
@@ -136,6 +144,14 @@ class Fundraising extends Model
     public function volunteer(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    /**
+     * @return HasOne|FundraisingDetail
+     */
+    public function details(): HasOne
+    {
+        return $this->hasOne(FundraisingDetail::class, 'id', 'id');
     }
 
     public function getKey(): string
@@ -418,6 +434,14 @@ class Fundraising extends Model
     public function isForget(): bool
     {
         return $this->forget;
+    }
+
+    /**
+     * @return FundraisingDetail|null
+     */
+    public function getDetails(): ?FundraisingDetail
+    {
+        return $this->details;
     }
 
     public static function getAllRows(): RowCollection
