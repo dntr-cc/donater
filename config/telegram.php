@@ -38,6 +38,7 @@ return [
                 \App\Bot\StartCommand::class,
                 \App\Bot\NotifyCommand::class,
                 \App\Bot\NotifyAllCommand::class,
+                \App\Bot\FaqCommand::class,
             ],
         ],
 

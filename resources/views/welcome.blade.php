@@ -1,6 +1,6 @@
 @php use App\Http\Controllers\Auth\LoginController; @endphp
 @extends('layouts.base')
-@section('page_title', 'Донатити будуть всі. Телеграм бот для нагадувань донатити своїм волонтерам')
+@section('page_title', 'Донати за розкладом. Телеграм бот для нагадувань донатити своїм волонтерам')
 @section('page_description', 'Сервіс дозволяє отримувати донатерам повідомлення в Телеграм з актуальним посиланням на банку вашого волонтера за обраним розкладом')
 @section('og_image', url('/images/donater.com.ua.png'))
 @section('og_image_width', '1200')
@@ -13,8 +13,9 @@
     <div class="container my-5">
         <section class="jumbotron text-center">
             <div class="container">
-                <h1 class="jumbotron-heading">Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на
-                    тиждень, місяць тощо</h1>
+                <h1 class="jumbotron-heading">
+                    Телеграм бот для нагадувань з посиланням на банку: щоденно, раз на тиждень, місяць тощо
+                </h1>
                 <div class="container">
                     <div class="row">
                         @include('layouts.swiper')
@@ -54,7 +55,6 @@
                     інструментом
                     фінансового планування.
                 </p>
-
             </div>
         </section>
         <section>
