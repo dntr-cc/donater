@@ -6,6 +6,7 @@ use App\Events\OpenGraphRegenerateEvent;
 use App\Http\Requests\FundraisingLinkCreateRequest;
 use App\Http\Requests\FundraisingRequest;
 use App\Models\Fundraising;
+use App\Models\FundraisingDetail;
 use App\Models\FundraisingShortCode;
 use App\Models\Prize;
 use App\Models\UserSetting;
@@ -35,7 +36,13 @@ class FundraisingController extends Controller
         }
         $attributes['is_enabled'] = true;
 
+        [$paypal, $cardPrivat, $cardMono, $attributes] = $this->getDetailParams($attributes);
+
         $fundraising = Fundraising::create($attributes);
+        FundraisingDetail::create([
+            'id' => $fundraising->getId(),
+            'data' => ['card_mono' => $cardMono, 'card_privat' => $cardPrivat, 'paypal' => $paypal,],
+        ]);
         $volunteer = $fundraising->getVolunteer();
         if ($volunteer) {
             OpenGraphRegenerateEvent::dispatch($volunteer->getId(), OpenGraphRegenerateEvent::TYPE_USER);
@@ -146,7 +153,13 @@ class FundraisingController extends Controller
         }
         $this->authorize('update', $fundraising);
 
-        $fundraising->update($request->validated());
+        $validated = $request->validated();
+
+        [$paypal, $cardPrivat, $cardMono, $validated] = $this->getDetailParams($validated);
+
+        $fundraising->update($validated);
+        FundraisingDetail::firstOrNew(['id' => $fundraising->getId()])
+            ->setData(['card_mono' => $cardMono, 'card_privat' => $cardPrivat, 'paypal' => $paypal])->save();
         OpenGraphRegenerateEvent::dispatch($fundraising->getId(), OpenGraphRegenerateEvent::TYPE_FUNDRAISING);
 
         return new JsonResponse(['url' => route('fundraising.show', compact('fundraising'))]);
@@ -255,5 +268,28 @@ class FundraisingController extends Controller
 
         return view('fundraising.show-analytics', compact('fundraising', 'rows', 'charts', 'charts2', 'charts3'));
 
+    }
+
+    /**
+     * @param array $validated
+     * @return array
+     */
+    protected function getDetailParams(array $validated): array
+    {
+        $cardMono = $cardPrivat = $paypal = null;
+        if ($validated['card_mono'] ?? null) {
+            $cardMono = $validated['card_mono'];
+            unset($validated['card_mono']);
+        }
+        if ($validated['card_privat'] ?? null) {
+            $cardPrivat = $validated['card_privat'];
+            unset($validated['card_privat']);
+        }
+        if ($validated['paypal'] ?? null) {
+            $paypal = $validated['paypal'];
+            unset($validated['paypal']);
+        }
+
+        return [$paypal, $cardPrivat, $cardMono, $validated];
     }
 }

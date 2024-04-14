@@ -237,5 +237,5 @@ return [
     'revision'  => (string)file_get_contents(base_path('version.md')) ?? '',
     'current_revision' => 'beta v.' .
         (\Composer\InstalledVersions::getRootPackage()['version'] ?? '0.0.x') . '.' .
-        ((string)file_get_contents(base_path('version.md')) ?? ''),
+        trim((string)file_get_contents(base_path('version.md')) ?? ''),
 ];

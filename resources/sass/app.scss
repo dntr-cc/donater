@@ -176,3 +176,13 @@ body {
     max-height: 200px;
     object-fit: cover;
 }
+
+.form-floating-bg-primary-subtle:after {
+    background-color: var(--mdb-primary-bg)!important;
+}
+.form-floating-bg-success-subtle:after {
+    background-color: var(--mdb-success-bg)!important;
+}
+.form-floating-bg-secondary-subtle:after {
+    background-color: var(--mdb-secondary-bg)!important;
+}
