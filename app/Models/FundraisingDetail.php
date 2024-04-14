@@ -78,7 +78,7 @@ class FundraisingDetail extends Model
      */
     public function setData(array $data): self
     {
-        $tmpData = $this->data;
+        $tmpData = $this->data ?? [];
         foreach ($data as $key => $datum) {
             if (empty($datum)) {
                 unset($tmpData[$key]);
