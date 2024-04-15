@@ -7,7 +7,8 @@
 @section('og_image_width', $ogImageWidth)
 @section('og_image_height', $ogImageHeight)
 @section('breadcrumb-path')
-    <li class="breadcrumb-item"><a href="{{ route('fundraising.show', compact('fundraising')) }}">{{ $fundraising->getName() }}</a></li>
+    <li class="breadcrumb-item"><a
+                href="{{ route('fundraising.show', compact('fundraising')) }}">{{ $fundraising->getName() }}</a></li>
 @endsection
 @section('breadcrumb-current', 'Аналітика')
 @php $withJarLink = true; @endphp
@@ -21,7 +22,7 @@
 @section('content')
     <div class="container">
         <h2 class="pb-2 border-bottom">
-            @include('layouts.fundraising_status', compact('fundraising', 'withOwner', 'additionalClasses'))
+            @include('fundraising.status', compact('fundraising', 'withOwner', 'additionalClasses'))
         </h2>
         <div class="row">
             <div class="col-md-4 px-2 py-2">

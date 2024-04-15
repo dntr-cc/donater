@@ -186,3 +186,6 @@ body {
 .form-floating-bg-secondary-subtle:after {
     background-color: var(--mdb-secondary-bg)!important;
 }
+.btn-no-radius {
+    --bs-border-radius: 0!important;
+}

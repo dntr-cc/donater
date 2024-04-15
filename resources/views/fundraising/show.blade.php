@@ -16,29 +16,33 @@
 @section('content')
     <div class="container">
         <h2 class="pb-2 border-bottom">
-            @include('layouts.fundraising_status', compact('fundraising', 'withOwner', 'additionalClasses'))
+            @include('fundraising.status', compact('fundraising', 'withOwner', 'additionalClasses'))
         </h2>
         <div class="row">
-            <div class="col-xl-4 col-lg-4 col-md-12 px-2 py-2">
-                @include('fundraising.item-card', compact('fundraising', 'withVolunteer'))
-                <div class="card mt-4 mb-4 mb-lg-0">
-                    <div class="card-body p-0">
-                        <ul class="list-group list-group-flush rounded-3">
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                <h4>Скачати банер збору</h4>
-                                <a href="{{ $fundraisingBanner }}" download="{{ $fundraising->getKey() }}.png"
-                                   class="btn btn-outline-dark">
-                                    <i class="bi bi-arrow-down"></i>
-                                </a>
-                            </li>
-                            <a href="{{ $fundraisingBanner }}" target="_blank"><img src="{{ $fundraisingBanner }}.small.png"
-                                                                                    class="col-12"
-                                                                                    alt="Інфографіка {{ $fundraising->getName() }}"></a>
-                        </ul>
+            <div class="col-xl-6 col-lg-6 col-md-12 px-2 py-2">
+                <div>
+                    <img src="{{ url($fundraising->getAvatar()) }}" class="card-img-top "
+                         alt="{{ $fundraising->getName() }}">
+                </div>
+                <div class="card">
+                    <div class="d-flex justify-content-center m-2">
+                        <h2>Швидкий донат</h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        @include('layouts.monodonat', compact('fundraising'))
+                    </div>
+                    <div class="d-flex justify-content-center mb-2">
+                        <div class="p-3">
+                            <h5 class="text-center">{{ \Illuminate\Support\Str::ucfirst(sensitive('волонтер', $fundraising->getVolunteer())) }}</h5>
+                            @include('layouts.user_item', [
+                                    'user' => $fundraising->getVolunteer(),
+                                    'whoIs' => \App\Http\Controllers\UserController::VOLUNTEERS,
+                            ])
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-8 col-lg-8 col-md-12 px-2 py-2">
+            <div class="col-xl-6 col-lg-6 col-md-12 px-2 py-2">
                 <div class="card mb-2">
                     <div class="card-body">
                         <div>
@@ -72,50 +76,9 @@
                         @endguest
                     </div>
                 </div>
-                <div class="card mb-2">
-                    <div class="card-body">
-                        <div id="preload" class="preload border border-dark border-1 border-light-subtle">
-                            <div class="d-flex justify-content-center ">
-                                <div class="d-flex justify-content-center m-5">
-                                    <div class="spinner-border" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-            @auth()
-                @include('subscribe.modal')
-            @endauth
-            <script type="module">
-                window.addEventListener("load", function () {
-                    $.ajax({
-                        url: '{{ route('fundraising.preload', compact('fundraising')) }}',
-                        type: "POST",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: (data) => {
-                            $('#preload').removeClass('preload border border-dark border-1 border-light-subtle').html(data.html)
-                            $('meta[name="csrf-token"]').attr('content', data.csrf);
-                            window.initMDBTab();
-                            $('#preload script').each((i, s) => {
-                                document.head.appendChild(s);
-                            });
-                            let event1 = document.createEvent("Event");
-                            event1.initEvent("DOMContentLoaded", true, true);
-                            window.document.dispatchEvent(event1);
-
-                        },
-                        error: data => {
-                            let empty = $("<a>");
-                            toast(JSON.parse(data.responseText).message, empty, 'text-bg-danger');
-                            empty.click();
-                            $('meta[name="csrf-token"]').attr('content', data.csrf);
-                        },
-                    });
-                });
-            </script>
+        </div>
+    @auth()
+        @include('subscribe.modal')
+    @endauth
 @endsection

@@ -28,7 +28,7 @@
                     @endif
                 </th>
                 <td>
-                    @include('layouts.fundraising_status', [
+                    @include('fundraising.status', [
                         'fundraising' => $donate->getFundraising(),
                         'additionalClasses' => 'btn-xs'
                     ])
@@ -36,7 +36,8 @@
                 <td>{{ $donate->getCreatedAt() }}</td>
                 <td>{{ $donate->getAmount() }}</td>
                 @can('delete', $donate)
-                    <td><span class="btn btn-xs btn-outline-danger delete-donate" data-id="{{ $donate->getId() }}" ><i class="mx-2 bi bi-x-octagon"></i></span></td>
+                    <td><span class="btn btn-xs btn-outline-danger delete-donate" data-id="{{ $donate->getId() }}"><i
+                                class="mx-2 bi bi-x-octagon"></i></span></td>
                 @endcan
             </tr>
         @endforeach

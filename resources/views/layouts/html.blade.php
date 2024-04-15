@@ -45,9 +45,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
     @stack('head-scripts')
-
     @includeWhen(config('app.env') === 'live', 'layouts.tracking')
     @includeWhen(config('debugbar.enabled'), 'layouts.debug')
 </head>
