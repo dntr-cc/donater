@@ -37,7 +37,7 @@
                     <div class="blog-slider__title">
                         {{ Illuminate\Support\Number::currency(\App\Models\Donate::sum('amount')) }} задонатили
                         користувачі сайту, Де {{ Illuminate\Support\Number::currency(
-                            \App\Models\Donate::query()->where('created_at', '=', date('Y-m-d H:i:s', strtotime('-31 day')))->sum('amount'),
+                            \App\Models\Donate::query()->where('created_at', '>', date('Y-m-d H:i:s', strtotime('-31 day')))->sum('amount'),
                             'UAH',
                         ) }} за крайні 30 днів
                     </div>
