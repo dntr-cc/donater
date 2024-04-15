@@ -35,14 +35,9 @@
                         ) }} за крайні 30 днів
                     </div>
                     <div class="blog-slider__title">
-                        {{ Illuminate\Support\Number::currency(
-                            $rows->sum(fn(\App\DTOs\Row $row) => empty($row->extractCode($row->getComment())) ? 0.00 : round((float)$row->getAmount(), 2)),
-                            'UAH',
-                        ) }} задонатили користувачі сайту, Де {{ Illuminate\Support\Number::currency(
-                            $rows->sum(fn(\App\DTOs\Row $row) => !empty($row->extractCode($row->getComment())) && strtotime($row->getDate()) > strtotime('-31 day')
-                                ? round((float)$row->getAmount(), 2) :
-                                0.00
-                            ),
+                        {{ Illuminate\Support\Number::currency(\App\Models\Donate::sum('amount')) }} задонатили
+                        користувачі сайту, Де {{ Illuminate\Support\Number::currency(
+                            \App\Models\Donate::query()->where('created_at', '=', date('Y-m-d H:i:s', strtotime('-31 day')))->sum('amount'),
                             'UAH',
                         ) }} за крайні 30 днів
                     </div>
