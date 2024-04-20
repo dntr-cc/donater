@@ -1,15 +1,16 @@
 @php $rows = \App\Models\Fundraising::getAllRows(); @endphp
+@php $usersAllCount = \App\Models\User::all()->count(); @endphp
 <div class="m-3"></div>
 <div class="stat-slider swiper p-2">
     <div class="blog-slider">
         <div class="blog-slider__wrp swiper-wrapper">
             <div class="blog-slider__item swiper-slide">
                 <div class="blog-slider__img">
-                    <img src="{{ url('/images/swiper/photo1.jpeg') }}" alt="">
+                    <img src="{{ url('/images/swiper/photo1.jpeg') }}" alt="{{ $usersAllCount }} користувачів спробували нашу платформу.">
                 </div>
                 <div class="blog-slider__content">
                     <div class="blog-slider__title">
-                        {{ \App\Models\User::all()->count() }} користувачів спробували нашу платформу.
+                        {{ $usersAllCount }} користувачів спробували нашу платформу.
                     </div>
                     <div class="blog-slider__title">
                         {{ \App\Models\User::query()->where('forget', '=', false)->get()->count() }} продовжують користуватися.
@@ -19,7 +20,7 @@
 
             <div class="blog-slider__item swiper-slide">
                 <div class="blog-slider__img">
-                    <img src="{{ url('/images/swiper/photo2.jpeg') }}" alt="">
+                    <img src="{{ url('/images/swiper/photo2.jpeg') }}" alt="Суми, які зібрали волонтери, та суми, які задонатили користувачі сайту">
                 </div>
                 <div class="blog-slider__content">
                     <div class="blog-slider__title">
@@ -35,8 +36,8 @@
                         ) }} за крайні 30 днів
                     </div>
                     <div class="blog-slider__title">
-                        {{ Illuminate\Support\Number::currency(\App\Models\Donate::sum('amount')) }} задонатили
-                        користувачі сайту, Де {{ Illuminate\Support\Number::currency(
+                        {{ Illuminate\Support\Number::currency(\App\Models\Donate::sum('amount'), 'UAH') }} задонатили
+                        користувачі сайту, де {{ Illuminate\Support\Number::currency(
                             \App\Models\Donate::query()->where('created_at', '>', date('Y-m-d H:i:s', strtotime('-31 day')))->sum('amount'),
                             'UAH',
                         ) }} за крайні 30 днів
@@ -46,7 +47,7 @@
 
             <div class="blog-slider__item swiper-slide">
                 <div class="blog-slider__img">
-                    <img src="{{ url('/images/swiper/photo3.jpeg') }}" alt="">
+                    <img src="{{ url('/images/swiper/photo3.jpeg') }}" alt="Підписки, які створили користувачі сайту">
                 </div>
                 <div class="blog-slider__content">
                     <div class="blog-slider__title">
@@ -58,7 +59,7 @@
                     </div>
                     <div class="blog-slider__title">
                         {{ \App\Models\Subscribe::withoutTrashed()->where('frequency', '=', 'daily')->count() }} з них це
-                        щоденний донат на суму {{ Illuminate\Support\Number::currency(
+                        щоденний донат сумарно на {{ Illuminate\Support\Number::currency(
                             \App\Models\Subscribe::withoutTrashed()->where('frequency', '=', 'daily')
                             ->get()->sum(fn(\App\Models\Subscribe $item) => round($item->getAmount(), 2)),
                             'UAH',
