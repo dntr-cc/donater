@@ -29,7 +29,7 @@
             @endif
             @if($fundraising->isEnabled())
                 @include('layouts.monodonat', compact('fundraising', 'info'))
-                <div class="d-flex justify-content-center mb-2">
+                <div class="d-flex justify-content-center mt-2">
                     <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
                         <input type="text" class="form-control border-secondary text-truncate {{ $fundraising->getClassByState() }}" id="share-fund-{{ sha1($fundraising->getKey()) }}"
                                value="{{ $fundraising->getShortLink() }}" disabled>
@@ -56,7 +56,7 @@
                 </div>
             @endif
             @if($cardMono = $fundraising?->getDetails()?->getCardMono())
-                <div class="d-flex justify-content-center mb-2">
+                <div class="d-flex justify-content-center mt-2">
                     <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
                         <input type="text" class="form-control border-secondary {{ $fundraising->getClassByState() }}"
                                id="share-mono-{{ sha1($cardMono) }}" value="{{ $cardMono }}" disabled>
@@ -69,7 +69,7 @@
                 </div>
             @endif
             @if($cardPrivat = $fundraising?->getDetails()?->getCardPrivat())
-                <div class="d-flex justify-content-center mb-2">
+                <div class="d-flex justify-content-center mt-2">
                     <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
                         <input type="text" class="form-control border-secondary {{ $fundraising->getClassByState() }}"
                                id="share-mono-{{ sha1($cardPrivat) }}" value="{{ $cardPrivat }}" disabled>
@@ -82,7 +82,7 @@
                 </div>
             @endif
             @if($paypal = $fundraising?->getDetails()?->getPayPal())
-                <div class="d-flex justify-content-center mb-2">
+                <div class="d-flex justify-content-center mt-2">
                     <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
                         <input type="text" class="form-control border-secondary {{ $fundraising->getClassByState() }}"
                                id="share-mono-{{ sha1($paypal) }}" value="{{ $paypal }}" disabled>
