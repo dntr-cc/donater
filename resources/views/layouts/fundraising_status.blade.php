@@ -5,7 +5,7 @@
 @php $href = route('fundraising.show', ['fundraising' => $fundraising->getKey()]); @endphp
 @if($fundraising->isEnabled())
     <a href="{{ $href }}" class="btn btn-success {{ $additionalClasses }}">ЗБІР ТРИВАЄ</a>
-@elseif($fundraising->donates->count())
+@elseif(app(\App\Services\GoogleServiceSheets::class)->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->count() > 0)
     <a href="{{ $href }}" class="btn btn-outline-dark {{ $additionalClasses }}">ЗБІР ЗАКРИТО</a>
 @else
     <a href="{{ $href }}" class="btn btn-secondary {{ $additionalClasses }}">СКОРО РОЗПОЧНЕТЬСЯ</a>
