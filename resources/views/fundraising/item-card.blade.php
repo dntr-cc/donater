@@ -27,7 +27,7 @@
                     @endif
                 </div>
             @endif
-            @if($fundraising->isEnabled())
+            @if(app(\App\Services\RowCollectionService::class)->getRowCollection($fundraisings)->all())
                 @include('layouts.monodonat', compact('fundraising', 'info'))
                 <div class="d-flex justify-content-center mb-2">
                     <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
@@ -50,7 +50,7 @@
                 </div>
             @else
                 <h5 class="text-center">Збір скоро розпочнеться</h5>
-                <div class="progress">
+                <div class="progress mb-2">
                     <div class="progress-bar progress-bar-animated progress-bar-striped bg-secondary" role="progressbar"
                          style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
