@@ -27,7 +27,7 @@
                     @endif
                 </div>
             @endif
-            @if(app(\App\Services\RowCollectionService::class)->getRowCollection($fundraisings)->all())
+            @if(app(\App\Services\RowCollectionService::class)->getRowCollection(new \Illuminate\Support\Collection($fundraising))->all())
                 @include('layouts.monodonat', compact('fundraising', 'info'))
                 <div class="d-flex justify-content-center mb-2">
                     <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
