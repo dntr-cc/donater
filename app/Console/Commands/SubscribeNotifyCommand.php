@@ -7,6 +7,7 @@ use App\Models\Subscribe;
 use App\Models\SubscribesMessage;
 use App\Services\Metrics;
 use App\Services\UserCodeService;
+use Carbon\Carbon;
 
 class SubscribeNotifyCommand extends DefaultCommand
 {
@@ -65,6 +66,10 @@ class SubscribeNotifyCommand extends DefaultCommand
             $callToAction = "\n\nВи можете скопіювати запрошення для ваших друзів робити як ви нижче (копіює по кліку)\n\n`Я підтримую :volunteer донатом за моїм розкладом. Мені в телеграм кожен день приходить посилання в обраний мною час. Прошу вас робити так само. Донатьте. Будь ласка ❤️`";
             $donater->sendBotMessage($message . strtr($callToAction, [':volunteer' => $randomFundraising->getShortLink()]));
             $nextScheduledAt = $nextMessage->getScheduledAt()->modify($subscribe->getModifier($nextMessage->getFrequency()));
+            $time = (new Carbon())->setTimezone(config('app.timezone'));
+            while ($nextScheduledAt < $time) {
+                $nextScheduledAt = $nextScheduledAt->modify($subscribe->getModifier($nextMessage->getFrequency()));
+            }
             SubscribesMessage::create([
                 'subscribes_id' => $subscribe->getId(),
                 'frequency' => $nextMessage->getFrequency(),
