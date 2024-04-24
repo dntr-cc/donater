@@ -16,8 +16,9 @@ class SubscribeSchedulerCommand extends DefaultCommand
     public function handle(): void
     {
         $time = (new Carbon())->setTimezone(config('app.timezone'))->modify('+1 second');
-        foreach (Subscribe::query()->withoutTrashed()->get()->all() as $subscribe) {
+        foreach (Subscribe::query()->get()->all() as $subscribe) {
             $nextMessage = $subscribe->getNextSubscribesMessage();
+            \Log::info('nextMessage', $nextMessage->toArray());
             if ($nextMessage->getScheduledAt() < $time) {
                 Artisan::call(strtr('subscribe:notify {id} {code}', ['{id}' => $subscribe->getId(), '{code}' => $nextMessage->getNotificationCode()]));
             }
