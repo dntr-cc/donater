@@ -43,7 +43,7 @@ class StartCommand extends Command
                 $this->replyWithMessage(['text' => self::AUTHORISE_SUCCESS]);
             }
             $matches = [];
-            preg_match('/deep[0-9a-z\-\_]+/', (string)$text, $matches);
+            preg_match('/deep[а-яґєії0-9a-z\-\_]+/', (string)$text, $matches);
             $code = strtr((string)($matches[0] ?? ''), ['deep' => '']);
             \Log::info('deep', ['matches' => $matches, 'hash' => $code]);
             if (!empty($code)) {
