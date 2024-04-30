@@ -37,7 +37,7 @@ class FundraisingActivateCommand extends FundraisingDeactivateCommand
 
     protected function doCommandGoal(bool $byCountRow, bool $byCreatedDate, Fundraising $fundraising): bool
     {
-        if ($byCountRow) {
+        if (!$byCountRow) {
             $fundraising->restore();
             $fundraising->update(['forget' => false]);
             return true;
