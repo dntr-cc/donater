@@ -24,7 +24,7 @@ class FundraisingRemoveCommand extends FundraisingDeactivateCommand
             throw new \LogicException('User not found');
         }
         $volunteer->sendBotMessage(
-            strtr(static::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))])
+            strtr(static::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))]), $throw
         );
     }
 

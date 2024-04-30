@@ -48,7 +48,6 @@ class FundraisingDeactivateCommand extends DefaultCommand
     /**
      * @param mixed $fundraising
      * @return void
-     * @throws \Throwable
      */
     protected function notifyVolunteerAndAdmin(Fundraising $fundraising): void
     {
@@ -58,10 +57,7 @@ class FundraisingDeactivateCommand extends DefaultCommand
         } catch (\Throwable $t) {
             $sendMessage = ' Повідомлення недоставлно волонтеру.';
         }
-        User::find(1)->sendBotMessage(
-            strtr(static::MESSAGE . $sendMessage, [':fundraising' => route('fundraising.show', compact('fundraising'))]),
-            true
-        );
+        User::find(1)->sendBotMessage(strtr(static::MESSAGE . $sendMessage, [':fundraising' => route('fundraising.show', compact('fundraising'))]));
     }
 
     /**
@@ -77,7 +73,7 @@ class FundraisingDeactivateCommand extends DefaultCommand
             throw new \LogicException('User not found');
         }
         $volunteer->sendBotMessage(
-            strtr(static::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))])
+            strtr(static::MESSAGE, [':fundraising' => route('fundraising.show', compact('fundraising'))]), $throw
         );
         $volunteer->sendBotMessage('Повідомлення для підтримки монобанку для замовлення виписки:', $throw);
         $volunteer->sendBotMessage($fundraising->getMonoRequest($fundraising->getJarLink(false)), $throw);
