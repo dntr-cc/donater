@@ -36,7 +36,7 @@ class FundraisingCacheCommand extends DefaultCommand
         $volunteer = $fundraising = null;
         if ($id = $this->argument('id')) {
             try {
-                $fundraising = Fundraising::find($id);
+                $fundraising = Fundraising::withTrashed()->find($id);
                 if (!$fundraising) {
                     return;
                 }
