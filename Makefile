@@ -111,74 +111,74 @@ chown-dev:
 
 .PHONY: up-dev
 up-dev:
-	docker-compose -f ./docker-compose.dev.yml up -d
+	docker compose -f ./docker-compose.dev.yml up -d
 
 .PHONY: ps-dev
 ps-dev:
-	docker-compose -f ./docker-compose.dev.yml ps
+	docker compose -f ./docker-compose.dev.yml ps
 
 .PHONY: stop-dev
 stop-dev:
-	docker-compose -f ./docker-compose.dev.yml stop
+	docker compose -f ./docker-compose.dev.yml stop
 
 .PHONY: rebuild-dev
 rebuild-dev: stop
-	docker-compose -f ./docker-compose.dev.yml rm laravel
-	docker-compose -f ./docker-compose.dev.yml rm node
-	docker-compose -f ./docker-compose.dev.yml rm nginx
+	docker compose -f ./docker-compose.dev.yml rm laravel
+	docker compose -f ./docker-compose.dev.yml rm node
+	docker compose -f ./docker-compose.dev.yml rm nginx
 	echo 'y' > docker rmi -f ghcr.io/setnemo/php:latest
 	echo 'y' > docker rmi -f ghcr.io/setnemo/nginx:latest
 	echo 'y' > docker rmi -f ghcr.io/setnemo/node:latest
-	docker-compose -f ./docker-compose.dev.yml up -d
+	docker compose -f ./docker-compose.dev.yml up -d
 
 .PHONY: bash-dev
 bash-dev:
-	docker-compose -f ./docker-compose.dev.yml exec laravel bash
+	docker compose -f ./docker-compose.dev.yml exec laravel bash
 
 .PHONY: bash-dev-root
 bash-dev-root:
-	docker-compose -f ./docker-compose.dev.yml exec --user root laravel bash
+	docker compose -f ./docker-compose.dev.yml exec --user root laravel bash
 
 .PHONY: logs-dev
 logs-dev:
-	docker-compose -f ./docker-compose.dev.yml logs -f
+	docker compose -f ./docker-compose.dev.yml logs -f
 
 .PHONY: restart-dev
 restart-dev:
-	docker-compose -f ./docker-compose.dev.yml stop && docker-compose -f ./docker-compose.dev.yml up -d
+	docker compose -f ./docker-compose.dev.yml stop && docker compose -f ./docker-compose.dev.yml up -d
 
 .PHONY: artisan-dev
 artisan-dev:
-	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan ${ARGS}
+	docker compose -f ./docker-compose.dev.yml exec laravel php artisan ${ARGS}
 
 .PHONY: migrate-dev
 migrate-dev:
-	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan migrate
+	docker compose -f ./docker-compose.dev.yml exec laravel php artisan migrate
 
 .PHONY: clear-dev
 clear-dev:
-	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan cache:clear
-	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan config:clear
-	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan event:clear
-	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan route:clear
-	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan route:clear
-	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan queue:clear
-	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan schedule:clear-cache
-	docker-compose -f ./docker-compose.dev.yml exec laravel php artisan optimize:clear
+	docker compose -f ./docker-compose.dev.yml exec laravel php artisan cache:clear
+	docker compose -f ./docker-compose.dev.yml exec laravel php artisan config:clear
+	docker compose -f ./docker-compose.dev.yml exec laravel php artisan event:clear
+	docker compose -f ./docker-compose.dev.yml exec laravel php artisan route:clear
+	docker compose -f ./docker-compose.dev.yml exec laravel php artisan route:clear
+	docker compose -f ./docker-compose.dev.yml exec laravel php artisan queue:clear
+	docker compose -f ./docker-compose.dev.yml exec laravel php artisan schedule:clear-cache
+	docker compose -f ./docker-compose.dev.yml exec laravel php artisan optimize:clear
 
 .PHONY: install-dev
 install-dev:
-	docker-compose -f ./docker-compose.dev.yml exec laravel composer install
-	docker-compose -f ./docker-compose.dev.yml exec node npm install
+	docker compose -f ./docker-compose.dev.yml exec laravel composer install
+	docker compose -f ./docker-compose.dev.yml exec node npm install
 
 .41+PHONY: front-dev
 front-dev:
-	docker-compose -f ./docker-compose.dev.yml exec node npm run build
+	docker compose -f ./docker-compose.dev.yml exec node npm run build
 
 .PHONY: folders-dev
 folders-dev:
-	docker-compose -f ./docker-compose.dev.yml exec laravel chmod -R 777 /var/www/html/storage && echo "Make writeable storage..."
-	docker-compose -f ./docker-compose.dev.yml exec laravel chmod -R 777 /var/www/html/bootstrap && echo "Make writeable bootstrap..."
+	docker compose -f ./docker-compose.dev.yml exec laravel chmod -R 777 /var/www/html/storage && echo "Make writeable storage..."
+	docker compose -f ./docker-compose.dev.yml exec laravel chmod -R 777 /var/www/html/bootstrap && echo "Make writeable bootstrap..."
 
 
 .PHONY: default

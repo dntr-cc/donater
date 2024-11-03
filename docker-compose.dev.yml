@@ -15,10 +15,7 @@ services:
     depends_on:
       - laravel
     logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "5"
+      driver: none
   laravel:
     image: ghcr.io/setnemo/php:latest
     env_file:
@@ -39,10 +36,7 @@ services:
       - postgres
       - redis
     logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "5"
+      driver: none
   laravel2:
     image: ghcr.io/setnemo/php:victory
     environment:
@@ -62,10 +56,7 @@ services:
       - postgres
       - redis
     logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "5"
+      driver: none
   node:
     image: ghcr.io/setnemo/node:latest
     env_file:
@@ -78,10 +69,7 @@ services:
       - ./:/var/www/html
       - './supervisor/deploy.node.conf:/etc/supervisor/conf.d/deploy.node.conf'
     logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "5"
+      driver: none
   postgres:
     image: postgres:9.5-alpine
     env_file:
@@ -102,10 +90,7 @@ services:
       timeout: 5s
       retries: 5
     logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "5"
+      driver: none
   redis:
     image: 'redis:alpine'
     env_file:
@@ -121,10 +106,7 @@ services:
       retries: 3
       timeout: 5s
     logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "5"
+      driver: none
 networks:
   sail:
     driver: bridge
