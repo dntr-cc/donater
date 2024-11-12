@@ -30,6 +30,7 @@ services:
       - './supervisor/queue.php.conf:/etc/supervisor/conf.d/queue.php.conf'
       - './supervisor/scheduler.php.conf:/etc/supervisor/conf.d/scheduler.php.conf'
       - './supervisor/subscribe.php.conf:/etc/supervisor/conf.d/subscribe.php.conf'
+      - './supervisor/tmp.conf:/etc/supervisor/conf.d/tmp.conf'
     networks:
       - sail
     depends_on:
