@@ -38,7 +38,7 @@ class DeepLink extends Model
     protected function startedAt(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => Carbon::parse($value)->format('H:i:00'),
+            get: fn ($value) => Carbon::parse($value)->format('H:i'),
         );
     }
 
