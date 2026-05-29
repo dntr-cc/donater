@@ -37,6 +37,10 @@ class GoogleServiceSheets
             \Illuminate\Support\Facades\Log::error('google', [$t->getTraceAsString()]);
             $values = [];
         }
+        if (empty($values)) {
+            return $collection;
+        }
+
         $donatesItems = Donate::query()->where('fundraising_id', '=', $fundraisingId)->get();
         $donates      = [];
         foreach ($donatesItems as $donate) {
