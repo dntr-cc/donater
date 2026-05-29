@@ -7,9 +7,9 @@ use App\Services\Metrics;
 
 class FundraisingRemoveCommand extends FundraisingDeactivateCommand
 {
-    public const string MESSAGE = 'Ви не закидали виписку з донатами старше 10 днів. Ваш збір :fundraising видалено автоматично. Для відновлення вам треба закинути виписку з донатами за крайні 10 днів, тоді збір буде відновлено автоматично.';
+    public const string MESSAGE = 'Ви не закидали виписку з донатами старше 20 днів. Ваш збір :fundraising видалено автоматично. Для відновлення вам треба закинути виписку з донатами за крайні 10 днів, тоді збір буде відновлено автоматично.';
     public const string MESSAGE_ADMIN = ':fundraising видалено автоматично.';
-    public const string DAYS = '-10 days';
+    public const string DAYS = '-20 days';
     public const string METRIC_NAME = Metrics::FUNDRAISING_REMOVE;
 
 
