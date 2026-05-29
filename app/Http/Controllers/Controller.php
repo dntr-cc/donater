@@ -16,6 +16,8 @@ class Controller extends BaseController
      */
     protected function getNewCSRFToken(): string
     {
-        return config('session.csrf')();
+        session()->regenerateToken();
+
+        return csrf_token();
     }
 }

@@ -31,7 +31,12 @@ class GoogleServiceSheets
     public function getRowCollection(string $spreadsheetId, int $fundraisingId = 0, string $range = self::RANGE_DEFAULT, bool $fromCache = true): RowCollection
     {
         $collection   = new RowCollection();
-        $values       = $this->getSpreadsheetValues($spreadsheetId, $range, $fromCache)->getValues() ?? [];
+        try {
+            $values       = $this->getSpreadsheetValues($spreadsheetId, $range, $fromCache)->getValues() ?? [];
+        } catch (\Throwable $t) {
+            \Illuminate\Support\Facades\Log::error('google', [$t->getTraceAsString()]);
+            $values = [];
+        }
         $donatesItems = Donate::query()->where('fundraising_id', '=', $fundraisingId)->get();
         $donates      = [];
         foreach ($donatesItems as $donate) {

@@ -198,10 +198,4 @@ return [
 
     'same_site' => 'lax',
 
-    'csrf' => static function() {
-        session()->regenerateToken();
-
-        return csrf_token();
-    }
-
 ];
