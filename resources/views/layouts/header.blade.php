@@ -10,12 +10,12 @@
                     </a>
                 </div>
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-                    <li>
-                        <a href="https://forms.gle/BzYqFsaouufsZVAh9" target="_blank" class="nav-link text-white">
-                            <i class="bi bi-cup-hot-fill d-inline mx-auto mb-1"></i>
-                            Мерч
+                    @if (auth()->user()?->isSuperAdmin())
+                        <a href="{{ route('fundraisings') }}" class="nav-link text-white">
+                            <i class="bi bi-list-task d-inline mx-auto mb-1"></i>
+                            Всі збори
                         </a>
-                    </li>
+                    @endif
                     <li>
                         <a href="{{ route('analytics') }}" class="nav-link text-white">
                             <i class="bi bi-pie-chart-fill d-inline mx-auto mb-1"></i>
