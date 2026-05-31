@@ -37,9 +37,6 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
-        Route::bind('fundraising.restore', function ($fundraising) {
-            return Fundraising::withTrashed()->findOrFail($fundraising);
-        });
     }
 
     /**

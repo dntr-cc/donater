@@ -92,7 +92,7 @@ Route::get('/fundraisings/deleted', static fn() => view('fundraising.index', ['f
     ->withTrashed()
     ->whereNotNull('deleted_at')
     ->paginate(config('app.per_page.funds'))]))->name('fundraisings.deleted')->middleware(['super']);
-Route::get('/fundraisings/{fundraising}/restore', [App\Http\Controllers\FundraisingController::class, 'restore'])->name('fundraising.restore')->middleware(['super']);
+Route::get('/fundraisings/{fundraising}/restore', [App\Http\Controllers\FundraisingController::class, 'restore'])->name('fundraising.restore')->middleware(['super'])->withTrashed();
 Route::get('/fundraisings/{fundraising}/delete', [App\Http\Controllers\FundraisingController::class, 'destroy'])->name('fundraising.delete')->middleware(['super']);
 
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
