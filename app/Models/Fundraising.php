@@ -308,7 +308,7 @@ class Fundraising extends Model
      */
     public function getPrizes(): ?Collection
     {
-        return self::with('prizes')->where('id', '=', $this->getId())->first()->prizes;
+        return self::with('prizes')?->where('id', '=', $this->getId())?->first()?->prizes ?? new Collection();
     }
 
     public function getId(): int
@@ -321,7 +321,7 @@ class Fundraising extends Model
      */
     public function getBookedPrizes(): ?Collection
     {
-        return self::with('booked_prizes')->where('id', '=', $this->getId())->first()->booked_prizes;
+        return self::with('booked_prizes')?->where('id', '=', $this->getId())?->first()?->booked_prizes ?? new Collection();
     }
 
     /**
