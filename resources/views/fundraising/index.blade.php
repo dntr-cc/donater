@@ -8,18 +8,18 @@
 @endpush
     <div class="container">
         <h2 class="pb-2 border-bottom">Всі збори
-{{--            <a href="{{route('prizes')}}" class="btn ">--}}
-{{--                <i class="bi bi-gift"></i>--}}
-{{--                Всі призи--}}
-{{--            </a>--}}
-{{--            <a href="{{route('prizes.free')}}" class="btn ">--}}
-{{--                <i class="bi bi-gift"></i>--}}
-{{--                Вільні призи--}}
-{{--            </a>--}}
-{{--            <a href="{{route('prizes.booked')}}" class="btn ">--}}
-{{--                <i class="bi bi-gift-fill"></i>--}}
-{{--                Зайняті призи--}}
-{{--            </a>--}}
+            <a href="{{route('fundraisings')}}" class="btn ">
+                <i class="bi bi-gift"></i>
+                Всі збори
+            </a>
+            <a href="{{route('fundraisings.opened')}}" class="btn ">
+                <i class="bi bi-gift"></i>
+                Відкриті збори
+            </a>
+            <a href="{{route('fundraisings.deleted')}}" class="btn ">
+                <i class="bi bi-gift-fill"></i>
+                Видалені збори
+            </a>
 {{--            <a href="{{route('prizes.spent')}}" class="btn ">--}}
 {{--                <i class="bi bi-gift-fill"></i>--}}
 {{--                Розіграні призи--}}

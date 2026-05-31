@@ -91,6 +91,15 @@ Route::get('/fundraising/{fundraising}', [App\Http\Controllers\FundraisingContro
 Route::post('/fundraising/{fundraising}/prize/{prize}', [App\Http\Controllers\FundraisingController::class, 'addPrize']);
 Route::delete('/fundraising/{fundraising}/prize/{prize}', [App\Http\Controllers\FundraisingController::class, 'delPrize']);
 
+Route::get('/fundraisings', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()
+    ->paginate(config('app.per_page.funds'))]))->name('fundraisings');
+Route::get('/fundraisings/opened', static fn() => view('fundraisings.index', ['fundraisings' => Fundraising::query()
+    ->where('is_enabled', '=', true)
+    ->paginate(config('app.per_page.funds'))]))->name('fundraisings.opened');
+Route::get('/fundraisings/deleted', static fn() => view('fundraisings.index', ['fundraisings' => Fundraising::query()
+    ->withTrashed()
+    ->paginate(config('app.per_page.funds'))]))->name('fundraisings.deleted');
+
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
 Route::post('/user/{user}/avatar', [App\Http\Controllers\UserController::class, 'updateAvatar'])->name('user.edit.avatar');
 Route::get('/donates', [App\Http\Controllers\DonateController::class, 'index'])->name('donates');
@@ -100,9 +109,6 @@ Route::post('/user/link', [App\Http\Controllers\UserLinkController::class, 'stor
 Route::delete('/user/link/{userLink}', [App\Http\Controllers\UserLinkController::class, 'destroy'])->name('user.link.delete');
 Route::patch('/user/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('user.edit');
 Route::patch('/user/{user}/settings', [App\Http\Controllers\UserSettingsController::class, 'update'])->name('user.settings');
-
-Route::get('/fundraisings', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()
-    ->paginate(config('app.per_page.funds'))]))->name('fundraisings');
 
 Route::get('/prizes', static fn() => view('prize.index', ['prizes' => Prize::query()
     ->paginate(config('app.per_page.prizes'))]))->name('prizes');
