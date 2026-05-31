@@ -1,15 +1,12 @@
 <?php
 
 use App\Bot\CommandWrapper;
-use App\Collections\RowCollection;
 use App\Models\Donate;
 use App\Models\Fundraising;
 use App\Models\Prize;
 use App\Services\ChartService;
-use App\Services\GoogleServiceSheets;
 use App\Services\RowCollectionService;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Telegram\Bot\Laravel\Facades\Telegram;
@@ -95,8 +92,8 @@ Route::get('/fundraisings/deleted', static fn() => view('fundraising.index', ['f
     ->withTrashed()
     ->whereNotNull('deleted_at')
     ->paginate(config('app.per_page.funds'))]))->name('fundraisings.deleted')->middleware(['super']);
-Route::patch('/fundraisings/{fundraising}/restore', [App\Http\Controllers\FundraisingController::class, 'restore'])->name('fundraising.restore')->middleware(['super']);
-Route::delete('/fundraisings/{fundraising}/delete', [App\Http\Controllers\FundraisingController::class, 'destroy'])->name('fundraising.delete')->middleware(['super']);
+Route::get('/fundraisings/{fundraising}/restore', [App\Http\Controllers\FundraisingController::class, 'restore'])->name('fundraising.restore')->middleware(['super']);
+Route::get('/fundraisings/{fundraising}/delete', [App\Http\Controllers\FundraisingController::class, 'destroy'])->name('fundraising.delete')->middleware(['super']);
 
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
 Route::post('/user/{user}/avatar', [App\Http\Controllers\UserController::class, 'updateAvatar'])->name('user.edit.avatar');

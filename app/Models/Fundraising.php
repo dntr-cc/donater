@@ -415,9 +415,9 @@ class Fundraising extends Model
     public function getClassByState(): string
     {
         if ($this->getDeletedAt()) {
-            return 'bg-primary-subtle';
-        } elseif ($this->isEnabled()) {
             return 'bg-danger-subtle';
+        } elseif ($this->isEnabled()) {
+            return 'bg-primary-subtle';
         } elseif ($this->donates->count()) {
             return 'bg-success-subtle';
         }
