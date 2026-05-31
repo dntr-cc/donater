@@ -31,13 +31,10 @@ class GoogleServiceSheets
     public function getRowCollection(string $spreadsheetId, int $fundraisingId = 0, string $range = self::RANGE_DEFAULT, bool $fromCache = true): RowCollection
     {
         $collection   = new RowCollection();
+        $values = [];
         try {
             $values       = $this->getSpreadsheetValues($spreadsheetId, $range, $fromCache)->getValues() ?? [];
         } catch (\Throwable $t) {
-            $values = [];
-        }
-        if (empty($values)) {
-            return $collection;
         }
 
         $donatesItems = Donate::query()->where('fundraising_id', '=', $fundraisingId)->get();
