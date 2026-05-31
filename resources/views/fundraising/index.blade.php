@@ -6,6 +6,7 @@
 @push('head-scripts')
     @vite(['resources/js/masonry.js'])
 @endpush
+@php $withVolunteer = true; @endphp
     <div class="container">
         <h2 class="pb-2 border-bottom">Всі збори
             <a href="{{route('fundraisings')}}" class="btn ">
@@ -34,7 +35,7 @@
 
         <div class="row row-cols-1 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-4 masonry-grid">
             @foreach($fundraisings->all() as $fundraising)
-                @include('fundraising.item-card', compact('fundraising'))
+                @include('fundraising.item-card', compact('fundraising', 'withVolunteer'))
             @endforeach
         </div>
     </div>

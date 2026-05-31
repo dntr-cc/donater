@@ -32,6 +32,11 @@ class FundraisingPolicy
 
     public function delete(?User $user, Fundraising $fundraising): bool
     {
-        return $user && $user->getId() === $fundraising->getUserId() || $user && $user->isSuperAdmin();
+        return $user && $user->isSuperAdmin();
+    }
+
+    public function restore(?User $user, Fundraising $fundraising): bool
+    {
+        return $user && $user->isSuperAdmin();
     }
 }

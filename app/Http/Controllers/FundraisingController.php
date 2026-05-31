@@ -14,6 +14,7 @@ use App\Services\ChartService;
 use App\Services\FileService;
 use App\Services\FundraisingShortCodeService;
 use App\Services\GoogleServiceSheets;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -194,9 +195,24 @@ class FundraisingController extends Controller
     {
         $this->authorize('delete', $fundraising);
 
+        $fundraising->setForget(true)->save();
         $fundraising->delete();
 
-        return response()->json();
+        return $this->getRedirectResponse($fundraising);
+    }
+
+    public function restore(Fundraising $fundraising)
+    {
+        $this->authorize('restore', $fundraising);
+
+        $fundraising->restore();
+
+        $fundraising->setForget()
+            ->setCreatedAt(
+                (new Carbon())->setTimezone(config('app.timezone'))->modify('-2 weeks ago')
+            )->save();
+
+        return $this->getRedirectResponse($fundraising);
     }
 
     public function addPrize(Fundraising $fundraising, Prize $prize)

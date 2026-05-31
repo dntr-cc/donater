@@ -414,9 +414,9 @@ class Fundraising extends Model
 
     public function getClassByState(): string
     {
-        if ($this->isEnabled()) {
+        if ($this->getDeletedAt()) {
             return 'bg-primary-subtle';
-        } elseif ($this->getDeletedAt()) {
+        } elseif ($this->isEnabled()) {
             return 'bg-danger-subtle';
         } elseif ($this->donates->count()) {
             return 'bg-success-subtle';
@@ -436,6 +436,13 @@ class Fundraising extends Model
     public function isForget(): bool
     {
         return $this->forget;
+    }
+
+    public function setForget(bool $forget = false): self
+    {
+        $this->forget = $forget;
+
+        return $this;
     }
 
     /**

@@ -70,11 +70,6 @@ Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLog
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-Route::get('/zvit', static fn() => redirect(route('welcome'), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/fundraising', static fn() => redirect(route('welcome'), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/zvit/{fundraising}', static fn() => redirect(route('welcome'), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/fundraising/wait', static fn() => redirect(route('welcome'), Response::HTTP_MOVED_PERMANENTLY));
-Route::get('/fundraising/close', static fn() => redirect(route('welcome'), Response::HTTP_MOVED_PERMANENTLY));
 Route::post('/fundraising', [App\Http\Controllers\FundraisingController::class, 'store'])->name('fundraising.create');
 Route::post('/fundraising/avatar', [App\Http\Controllers\FundraisingController::class, 'storeAvatar'])->name('fundraising.avatar');
 Route::post('/fundraising/key', [App\Http\Controllers\FundraisingController::class, 'checkKey'])->name('fundraising.key');
@@ -92,14 +87,16 @@ Route::post('/fundraising/{fundraising}/prize/{prize}', [App\Http\Controllers\Fu
 Route::delete('/fundraising/{fundraising}/prize/{prize}', [App\Http\Controllers\FundraisingController::class, 'delPrize']);
 
 Route::get('/fundraisings', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()
-    ->paginate(config('app.per_page.funds'))]))->name('fundraisings');
+    ->paginate(config('app.per_page.funds'))]))->name('fundraisings')->middleware(['super']);
 Route::get('/fundraisings/opened', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()
     ->where('is_enabled', '=', true)
-    ->paginate(config('app.per_page.funds'))]))->name('fundraisings.opened');
+    ->paginate(config('app.per_page.funds'))]))->name('fundraisings.opened')->middleware(['super']);
 Route::get('/fundraisings/deleted', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()
     ->withTrashed()
     ->whereNotNull('deleted_at')
-    ->paginate(config('app.per_page.funds'))]))->name('fundraisings.deleted');
+    ->paginate(config('app.per_page.funds'))]))->name('fundraisings.deleted')->middleware(['super']);
+Route::patch('/fundraisings/{fundraising}/restore', [App\Http\Controllers\FundraisingController::class, 'restore'])->name('fundraising.restore')->middleware(['super']);
+Route::delete('/fundraisings/{fundraising}/delete', [App\Http\Controllers\FundraisingController::class, 'destroy'])->name('fundraising.delete')->middleware(['super']);
 
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
 Route::post('/user/{user}/avatar', [App\Http\Controllers\UserController::class, 'updateAvatar'])->name('user.edit.avatar');

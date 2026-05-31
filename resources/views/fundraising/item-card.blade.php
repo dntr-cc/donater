@@ -29,74 +29,79 @@
             @endif
             @if($fundraising->getDeletedAt())
                 Відновити
-            @elseif($fundraising->isEnabled())
-                    @include('layouts.monodonat', compact('fundraising', 'info'))
+                <div class="row row-cols-xl-4 row-cols-lg-4 row-cols-md-1 row-cols-sm-1 row-cols-sm-1 d-flex justify-content-around m-4">
+                    <a class="btn m-1 btn-fit-text" target="_blank" href="{{ route('fundraising.restore', compact('fundraising')) }}">🍩Відновити</a>
+                </div>
+            @else
+                @if($fundraising->isEnabled())
+                        @include('layouts.monodonat', compact('fundraising', 'info'))
+                        <div class="d-flex justify-content-center mt-2">
+                            <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
+                                <input type="text" class="form-control border-secondary text-truncate {{ $fundraising->getClassByState() }}" id="share-fund-{{ sha1($fundraising->getKey()) }}"
+                                       value="{{ $fundraising->getShortLink() }}" disabled>
+                                <label for="share-fund-{{ sha1($fundraising->getKey()) }}" class="form-floating-{{ $fundraising->getClassByState() }}">
+                                    Коротке посилання
+                                </label>
+                                <button id="share-fund-btn-{{ sha1($fundraising->getKey()) }}"
+                                        class="btn btn-outline-dark copy-text" data-message="Посилання"
+                                        data-text="{{ $fundraising->getShortLink() }}" onclick="return false;">
+                                    <i class="bi bi-copy"></i></button>
+                            </div>
+                        </div>
+                    @elseif(app(\App\Services\GoogleServiceSheets::class)->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->count() > 0)
+                        <h5 class="text-center">Збір закрито</h5>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%"
+                                 aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                @else
+                    <h5 class="text-center">Збір скоро розпочнеться</h5>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-animated progress-bar-striped bg-secondary" role="progressbar"
+                             style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                @endif
+                @if($cardMono = $fundraising?->getDetails()?->getCardMono())
                     <div class="d-flex justify-content-center mt-2">
                         <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
-                            <input type="text" class="form-control border-secondary text-truncate {{ $fundraising->getClassByState() }}" id="share-fund-{{ sha1($fundraising->getKey()) }}"
-                                   value="{{ $fundraising->getShortLink() }}" disabled>
-                            <label for="share-fund-{{ sha1($fundraising->getKey()) }}" class="form-floating-{{ $fundraising->getClassByState() }}">
-                                Коротке посилання
-                            </label>
+                            <input type="text" class="form-control border-secondary {{ $fundraising->getClassByState() }}"
+                                   id="share-mono-{{ sha1($cardMono) }}" value="{{ $cardMono }}" disabled>
+                            <label for="share-mono-{{ sha1($cardMono) }}" class="form-floating-{{ $fundraising->getClassByState() }}">Картка моно</label>
                             <button id="share-fund-btn-{{ sha1($fundraising->getKey()) }}"
-                                    class="btn btn-outline-dark copy-text" data-message="Посилання"
-                                    data-text="{{ $fundraising->getShortLink() }}" onclick="return false;">
+                                    class="btn btn-outline-dark copy-text" data-message="Картка моно"
+                                    data-text="{{ $cardMono }}" onclick="return false;">
                                 <i class="bi bi-copy"></i></button>
                         </div>
                     </div>
-                @elseif(app(\App\Services\GoogleServiceSheets::class)->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->count() > 0)
-                    <h5 class="text-center">Збір закрито</h5>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%"
-                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                @endif
+                @if($cardPrivat = $fundraising?->getDetails()?->getCardPrivat())
+                    <div class="d-flex justify-content-center mt-2">
+                        <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
+                            <input type="text" class="form-control border-secondary {{ $fundraising->getClassByState() }}"
+                                   id="share-mono-{{ sha1($cardPrivat) }}" value="{{ $cardPrivat }}" disabled>
+                            <label for="share-mono-{{ sha1($cardPrivat) }}" class="form-floating-{{ $fundraising->getClassByState() }}">Картка Приват</label>
+                            <button id="share-fund-btn-{{ sha1($fundraising->getKey()) }}"
+                                    class="btn btn-outline-dark copy-text" data-message="Картка Приват"
+                                    data-text="{{ $cardPrivat }}" onclick="return false;">
+                                <i class="bi bi-copy"></i></button>
+                        </div>
                     </div>
-            @else
-                <h5 class="text-center">Збір скоро розпочнеться</h5>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-animated progress-bar-striped bg-secondary" role="progressbar"
-                         style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            @endif
-            @if($cardMono = $fundraising?->getDetails()?->getCardMono())
-                <div class="d-flex justify-content-center mt-2">
-                    <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
-                        <input type="text" class="form-control border-secondary {{ $fundraising->getClassByState() }}"
-                               id="share-mono-{{ sha1($cardMono) }}" value="{{ $cardMono }}" disabled>
-                        <label for="share-mono-{{ sha1($cardMono) }}" class="form-floating-{{ $fundraising->getClassByState() }}">Картка моно</label>
-                        <button id="share-fund-btn-{{ sha1($fundraising->getKey()) }}"
-                                class="btn btn-outline-dark copy-text" data-message="Картка моно"
-                                data-text="{{ $cardMono }}" onclick="return false;">
-                            <i class="bi bi-copy"></i></button>
+                @endif
+                @if($paypal = $fundraising?->getDetails()?->getPayPal())
+                    <div class="d-flex justify-content-center mt-2">
+                        <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
+                            <input type="text" class="form-control border-secondary {{ $fundraising->getClassByState() }}"
+                                   id="share-mono-{{ sha1($paypal) }}" value="{{ $paypal }}" disabled>
+                            <label for="share-mono-{{ sha1($paypal) }}" class="form-floating-{{ $fundraising->getClassByState() }}">PayPal</label>
+                            <button id="share-fund-btn-{{ sha1($fundraising->getKey()) }}"
+                                    class="btn btn-outline-dark copy-text" data-message="PayPal"
+                                    data-text="{{ $paypal }}" onclick="return false;">
+                                <i class="bi bi-copy"></i></button>
+                        </div>
                     </div>
-                </div>
+                @endif
+                @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'disableShortCodes'))
             @endif
-            @if($cardPrivat = $fundraising?->getDetails()?->getCardPrivat())
-                <div class="d-flex justify-content-center mt-2">
-                    <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
-                        <input type="text" class="form-control border-secondary {{ $fundraising->getClassByState() }}"
-                               id="share-mono-{{ sha1($cardPrivat) }}" value="{{ $cardPrivat }}" disabled>
-                        <label for="share-mono-{{ sha1($cardPrivat) }}" class="form-floating-{{ $fundraising->getClassByState() }}">Картка Приват</label>
-                        <button id="share-fund-btn-{{ sha1($fundraising->getKey()) }}"
-                                class="btn btn-outline-dark copy-text" data-message="Картка Приват"
-                                data-text="{{ $cardPrivat }}" onclick="return false;">
-                            <i class="bi bi-copy"></i></button>
-                    </div>
-                </div>
-            @endif
-            @if($paypal = $fundraising?->getDetails()?->getPayPal())
-                <div class="d-flex justify-content-center mt-2">
-                    <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
-                        <input type="text" class="form-control border-secondary {{ $fundraising->getClassByState() }}"
-                               id="share-mono-{{ sha1($paypal) }}" value="{{ $paypal }}" disabled>
-                        <label for="share-mono-{{ sha1($paypal) }}" class="form-floating-{{ $fundraising->getClassByState() }}">PayPal</label>
-                        <button id="share-fund-btn-{{ sha1($fundraising->getKey()) }}"
-                                class="btn btn-outline-dark copy-text" data-message="PayPal"
-                                data-text="{{ $paypal }}" onclick="return false;">
-                            <i class="bi bi-copy"></i></button>
-                    </div>
-                </div>
-            @endif
-            @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'disableShortCodes'))
         </div>
         @if($withVolunteer)
             <div class="{{ $fundraising->getClassByState() }} p-3">
