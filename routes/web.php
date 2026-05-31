@@ -101,6 +101,9 @@ Route::delete('/user/link/{userLink}', [App\Http\Controllers\UserLinkController:
 Route::patch('/user/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('user.edit');
 Route::patch('/user/{user}/settings', [App\Http\Controllers\UserSettingsController::class, 'update'])->name('user.settings');
 
+Route::get('/fundraisings', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()
+    ->paginate(config('app.per_page.funds'))]))->name('fundraisings');
+
 Route::get('/prizes', static fn() => view('prize.index', ['prizes' => Prize::query()
     ->paginate(config('app.per_page.prizes'))]))->name('prizes');
 Route::get('/prizes/free', static fn() => view('prize.index', ['prizes' => Prize::query()
