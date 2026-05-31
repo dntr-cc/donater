@@ -27,27 +27,29 @@
                     @endif
                 </div>
             @endif
-            @if($fundraising->isEnabled())
-                @include('layouts.monodonat', compact('fundraising', 'info'))
-                <div class="d-flex justify-content-center mt-2">
-                    <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
-                        <input type="text" class="form-control border-secondary text-truncate {{ $fundraising->getClassByState() }}" id="share-fund-{{ sha1($fundraising->getKey()) }}"
-                               value="{{ $fundraising->getShortLink() }}" disabled>
-                        <label for="share-fund-{{ sha1($fundraising->getKey()) }}" class="form-floating-{{ $fundraising->getClassByState() }}">
-                            Коротке посилання
-                        </label>
-                        <button id="share-fund-btn-{{ sha1($fundraising->getKey()) }}"
-                                class="btn btn-outline-dark copy-text" data-message="Посилання"
-                                data-text="{{ $fundraising->getShortLink() }}" onclick="return false;">
-                            <i class="bi bi-copy"></i></button>
+            @if($fundraising->getDeletedAt())
+                Відновити
+            @elseif($fundraising->isEnabled())
+                    @include('layouts.monodonat', compact('fundraising', 'info'))
+                    <div class="d-flex justify-content-center mt-2">
+                        <div class="form-floating input-group {{ $fundraising->getClassByState() }}">
+                            <input type="text" class="form-control border-secondary text-truncate {{ $fundraising->getClassByState() }}" id="share-fund-{{ sha1($fundraising->getKey()) }}"
+                                   value="{{ $fundraising->getShortLink() }}" disabled>
+                            <label for="share-fund-{{ sha1($fundraising->getKey()) }}" class="form-floating-{{ $fundraising->getClassByState() }}">
+                                Коротке посилання
+                            </label>
+                            <button id="share-fund-btn-{{ sha1($fundraising->getKey()) }}"
+                                    class="btn btn-outline-dark copy-text" data-message="Посилання"
+                                    data-text="{{ $fundraising->getShortLink() }}" onclick="return false;">
+                                <i class="bi bi-copy"></i></button>
+                        </div>
                     </div>
-                </div>
                 @elseif(app(\App\Services\GoogleServiceSheets::class)->getRowCollection($fundraising->getSpreadsheetId(), $fundraising->getId())->count() > 0)
-                <h5 class="text-center">Збір закрито</h5>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%"
-                         aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+                    <h5 class="text-center">Збір закрито</h5>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%"
+                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
             @else
                 <h5 class="text-center">Збір скоро розпочнеться</h5>
                 <div class="progress">

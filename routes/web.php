@@ -98,6 +98,7 @@ Route::get('/fundraisings/opened', static fn() => view('fundraising.index', ['fu
     ->paginate(config('app.per_page.funds'))]))->name('fundraisings.opened');
 Route::get('/fundraisings/deleted', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()
     ->withTrashed()
+    ->whereNotNull('deleted_at')
     ->paginate(config('app.per_page.funds'))]))->name('fundraisings.deleted');
 
 Route::get('/u/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('user');
