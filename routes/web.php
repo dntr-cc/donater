@@ -93,10 +93,10 @@ Route::delete('/fundraising/{fundraising}/prize/{prize}', [App\Http\Controllers\
 
 Route::get('/fundraisings', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()
     ->paginate(config('app.per_page.funds'))]))->name('fundraisings');
-Route::get('/fundraisings/opened', static fn() => view('fundraisings.index', ['fundraisings' => Fundraising::query()
+Route::get('/fundraisings/opened', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()
     ->where('is_enabled', '=', true)
     ->paginate(config('app.per_page.funds'))]))->name('fundraisings.opened');
-Route::get('/fundraisings/deleted', static fn() => view('fundraisings.index', ['fundraisings' => Fundraising::query()
+Route::get('/fundraisings/deleted', static fn() => view('fundraising.index', ['fundraisings' => Fundraising::query()
     ->withTrashed()
     ->paginate(config('app.per_page.funds'))]))->name('fundraisings.deleted');
 
