@@ -198,7 +198,10 @@ class FundraisingController extends Controller
         $fundraising->setForget(true)->save();
         $fundraising->delete();
 
-        return $this->getRedirectResponse($fundraising);
+        return redirect(
+            route('fundraisings.delete'),
+            Response::HTTP_FOUND
+        )->header('Cache-Control', 'no-store, no-cache, must-revalidate');
     }
 
     public function restore(Fundraising $fundraising)

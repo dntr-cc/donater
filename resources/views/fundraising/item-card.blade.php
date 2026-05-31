@@ -3,6 +3,7 @@
 @php $info = true; @endphp
 @php $name = $name ?? false; @endphp
 @php $withVolunteer = $withVolunteer ?? false; @endphp
+@php $withDelete = $withDelete ?? false; @endphp
 @php $withJarLink = true; @endphp
 @php $withPageLink = true; @endphp
 @php $withPrizes = $withPrizes ?? true; @endphp
@@ -100,7 +101,7 @@
                         </div>
                     </div>
                 @endif
-                @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'disableShortCodes'))
+                @include('layouts.links', compact('fundraising', 'withJarLink', 'withPageLink', 'withPrizes', 'disableShortCodes', 'withDelete'))
             @endif
         </div>
         @if($withVolunteer)

@@ -3,6 +3,7 @@
 @php $withJarLink = $withJarLink ?? false; @endphp
 @php $withPageLink = $withPageLink ?? false; @endphp
 @php $withPrizes = $withPrizes ?? false; @endphp
+@php $withDelete = $withDelete ?? false; @endphp
 @php $disableShortCodes = $disableShortCodes ?? true; @endphp
 @php $rowClasses = $rowClasses ?? ''; @endphp
 @php $additionalClasses = $additionalClasses ?? ''; @endphp
@@ -78,6 +79,11 @@
                     </nobr>
                 </a>
             @endcan
+        @endif
+        @if($withDelete)
+            @can('delete', [\App\Models\Fundraising::class, $fundraising])
+                    <a type="button" class="btn btn-danger" href="{{ route('fundraising.delete', compact('fundraising')) }}">Видалити</a>
+                @endcan
         @endif
     @endcan
 </div>
