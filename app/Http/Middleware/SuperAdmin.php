@@ -12,10 +12,10 @@ class SuperAdmin
     public function handle(Request $request, Closure $next)
     {
         $authenticatable = auth()->user();
-        if ($authenticatable instanceof User && !$authenticatable->isSuperAdmin()) {
-            return response('Error', Response::HTTP_FORBIDDEN);
+        if ($authenticatable instanceof User && $authenticatable->isSuperAdmin()) {
+            return $next($request);
         }
 
-        return $next($request);
+        return response('Error', Response::HTTP_FORBIDDEN);
     }
 }
