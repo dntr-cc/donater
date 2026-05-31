@@ -29,7 +29,6 @@
                 </div>
             @endif
             @if($fundraising->getDeletedAt())
-                Відновити
                 <div class="row row-cols-xl-4 row-cols-lg-4 row-cols-md-1 row-cols-sm-1 row-cols-sm-1 d-flex justify-content-around m-4">
                     <a class="btn m-1 btn-fit-text" target="_blank" href="{{ route('fundraising.restore', compact('fundraising')) }}">🍩Відновити</a>
                 </div>
