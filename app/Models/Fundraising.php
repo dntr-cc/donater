@@ -399,12 +399,12 @@ class Fundraising extends Model
 
     public function getDonateCollection(): ?DonateCollection
     {
-        return self::with('donates')->where('id', '=', $this->getId())->first()->donates;
+        return self::with('donates')->withTrashed()->where('id', '=', $this->getId())->first()->donates;
     }
 
     public function getVolunteer(): ?User
     {
-        return self::with('volunteer')->where('id', '=', $this->getId())->first()->volunteer;
+        return self::with('volunteer')->withTrashed()->where('id', '=', $this->getId())->first()->volunteer;
     }
 
     public function getShortLink(): string

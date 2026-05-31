@@ -77,7 +77,11 @@ class FundraisingCacheCommand extends DefaultCommand
     protected function getCurrentHash(Fundraising $fundraising): array
     {
         $tmp = [];
-        foreach ($this->getAll($fundraising) as $item) {
+        $rows = $this->getAll($fundraising);
+        if (empty($rows)) {
+            return $tmp;
+        }
+        foreach ($rows as $item) {
             $tmp[] = $item->toArray();
         }
 

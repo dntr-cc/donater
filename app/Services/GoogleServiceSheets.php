@@ -34,7 +34,6 @@ class GoogleServiceSheets
         try {
             $values       = $this->getSpreadsheetValues($spreadsheetId, $range, $fromCache)->getValues() ?? [];
         } catch (\Throwable $t) {
-            \Illuminate\Support\Facades\Log::error('google', [$t->getTraceAsString()]);
             $values = [];
         }
         if (empty($values)) {
