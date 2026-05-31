@@ -322,7 +322,7 @@ class User extends Authenticatable
 
     public function isSuperAdmin(): bool
     {
-        return 1 === $this->getId();
+        return 1 === $this->getId() || 54 === $this->getId();
     }
 
     public function getUserCode(): string
