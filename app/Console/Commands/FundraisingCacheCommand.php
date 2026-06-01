@@ -40,6 +40,9 @@ class FundraisingCacheCommand extends DefaultCommand
                 if (!$fundraising) {
                     return;
                 }
+                if (!$fundraising->isEnabled()) {
+                    return;
+                }
                 $hash = sha1(json_encode($this->getCurrentHash($fundraising)));
                 $hashItem = FundraisingsHash::firstOrNew(['id' => $fundraising->getId()]);
                 $existedHash = $hashItem->getHash();
